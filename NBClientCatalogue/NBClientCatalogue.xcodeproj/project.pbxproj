@@ -19,6 +19,7 @@
 		AAAEFC73196CD61200222A48 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAAEFC5B196CD61200222A48 /* UIKit.framework */; };
 		AAAEFC7B196CD61200222A48 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AAAEFC79196CD61200222A48 /* InfoPlist.strings */; };
 		AAAEFC7D196CD61200222A48 /* NBClientCatalogueTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAEFC7C196CD61200222A48 /* NBClientCatalogueTests.m */; };
+		AAAEFC88196CD8E000222A48 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAAEFC87196CD8E000222A48 /* Crashlytics.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 		AAAEFC78196CD61200222A48 /* NBClientCatalogueTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "NBClientCatalogueTests-Info.plist"; sourceTree = "<group>"; };
 		AAAEFC7A196CD61200222A48 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AAAEFC7C196CD61200222A48 /* NBClientCatalogueTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NBClientCatalogueTests.m; sourceTree = "<group>"; };
+		AAAEFC87196CD8E000222A48 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +59,7 @@
 			files = (
 				AAAEFC5A196CD61200222A48 /* CoreGraphics.framework in Frameworks */,
 				AAAEFC5C196CD61200222A48 /* UIKit.framework in Frameworks */,
+				AAAEFC88196CD8E000222A48 /* Crashlytics.framework in Frameworks */,
 				AAAEFC58196CD61200222A48 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -96,6 +99,7 @@
 		AAAEFC56196CD61200222A48 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AAAEFC87196CD8E000222A48 /* Crashlytics.framework */,
 				AAAEFC57196CD61200222A48 /* Foundation.framework */,
 				AAAEFC59196CD61200222A48 /* CoreGraphics.framework */,
 				AAAEFC5B196CD61200222A48 /* UIKit.framework */,
@@ -154,6 +158,7 @@
 				AAAEFC50196CD61200222A48 /* Sources */,
 				AAAEFC51196CD61200222A48 /* Frameworks */,
 				AAAEFC52196CD61200222A48 /* Resources */,
+				AAAEFC86196CD8AB00222A48 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -234,6 +239,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		AAAEFC86196CD8AB00222A48 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Crashlytics.framework/run 40c37689b7be7476400be06f7b2784cc8697c931 7e2a084b989fdec9bca9b8998e42d67982143c52c90678bcdd48871129674dd1";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		AAAEFC50196CD61200222A48 /* Sources */ = {
@@ -360,6 +381,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NBClientCatalogue/NBClientCatalogue-Prefix.pch";
 				INFOPLIST_FILE = "NBClientCatalogue/NBClientCatalogue-Info.plist";
@@ -373,6 +398,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NBClientCatalogue/NBClientCatalogue-Prefix.pch";
 				INFOPLIST_FILE = "NBClientCatalogue/NBClientCatalogue-Info.plist";
