@@ -9,6 +9,7 @@
 #ifndef _NBCLIENT_
     #define _NBCLIENT_
 
+    #import "NBAuthenticator.h"
     #import "NBClient.h"
 
 #endif /* _NBCLIENT_ */
