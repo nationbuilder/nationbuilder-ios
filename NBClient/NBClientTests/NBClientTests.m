@@ -8,7 +8,12 @@
 
 #import <XCTest/XCTest.h>
 
+#import "Main.h"
+
 @interface NBClientTests : XCTestCase
+
+@property (nonatomic, strong) NSString *nationName;
+@property (nonatomic, strong) NSString *apiKey;
 
 @end
 
@@ -17,18 +22,27 @@
 - (void)setUp
 {
     [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
+    self.nationName = @"abeforprez";
+    // FIXME: This is a dev environment key.
+    self.apiKey = @"9a888b2e71393a3c6b327b32366754287c813714ae51e0f7938a7ee608a064f1";
 }
 
 - (void)tearDown
 {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
 }
 
-- (void)testExample
+- (void)testDefaultInitialization
 {
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
+    NBClient *client = [[NBClient alloc] initWithNationName:self.nationName
+                                                     apiKey:self.apiKey
+                                           customURLSession:nil customURLSessionConfiguration:nil];
+    XCTAssertNotNil(client.urlSession,
+                    @"Client should have default session.");
+    XCTAssertNotNil(client.sessionConfiguration,
+                    @"Client should have default session configuration.");
+    XCTAssertNotNil(client.sessionConfiguration.URLCache,
+                    @"Client should have default session cache.");
 }
 
 @end
