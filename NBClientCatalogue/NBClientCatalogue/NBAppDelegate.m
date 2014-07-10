@@ -10,6 +10,8 @@
 
 #import <Crashlytics/Crashlytics.h>
 
+#import <NBClient/Main.h>
+
 @implementation NBAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
