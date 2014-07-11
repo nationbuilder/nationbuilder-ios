@@ -53,6 +53,7 @@
 		AAAEFC3C196CD13D00222A48 /* NBClientTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "NBClientTests-Info.plist"; sourceTree = "<group>"; };
 		AAAEFC3E196CD13D00222A48 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AAAEFC40196CD13D00222A48 /* NBClientTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NBClientTests.m; sourceTree = "<group>"; };
+		AABD0029196F1FD6003A745F /* Main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Main.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +111,7 @@
 		AAAEFC26196CD13D00222A48 /* NBClient */ = {
 			isa = PBXGroup;
 			children = (
+				AABD0029196F1FD6003A745F /* Main.h */,
 				AAAEFC29196CD13D00222A48 /* NBClient.h */,
 				AAAEFC2B196CD13D00222A48 /* NBClient.m */,
 				AAAEFC27196CD13D00222A48 /* Supporting Files */,

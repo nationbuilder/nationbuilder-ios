@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA862854196F17EC005060C9 /* libNBClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA862853196F17EC005060C9 /* libNBClient.a */; };
 		AAAEFC58196CD61200222A48 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAAEFC57196CD61200222A48 /* Foundation.framework */; };
 		AAAEFC5A196CD61200222A48 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAAEFC59196CD61200222A48 /* CoreGraphics.framework */; };
 		AAAEFC5C196CD61200222A48 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAAEFC5B196CD61200222A48 /* UIKit.framework */; };
@@ -33,6 +34,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AA862853196F17EC005060C9 /* libNBClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libNBClient.a; path = "../../../../Library/Developer/Xcode/DerivedData/NBClient-avfdisdvcjntcghixqxqdojxlcsf/Build/Products/Debug-iphoneos/libNBClient.a"; sourceTree = "<group>"; };
 		AAAEFC54196CD61200222A48 /* NBClientCatalogue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NBClientCatalogue.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAAEFC57196CD61200222A48 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		AAAEFC59196CD61200222A48 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -57,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA862854196F17EC005060C9 /* libNBClient.a in Frameworks */,
 				AAAEFC5A196CD61200222A48 /* CoreGraphics.framework in Frameworks */,
 				AAAEFC5C196CD61200222A48 /* UIKit.framework in Frameworks */,
 				AAAEFC88196CD8E000222A48 /* Crashlytics.framework in Frameworks */,
@@ -99,6 +102,7 @@
 		AAAEFC56196CD61200222A48 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AA862853196F17EC005060C9 /* libNBClient.a */,
 				AAAEFC87196CD8E000222A48 /* Crashlytics.framework */,
 				AAAEFC57196CD61200222A48 /* Foundation.framework */,
 				AAAEFC59196CD61200222A48 /* CoreGraphics.framework */,
@@ -387,7 +391,17 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NBClientCatalogue/NBClientCatalogue-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(PROJECT_DIR)/../NBClient",
+				);
 				INFOPLIST_FILE = "NBClientCatalogue/NBClientCatalogue-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/NBClient-avfdisdvcjntcghixqxqdojxlcsf/Build/Products/Debug-iphoneos",
+				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -404,7 +418,17 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NBClientCatalogue/NBClientCatalogue-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(PROJECT_DIR)/../NBClient",
+				);
 				INFOPLIST_FILE = "NBClientCatalogue/NBClientCatalogue-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/NBClient-avfdisdvcjntcghixqxqdojxlcsf/Build/Products/Debug-iphoneos",
+				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
