@@ -9,6 +9,8 @@
 #import "NBClient.h"
 
 #import "NBAuthenticator.h"
+#import "NBDefines.h"
+
 @interface NBClient ()
 
 @property (nonatomic, strong, readwrite) NSString *nationName;

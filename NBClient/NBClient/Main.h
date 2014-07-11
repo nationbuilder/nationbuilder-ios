@@ -11,5 +11,6 @@
 
     #import "NBAuthenticator.h"
     #import "NBClient.h"
+    #import "NBDefines.h"
 
 #endif /* _NBCLIENT_ */

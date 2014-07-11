@@ -8,6 +8,8 @@
 
 #import "NBAuthenticator.h"
 
+#import "NBDefines.h"
+
 @interface NBAuthenticator ()
 
 @property (strong, nonatomic, readwrite) NSURL *baseURL;
