@@ -14,7 +14,6 @@
 @interface NBClient ()
 
 @property (nonatomic, strong, readwrite) NSString *nationName;
-@property (nonatomic, strong, readwrite) NSString *apiKey;
 @property (nonatomic, strong, readwrite) NSURLSession *urlSession;
 @property (nonatomic, strong, readwrite) NSURLSessionConfiguration *sessionConfiguration;
 

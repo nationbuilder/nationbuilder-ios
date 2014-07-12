@@ -13,11 +13,12 @@
 @interface NBClient : NSObject <NSURLSessionDelegate>
 
 @property (nonatomic, strong, readonly) NSString *nationName;
-@property (nonatomic, strong, readonly) NSString *apiKey;
 @property (nonatomic, strong, readonly) NSURLSession *urlSession;
 @property (nonatomic, strong, readonly) NSURLSessionConfiguration *sessionConfiguration;
 
 @property (nonatomic, strong, readonly) NBAuthenticator *authenticator;
+
+@property (nonatomic, strong) NSString *apiKey;
 
 - (instancetype)initWithNationName:(NSString *)nationName
                      authenticator:(NBAuthenticator *)authenticator
