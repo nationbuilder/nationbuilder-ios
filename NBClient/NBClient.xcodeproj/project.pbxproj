@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		AA668DD11970B81800A952B0 /* NBFoundationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AA668DD01970B81800A952B0 /* NBFoundationAdditions.m */; };
 		AA668DD21970B81800A952B0 /* NBFoundationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AA668DD01970B81800A952B0 /* NBFoundationAdditions.m */; };
+		AA668DC619705FC800A952B0 /* NBTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = AA668DC519705FC800A952B0 /* NBTestCase.m */; };
 		AA862851196F1651005060C9 /* NBAuthenticator.m in Sources */ = {isa = PBXBuildFile; fileRef = AA862850196F1651005060C9 /* NBAuthenticator.m */; };
 		AA862852196F1651005060C9 /* NBAuthenticator.m in Sources */ = {isa = PBXBuildFile; fileRef = AA862850196F1651005060C9 /* NBAuthenticator.m */; };
 		AA8B6822196F5539009DDA91 /* NBAuthenticatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA8B6821196F5539009DDA91 /* NBAuthenticatorTests.m */; };
@@ -51,6 +52,8 @@
 /* Begin PBXFileReference section */
 		AA668DCF1970B81800A952B0 /* NBFoundationAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBFoundationAdditions.h; sourceTree = "<group>"; };
 		AA668DD01970B81800A952B0 /* NBFoundationAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBFoundationAdditions.m; sourceTree = "<group>"; };
+		AA668DC419705FC800A952B0 /* NBTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBTestCase.h; sourceTree = "<group>"; };
+		AA668DC519705FC800A952B0 /* NBTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBTestCase.m; sourceTree = "<group>"; };
 		AA86284F196F1651005060C9 /* NBAuthenticator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBAuthenticator.h; sourceTree = "<group>"; };
 		AA862850196F1651005060C9 /* NBAuthenticator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAuthenticator.m; sourceTree = "<group>"; };
 		AA8B6821196F5539009DDA91 /* NBAuthenticatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAuthenticatorTests.m; sourceTree = "<group>"; };
@@ -152,6 +155,8 @@
 			children = (
 				AA8B6821196F5539009DDA91 /* NBAuthenticatorTests.m */,
 				AAAEFC40196CD13D00222A48 /* NBClientTests.m */,
+				AA668DC419705FC800A952B0 /* NBTestCase.h */,
+				AA668DC519705FC800A952B0 /* NBTestCase.m */,
 				AAAEFC3B196CD13D00222A48 /* Supporting Files */,
 			);
 			path = NBClientTests;
@@ -261,6 +266,7 @@
 				AA668DD21970B81800A952B0 /* NBFoundationAdditions.m in Sources */,
 				AA8B6826196F82D4009DDA91 /* NBDefines.m in Sources */,
 				AA862852196F1651005060C9 /* NBAuthenticator.m in Sources */,
+				AA668DC619705FC800A952B0 /* NBTestCase.m in Sources */,
 				AAAEFC41196CD13D00222A48 /* NBClientTests.m in Sources */,
 				AA8B6822196F5539009DDA91 /* NBAuthenticatorTests.m in Sources */,
 			);
