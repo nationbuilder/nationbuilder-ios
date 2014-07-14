@@ -4,7 +4,7 @@ task :test do
   command = "xcodebuild"
   command << " -workspace NBClient.xcworkspace"
   command << " -scheme 'NBClient' -sdk 'iphonesimulator'"
-  command << " -configuration Release"
+  command << " -configuration Debug"
   command << " clean test"
   command << " | xcpretty -c; exit ${PIPESTATUS[0]}"
   sh(command) rescue nil
