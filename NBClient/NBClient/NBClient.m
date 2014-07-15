@@ -10,6 +10,7 @@
 
 #import "NBAuthenticator.h"
 #import "NBDefines.h"
+#import "NBFoundationAdditions.h"
 
 @interface NBClient ()
 
@@ -19,12 +20,15 @@
 
 @property (nonatomic, strong, readwrite) NBAuthenticator *authenticator;
 
-@property (nonatomic, weak, readonly) NSString *nationHost;
+@property (nonatomic, strong) NSString *nationHost;
+@property (nonatomic, strong) NSURL *baseURL;
+@property (nonatomic, strong) NSURLComponents *baseURLComponents;
 
 - (void)commonInitWithNationName:(NSString *)nationName
                 customURLSession:(NSURLSession *)urlSession
    customURLSessionConfiguration:(NSURLSessionConfiguration *)sessionConfiguration;
 
+- (NSURLRequest *)baseFetchRequestWithURL:(NSURL *)url;
 @end
 
 @implementation NBClient
@@ -70,6 +74,17 @@
 
 #pragma mark Accessors
 
+- (void)setNationName:(NSString *)nationName
+{
+    if ([_nationName isEqual:nationName]) {
+        return;
+    }
+    _nationName = nationName;
+    self.nationHost = nil;
+    self.baseURL = nil;
+    self.baseURLComponents = nil;
+}
+
 - (NSURLSessionConfiguration *)sessionConfiguration
 {
     if (!_sessionConfiguration) {
@@ -96,11 +111,50 @@
     return _urlSession;
 }
 
-#pragma mark Computed Properties
-
 - (NSString *)nationHost
 {
-    return [NSString stringWithFormat:@"%@.nationbuilder.com", self.nationName];
+    if (_nationHost) {
+        return _nationHost;
+    }
+    _nationHost = [NSString stringWithFormat:@"%@.nationbuilder.com", self.nationName];
+    return _nationHost;
+}
+
+#pragma mark Requests
+
+- (NSURL *)baseURL
+{
+    if (_baseURL) {
+        return _baseURL;
+    }
+    NSString *format = [[NSUserDefaults standardUserDefaults] stringForKey:@"NBBaseURLFormat"];
+    if (!format) {
+        format = @"https://%@.nationbuilder.com";
+    }
+    _baseURL = [NSURL URLWithString:[NSString stringWithFormat:format, self.nationName]];
+    return _baseURL;
+}
+
+- (NSURLComponents *)baseURLComponents
+{
+    if (_baseURLComponents) {
+        return _baseURLComponents;
+    }
+    _baseURLComponents = [NSURLComponents componentsWithURL:self.baseURL resolvingAgainstBaseURL:YES];
+    NSDictionary *queryParameters = @{ @"access_token": self.apiKey };
+    _baseURLComponents.path = @"/api/v1";
+    _baseURLComponents.query = [queryParameters nb_queryStringWithEncoding:NSASCIIStringEncoding
+                                               skipPercentEncodingPairKeys:nil charactersToLeaveUnescaped:nil];
+    return _baseURLComponents;
+}
+
+- (NSURLRequest *)baseFetchRequestWithURL:(NSURL *)url
+{
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
+                                                           cachePolicy:NSURLRequestReloadRevalidatingCacheData
+                                                       timeoutInterval:10.0f];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    return request;
 }
 
 @end
