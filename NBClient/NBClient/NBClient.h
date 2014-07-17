@@ -10,6 +10,11 @@
 
 @class NBAuthenticator;
 
+typedef void (^NBClientResourceListCompletionHandler)(NSArray *items, NSError *error);
+typedef void (^NBClientResourceItemCompletionHandler)(NSDictionary *item, NSError *error);
+
+extern NSUInteger const NBClientErrorCodeService;
+
 @interface NBClient : NSObject <NSURLSessionDelegate>
 
 @property (nonatomic, strong, readonly) NSString *nationName;
@@ -29,5 +34,16 @@
                             apiKey:(NSString *)apiKey
                   customURLSession:(NSURLSession *)urlSession
      customURLSessionConfiguration:(NSURLSessionConfiguration *)sessionConfiguration;
+
+- (NSURLSessionDataTask *)fetchPeopleWithCompletionHandler:(NBClientResourceListCompletionHandler)completionHandler;
+
+- (NSURLSessionDataTask *)fetchPeopleByParameters:(NSDictionary *)parameters
+                            withCompletionHandler:(NBClientResourceListCompletionHandler)completionHandler;
+
+- (NSURLSessionDataTask *)fetchPersonByIdentifier:(NSUInteger)identifier
+                            withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+
+- (NSURLSessionDataTask *)fetchPersonByParameters:(NSDictionary *)parameters
+                            withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
 
 @end
