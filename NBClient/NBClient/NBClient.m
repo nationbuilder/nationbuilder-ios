@@ -87,15 +87,23 @@
 
 - (NSURLSessionConfiguration *)sessionConfiguration
 {
+    static NSURLCache *sharedCache;
+    BOOL shouldUseDefaultCache = !_sessionConfiguration || !_sessionConfiguration.URLCache;
+    if (shouldUseDefaultCache) {
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            const NSUInteger mb = 1024 * 1024;
+            NSString *desiredApplicationSubdirectoryPath = self.nationHost;
+            sharedCache = [[NSURLCache alloc] initWithMemoryCapacity:4 * mb
+                                                        diskCapacity:20 * mb
+                                                            diskPath:desiredApplicationSubdirectoryPath];
+        });
+    }
     if (!_sessionConfiguration) {
         _sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
     }
-    if (_sessionConfiguration.URLCache) {
-        const NSUInteger mb = 1024 * 1024;
-        NSString *desiredApplicationSubdirectoryPath = self.nationHost;
-        _sessionConfiguration.URLCache = [[NSURLCache alloc] initWithMemoryCapacity:4 * mb
-                                                                       diskCapacity:20 * mb
-                                                                           diskPath:desiredApplicationSubdirectoryPath];
+    if (shouldUseDefaultCache) {
+        _sessionConfiguration.URLCache = sharedCache;
     }
     return _sessionConfiguration;
 }
