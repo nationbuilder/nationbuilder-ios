@@ -35,6 +35,8 @@ extern NSUInteger const NBClientErrorCodeService;
                   customURLSession:(NSURLSession *)urlSession
      customURLSessionConfiguration:(NSURLSessionConfiguration *)sessionConfiguration;
 
+// People
+
 - (NSURLSessionDataTask *)fetchPeopleWithCompletionHandler:(NBClientResourceListCompletionHandler)completionHandler;
 
 - (NSURLSessionDataTask *)fetchPeopleByParameters:(NSDictionary *)parameters
@@ -45,5 +47,16 @@ extern NSUInteger const NBClientErrorCodeService;
 
 - (NSURLSessionDataTask *)fetchPersonByParameters:(NSDictionary *)parameters
                             withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+
+- (NSURLSessionDataTask *)createPersonWithParameters:(NSDictionary *)parameters
+                                   completionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+
+- (NSURLSessionDataTask *)savePersonByIdentifier:(NSUInteger)identifier
+                                  withParameters:(NSDictionary *)parameters
+                               completionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+
+- (NSURLSessionDataTask *)deletePersonByIdentifier:(NSUInteger)identifier
+                             withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+
 
 @end

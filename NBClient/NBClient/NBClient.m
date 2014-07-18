@@ -36,6 +36,20 @@ NSUInteger const NBClientErrorCodeService = 1;
                                     resultsKey:(NSString *)resultsKey
                              completionHandler:(void (^)(id results, NSError *error))completionHandler;
 
+- (NSMutableURLRequest *)baseSaveRequestWithURL:(NSURL *)url
+                                     parameters:(NSDictionary *)parameters
+                                          error:(NSError **)error;
+- (NSURLSessionDataTask *)baseSaveTaskWithURLRequest:(NSURLRequest *)request
+                                          resultsKey:(NSString *)resultsKey
+                                   completionHandler:(void (^)(id results, NSError *error))completionHandler;
+
+- (NSMutableURLRequest *)baseDeleteRequestWithURL:(NSURL *)url;
+- (NSURLSessionDataTask *)baseDeleteTaskWithURL:(NSURL *)url
+                              completionHandler:(void (^)(id results, NSError *error))completionHandler;
+
+- (void (^)(NSData *, NSURLResponse *, NSError *))dataTaskCompletionHandlerForFetchResultsKey:(NSString *)resultsKey
+                                                                            completionHandler:(void (^)(id results, NSError *error))completionHandler;
+
 - (NSError *)httpErrorForResponse:(NSHTTPURLResponse *)response jsonData:(NSDictionary *)data;
 - (NSError *)invalidErrorForJsonData:(NSDictionary *)data resultsKey:(NSString *)resultsKey;
 - (NSError *)nonHTTPErrorForResponse:(NSHTTPURLResponse *)response jsonData:(NSDictionary *)data;
@@ -126,6 +140,46 @@ NSUInteger const NBClientErrorCodeService = 1;
                                     charactersToLeaveUnescaped:nil]
                         stringByAppendingFormat:@"&%@", components.query];
     return [self baseFetchTaskWithURL:components.URL resultsKey:@"person" completionHandler:completionHandler];
+}
+
+- (NSURLSessionDataTask *)createPersonWithParameters:(NSDictionary *)parameters
+                                   completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
+{
+    NSURLComponents *components = self.baseURLComponents.copy;
+    components.path = [components.path stringByAppendingString:@"/people"];
+    NSError *error;
+    NSMutableURLRequest *request = [self baseSaveRequestWithURL:components.URL parameters:@{ @"person": parameters } error:&error];
+    if (error) {
+        dispatch_async(dispatch_get_main_queue(), ^{ completionHandler(nil, error); });
+        return nil;
+    }
+    request.HTTPMethod = @"POST";
+    return [self baseSaveTaskWithURLRequest:request resultsKey:@"person" completionHandler:completionHandler];
+}
+
+- (NSURLSessionDataTask *)savePersonByIdentifier:(NSUInteger)identifier
+                                  withParameters:(NSDictionary *)parameters
+                               completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
+{
+    NSURLComponents *components = self.baseURLComponents.copy;
+    components.path = [components.path stringByAppendingString:
+                       [NSString stringWithFormat:@"/people/%d", identifier]];
+    NSError *error;
+    NSMutableURLRequest *request = [self baseSaveRequestWithURL:components.URL parameters:@{ @"person": parameters } error:&error];
+    if (error) {
+        dispatch_async(dispatch_get_main_queue(), ^{ completionHandler(nil, error); });
+        return nil;
+    }
+    return [self baseSaveTaskWithURLRequest:request resultsKey:@"person" completionHandler:completionHandler];
+}
+
+- (NSURLSessionDataTask *)deletePersonByIdentifier:(NSUInteger)identifier
+                             withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler
+{
+    NSURLComponents *components = self.baseURLComponents.copy;
+    components.path = [components.path stringByAppendingString:
+                       [NSString stringWithFormat:@"/people/%d", identifier]];
+    return [self baseDeleteTaskWithURL:components.URL completionHandler:completionHandler];
 }
 
 #pragma mark - Private
@@ -239,6 +293,61 @@ NSUInteger const NBClientErrorCodeService = 1;
     return task;
 }
 
+- (NSMutableURLRequest *)baseSaveRequestWithURL:(NSURL *)url
+                                     parameters:(NSDictionary *)parameters
+                                          error:(NSError **)error
+{
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                       timeoutInterval:10.0f];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    request.HTTPMethod = @"PUT"; // Overwrite as needed.
+    [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:parameters options:0 error:error]];
+    return request;
+}
+
+- (NSURLSessionDataTask *)baseSaveTaskWithURLRequest:(NSURLRequest *)request
+                                          resultsKey:(NSString *)resultsKey
+                                   completionHandler:(void (^)(id, NSError *))completionHandler
+{
+    NSURLSessionDataTask *task =
+    [self.urlSession
+     dataTaskWithRequest:request
+     completionHandler:[self dataTaskCompletionHandlerForFetchResultsKey:resultsKey completionHandler:^(id results, NSError *error) {
+        if (completionHandler) {
+            completionHandler(results, error);
+        }
+    }]];
+    [task resume];
+    return task;
+}
+
+- (NSMutableURLRequest *)baseDeleteRequestWithURL:(NSURL *)url
+{
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                       timeoutInterval:10.0f];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    request.HTTPMethod = @"DELETE";
+    return request;
+}
+
+- (NSURLSessionDataTask *)baseDeleteTaskWithURL:(NSURL *)url
+                              completionHandler:(void (^)(id, NSError *))completionHandler
+{
+    NSURLSessionDataTask *task =
+    [self.urlSession
+     dataTaskWithRequest:[self baseDeleteRequestWithURL:url]
+     completionHandler:[self dataTaskCompletionHandlerForFetchResultsKey:nil completionHandler:^(id results, NSError *error) {
+        if (completionHandler) {
+            completionHandler(results, error);
+        }
+    }]];
+    [task resume];
+    return task;
+}
+
 #pragma mark Handlers
 
 - (void (^)(NSData *, NSURLResponse *, NSError *))dataTaskCompletionHandlerForFetchResultsKey:(NSString *)resultsKey
@@ -251,6 +360,13 @@ NSUInteger const NBClientErrorCodeService = 1;
         }
         // Handle data task error.
         if (error) {
+            if (completionHandler) {
+                completionHandler(nil, error);
+            }
+            return;
+        }
+        // Handle empty bodies.
+        if ([[NSIndexSet nb_indexSetOfSuccessfulEmptyResponseHTTPStatusCodes] containsIndex:httpResponse.statusCode]) {
             if (completionHandler) {
                 completionHandler(nil, error);
             }
