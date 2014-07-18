@@ -11,6 +11,7 @@
 @interface NSIndexSet (NBAdditions)
 
 + (NSIndexSet *)nb_indexSetOfSuccessfulHTTPStatusCodes;
++ (NSIndexSet *)nb_indexSetOfSuccessfulEmptyResponseHTTPStatusCodes;
 
 @end
 

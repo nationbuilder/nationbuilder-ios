@@ -36,6 +36,13 @@
                   @"%d status code should be considered successful.", statusCode);
 }
 
+- (void)testCheckingSuccessfulEmptyResponseHTTPStatusCode
+{
+    NSUInteger statusCode = 204;
+    XCTAssertTrue([[NSIndexSet nb_indexSetOfSuccessfulEmptyResponseHTTPStatusCodes] containsIndex:statusCode],
+                  @"%d status code should be considered successful.", statusCode);
+}
+
 - (void)testCheckingIfDictionaryContainsDictionary
 {
     NSDictionary *source = @{ @"name": @"Foo Bar", @"age": @1, @"email": @"foo@bar.com" };

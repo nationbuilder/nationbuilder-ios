@@ -21,6 +21,15 @@
     return indexSet;
 }
 
++ (NSIndexSet *)nb_indexSetOfSuccessfulEmptyResponseHTTPStatusCodes
+{
+    static NSIndexSet *indexSet;
+    if (!indexSet) {
+        indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(204, 1)];
+    }
+    return indexSet;
+}
+
 @end
 
 @implementation NSDictionary (NBAdditions)
