@@ -36,6 +36,14 @@
                   @"%d status code should be considered successful.", statusCode);
 }
 
+- (void)testCheckingIfDictionaryContainsDictionary
+{
+    NSDictionary *source = @{ @"name": @"Foo Bar", @"age": @1, @"email": @"foo@bar.com" };
+    NSDictionary *dictionary = @{ @"name": @"Foo Bar" };
+    XCTAssertTrue([source nb_containsDictionary:dictionary],
+                  @"Dictionary should be subset of source dictionary.");
+}
+
 - (void)testBuildingQueryStringFromDictionary
 {
     NSDictionary *dictionary = @{ @"name": @"Foo Bar", @"age": @1, @"email": @"foo@bar.com" };

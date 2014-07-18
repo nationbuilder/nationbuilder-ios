@@ -25,6 +25,16 @@
 
 @implementation NSDictionary (NBAdditions)
 
+- (BOOL)nb_containsDictionary:(NSDictionary *)dictionary
+{
+    for (NSString *key in dictionary.allKeys) {
+        if (![dictionary[key] isEqual:self[key]]) {
+            return NO;
+        }
+    }
+    return YES;
+}
+
 - (NSString *)nb_queryStringWithEncoding:(NSStringEncoding)stringEncoding
              skipPercentEncodingPairKeys:(NSSet *)skipPairKeys
               charactersToLeaveUnescaped:(NSString *)charactersToLeaveUnescaped

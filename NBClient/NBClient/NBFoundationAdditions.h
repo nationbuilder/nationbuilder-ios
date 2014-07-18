@@ -16,6 +16,8 @@
 
 @interface NSDictionary (NBAdditions)
 
+- (BOOL)nb_containsDictionary:(NSDictionary *)dictionary;
+
 - (NSString *)nb_queryStringWithEncoding:(NSStringEncoding)stringEncoding
              skipPercentEncodingPairKeys:(NSSet *)skipPairKeys
               charactersToLeaveUnescaped:(NSString *)charactersToLeaveUnescaped;
