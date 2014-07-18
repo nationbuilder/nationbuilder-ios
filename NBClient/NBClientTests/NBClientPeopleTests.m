@@ -140,4 +140,64 @@
     [self tearDownAsync];
 }
 
+- (void)testCreatePerson
+{
+    [self setUpAsync];
+    NSDictionary *parameters = @{ @"first_name": @"Foo", @"last_name": @"Bar" };
+    NSURLSessionDataTask *task =
+    [self.client
+     createPersonWithParameters:parameters
+     completionHandler:^(NSDictionary *item, NSError *error) {
+         [self assertServiceError:error];
+         [self assertPersonDictionary:item];
+         XCTAssertTrue([item nb_containsDictionary:parameters],
+                       @"Person dictionary should be populated by parameters.");
+         [self completeAsync];
+     }];
+    [self assertSessionDataTask:task];
+    [self tearDownAsync];
+}
+
+- (void)testSavePerson
+{
+    [self setUpAsync];
+    NSDictionary *parameters = @{ @"first_name": @"Foo", @"last_name": @"Bar" };
+    void (^testSave)(NSDictionary *, NSError *) = ^(NSDictionary *item, NSError *error) {
+        NSURLSessionDataTask *task =
+        [self.client
+         savePersonByIdentifier:self.userIdentifier
+         withParameters:parameters
+         completionHandler:^(NSDictionary *item, NSError *error) {
+             [self assertServiceError:error];
+             [self assertPersonDictionary:item];
+             XCTAssertTrue([item nb_containsDictionary:parameters],
+                           @"Person dictionary should be populated by parameters.");
+             [self completeAsync];
+         }];
+        [self assertSessionDataTask:task];
+    };
+    [self.client fetchPersonByIdentifier:self.userIdentifier withCompletionHandler:testSave];
+    [self tearDownAsync];
+}
+
+- (void)testDeletePerson
+{
+    [self setUpAsync];
+    NSDictionary *parameters = @{ @"first_name": @"Foo", @"last_name": @"Bar" };
+    void (^testDelete)(NSDictionary *, NSError *) = ^(NSDictionary *item, NSError *error) {
+        NSURLSessionDataTask *task =
+        [self.client
+         deletePersonByIdentifier:[item[@"id"] unsignedIntegerValue]
+         withCompletionHandler:^(NSDictionary *item, NSError *error) {
+             [self assertServiceError:error];
+             XCTAssertNil(item,
+                          @"Person dictionary should not exist.");
+             [self completeAsync];
+         }];
+        [self assertSessionDataTask:task];
+    };
+    [self.client createPersonWithParameters:parameters completionHandler:testDelete];
+    [self tearDownAsync];
+}
+
 @end
