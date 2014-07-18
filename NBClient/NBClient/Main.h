@@ -9,6 +9,9 @@
 #ifndef _NBCLIENT_
     #define _NBCLIENT_
 
+    #import "NBAuthenticator.h"
     #import "NBClient.h"
+    #import "NBDefines.h"
+    #import "NBFoundationAdditions.h"
 
 #endif /* _NBCLIENT_ */

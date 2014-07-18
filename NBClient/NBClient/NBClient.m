@@ -8,18 +8,41 @@
 
 #import "NBClient.h"
 
+#import "NBAuthenticator.h"
+#import "NBDefines.h"
+
 @interface NBClient ()
 
 @property (nonatomic, strong, readwrite) NSString *nationName;
-@property (nonatomic, strong, readwrite) NSString *apiKey;
 @property (nonatomic, strong, readwrite) NSURLSession *urlSession;
 @property (nonatomic, strong, readwrite) NSURLSessionConfiguration *sessionConfiguration;
 
+@property (nonatomic, strong, readwrite) NBAuthenticator *authenticator;
+
 @property (nonatomic, weak, readonly) NSString *nationHost;
+
+- (void)commonInitWithNationName:(NSString *)nationName
+                customURLSession:(NSURLSession *)urlSession
+   customURLSessionConfiguration:(NSURLSessionConfiguration *)sessionConfiguration;
 
 @end
 
 @implementation NBClient
+
+#pragma mark - Initializers
+
+- (instancetype)initWithNationName:(NSString *)nationName
+                     authenticator:(NBAuthenticator *)authenticator
+                  customURLSession:(NSURLSession *)urlSession
+     customURLSessionConfiguration:(NSURLSessionConfiguration *)sessionConfiguration
+{
+    self = [super init];
+    if (self) {
+        [self commonInitWithNationName:nationName customURLSession:urlSession customURLSessionConfiguration:sessionConfiguration];
+        self.authenticator = authenticator;
+    }
+    return self;
+}
 
 - (instancetype)initWithNationName:(NSString *)nationName
                             apiKey:(NSString *)apiKey
@@ -28,12 +51,19 @@
 {
     self = [super init];
     if (self) {
-        self.nationName = nationName;
+        [self commonInitWithNationName:nationName customURLSession:urlSession customURLSessionConfiguration:sessionConfiguration];
         self.apiKey = apiKey;
-        self.urlSession = urlSession;
-        self.sessionConfiguration = sessionConfiguration;
     }
     return self;
+}
+
+- (void)commonInitWithNationName:(NSString *)nationName
+                customURLSession:(NSURLSession *)urlSession
+   customURLSessionConfiguration:(NSURLSessionConfiguration *)sessionConfiguration
+{
+    self.nationName = nationName;
+    self.urlSession = urlSession;
+    self.sessionConfiguration = sessionConfiguration;
 }
 
 #pragma mark - Private

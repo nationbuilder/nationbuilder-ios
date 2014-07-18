@@ -6,25 +6,17 @@
 //  Copyright (c) 2014 NationBuilder. All rights reserved.
 //
 
-#import <XCTest/XCTest.h>
+#import "NBTestCase.h"
 
 #import "Main.h"
 
-@interface NBClientTests : XCTestCase
-
-@property (nonatomic, strong) NSString *nationName;
-@property (nonatomic, strong) NSString *apiKey;
-
-@end
+@interface NBClientTests : NBTestCase @end
 
 @implementation NBClientTests
 
 - (void)setUp
 {
     [super setUp];
-    self.nationName = @"abeforprez";
-    // FIXME: This is a dev environment key.
-    self.apiKey = @"9a888b2e71393a3c6b327b32366754287c813714ae51e0f7938a7ee608a064f1";
 }
 
 - (void)tearDown
@@ -43,6 +35,39 @@
                     @"Client should have default session configuration.");
     XCTAssertNotNil(client.sessionConfiguration.URLCache,
                     @"Client should have default session cache.");
+}
+
+- (void)testAsyncAuthenticatedInitialization
+{
+    [self setUpAsync];
+    NBAuthenticator *authenticator = [[NBAuthenticator alloc] initWithBaseURL:self.baseURL
+                                                             clientIdentifier:self.clientIdentifier
+                                                                 clientSecret:self.clientSecret];
+    NBClient *client = [[NBClient alloc] initWithNationName:self.nationName
+                                              authenticator:authenticator
+                                           customURLSession:nil customURLSessionConfiguration:nil];
+    XCTAssertEqual(client.authenticator, authenticator,
+                   @"Client should have authenticator.");
+    NSURLSessionDataTask *task =
+    [client.authenticator
+     authenticateWithUserName:self.userEmailAddress
+     password:self.userPassword
+     completionHandler:^(NBAuthenticationCredentials *credentials, NSError *error) {
+         if (error) {
+             XCTFail(@"Authentication service returned error %@", error);
+         }
+         NSLog(@"CREDENTIALS: %@", credentials);
+         XCTAssertNotNil(credentials.accessToken,
+                         @"Credentials should have access token.");
+         XCTAssertNotNil(credentials.tokenType,
+                         @"Credentials should have token type.");
+         client.apiKey = credentials.accessToken;
+         [self completeAsync];
+    }];
+    XCTAssertTrue(task && task.state == NSURLSessionTaskStateRunning,
+                  @"Authenticator should have created and ran task.");
+    NSLog(@"REQUEST: %@", task.currentRequest.nb_debugDescription);
+    [self tearDownAsync];
 }
 
 @end
