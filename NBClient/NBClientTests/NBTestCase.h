@@ -17,6 +17,7 @@
 @property (nonatomic, strong) NSString *clientIdentifier;
 @property (nonatomic, strong) NSString *clientSecret;
 @property (nonatomic, strong) NSString *userEmailAddress;
+@property (nonatomic) NSUInteger userIdentifier;
 @property (nonatomic, strong) NSString *userPassword;
 
 // NOTE: This async test API should be removed whenever we start running tests on iOS 8.
