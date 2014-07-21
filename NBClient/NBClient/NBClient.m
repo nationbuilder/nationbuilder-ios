@@ -11,6 +11,7 @@
 #import "NBAuthenticator.h"
 #import "NBDefines.h"
 #import "NBFoundationAdditions.h"
+#import "NBPaginationInfo.h"
 
 NSUInteger const NBClientErrorCodeService = 1;
 
@@ -32,9 +33,10 @@ NSUInteger const NBClientErrorCodeService = 1;
    customURLSessionConfiguration:(NSURLSessionConfiguration *)sessionConfiguration;
 
 - (NSMutableURLRequest *)baseFetchRequestWithURL:(NSURL *)url;
-- (NSURLSessionDataTask *)baseFetchTaskWithURL:(NSURL *)url
-                                    resultsKey:(NSString *)resultsKey
-                             completionHandler:(void (^)(id results, NSError *error))completionHandler;
+- (NSURLSessionDataTask *)baseFetchTaskWithURLComponents:(NSURLComponents *)components
+                                              resultsKey:(NSString *)resultsKey
+                                          paginationInfo:(NBPaginationInfo **)paginationInfo
+                                       completionHandler:(void (^)(id, NSError *))completionHandler;
 
 - (NSMutableURLRequest *)baseSaveRequestWithURL:(NSURL *)url
                                      parameters:(NSDictionary *)parameters
@@ -48,7 +50,7 @@ NSUInteger const NBClientErrorCodeService = 1;
                               completionHandler:(void (^)(id results, NSError *error))completionHandler;
 
 - (void (^)(NSData *, NSURLResponse *, NSError *))dataTaskCompletionHandlerForFetchResultsKey:(NSString *)resultsKey
-                                                                            completionHandler:(void (^)(id results, NSError *error))completionHandler;
+                                                                            completionHandler:(void (^)(id results, NSDictionary *jsonObject, NSError *error))completionHandler;
 
 - (NSError *)httpErrorForResponse:(NSHTTPURLResponse *)response jsonData:(NSDictionary *)data;
 - (NSError *)invalidErrorForJsonData:(NSDictionary *)data resultsKey:(NSString *)resultsKey;
@@ -103,22 +105,24 @@ NSUInteger const NBClientErrorCodeService = 1;
 
 #pragma mark People
 
-- (NSURLSessionDataTask *)fetchPeopleWithCompletionHandler:(NBClientResourceListCompletionHandler)completionHandler
+- (NSURLSessionDataTask *)fetchPeopleWithPaginationInfo:(NBPaginationInfo *__autoreleasing *)paginationInfo
+                                      completionHandler:(NBClientResourceListCompletionHandler)completionHandler
 {
     NSURLComponents *components = self.baseURLComponents.copy;
     components.path = [components.path stringByAppendingString:@"/people"];
-    return [self baseFetchTaskWithURL:components.URL resultsKey:@"results" completionHandler:completionHandler];
+    return [self baseFetchTaskWithURLComponents:components resultsKey:@"results" paginationInfo:paginationInfo completionHandler:completionHandler];
 }
 
 - (NSURLSessionDataTask *)fetchPeopleByParameters:(NSDictionary *)parameters
-                            withCompletionHandler:(NBClientResourceListCompletionHandler)completionHandler
+                               withPaginationInfo:(NBPaginationInfo *__autoreleasing *)paginationInfo
+                                completionHandler:(NBClientResourceListCompletionHandler)completionHandler
 {
     NSURLComponents *components = self.baseURLComponents.copy;
     components.path = [components.path stringByAppendingString:@"/people/search"];
     components.query = [components.query stringByAppendingFormat:@"&%@",
                         [parameters nb_queryStringWithEncoding:NSASCIIStringEncoding
                                    skipPercentEncodingPairKeys:nil charactersToLeaveUnescaped:nil]];
-    return [self baseFetchTaskWithURL:components.URL resultsKey:@"results" completionHandler:completionHandler];
+    return [self baseFetchTaskWithURLComponents:components resultsKey:@"results" paginationInfo:paginationInfo completionHandler:completionHandler];
 }
 
 - (NSURLSessionDataTask *)fetchPersonByIdentifier:(NSUInteger)identifier
@@ -127,7 +131,7 @@ NSUInteger const NBClientErrorCodeService = 1;
     NSURLComponents *components = self.baseURLComponents.copy;
     components.path = [components.path stringByAppendingString:
                        [NSString stringWithFormat:@"/people/%d", identifier]];
-    return [self baseFetchTaskWithURL:components.URL resultsKey:@"person" completionHandler:completionHandler];
+    return [self baseFetchTaskWithURLComponents:components resultsKey:@"person" paginationInfo:nil completionHandler:completionHandler];
 }
 
 - (NSURLSessionDataTask *)fetchPersonByParameters:(NSDictionary *)parameters
@@ -139,7 +143,7 @@ NSUInteger const NBClientErrorCodeService = 1;
                                    skipPercentEncodingPairKeys:[NSSet setWithObject:@"email"]
                                     charactersToLeaveUnescaped:nil]
                         stringByAppendingFormat:@"&%@", components.query];
-    return [self baseFetchTaskWithURL:components.URL resultsKey:@"person" completionHandler:completionHandler];
+    return [self baseFetchTaskWithURLComponents:components resultsKey:@"person" paginationInfo:nil completionHandler:completionHandler];
 }
 
 - (NSURLSessionDataTask *)createPersonWithParameters:(NSDictionary *)parameters
@@ -277,14 +281,23 @@ NSUInteger const NBClientErrorCodeService = 1;
     return request;
 }
 
-- (NSURLSessionDataTask *)baseFetchTaskWithURL:(NSURL *)url
-                                    resultsKey:(NSString *)resultsKey
-                             completionHandler:(void (^)(id, NSError *))completionHandler
+- (NSURLSessionDataTask *)baseFetchTaskWithURLComponents:(NSURLComponents *)components
+                                              resultsKey:(NSString *)resultsKey
+                                          paginationInfo:(NBPaginationInfo *__autoreleasing *)paginationInfo
+                                       completionHandler:(void (^)(id, NSError *))completionHandler
 {
+    if (paginationInfo && *paginationInfo) {
+        components.query = [components.query stringByAppendingFormat:@"&%@",
+                            [(*paginationInfo).dictionary nb_queryStringWithEncoding:NSASCIIStringEncoding
+                                                         skipPercentEncodingPairKeys:nil charactersToLeaveUnescaped:nil]];
+    }
     NSURLSessionDataTask *task =
     [self.urlSession
-     dataTaskWithRequest:[self baseFetchRequestWithURL:url]
-     completionHandler:[self dataTaskCompletionHandlerForFetchResultsKey:resultsKey completionHandler:^(id results, NSError *error) {
+     dataTaskWithRequest:[self baseFetchRequestWithURL:components.URL]
+     completionHandler:[self dataTaskCompletionHandlerForFetchResultsKey:resultsKey completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
+        if (paginationInfo) { // If pointer is non-NULL.
+            *paginationInfo = [[NBPaginationInfo alloc] initWithDictionary:jsonObject];
+        }
         if (completionHandler) {
             completionHandler(results, error);
         }
@@ -295,7 +308,7 @@ NSUInteger const NBClientErrorCodeService = 1;
 
 - (NSMutableURLRequest *)baseSaveRequestWithURL:(NSURL *)url
                                      parameters:(NSDictionary *)parameters
-                                          error:(NSError **)error
+                                          error:(NSError *__autoreleasing *)error
 {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
@@ -314,7 +327,7 @@ NSUInteger const NBClientErrorCodeService = 1;
     NSURLSessionDataTask *task =
     [self.urlSession
      dataTaskWithRequest:request
-     completionHandler:[self dataTaskCompletionHandlerForFetchResultsKey:resultsKey completionHandler:^(id results, NSError *error) {
+     completionHandler:[self dataTaskCompletionHandlerForFetchResultsKey:resultsKey completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
         if (completionHandler) {
             completionHandler(results, error);
         }
@@ -339,7 +352,7 @@ NSUInteger const NBClientErrorCodeService = 1;
     NSURLSessionDataTask *task =
     [self.urlSession
      dataTaskWithRequest:[self baseDeleteRequestWithURL:url]
-     completionHandler:[self dataTaskCompletionHandlerForFetchResultsKey:nil completionHandler:^(id results, NSError *error) {
+     completionHandler:[self dataTaskCompletionHandlerForFetchResultsKey:nil completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
         if (completionHandler) {
             completionHandler(results, error);
         }
@@ -351,7 +364,7 @@ NSUInteger const NBClientErrorCodeService = 1;
 #pragma mark Handlers
 
 - (void (^)(NSData *, NSURLResponse *, NSError *))dataTaskCompletionHandlerForFetchResultsKey:(NSString *)resultsKey
-                                                                            completionHandler:(void (^)(id results, NSError *error))completionHandler
+                                                                            completionHandler:(void (^)(id, NSDictionary *, NSError *))completionHandler
 {
     return ^(NSData *data, NSURLResponse *response, NSError *error) {
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
@@ -361,14 +374,14 @@ NSUInteger const NBClientErrorCodeService = 1;
         // Handle data task error.
         if (error) {
             if (completionHandler) {
-                completionHandler(nil, error);
+                completionHandler(nil, nil, error);
             }
             return;
         }
         // Handle empty bodies.
         if ([[NSIndexSet nb_indexSetOfSuccessfulEmptyResponseHTTPStatusCodes] containsIndex:httpResponse.statusCode]) {
             if (completionHandler) {
-                completionHandler(nil, error);
+                completionHandler(nil, nil, error);
             }
             return;
         }
@@ -379,14 +392,14 @@ NSUInteger const NBClientErrorCodeService = 1;
         if (![[NSIndexSet nb_indexSetOfSuccessfulHTTPStatusCodes] containsIndex:httpResponse.statusCode]) {
             error = [self httpErrorForResponse:httpResponse jsonData:jsonObject];
             if (completionHandler) {
-                completionHandler(nil, error);
+                completionHandler(nil, nil, error);
             }
             return;
         }
         // Handle JSON error.
         if (error) {
             if (completionHandler) {
-                completionHandler(nil, error);
+                completionHandler(nil, nil, error);
             }
             return;
         }
@@ -400,7 +413,7 @@ NSUInteger const NBClientErrorCodeService = 1;
             error = [self invalidErrorForJsonData:jsonObject resultsKey:resultsKey];
         }
         if (completionHandler) {
-            completionHandler(results, error);
+            completionHandler(results, jsonObject, error);
         }
     };
 }

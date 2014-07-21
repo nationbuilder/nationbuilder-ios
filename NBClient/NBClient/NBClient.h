@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class NBAuthenticator;
+@class NBPaginationInfo;
 
 typedef void (^NBClientResourceListCompletionHandler)(NSArray *items, NSError *error);
 typedef void (^NBClientResourceItemCompletionHandler)(NSDictionary *item, NSError *error);
@@ -43,10 +44,12 @@ extern NSUInteger const NBClientErrorCodeService;
  */
 
 // GET /people
-- (NSURLSessionDataTask *)fetchPeopleWithCompletionHandler:(NBClientResourceListCompletionHandler)completionHandler;
+- (NSURLSessionDataTask *)fetchPeopleWithPaginationInfo:(NBPaginationInfo **)paginationInfo
+                                      completionHandler:(NBClientResourceListCompletionHandler)completionHandler;
 // GET /people/search
 - (NSURLSessionDataTask *)fetchPeopleByParameters:(NSDictionary *)parameters
-                            withCompletionHandler:(NBClientResourceListCompletionHandler)completionHandler;
+                               withPaginationInfo:(NBPaginationInfo **)paginationInfo
+                                completionHandler:(NBClientResourceListCompletionHandler)completionHandler;
 // GET /people/:id
 - (NSURLSessionDataTask *)fetchPersonByIdentifier:(NSUInteger)identifier
                             withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
