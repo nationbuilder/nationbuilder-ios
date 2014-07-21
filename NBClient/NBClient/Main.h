@@ -13,5 +13,6 @@
     #import "NBClient.h"
     #import "NBDefines.h"
     #import "NBFoundationAdditions.h"
+    #import "NBPaginationInfo.h"
 
 #endif /* _NBCLIENT_ */
