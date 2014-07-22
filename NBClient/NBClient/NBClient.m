@@ -7,6 +7,7 @@
 //
 
 #import "NBClient.h"
+#import "NBClient_Internal.h"
 
 #import "NBAuthenticator.h"
 #import "NBDefines.h"
@@ -14,50 +15,6 @@
 #import "NBPaginationInfo.h"
 
 NSUInteger const NBClientErrorCodeService = 1;
-
-@interface NBClient ()
-
-@property (nonatomic, strong, readwrite) NSString *nationName;
-@property (nonatomic, strong, readwrite) NSURLSession *urlSession;
-@property (nonatomic, strong, readwrite) NSURLSessionConfiguration *sessionConfiguration;
-
-@property (nonatomic, strong, readwrite) NBAuthenticator *authenticator;
-
-@property (nonatomic, strong) NSString *nationHost;
-@property (nonatomic, strong) NSURL *baseURL;
-@property (nonatomic, strong) NSURLComponents *baseURLComponents;
-@property (nonatomic, strong) NSString *defaultErrorRecoverySuggestion;
-
-- (void)commonInitWithNationName:(NSString *)nationName
-                customURLSession:(NSURLSession *)urlSession
-   customURLSessionConfiguration:(NSURLSessionConfiguration *)sessionConfiguration;
-
-- (NSMutableURLRequest *)baseFetchRequestWithURL:(NSURL *)url;
-- (NSURLSessionDataTask *)baseFetchTaskWithURLComponents:(NSURLComponents *)components
-                                              resultsKey:(NSString *)resultsKey
-                                          paginationInfo:(NBPaginationInfo **)paginationInfo
-                                       completionHandler:(void (^)(id, NSError *))completionHandler;
-
-- (NSMutableURLRequest *)baseSaveRequestWithURL:(NSURL *)url
-                                     parameters:(NSDictionary *)parameters
-                                          error:(NSError **)error;
-- (NSURLSessionDataTask *)baseSaveTaskWithURLRequest:(NSURLRequest *)request
-                                          resultsKey:(NSString *)resultsKey
-                                   completionHandler:(void (^)(id results, NSError *error))completionHandler;
-
-- (NSMutableURLRequest *)baseDeleteRequestWithURL:(NSURL *)url;
-- (NSURLSessionDataTask *)baseDeleteTaskWithURL:(NSURL *)url
-                              completionHandler:(void (^)(id results, NSError *error))completionHandler;
-
-- (void (^)(NSData *, NSURLResponse *, NSError *))dataTaskCompletionHandlerForFetchResultsKey:(NSString *)resultsKey
-                                                                            completionHandler:(void (^)(id results, NSDictionary *jsonObject, NSError *error))completionHandler;
-
-- (NSError *)httpErrorForResponse:(NSHTTPURLResponse *)response jsonData:(NSDictionary *)data;
-- (NSError *)invalidErrorForJsonData:(NSDictionary *)data resultsKey:(NSString *)resultsKey;
-- (NSError *)nonHTTPErrorForResponse:(NSHTTPURLResponse *)response jsonData:(NSDictionary *)data;
-- (void)logResponse:(NSHTTPURLResponse *)response data:(NSData *)data;
-
-@end
 
 @implementation NBClient
 
@@ -99,91 +56,6 @@ NSUInteger const NBClientErrorCodeService = 1;
     
     self.defaultErrorRecoverySuggestion = NSLocalizedString(@"If failure reasion is not helpful, "
                                                             @"contact NationBuilder for support.", nil);
-}
-
-#pragma mark - Public
-
-#pragma mark People
-
-- (NSURLSessionDataTask *)fetchPeopleWithPaginationInfo:(NBPaginationInfo *__autoreleasing *)paginationInfo
-                                      completionHandler:(NBClientResourceListCompletionHandler)completionHandler
-{
-    NSURLComponents *components = self.baseURLComponents.copy;
-    components.path = [components.path stringByAppendingString:@"/people"];
-    return [self baseFetchTaskWithURLComponents:components resultsKey:@"results" paginationInfo:paginationInfo completionHandler:completionHandler];
-}
-
-- (NSURLSessionDataTask *)fetchPeopleByParameters:(NSDictionary *)parameters
-                               withPaginationInfo:(NBPaginationInfo *__autoreleasing *)paginationInfo
-                                completionHandler:(NBClientResourceListCompletionHandler)completionHandler
-{
-    NSURLComponents *components = self.baseURLComponents.copy;
-    components.path = [components.path stringByAppendingString:@"/people/search"];
-    components.query = [components.query stringByAppendingFormat:@"&%@",
-                        [parameters nb_queryStringWithEncoding:NSASCIIStringEncoding
-                                   skipPercentEncodingPairKeys:nil charactersToLeaveUnescaped:nil]];
-    return [self baseFetchTaskWithURLComponents:components resultsKey:@"results" paginationInfo:paginationInfo completionHandler:completionHandler];
-}
-
-- (NSURLSessionDataTask *)fetchPersonByIdentifier:(NSUInteger)identifier
-                            withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler
-{
-    NSURLComponents *components = self.baseURLComponents.copy;
-    components.path = [components.path stringByAppendingString:
-                       [NSString stringWithFormat:@"/people/%d", identifier]];
-    return [self baseFetchTaskWithURLComponents:components resultsKey:@"person" paginationInfo:nil completionHandler:completionHandler];
-}
-
-- (NSURLSessionDataTask *)fetchPersonByParameters:(NSDictionary *)parameters
-                            withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler
-{
-    NSURLComponents *components = self.baseURLComponents.copy;
-    components.path = [components.path stringByAppendingString:@"/people/match"];
-    components.query = [[parameters nb_queryStringWithEncoding:NSASCIIStringEncoding
-                                   skipPercentEncodingPairKeys:[NSSet setWithObject:@"email"]
-                                    charactersToLeaveUnescaped:nil]
-                        stringByAppendingFormat:@"&%@", components.query];
-    return [self baseFetchTaskWithURLComponents:components resultsKey:@"person" paginationInfo:nil completionHandler:completionHandler];
-}
-
-- (NSURLSessionDataTask *)createPersonWithParameters:(NSDictionary *)parameters
-                                   completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
-{
-    NSURLComponents *components = self.baseURLComponents.copy;
-    components.path = [components.path stringByAppendingString:@"/people"];
-    NSError *error;
-    NSMutableURLRequest *request = [self baseSaveRequestWithURL:components.URL parameters:@{ @"person": parameters } error:&error];
-    if (error) {
-        dispatch_async(dispatch_get_main_queue(), ^{ completionHandler(nil, error); });
-        return nil;
-    }
-    request.HTTPMethod = @"POST";
-    return [self baseSaveTaskWithURLRequest:request resultsKey:@"person" completionHandler:completionHandler];
-}
-
-- (NSURLSessionDataTask *)savePersonByIdentifier:(NSUInteger)identifier
-                                  withParameters:(NSDictionary *)parameters
-                               completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
-{
-    NSURLComponents *components = self.baseURLComponents.copy;
-    components.path = [components.path stringByAppendingString:
-                       [NSString stringWithFormat:@"/people/%d", identifier]];
-    NSError *error;
-    NSMutableURLRequest *request = [self baseSaveRequestWithURL:components.URL parameters:@{ @"person": parameters } error:&error];
-    if (error) {
-        dispatch_async(dispatch_get_main_queue(), ^{ completionHandler(nil, error); });
-        return nil;
-    }
-    return [self baseSaveTaskWithURLRequest:request resultsKey:@"person" completionHandler:completionHandler];
-}
-
-- (NSURLSessionDataTask *)deletePersonByIdentifier:(NSUInteger)identifier
-                             withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler
-{
-    NSURLComponents *components = self.baseURLComponents.copy;
-    components.path = [components.path stringByAppendingString:
-                       [NSString stringWithFormat:@"/people/%d", identifier]];
-    return [self baseDeleteTaskWithURL:components.URL completionHandler:completionHandler];
 }
 
 #pragma mark - Private

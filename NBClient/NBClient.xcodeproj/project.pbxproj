@@ -15,6 +15,8 @@
 		AA6FF3BE197D95220049B747 /* NBPaginationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FF3BD197D95220049B747 /* NBPaginationInfo.m */; };
 		AA6FF3BF197D95220049B747 /* NBPaginationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FF3BD197D95220049B747 /* NBPaginationInfo.m */; };
 		AA6FF3C1197DADEA0049B747 /* NBPaginationInfoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FF3C0197DADEA0049B747 /* NBPaginationInfoTests.m */; };
+		AA6FF3C4197DF2E00049B747 /* NBClient+People.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FF3C3197DF2E00049B747 /* NBClient+People.m */; };
+		AA6FF3C5197DF2E00049B747 /* NBClient+People.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FF3C3197DF2E00049B747 /* NBClient+People.m */; };
 		AA862851196F1651005060C9 /* NBAuthenticator.m in Sources */ = {isa = PBXBuildFile; fileRef = AA862850196F1651005060C9 /* NBAuthenticator.m */; };
 		AA862852196F1651005060C9 /* NBAuthenticator.m in Sources */ = {isa = PBXBuildFile; fileRef = AA862850196F1651005060C9 /* NBAuthenticator.m */; };
 		AA8B6822196F5539009DDA91 /* NBAuthenticatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA8B6821196F5539009DDA91 /* NBAuthenticatorTests.m */; };
@@ -64,6 +66,9 @@
 		AA6FF3BC197D95220049B747 /* NBPaginationInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBPaginationInfo.h; sourceTree = "<group>"; };
 		AA6FF3BD197D95220049B747 /* NBPaginationInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBPaginationInfo.m; sourceTree = "<group>"; };
 		AA6FF3C0197DADEA0049B747 /* NBPaginationInfoTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBPaginationInfoTests.m; sourceTree = "<group>"; };
+		AA6FF3C2197DF2E00049B747 /* NBClient+People.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NBClient+People.h"; sourceTree = "<group>"; };
+		AA6FF3C3197DF2E00049B747 /* NBClient+People.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NBClient+People.m"; sourceTree = "<group>"; };
+		AA6FF3C6197DF5B10049B747 /* NBClient_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBClient_Internal.h; sourceTree = "<group>"; };
 		AA86284F196F1651005060C9 /* NBAuthenticator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBAuthenticator.h; sourceTree = "<group>"; };
 		AA862850196F1651005060C9 /* NBAuthenticator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAuthenticator.m; sourceTree = "<group>"; };
 		AA8B6821196F5539009DDA91 /* NBAuthenticatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAuthenticatorTests.m; sourceTree = "<group>"; };
@@ -142,7 +147,10 @@
 				AA86284F196F1651005060C9 /* NBAuthenticator.h */,
 				AA862850196F1651005060C9 /* NBAuthenticator.m */,
 				AAAEFC29196CD13D00222A48 /* NBClient.h */,
+				AA6FF3C6197DF5B10049B747 /* NBClient_Internal.h */,
 				AAAEFC2B196CD13D00222A48 /* NBClient.m */,
+				AA6FF3C2197DF2E00049B747 /* NBClient+People.h */,
+				AA6FF3C3197DF2E00049B747 /* NBClient+People.m */,
 				AA8B6823196F82D4009DDA91 /* NBDefines.h */,
 				AA8B6824196F82D4009DDA91 /* NBDefines.m */,
 				AA668DCF1970B81800A952B0 /* NBFoundationAdditions.h */,
@@ -268,6 +276,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA6FF3BE197D95220049B747 /* NBPaginationInfo.m in Sources */,
+				AA6FF3C4197DF2E00049B747 /* NBClient+People.m in Sources */,
 				AA668DD11970B81800A952B0 /* NBFoundationAdditions.m in Sources */,
 				AA862851196F1651005060C9 /* NBAuthenticator.m in Sources */,
 				AAAEFC2C196CD13D00222A48 /* NBClient.m in Sources */,
@@ -286,6 +295,7 @@
 				AA6FF3BF197D95220049B747 /* NBPaginationInfo.m in Sources */,
 				AA668DC619705FC800A952B0 /* NBTestCase.m in Sources */,
 				AA668DD41976EA1600A952B0 /* NBClientPeopleTests.m in Sources */,
+				AA6FF3C5197DF2E00049B747 /* NBClient+People.m in Sources */,
 				AAAEFC41196CD13D00222A48 /* NBClientTests.m in Sources */,
 				AA8B6822196F5539009DDA91 /* NBAuthenticatorTests.m in Sources */,
 				AA6FF3C1197DADEA0049B747 /* NBPaginationInfoTests.m in Sources */,

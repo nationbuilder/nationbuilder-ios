@@ -11,6 +11,7 @@
 
     #import "NBAuthenticator.h"
     #import "NBClient.h"
+    #import "NBClient+People.h"
     #import "NBDefines.h"
     #import "NBFoundationAdditions.h"
     #import "NBPaginationInfo.h"
