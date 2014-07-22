@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString *const NBErrorDomain;
+extern NSString * const NBErrorDomain;
 
 @protocol NBDictionarySerializing <NSObject>
 

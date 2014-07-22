@@ -59,8 +59,7 @@ NSUInteger const NBAuthenticationErrorCodeService = 1;
 {
     NSDictionary *parameters = @{ @"grant_type": NBAuthenticationGrantTypePasswordCredentials,
                                   @"username": userName,
-                                  @"password": password
-                                  };
+                                  @"password": password };
     return [self authenticateWithSubPath:@"/token" parameters:parameters completionHandler:completionHandler];
 }
 

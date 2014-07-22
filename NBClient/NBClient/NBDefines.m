@@ -8,4 +8,4 @@
 
 #import "NBDefines.h"
 
-NSString *const NBErrorDomain = @"com.nationbuilder";
+NSString * const NBErrorDomain = @"com.nationbuilder";
