@@ -52,4 +52,8 @@ extern NSUInteger const NBAuthenticationErrorCodeService;
 @property (nonatomic, strong, readonly) NSString *accessToken;
 @property (nonatomic, strong, readonly) NSString *tokenType;
 
+// Designated initializer.
+- (instancetype)initWithAccessToken:(NSString *)accessToken
+                          tokenType:(NSString *)tokenType;
+
 @end

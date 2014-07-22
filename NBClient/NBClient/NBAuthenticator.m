@@ -144,9 +144,8 @@ NSUInteger const NBAuthenticationErrorCodeService = 1;
                                   NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"If failure reasion is not helpful, "
                                                                                            @"contact NationBuilder for support.", nil) }];
          } else {
-             credential = [[NBAuthenticationCredential alloc] init];
-             credential.accessToken = jsonObject[@"access_token"];
-             credential.tokenType = jsonObject[@"token_type"];
+             credential = [[NBAuthenticationCredential alloc] initWithAccessToken:jsonObject[@"access_token"]
+                                                                        tokenType:jsonObject[@"token_type"]];
          }
          if (completionHandler) {
              completionHandler(credential, error);
@@ -161,8 +160,20 @@ NSUInteger const NBAuthenticationErrorCodeService = 1;
 
 @implementation NBAuthenticationCredential
 
-- (NSString *)description {
-    return [NSString stringWithFormat:@"%@ access token: %@", self.tokenType, self.accessToken];
+- (instancetype)initWithAccessToken:(NSString *)accessToken
+                          tokenType:(NSString *)tokenType
+{
+    self = [super init];
+    if (self) {
+        self.accessToken = accessToken;
+        self.tokenType = tokenType;
+    }
+    return self;
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<accessToken: %@ tokenType: %@>", self.accessToken, self.tokenType];
 }
 
 @end
