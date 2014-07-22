@@ -30,8 +30,8 @@ extern NSUInteger const NBAuthenticationErrorCodeService;
 
 @interface NBAuthenticator : NSObject
 
-@property (strong, nonatomic, readonly) NSURL *baseURL;
-@property (strong, nonatomic, readonly) NSString *clientIdentifier;
+@property (nonatomic, strong, readonly) NSURL *baseURL;
+@property (nonatomic, strong, readonly) NSString *clientIdentifier;
 
 - (instancetype)initWithBaseURL:(NSURL *)baseURL
                clientIdentifier:(NSString *)clientIdentifier
@@ -49,7 +49,7 @@ extern NSUInteger const NBAuthenticationErrorCodeService;
 
 @interface NBAuthenticationCredential : NSObject
 
-@property (strong, nonatomic, readonly) NSString *accessToken;
-@property (strong, nonatomic, readonly) NSString *tokenType;
+@property (nonatomic, strong, readonly) NSString *accessToken;
+@property (nonatomic, strong, readonly) NSString *tokenType;
 
 @end

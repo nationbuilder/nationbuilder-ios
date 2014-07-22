@@ -292,7 +292,8 @@ NSUInteger const NBClientErrorCodeService = 1;
 
 #pragma mark Helpers
 
-- (NSError *)httpErrorForResponse:(NSHTTPURLResponse *)response jsonData:(NSDictionary *)data
+- (NSError *)httpErrorForResponse:(NSHTTPURLResponse *)response
+                         jsonData:(NSDictionary *)data
 {
     return [NSError
             errorWithDomain:NBErrorDomain
@@ -304,7 +305,8 @@ NSUInteger const NBClientErrorCodeService = 1;
                         NSLocalizedRecoverySuggestionErrorKey: self.defaultErrorRecoverySuggestion }];
 }
 
-- (NSError *)invalidErrorForJsonData:(NSDictionary *)data resultsKey:(NSString *)resultsKey
+- (NSError *)invalidErrorForJsonData:(NSDictionary *)data
+                          resultsKey:(NSString *)resultsKey
 {
     return [NSError
             errorWithDomain:NBErrorDomain
@@ -316,7 +318,8 @@ NSUInteger const NBClientErrorCodeService = 1;
                         NSLocalizedRecoverySuggestionErrorKey: self.defaultErrorRecoverySuggestion }];
 }
 
-- (NSError *)nonHTTPErrorForResponse:(NSHTTPURLResponse *)response jsonData:(NSDictionary *)data
+- (NSError *)nonHTTPErrorForResponse:(NSHTTPURLResponse *)response
+                            jsonData:(NSDictionary *)data
 {
     return [NSError
             errorWithDomain:NBErrorDomain
@@ -328,7 +331,8 @@ NSUInteger const NBClientErrorCodeService = 1;
                         NSLocalizedRecoverySuggestionErrorKey: self.defaultErrorRecoverySuggestion }];
 }
 
-- (void)logResponse:(NSHTTPURLResponse *)response data:(NSData *)data
+- (void)logResponse:(NSHTTPURLResponse *)response
+               data:(NSData *)data
 {
     NSLog(@"RESPONSE: %@\n"
           @"BODY: %@",

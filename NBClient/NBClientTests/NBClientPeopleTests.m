@@ -12,7 +12,7 @@
 
 @interface NBClientPeopleTests : NBTestCase
 
-@property (strong, nonatomic) NBClient *client;
+@property (nonatomic, strong) NBClient *client;
 
 - (void)assertPeopleArray:(NSArray *)array;
 - (void)assertPersonDictionary:(NSDictionary *)dictionary;

@@ -20,17 +20,17 @@ NSUInteger const NBAuthenticationErrorCodeService = 1;
 
 @interface NBAuthenticator ()
 
-@property (strong, nonatomic, readwrite) NSURL *baseURL;
-@property (strong, nonatomic, readwrite) NSString *clientIdentifier;
+@property (nonatomic, strong, readwrite) NSURL *baseURL;
+@property (nonatomic, strong, readwrite) NSString *clientIdentifier;
 
-@property (strong, nonatomic) NSString *clientSecret;
+@property (nonatomic, strong) NSString *clientSecret;
 
 @end
 
 @interface NBAuthenticationCredential ()
 
-@property (strong, nonatomic, readwrite) NSString *accessToken;
-@property (strong, nonatomic, readwrite) NSString *tokenType;
+@property (nonatomic, strong, readwrite) NSString *accessToken;
+@property (nonatomic, strong, readwrite) NSString *tokenType;
 
 @end
 
