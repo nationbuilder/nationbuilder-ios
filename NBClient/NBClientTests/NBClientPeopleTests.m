@@ -63,6 +63,21 @@
     }
 }
 
+- (void)assertPaginationInfo:(NBPaginationInfo *)paginationInfo
+    withPaginationParameters:(NSDictionary *)paginationParameters
+{
+    XCTAssertTrue((@(paginationInfo.currentPageNumber) &&
+                   paginationInfo.currentPageNumber == [paginationParameters[NBClientCurrentPageNumberKey] unsignedIntegerValue]),
+                  @"Pagination info should be properly populated.");
+    XCTAssertNotNil(@(paginationInfo.numberOfTotalPages),
+                    @"Pagination info should be properly populated.");
+    XCTAssertTrue((@(paginationInfo.numberOfItemsPerPage) &&
+                   paginationInfo.numberOfItemsPerPage == [paginationParameters[NBClientNumberOfItemsPerPageKey] unsignedIntegerValue]),
+                  @"Pagination info should be properly populated.");
+    XCTAssertNotNil(@(paginationInfo.numberOfTotalItems),
+                    @"Pagination info should be properly populated.");
+}
+
 - (void)assertServiceError:(NSError *)error
 {
     if (!error || error.domain != NBErrorDomain) {
@@ -85,11 +100,18 @@
 - (void)testFetchPeople
 {
     [self setUpAsync];
+    NSDictionary *paginationParameters = @{ NBClientCurrentPageNumberKey: @1,
+                                            NBClientNumberOfItemsPerPageKey: @5 };
+    NBPaginationInfo *paginationInfo =
+    [[NBPaginationInfo alloc] initWithDictionary:paginationParameters];
     NSURLSessionDataTask *task =
-    [self.client fetchPeopleWithCompletionHandler:^(NSArray *items, NSError *error) {
-        [self assertServiceError:error];
-        [self assertPeopleArray:items];
-        [self completeAsync];
+    [self.client
+     fetchPeopleWithPaginationInfo:&paginationInfo
+     completionHandler:^(NSArray *items, NSError *error) {
+         [self assertServiceError:error];
+         [self assertPeopleArray:items];
+         [self assertPaginationInfo:paginationInfo withPaginationParameters:paginationParameters];
+         [self completeAsync];
     }];
     [self assertSessionDataTask:task];
     [self tearDownAsync];
@@ -98,12 +120,18 @@
 - (void)testFetchPeopleByParameters
 {
     [self setUpAsync];
+    NSDictionary *paginationParameters = @{ NBClientCurrentPageNumberKey: @1,
+                                            NBClientNumberOfItemsPerPageKey: @5 };
+    NBPaginationInfo *paginationInfo =
+    [[NBPaginationInfo alloc] initWithDictionary:paginationParameters];
     NSURLSessionDataTask *task =
     [self.client
      fetchPeopleByParameters:@{ @"city": @"Los Angeles" }
-     withCompletionHandler:^(NSArray *items, NSError *error) {
+     withPaginationInfo:nil
+     completionHandler:^(NSArray *items, NSError *error) {
          [self assertServiceError:error];
          [self assertPeopleArray:items];
+         [self assertPaginationInfo:paginationInfo withPaginationParameters:paginationParameters];
          [self completeAsync];
      }];
     [self assertSessionDataTask:task];
