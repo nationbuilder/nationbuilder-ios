@@ -18,10 +18,13 @@ NSString * const NBAuthenticationGrantTypeRefresh = @"refresh_token";
 
 NSUInteger const NBAuthenticationErrorCodeService = 1;
 
+static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
+
 @interface NBAuthenticator ()
 
 @property (nonatomic, strong, readwrite) NSURL *baseURL;
 @property (nonatomic, strong, readwrite) NSString *clientIdentifier;
+@property (nonatomic, strong, readwrite) NSString *credentialIdentifier;
 
 @property (nonatomic, strong) NSString *clientSecret;
 
@@ -32,9 +35,11 @@ NSUInteger const NBAuthenticationErrorCodeService = 1;
 @property (nonatomic, strong, readwrite) NSString *accessToken;
 @property (nonatomic, strong, readwrite) NSString *tokenType;
 
++ (NSMutableDictionary *)baseKeychainQueryDictionaryWithIdentifier:(NSString *)identifier;
+
 @end
 
-// The implementation is heavily inspired by AFOAuth2Client.
+// The implementations are heavily inspired by AFOAuth2Client.
 
 @implementation NBAuthenticator
 
@@ -47,6 +52,8 @@ NSUInteger const NBAuthenticationErrorCodeService = 1;
         self.baseURL = baseURL;
         self.clientIdentifier = clientIdentifier;
         self.clientSecret = clientSecret;
+        self.credentialIdentifier = self.baseURL.host;
+        self.shouldAutomaticallySaveCredential = YES;
     }
     return self;
 }
@@ -67,6 +74,14 @@ NSUInteger const NBAuthenticationErrorCodeService = 1;
                                        parameters:(NSDictionary *)parameters
                                 completionHandler:(NBAuthenticationCompletionHandler)completionHandler
 {
+    // Return saved credential if possible.
+    NBAuthenticationCredential *credential =
+    [NBAuthenticationCredential fetchCredentialWithIdentifier:self.credentialIdentifier];
+    if (credential) {
+        completionHandler(credential, nil);
+        return nil;
+    }
+    // Perform authentication against service.
     NSMutableDictionary *mutableParameters = parameters.mutableCopy;
     mutableParameters[@"client_id"] = self.clientIdentifier;
     mutableParameters[@"client_secret"] = self.clientSecret;
@@ -147,6 +162,9 @@ NSUInteger const NBAuthenticationErrorCodeService = 1;
              credential = [[NBAuthenticationCredential alloc] initWithAccessToken:jsonObject[@"access_token"]
                                                                         tokenType:jsonObject[@"token_type"]];
          }
+         if (credential && self.shouldAutomaticallySaveCredential) {
+             [NBAuthenticationCredential saveCredential:credential withIdentifier:self.credentialIdentifier];
+         }
          if (completionHandler) {
              completionHandler(credential, error);
          }
@@ -174,6 +192,102 @@ NSUInteger const NBAuthenticationErrorCodeService = 1;
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"<accessToken: %@ tokenType: %@>", self.accessToken, self.tokenType];
+}
+
+#pragma mark - NSCoding
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super init];
+    if (self) {
+        self.accessToken = [aDecoder decodeObjectForKey:@"accessToken"];
+        self.tokenType = [aDecoder decodeObjectForKey:@"tokenType"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:self.accessToken forKey:@"accessToken"];
+    [aCoder encodeObject:self.tokenType forKey:@"tokenType"];
+}
+
+#pragma mark - Keychain
+
++ (BOOL)saveCredential:(NBAuthenticationCredential *)credential
+        withIdentifier:(NSString *)identifier
+{
+    BOOL didSave = NO;
+    // Handle saving nil.
+    if (!credential) {
+        return [self deleteCredentialWithIdentifier:identifier];
+    }
+    // Setup dictionaries.
+    NSMutableDictionary *query = [self baseKeychainQueryDictionaryWithIdentifier:identifier];
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+    dictionary[(__bridge id)kSecValueData] = [NSKeyedArchiver archivedDataWithRootObject:credential];
+    dictionary[(__bridge id)kSecAttrAccessible] = (__bridge id)kSecAttrAccessibleWhenUnlocked;
+    // Update else create.
+    OSStatus status;
+    BOOL alreadyExists = [self fetchCredentialWithIdentifier:identifier] != nil;
+    if (alreadyExists) {
+        status = SecItemUpdate((__bridge CFDictionaryRef)query, (__bridge CFDictionaryRef)dictionary);
+    } else {
+        [query addEntriesFromDictionary:dictionary];
+        status = SecItemAdd((__bridge CFDictionaryRef)query, NULL);
+    }
+    // Handle error.
+    if (status != errSecSuccess) {
+        NSLog(@"Unable to %@ credential in keychain with identifier \"%@\" (Error %li)",
+              alreadyExists ? @"update" : @"create", identifier, (long int)status);
+    } else {
+        didSave = YES;
+    }
+    return didSave;
+}
+
++ (BOOL)deleteCredentialWithIdentifier:(NSString *)identifier
+{
+    BOOL didDelete = NO;
+    NSMutableDictionary *query = [self baseKeychainQueryDictionaryWithIdentifier:identifier];
+    OSStatus status = SecItemDelete((__bridge CFDictionaryRef)query);
+    if (status != errSecSuccess) {
+        NSLog(@"Unable to delete from keychain credential with identifier \"%@\" (Error %li)",
+              identifier, (long int)status);
+    } else {
+        didDelete = YES;
+    }
+    return didDelete;
+}
+
++ (NBAuthenticationCredential *)fetchCredentialWithIdentifier:(NSString *)identifier
+{
+    NSMutableDictionary *query = [self baseKeychainQueryDictionaryWithIdentifier:identifier];
+    query[(__bridge id)kSecReturnData] = (__bridge id)kCFBooleanTrue;
+    query[(__bridge id)kSecMatchLimit] = (__bridge id)kSecMatchLimitOne;
+    CFDataRef result = nil;
+    OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)query, (CFTypeRef *)&result);
+    // Handle errors.
+    if (status != errSecSuccess) {
+        NSLog(@"Unable to fetch from keychain credential with identifier \"%@\" (Error %li)",
+              identifier, (long int)status);
+        return nil;
+    }
+    // Convert.
+    NSData *data = (__bridge_transfer NSData *)result;
+    NBAuthenticationCredential *credential = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    return credential;
+}
+
+#pragma mark - Private
+
++ (NSMutableDictionary *)baseKeychainQueryDictionaryWithIdentifier:(NSString *)identifier
+{
+    NSMutableDictionary *query = [NSMutableDictionary dictionary];
+    query[(__bridge id)kSecClass] = (__bridge id)kSecClassGenericPassword;
+    query[(__bridge id)kSecAttrService] = CredentialServiceName;
+    query[(__bridge id)kSecAttrAccount] = identifier;
+    return query;
 }
 
 @end
