@@ -1,5 +1,5 @@
 //
-//  NBFoundationAdditions.h
+//  FoundationAdditions.h
 //  NBClient
 //
 //  Created by Peng Wang on 7/11/14.

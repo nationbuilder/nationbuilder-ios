@@ -1,12 +1,12 @@
 //
-//  NBFoundationAdditions.m
+//  FoundationAdditions.m
 //  NBClient
 //
 //  Created by Peng Wang on 7/11/14.
 //  Copyright (c) 2014 NationBuilder. All rights reserved.
 //
 
-#import "NBFoundationAdditions.h"
+#import "FoundationAdditions.h"
 
 // The implementations are heavily inspired by AFNetworking.
 

@@ -9,7 +9,7 @@
 #import "NBAuthenticator.h"
 
 #import "NBDefines.h"
-#import "NBFoundationAdditions.h"
+#import "FoundationAdditions.h"
 
 NSString * const NBAuthenticationGrantTypeCode = @"authorization_code";
 NSString * const NBAuthenticationGrantTypeClientCredentials = @"client_credentials";

@@ -9,7 +9,7 @@
 #import "NBClient+People.h"
 #import "NBClient_Internal.h"
 
-#import "NBFoundationAdditions.h"
+#import "FoundationAdditions.h"
 #import "NBPaginationInfo.h"
 
 @implementation NBClient (People)

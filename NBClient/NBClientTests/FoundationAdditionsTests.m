@@ -1,5 +1,5 @@
 //
-//  NBFoundationAdditionsTests.m
+//  FoundationAdditionsTests.m
 //  NBClient
 //
 //  Created by Peng Wang on 7/17/14.
@@ -12,9 +12,9 @@
 
 #import "Main.h"
 
-@interface NBFoundationAdditionsTests : NBTestCase @end
+@interface FoundationAdditionsTests : NBTestCase @end
 
-@implementation NBFoundationAdditionsTests
+@implementation FoundationAdditionsTests
 
 - (void)setUp
 {

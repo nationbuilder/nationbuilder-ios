@@ -11,7 +11,7 @@
 
 #import "NBAuthenticator.h"
 #import "NBDefines.h"
-#import "NBFoundationAdditions.h"
+#import "FoundationAdditions.h"
 #import "NBPaginationInfo.h"
 
 NSUInteger const NBClientErrorCodeService = 1;

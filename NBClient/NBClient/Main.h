@@ -13,7 +13,7 @@
     #import "NBClient.h"
     #import "NBClient+People.h"
     #import "NBDefines.h"
-    #import "NBFoundationAdditions.h"
+    #import "FoundationAdditions.h"
     #import "NBPaginationInfo.h"
 
 #endif /* _NBCLIENT_ */
