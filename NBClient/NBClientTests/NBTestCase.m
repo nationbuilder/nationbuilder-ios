@@ -9,12 +9,15 @@
 #import "NBTestCase.h"
 
 #import "FoundationAdditions.h"
+#import "NBAuthenticator.h"
 #import "NBClient.h"
 #import "NBPaginationInfo.h"
 
 @interface NBTestCase ()
 
 @property (nonatomic) BOOL didCallBack;
+
+@property (nonatomic, strong, readwrite) NBClient *client;
 
 @end
 
@@ -43,6 +46,28 @@
 }
 
 #pragma mark - Helpers
+
+- (void)setUpSharedClient
+{
+    // We need to use the shared session because we need to be in an application
+    // for an app-specific cache.
+    NBAuthenticator *authenticator = [[NBAuthenticator alloc] initWithBaseURL:self.baseURL
+                                                             clientIdentifier:self.clientIdentifier
+                                                                 clientSecret:self.clientSecret];
+    __block NSString *apiKey;
+    NSURLSessionDataTask *task = [authenticator
+                                  authenticateWithUserName:self.userEmailAddress
+                                  password:self.userPassword
+                                  completionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
+                                      apiKey = credential.accessToken;
+                                  }];
+    NSAssert(!task, @"Test case requires saved authentication credential. Re-authenticating should not happen.");
+    self.client = [[NBClient alloc] initWithNationName:self.nationName
+                                                apiKey:apiKey
+                                         customBaseURL:self.baseURL
+                                      customURLSession:[NSURLSession sharedSession]
+                         customURLSessionConfiguration:nil];
+}
 
 - (void)assertPaginationInfo:(NBPaginationInfo *)paginationInfo
     withPaginationParameters:(NSDictionary *)paginationParameters
