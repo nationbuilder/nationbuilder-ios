@@ -12,8 +12,8 @@
 #import "FoundationAdditions.h"
 
 NSString * const NBAuthenticationGrantTypeCode = @"authorization_code";
-NSString * const NBAuthenticationGrantTypeClientCredentials = @"client_credentials";
-NSString * const NBAuthenticationGrantTypePasswordCredentials = @"password";
+NSString * const NBAuthenticationGrantTypeClientCredential = @"client_credentials";
+NSString * const NBAuthenticationGrantTypePasswordCredential = @"password";
 NSString * const NBAuthenticationGrantTypeRefresh = @"refresh_token";
 
 NSUInteger const NBAuthenticationErrorCodeService = 1;
@@ -27,7 +27,7 @@ NSUInteger const NBAuthenticationErrorCodeService = 1;
 
 @end
 
-@interface NBAuthenticationCredentials ()
+@interface NBAuthenticationCredential ()
 
 @property (strong, nonatomic, readwrite) NSString *accessToken;
 @property (strong, nonatomic, readwrite) NSString *tokenType;
@@ -57,7 +57,7 @@ NSUInteger const NBAuthenticationErrorCodeService = 1;
                                           password:(NSString *)password
                                  completionHandler:(NBAuthenticationCompletionHandler)completionHandler
 {
-    NSDictionary *parameters = @{ @"grant_type": NBAuthenticationGrantTypePasswordCredentials,
+    NSDictionary *parameters = @{ @"grant_type": NBAuthenticationGrantTypePasswordCredential,
                                   @"username": userName,
                                   @"password": password };
     return [self authenticateWithSubPath:@"/token" parameters:parameters completionHandler:completionHandler];
@@ -122,7 +122,7 @@ NSUInteger const NBAuthenticationErrorCodeService = 1;
              }
              return;
          }
-         NBAuthenticationCredentials *credentials;
+         NBAuthenticationCredential *credential;
          NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:data
                                                                     options:NSJSONReadingAllowFragments
                                                                       error:&error];
@@ -144,12 +144,12 @@ NSUInteger const NBAuthenticationErrorCodeService = 1;
                                   NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"If failure reasion is not helpful, "
                                                                                            @"contact NationBuilder for support.", nil) }];
          } else {
-             credentials = [[NBAuthenticationCredentials alloc] init];
-             credentials.accessToken = jsonObject[@"access_token"];
-             credentials.tokenType = jsonObject[@"token_type"];
+             credential = [[NBAuthenticationCredential alloc] init];
+             credential.accessToken = jsonObject[@"access_token"];
+             credential.tokenType = jsonObject[@"token_type"];
          }
          if (completionHandler) {
-             completionHandler(credentials, error);
+             completionHandler(credential, error);
          }
      }];
     [task resume];
@@ -159,7 +159,7 @@ NSUInteger const NBAuthenticationErrorCodeService = 1;
 
 @end
 
-@implementation NBAuthenticationCredentials
+@implementation NBAuthenticationCredential
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"%@ access token: %@", self.tokenType, self.accessToken];

@@ -8,22 +8,22 @@
 
 #import <Foundation/Foundation.h>
 
-@class NBAuthenticationCredentials;
+@class NBAuthenticationCredential;
 
-typedef void (^NBAuthenticationCompletionHandler)(NBAuthenticationCredentials *credentials, NSError *error);
+typedef void (^NBAuthenticationCompletionHandler)(NBAuthenticationCredential *credential, NSError *error);
 
 /**
  + OAuth 2.0 provides several grant types, covering several different use cases. The following
  + grant type string constants are provided:
  +
  + `NBAuthenticationGrantTypeCode`: "authorization_code"
- + `NBAuthenticationGrantTypeClientCredentials`: "client_credentials"
- + `NBAuthenticationGrantTypePasswordCredentials`: "password"
+ + `NBAuthenticationGrantTypeClientCredential`: "client_credentials"
+ + `NBAuthenticationGrantTypePasswordCredential`: "password"
  + `NBAuthenticationGrantTypeRefresh`: "refresh_token"
  + */
 extern NSString * const NBAuthenticationGrantTypeCode; // (NOTE: Not implemented.)
-extern NSString * const NBAuthenticationGrantTypeClientCredentials; // (NOTE: Not implemented.)
-extern NSString * const NBAuthenticationGrantTypePasswordCredentials;
+extern NSString * const NBAuthenticationGrantTypeClientCredential; // (NOTE: Not implemented.)
+extern NSString * const NBAuthenticationGrantTypePasswordCredential;
 extern NSString * const NBAuthenticationGrantTypeRefresh; // (NOTE: Not implemented.)
 
 extern NSUInteger const NBAuthenticationErrorCodeService;
@@ -47,7 +47,7 @@ extern NSUInteger const NBAuthenticationErrorCodeService;
 
 @end
 
-@interface NBAuthenticationCredentials : NSObject
+@interface NBAuthenticationCredential : NSObject
 
 @property (strong, nonatomic, readonly) NSString *accessToken;
 @property (strong, nonatomic, readonly) NSString *tokenType;

@@ -52,16 +52,16 @@
     [client.authenticator
      authenticateWithUserName:self.userEmailAddress
      password:self.userPassword
-     completionHandler:^(NBAuthenticationCredentials *credentials, NSError *error) {
+     completionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
          if (error) {
              XCTFail(@"Authentication service returned error %@", error);
          }
-         NSLog(@"CREDENTIALS: %@", credentials);
-         XCTAssertNotNil(credentials.accessToken,
-                         @"Credentials should have access token.");
-         XCTAssertNotNil(credentials.tokenType,
-                         @"Credentials should have token type.");
-         client.apiKey = credentials.accessToken;
+         NSLog(@"CREDENTIAL: %@", credential);
+         XCTAssertNotNil(credential.accessToken,
+                         @"Credential should have access token.");
+         XCTAssertNotNil(credential.tokenType,
+                         @"Credential should have token type.");
+         client.apiKey = credential.accessToken;
          [self completeAsync];
     }];
     XCTAssertTrue(task && task.state == NSURLSessionTaskStateRunning,
