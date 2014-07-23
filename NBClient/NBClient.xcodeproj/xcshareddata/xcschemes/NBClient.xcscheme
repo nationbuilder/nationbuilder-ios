@@ -48,9 +48,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "AAAEFC53196CD61200222A48"
-            BuildableName = "NBClientCatalogue.app"
-            BlueprintName = "NBClientCatalogue"
-            ReferencedContainer = "container:../NBClientCatalogue/NBClientCatalogue.xcodeproj">
+            BuildableName = "NBClientCatalog.app"
+            BlueprintName = "NBClientExample"
+            ReferencedContainer = "container:../NBClientCatalog/NBClientExample.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <CommandLineArguments>

@@ -4,7 +4,4 @@
    <FileRef
       location = "group:NBClient/NBClient.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:NBClientCatalogue/NBClientCatalogue.xcodeproj">
-   </FileRef>
 </Workspace>
