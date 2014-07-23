@@ -16,8 +16,6 @@
 
 - (void)assertPeopleArray:(NSArray *)array;
 - (void)assertPersonDictionary:(NSDictionary *)dictionary;
-- (void)assertServiceError:(NSError *)error;
-- (void)assertSessionDataTask:(NSURLSessionDataTask *)task;
 
 @end
 
@@ -39,7 +37,7 @@
     [super tearDown];
 }
 
-#pragma mark - Assertion Macros
+#pragma mark - Helpers
 
 - (void)assertPeopleArray:(NSArray *)array
 {
@@ -61,38 +59,6 @@
         XCTAssertNotNil(dictionary[key],
                         @"Person dictionary should have value for %@", key);
     }
-}
-
-- (void)assertPaginationInfo:(NBPaginationInfo *)paginationInfo
-    withPaginationParameters:(NSDictionary *)paginationParameters
-{
-    XCTAssertTrue((@(paginationInfo.currentPageNumber) &&
-                   paginationInfo.currentPageNumber == [paginationParameters[NBClientCurrentPageNumberKey] unsignedIntegerValue]),
-                  @"Pagination info should be properly populated.");
-    XCTAssertNotNil(@(paginationInfo.numberOfTotalPages),
-                    @"Pagination info should be properly populated.");
-    XCTAssertTrue((@(paginationInfo.numberOfItemsPerPage) &&
-                   paginationInfo.numberOfItemsPerPage == [paginationParameters[NBClientNumberOfItemsPerPageKey] unsignedIntegerValue]),
-                  @"Pagination info should be properly populated.");
-    XCTAssertNotNil(@(paginationInfo.numberOfTotalItems),
-                    @"Pagination info should be properly populated.");
-}
-
-- (void)assertServiceError:(NSError *)error
-{
-    if (!error || error.domain != NBErrorDomain) {
-        return;
-    }
-    if (error.code == NBClientErrorCodeService) {
-        XCTFail(@"People service returned error %@", error);
-    }
-}
-
-- (void)assertSessionDataTask:(NSURLSessionDataTask *)task
-{
-    XCTAssertTrue(task && task.state == NSURLSessionTaskStateRunning,
-                  @"Client should have created and ran task.");
-    NSLog(@"REQUEST: %@", task.currentRequest.nb_debugDescription);
 }
 
 #pragma mark - Tests
