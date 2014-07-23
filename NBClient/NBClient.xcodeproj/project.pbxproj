@@ -27,7 +27,6 @@
 		AAAEFC2C196CD13D00222A48 /* NBClient.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAEFC2B196CD13D00222A48 /* NBClient.m */; };
 		AAAEFC33196CD13D00222A48 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAAEFC32196CD13D00222A48 /* XCTest.framework */; };
 		AAAEFC34196CD13D00222A48 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAAEFC24196CD13D00222A48 /* Foundation.framework */; };
-		AAAEFC36196CD13D00222A48 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAAEFC35196CD13D00222A48 /* UIKit.framework */; };
 		AAAEFC39196CD13D00222A48 /* libNBClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AAAEFC21196CD13D00222A48 /* libNBClient.a */; };
 		AAAEFC3F196CD13D00222A48 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AAAEFC3D196CD13D00222A48 /* InfoPlist.strings */; };
 		AAAEFC41196CD13D00222A48 /* NBClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAEFC40196CD13D00222A48 /* NBClientTests.m */; };
@@ -81,7 +80,6 @@
 		AAAEFC2B196CD13D00222A48 /* NBClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NBClient.m; sourceTree = "<group>"; };
 		AAAEFC31196CD13D00222A48 /* NBClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NBClientTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAAEFC32196CD13D00222A48 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		AAAEFC35196CD13D00222A48 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		AAAEFC3C196CD13D00222A48 /* NBClientTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "NBClientTests-Info.plist"; sourceTree = "<group>"; };
 		AAAEFC3E196CD13D00222A48 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AAAEFC40196CD13D00222A48 /* NBClientTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NBClientTests.m; sourceTree = "<group>"; };
@@ -102,7 +100,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				AAAEFC33196CD13D00222A48 /* XCTest.framework in Frameworks */,
-				AAAEFC36196CD13D00222A48 /* UIKit.framework in Frameworks */,
 				AAAEFC39196CD13D00222A48 /* libNBClient.a in Frameworks */,
 				AAAEFC34196CD13D00222A48 /* Foundation.framework in Frameworks */,
 			);
@@ -135,7 +132,6 @@
 			children = (
 				AAAEFC24196CD13D00222A48 /* Foundation.framework */,
 				AAAEFC32196CD13D00222A48 /* XCTest.framework */,
-				AAAEFC35196CD13D00222A48 /* UIKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
