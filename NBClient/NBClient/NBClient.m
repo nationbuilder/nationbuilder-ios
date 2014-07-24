@@ -35,6 +35,7 @@ NSUInteger const NBClientErrorCodeService = 1;
 
 - (instancetype)initWithNationName:(NSString *)nationName
                             apiKey:(NSString *)apiKey
+                     customBaseURL:(NSURL *)baseURL
                   customURLSession:(NSURLSession *)urlSession
      customURLSessionConfiguration:(NSURLSessionConfiguration *)sessionConfiguration
 {
@@ -42,6 +43,7 @@ NSUInteger const NBClientErrorCodeService = 1;
     if (self) {
         [self commonInitWithNationName:nationName customURLSession:urlSession customURLSessionConfiguration:sessionConfiguration];
         self.apiKey = apiKey;
+        self.baseURL = baseURL;
     }
     return self;
 }
@@ -62,17 +64,6 @@ NSUInteger const NBClientErrorCodeService = 1;
 
 #pragma mark Accessors
 
-- (void)setNationName:(NSString *)nationName
-{
-    if ([_nationName isEqual:nationName]) {
-        return;
-    }
-    _nationName = nationName;
-    self.nationHost = nil;
-    self.baseURL = nil;
-    self.baseURLComponents = nil;
-}
-
 - (NSURLSessionConfiguration *)sessionConfiguration
 {
     static NSURLCache *sharedCache;
@@ -81,7 +72,7 @@ NSUInteger const NBClientErrorCodeService = 1;
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
             const NSUInteger mb = 1024 * 1024;
-            NSString *desiredApplicationSubdirectoryPath = self.nationHost;
+            NSString *desiredApplicationSubdirectoryPath = self.baseURL.host;
             sharedCache = [[NSURLCache alloc] initWithMemoryCapacity:4 * mb
                                                         diskCapacity:20 * mb
                                                             diskPath:desiredApplicationSubdirectoryPath];
@@ -107,15 +98,6 @@ NSUInteger const NBClientErrorCodeService = 1;
     return _urlSession;
 }
 
-- (NSString *)nationHost
-{
-    if (_nationHost) {
-        return _nationHost;
-    }
-    _nationHost = [NSString stringWithFormat:@"%@.nationbuilder.com", self.nationName];
-    return _nationHost;
-}
-
 #pragma mark Requests & Tasks
 
 - (NSURL *)baseURL
@@ -123,11 +105,7 @@ NSUInteger const NBClientErrorCodeService = 1;
     if (_baseURL) {
         return _baseURL;
     }
-    NSString *format = [[NSUserDefaults standardUserDefaults] stringForKey:@"NBBaseURLFormat"];
-    if (!format) {
-        format = @"https://%@.nationbuilder.com";
-    }
-    _baseURL = [NSURL URLWithString:[NSString stringWithFormat:format, self.nationName]];
+    _baseURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@.nationbuilder.com", self.nationName]];
     return _baseURL;
 }
 

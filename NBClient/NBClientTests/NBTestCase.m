@@ -9,6 +9,7 @@
 #import "NBTestCase.h"
 
 #import "FoundationAdditions.h"
+#import "NBClient.h"
 #import "NBPaginationInfo.h"
 
 @interface NBTestCase ()

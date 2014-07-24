@@ -28,6 +28,7 @@
     // for an app-specific cache.
     self.client = [[NBClient alloc] initWithNationName:self.nationName
                                                 apiKey:self.apiKey
+                                         customBaseURL:self.baseURL
                                       customURLSession:[NSURLSession sharedSession]
                          customURLSessionConfiguration:nil];
 }

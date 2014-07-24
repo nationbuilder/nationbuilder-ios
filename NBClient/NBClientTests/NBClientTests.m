@@ -28,6 +28,7 @@
 {
     NBClient *client = [[NBClient alloc] initWithNationName:self.nationName
                                                      apiKey:self.apiKey
+                                              customBaseURL:self.baseURL
                                            customURLSession:nil customURLSessionConfiguration:nil];
     XCTAssertNotNil(client.urlSession,
                     @"Client should have default session.");

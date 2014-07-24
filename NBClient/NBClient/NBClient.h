@@ -33,6 +33,7 @@ extern NSUInteger const NBClientErrorCodeService;
 
 - (instancetype)initWithNationName:(NSString *)nationName
                             apiKey:(NSString *)apiKey
+                     customBaseURL:(NSURL *)baseURL
                   customURLSession:(NSURLSession *)urlSession
      customURLSessionConfiguration:(NSURLSessionConfiguration *)sessionConfiguration;
 
