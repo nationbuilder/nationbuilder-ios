@@ -79,7 +79,7 @@ NSUInteger const NBClientErrorCodeService = 1;
         });
     }
     if (!_sessionConfiguration) {
-        _sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+        self.sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
     }
     if (shouldUseDefaultCache) {
         _sessionConfiguration.URLCache = sharedCache;
@@ -92,9 +92,9 @@ NSUInteger const NBClientErrorCodeService = 1;
     if (_urlSession) {
         return _urlSession;
     }
-    _urlSession = [NSURLSession sessionWithConfiguration:self.sessionConfiguration
-                                                delegate:self
-                                           delegateQueue:[NSOperationQueue mainQueue]];
+    self.urlSession = [NSURLSession sessionWithConfiguration:self.sessionConfiguration
+                                                    delegate:self
+                                               delegateQueue:[NSOperationQueue mainQueue]];
     return _urlSession;
 }
 
@@ -105,7 +105,7 @@ NSUInteger const NBClientErrorCodeService = 1;
     if (_baseURL) {
         return _baseURL;
     }
-    _baseURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@.nationbuilder.com", self.nationName]];
+    self.baseURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@.nationbuilder.com", self.nationName]];
     return _baseURL;
 }
 
@@ -114,7 +114,7 @@ NSUInteger const NBClientErrorCodeService = 1;
     if (_baseURLComponents) {
         return _baseURLComponents;
     }
-    _baseURLComponents = [NSURLComponents componentsWithURL:self.baseURL resolvingAgainstBaseURL:YES];
+    self.baseURLComponents = [NSURLComponents componentsWithURL:self.baseURL resolvingAgainstBaseURL:YES];
     NSDictionary *queryParameters = @{ @"access_token": self.apiKey };
     _baseURLComponents.path = @"/api/v1";
     _baseURLComponents.query = [queryParameters nb_queryStringWithEncoding:NSASCIIStringEncoding
