@@ -1,0 +1,18 @@
+/* 
+  Localizable.strings
+  NBClientExample
+
+  Created by Peng Wang on 7/23/14.
+  Copyright (c) 2014 NationBuilder. All rights reserved.
+*/
+
+"pagination.page-title.format" = "Page %1$ld / %2$ld"; // Note the custom whitespacing.
+"pagination.item-title.format" = "%1$ld – %2$ld"; // Note the custom whitespacing.
+"people.navigation-title" = "People";
+"person.full-name.format" = "%1$@ %2$@";
+"person.name-unknown" = "Unknown";
+"person.navigation-title.create" = "New Person";
+"title.error" = "Error";
+"title.ok" = "OK";
+"title.load-more" = "Load More";
+"title.refresh" = "Refresh";
