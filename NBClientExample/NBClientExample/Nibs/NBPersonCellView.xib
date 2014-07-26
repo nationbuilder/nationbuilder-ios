@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NBPersonCellView"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PersonCell" id="Grz-w3-y7q" customClass="NBPersonCellView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Full Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mbg-Ys-SBl" userLabel="Name Label - Full Name">
+                        <rect key="frame" x="15" y="28" width="228" height="24"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="24" id="UuD-Y2-jBu"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="20"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lO3-2n-xHR" userLabel="Bottom Border View">
+                        <rect key="frame" x="15" y="99" width="305" height="1"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="3Cm-kz-Y4p"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tag · Tag " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Llr-6f-IVD" userLabel="Tags Label">
+                        <rect key="frame" x="15" y="62" width="228" height="18"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="18" id="4li-5H-gM4"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="oT1-Ho-FgS" userLabel="Delete Switch">
+                        <rect key="frame" x="256" y="34" width="51" height="31"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="onTintColor" red="0.80361515283584595" green="0.0" blue="0.033877875655889511" alpha="1" colorSpace="calibratedRGB"/>
+                        <connections>
+                            <action selector="toggleNeedsDelete:" destination="Grz-w3-y7q" eventType="valueChanged" id="rWm-id-mzk"/>
+                        </connections>
+                    </switch>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            </view>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="Llr-6f-IVD" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Mbg-Ys-SBl" secondAttribute="bottom" id="0kF-a9-86N"/>
+                <constraint firstAttribute="trailing" secondItem="Mbg-Ys-SBl" secondAttribute="trailing" constant="77" id="1N9-th-GSC"/>
+                <constraint firstItem="lO3-2n-xHR" firstAttribute="leading" secondItem="Grz-w3-y7q" secondAttribute="leading" constant="15" id="3xi-Ez-Kdr"/>
+                <constraint firstAttribute="centerY" secondItem="oT1-Ho-FgS" secondAttribute="centerY" id="IF6-Hl-ZZF"/>
+                <constraint firstItem="lO3-2n-xHR" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Llr-6f-IVD" secondAttribute="bottom" constant="15" id="L14-CE-Lzp"/>
+                <constraint firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Llr-6f-IVD" secondAttribute="bottom" constant="20" id="O2H-hS-AWp"/>
+                <constraint firstItem="Mbg-Ys-SBl" firstAttribute="leading" secondItem="Grz-w3-y7q" secondAttribute="leading" constant="15" id="PVC-a6-0Ak"/>
+                <constraint firstItem="Llr-6f-IVD" firstAttribute="top" relation="lessThanOrEqual" secondItem="Mbg-Ys-SBl" secondAttribute="bottom" constant="10" id="QBF-jn-Zdq"/>
+                <constraint firstAttribute="trailing" secondItem="lO3-2n-xHR" secondAttribute="trailing" id="QDZ-Tk-ETy"/>
+                <constraint firstAttribute="bottom" secondItem="lO3-2n-xHR" secondAttribute="bottom" id="b1B-ve-wGb"/>
+                <constraint firstItem="Llr-6f-IVD" firstAttribute="trailing" secondItem="Mbg-Ys-SBl" secondAttribute="trailing" id="g1U-3w-U8B"/>
+                <constraint firstItem="Mbg-Ys-SBl" firstAttribute="top" relation="lessThanOrEqual" secondItem="Grz-w3-y7q" secondAttribute="top" constant="28" id="nS6-V3-p0o"/>
+                <constraint firstAttribute="trailing" secondItem="oT1-Ho-FgS" secondAttribute="trailing" constant="15" id="oyQ-sl-Nv8"/>
+                <constraint firstItem="Mbg-Ys-SBl" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Grz-w3-y7q" secondAttribute="top" constant="20" id="ue0-cZ-FhQ"/>
+                <constraint firstItem="Llr-6f-IVD" firstAttribute="leading" secondItem="lO3-2n-xHR" secondAttribute="leading" id="ygd-B2-krm"/>
+            </constraints>
+            <attributedString key="userComments">
+                <fragment>
+                    <string key="content">This cell mimics a table cell when on iPhone, but because of the amount of additional code required to fully simulate a table cell (swipe to delete, etc.), that code is left as an exercise to you, and our implementation will just use a switch control.</string>
+                    <attributes>
+                        <font key="NSFont" metaFont="toolTip"/>
+                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                    </attributes>
+                </fragment>
+            </attributedString>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                    <color key="value" red="0.8901960784313725" green="0.88627450980392153" blue="0.91764705882352937" alpha="1" colorSpace="calibratedRGB"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="number" keyPath="deleteSwitchDimmedAlpha">
+                    <real key="value" value="0.5"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="color" keyPath="highlightedBackgroundColor">
+                    <color key="value" white="0.95999999999999996" alpha="1" colorSpace="calibratedWhite"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="color" keyPath="selectedForegroundColor">
+                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="string" keyPath="tagDelimiterString" value="·"/>
+            </userDefinedRuntimeAttributes>
+            <connections>
+                <outlet property="bottomBorderView" destination="lO3-2n-xHR" id="Tdw-xN-lv9"/>
+                <outlet property="deleteSwitch" destination="oT1-Ho-FgS" id="gKK-xf-Q3P"/>
+                <outlet property="nameLabel" destination="Mbg-Ys-SBl" id="avB-J0-y13"/>
+                <outlet property="tagsLabel" destination="Llr-6f-IVD" id="lvH-DD-h4u"/>
+            </connections>
+        </collectionViewCell>
+    </objects>
+</document>

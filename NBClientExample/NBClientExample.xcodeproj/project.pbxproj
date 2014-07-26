@@ -20,7 +20,15 @@
 		AA15FAC51983317400A2E84B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AA15FAC31983317400A2E84B /* InfoPlist.strings */; };
 		AA15FAC71983317400A2E84B /* NBClientExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA15FAC61983317400A2E84B /* NBClientExampleTests.m */; };
 		AA15FAD31983339800A2E84B /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA15FAD21983339800A2E84B /* Crashlytics.framework */; };
+		AA602C2E198C3966001A7DB2 /* NBPeoplePageHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA602C2D198C3966001A7DB2 /* NBPeoplePageHeaderView.xib */; };
+		AA602C2F198C3966001A7DB2 /* NBPeoplePageHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA602C2D198C3966001A7DB2 /* NBPeoplePageHeaderView.xib */; };
 		AA909123198339EA009BE1E9 /* libNBClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA909122198339EA009BE1E9 /* libNBClient.a */; };
+		AA90912D19833B0E009BE1E9 /* NBPeopleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA90912A19833B0E009BE1E9 /* NBPeopleViewController.xib */; };
+		AA90912E19833B0E009BE1E9 /* NBPeopleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA90912A19833B0E009BE1E9 /* NBPeopleViewController.xib */; };
+		AA90912F19833B0E009BE1E9 /* NBPersonCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA90912B19833B0E009BE1E9 /* NBPersonCellView.xib */; };
+		AA90913019833B0E009BE1E9 /* NBPersonCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA90912B19833B0E009BE1E9 /* NBPersonCellView.xib */; };
+		AA90913119833B0E009BE1E9 /* NBPersonViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA90912C19833B0E009BE1E9 /* NBPersonViewController.xib */; };
+		AA90913219833B0E009BE1E9 /* NBPersonViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA90912C19833B0E009BE1E9 /* NBPersonViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,7 +59,11 @@
 		AA15FAC41983317400A2E84B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AA15FAC61983317400A2E84B /* NBClientExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NBClientExampleTests.m; sourceTree = "<group>"; };
 		AA15FAD21983339800A2E84B /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		AA602C2D198C3966001A7DB2 /* NBPeoplePageHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NBPeoplePageHeaderView.xib; path = Nibs/NBPeoplePageHeaderView.xib; sourceTree = "<group>"; };
 		AA909122198339EA009BE1E9 /* libNBClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libNBClient.a; path = "../NBClient/build/Debug-iphoneos/libNBClient.a"; sourceTree = "<group>"; };
+		AA90912A19833B0E009BE1E9 /* NBPeopleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NBPeopleViewController.xib; path = Nibs/NBPeopleViewController.xib; sourceTree = "<group>"; };
+		AA90912B19833B0E009BE1E9 /* NBPersonCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NBPersonCellView.xib; path = Nibs/NBPersonCellView.xib; sourceTree = "<group>"; };
+		AA90912C19833B0E009BE1E9 /* NBPersonViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NBPersonViewController.xib; path = Nibs/NBPersonViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +130,10 @@
 				AA15FAB31983317400A2E84B /* Images.xcassets */,
 				AA15FAB01983317400A2E84B /* NBAppDelegate.h */,
 				AA15FAB11983317400A2E84B /* NBAppDelegate.m */,
+				AA602C2D198C3966001A7DB2 /* NBPeoplePageHeaderView.xib */,
+				AA90912A19833B0E009BE1E9 /* NBPeopleViewController.xib */,
+				AA90912B19833B0E009BE1E9 /* NBPersonCellView.xib */,
+				AA90912C19833B0E009BE1E9 /* NBPersonViewController.xib */,
 				AA15FAA81983317400A2E84B /* Supporting Files */,
 			);
 			path = NBClientExample;
@@ -228,8 +244,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA90912D19833B0E009BE1E9 /* NBPeopleViewController.xib in Resources */,
+				AA602C2E198C3966001A7DB2 /* NBPeoplePageHeaderView.xib in Resources */,
 				AA15FAAC1983317400A2E84B /* InfoPlist.strings in Resources */,
 				AA15FAB41983317400A2E84B /* Images.xcassets in Resources */,
+				AA90912F19833B0E009BE1E9 /* NBPersonCellView.xib in Resources */,
+				AA90913119833B0E009BE1E9 /* NBPersonViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -237,7 +257,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA602C2F198C3966001A7DB2 /* NBPeoplePageHeaderView.xib in Resources */,
 				AA15FAC51983317400A2E84B /* InfoPlist.strings in Resources */,
+				AA90913219833B0E009BE1E9 /* NBPersonViewController.xib in Resources */,
+				AA90913019833B0E009BE1E9 /* NBPersonCellView.xib in Resources */,
+				AA90912E19833B0E009BE1E9 /* NBPeopleViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
