@@ -31,6 +31,8 @@
 		AA90913219833B0E009BE1E9 /* NBPersonViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA90912C19833B0E009BE1E9 /* NBPersonViewController.xib */; };
 		AA90913619833B8D009BE1E9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AA90913919833B8D009BE1E9 /* Localizable.strings */; };
 		AA90913719833B8D009BE1E9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AA90913919833B8D009BE1E9 /* Localizable.strings */; };
+		AA90913C19833BC0009BE1E9 /* NBUIDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = AA90913B19833BC0009BE1E9 /* NBUIDefines.m */; };
+		AA90913D19833BC0009BE1E9 /* NBUIDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = AA90913B19833BC0009BE1E9 /* NBUIDefines.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +69,8 @@
 		AA90912B19833B0E009BE1E9 /* NBPersonCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NBPersonCellView.xib; path = Nibs/NBPersonCellView.xib; sourceTree = "<group>"; };
 		AA90912C19833B0E009BE1E9 /* NBPersonViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NBPersonViewController.xib; path = Nibs/NBPersonViewController.xib; sourceTree = "<group>"; };
 		AA90913819833B8D009BE1E9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		AA90913A19833BC0009BE1E9 /* NBUIDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBUIDefines.h; sourceTree = "<group>"; };
+		AA90913B19833BC0009BE1E9 /* NBUIDefines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBUIDefines.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +142,8 @@
 				AA90912A19833B0E009BE1E9 /* NBPeopleViewController.xib */,
 				AA90912B19833B0E009BE1E9 /* NBPersonCellView.xib */,
 				AA90912C19833B0E009BE1E9 /* NBPersonViewController.xib */,
+				AA90913A19833BC0009BE1E9 /* NBUIDefines.h */,
+				AA90913B19833BC0009BE1E9 /* NBUIDefines.m */,
 				AA15FAA81983317400A2E84B /* Supporting Files */,
 			);
 			path = NBClientExample;
@@ -278,6 +284,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA90913C19833BC0009BE1E9 /* NBUIDefines.m in Sources */,
 				AA15FAB21983317400A2E84B /* NBAppDelegate.m in Sources */,
 				AA15FAAE1983317400A2E84B /* main.m in Sources */,
 			);
@@ -287,6 +294,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA90913D19833BC0009BE1E9 /* NBUIDefines.m in Sources */,
 				AA15FAC71983317400A2E84B /* NBClientExampleTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
