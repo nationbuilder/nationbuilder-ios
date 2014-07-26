@@ -12,10 +12,13 @@
 
 #import <NBClient/Main.h>
 
+#import "NBPeopleDataSource.h"
+#import "NBPeopleViewController.h"
+
 @interface NBAppDelegate ()
 
 @property (nonatomic, strong) NBClient *client;
-@property (nonatomic, strong) UIViewController *rootViewController;
+@property (nonatomic, strong) UINavigationController *rootViewController;
 
 @end
 
@@ -26,7 +29,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [Crashlytics startWithAPIKey:@"40c37689b7be7476400be06f7b2784cc8697c931"];
-    [UICollectionView appearance].backgroundColor = [UIColor whiteColor];
     // END: Customization.
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.rootViewController = self.rootViewController;
@@ -53,6 +55,20 @@
         [[[UIAlertView alloc] initWithTitle:@"FAIL" message:@"FAIL" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil] show];
     }
     return _client;
+}
+
+- (UIViewController *)rootViewController
+{
+    if (_rootViewController) {
+        return _rootViewController;
+    }
+    NBPeopleDataSource *dataSource = [[NBPeopleDataSource alloc] initWithClient:self.client];
+    NBPeopleViewController *viewController = [[NBPeopleViewController alloc] initWithNibNames:nil bundle:nil];
+    viewController.dataSource = dataSource;
+    viewController.title = NSLocalizedString(@"people.navigation-title", nil);
+    self.rootViewController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    self.rootViewController.view.backgroundColor = [UIColor whiteColor];
+    return _rootViewController;
 }
 
 @end
