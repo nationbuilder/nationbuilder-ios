@@ -33,6 +33,10 @@
 		AA90913719833B8D009BE1E9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AA90913919833B8D009BE1E9 /* Localizable.strings */; };
 		AA90913C19833BC0009BE1E9 /* NBUIDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = AA90913B19833BC0009BE1E9 /* NBUIDefines.m */; };
 		AA90913D19833BC0009BE1E9 /* NBUIDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = AA90913B19833BC0009BE1E9 /* NBUIDefines.m */; };
+		AA90914219833C22009BE1E9 /* NBPeopleDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = AA90913F19833C22009BE1E9 /* NBPeopleDataSource.m */; };
+		AA90914319833C22009BE1E9 /* NBPeopleDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = AA90913F19833C22009BE1E9 /* NBPeopleDataSource.m */; };
+		AA90914419833C22009BE1E9 /* NBPersonDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = AA90914119833C22009BE1E9 /* NBPersonDataSource.m */; };
+		AA90914519833C22009BE1E9 /* NBPersonDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = AA90914119833C22009BE1E9 /* NBPersonDataSource.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +75,10 @@
 		AA90913819833B8D009BE1E9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		AA90913A19833BC0009BE1E9 /* NBUIDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBUIDefines.h; sourceTree = "<group>"; };
 		AA90913B19833BC0009BE1E9 /* NBUIDefines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBUIDefines.m; sourceTree = "<group>"; };
+		AA90913E19833C22009BE1E9 /* NBPeopleDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPeopleDataSource.h; path = Classes/NBPeopleDataSource.h; sourceTree = "<group>"; };
+		AA90913F19833C22009BE1E9 /* NBPeopleDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBPeopleDataSource.m; path = Classes/NBPeopleDataSource.m; sourceTree = "<group>"; };
+		AA90914019833C22009BE1E9 /* NBPersonDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPersonDataSource.h; path = Classes/NBPersonDataSource.h; sourceTree = "<group>"; };
+		AA90914119833C22009BE1E9 /* NBPersonDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBPersonDataSource.m; path = Classes/NBPersonDataSource.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,8 +147,12 @@
 				AA15FAB01983317400A2E84B /* NBAppDelegate.h */,
 				AA15FAB11983317400A2E84B /* NBAppDelegate.m */,
 				AA602C2D198C3966001A7DB2 /* NBPeoplePageHeaderView.xib */,
+				AA90913E19833C22009BE1E9 /* NBPeopleDataSource.h */,
+				AA90913F19833C22009BE1E9 /* NBPeopleDataSource.m */,
 				AA90912A19833B0E009BE1E9 /* NBPeopleViewController.xib */,
 				AA90912B19833B0E009BE1E9 /* NBPersonCellView.xib */,
+				AA90914019833C22009BE1E9 /* NBPersonDataSource.h */,
+				AA90914119833C22009BE1E9 /* NBPersonDataSource.m */,
 				AA90912C19833B0E009BE1E9 /* NBPersonViewController.xib */,
 				AA90913A19833BC0009BE1E9 /* NBUIDefines.h */,
 				AA90913B19833BC0009BE1E9 /* NBUIDefines.m */,
@@ -284,9 +296,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA90914419833C22009BE1E9 /* NBPersonDataSource.m in Sources */,
 				AA90913C19833BC0009BE1E9 /* NBUIDefines.m in Sources */,
 				AA15FAB21983317400A2E84B /* NBAppDelegate.m in Sources */,
 				AA15FAAE1983317400A2E84B /* main.m in Sources */,
+				AA90914219833C22009BE1E9 /* NBPeopleDataSource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,6 +309,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA90913D19833BC0009BE1E9 /* NBUIDefines.m in Sources */,
+				AA90914519833C22009BE1E9 /* NBPersonDataSource.m in Sources */,
+				AA90914319833C22009BE1E9 /* NBPeopleDataSource.m in Sources */,
 				AA15FAC71983317400A2E84B /* NBClientExampleTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
