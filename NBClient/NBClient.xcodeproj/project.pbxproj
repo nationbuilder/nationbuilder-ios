@@ -23,8 +23,15 @@
 		AA8B6822196F5539009DDA91 /* NBAuthenticatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA8B6821196F5539009DDA91 /* NBAuthenticatorTests.m */; };
 		AA8B6825196F82D4009DDA91 /* NBDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = AA8B6824196F82D4009DDA91 /* NBDefines.m */; };
 		AA8B6826196F82D4009DDA91 /* NBDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = AA8B6824196F82D4009DDA91 /* NBDefines.m */; };
+		AA90915319834164009BE1E9 /* Main.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AABD0029196F1FD6003A745F /* Main.h */; };
+		AA90915419834164009BE1E9 /* FoundationAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA668DCF1970B81800A952B0 /* FoundationAdditions.h */; };
+		AA90915519834164009BE1E9 /* NBAuthenticator.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA86284F196F1651005060C9 /* NBAuthenticator.h */; };
+		AA90915619834164009BE1E9 /* NBClient.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AAAEFC29196CD13D00222A48 /* NBClient.h */; };
+		AA90915719834164009BE1E9 /* NBClient_Internal.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA6FF3C6197DF5B10049B747 /* NBClient_Internal.h */; };
+		AA90915819834164009BE1E9 /* NBClient+People.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA6FF3C2197DF2E00049B747 /* NBClient+People.h */; };
+		AA90915919834164009BE1E9 /* NBPaginationInfo.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA6FF3BC197D95220049B747 /* NBPaginationInfo.h */; };
+		AA90915A19834186009BE1E9 /* NBDefines.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA8B6823196F82D4009DDA91 /* NBDefines.h */; };
 		AAAEFC25196CD13D00222A48 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAAEFC24196CD13D00222A48 /* Foundation.framework */; };
-		AAAEFC2A196CD13D00222A48 /* NBClient.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AAAEFC29196CD13D00222A48 /* NBClient.h */; };
 		AAAEFC2C196CD13D00222A48 /* NBClient.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAEFC2B196CD13D00222A48 /* NBClient.m */; };
 		AAAEFC33196CD13D00222A48 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAAEFC32196CD13D00222A48 /* XCTest.framework */; };
 		AAAEFC34196CD13D00222A48 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAAEFC24196CD13D00222A48 /* Foundation.framework */; };
@@ -50,7 +57,14 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				AAAEFC2A196CD13D00222A48 /* NBClient.h in CopyFiles */,
+				AA90915A19834186009BE1E9 /* NBDefines.h in CopyFiles */,
+				AA90915319834164009BE1E9 /* Main.h in CopyFiles */,
+				AA90915419834164009BE1E9 /* FoundationAdditions.h in CopyFiles */,
+				AA90915519834164009BE1E9 /* NBAuthenticator.h in CopyFiles */,
+				AA90915619834164009BE1E9 /* NBClient.h in CopyFiles */,
+				AA90915719834164009BE1E9 /* NBClient_Internal.h in CopyFiles */,
+				AA90915819834164009BE1E9 /* NBClient+People.h in CopyFiles */,
+				AA90915919834164009BE1E9 /* NBPaginationInfo.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
