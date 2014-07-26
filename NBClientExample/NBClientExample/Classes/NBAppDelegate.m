@@ -36,4 +36,23 @@
 
 #pragma mark - Private
 
+- (NBClient *)client
+{
+    if (_client) {
+        return _client;
+    }
+    NSDictionary *environment = [NSProcessInfo processInfo].environment;
+    if (environment[@"NBNationName"]) {
+        NSString *baseURLString = [NSString stringWithFormat:environment[@"NBBaseURLFormat"], environment[@"NBNationName"]];
+        NSURL *url = [NSURL URLWithString:baseURLString];
+        self.client = [[NBClient alloc] initWithNationName:environment[@"NBNationName"]
+                                                    apiKey:environment[@"NBClientAPIKey"]
+                                             customBaseURL:url
+                                          customURLSession:nil customURLSessionConfiguration:nil];
+    } else {
+        [[[UIAlertView alloc] initWithTitle:@"FAIL" message:@"FAIL" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil] show];
+    }
+    return _client;
+}
+
 @end
