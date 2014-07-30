@@ -41,6 +41,8 @@
 - (NSURLSessionDataTask *)baseDeleteTaskWithURL:(NSURL *)url
                               completionHandler:(void (^)(id results, NSError *error))completionHandler;
 
+- (NSURLSessionDataTask *)startTask:(NSURLSessionDataTask *)task;
+
 - (void (^)(NSData *, NSURLResponse *, NSError *))dataTaskCompletionHandlerForFetchResultsKey:(NSString *)resultsKey
                                                                             completionHandler:(void (^)(id results, NSDictionary *jsonObject, NSError *error))completionHandler;
 

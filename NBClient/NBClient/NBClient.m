@@ -156,8 +156,7 @@ NSString * const NBClientErrorInnerErrorKey = @"inner_error";
             completionHandler(results, error);
         }
     }]];
-    [task resume];
-    return task;
+    return [self startTask:task];
 }
 
 - (NSMutableURLRequest *)baseSaveRequestWithURL:(NSURL *)url
@@ -186,8 +185,7 @@ NSString * const NBClientErrorInnerErrorKey = @"inner_error";
             completionHandler(results, error);
         }
     }]];
-    [task resume];
-    return task;
+    return [self startTask:task];
 }
 
 - (NSMutableURLRequest *)baseDeleteRequestWithURL:(NSURL *)url
@@ -211,6 +209,11 @@ NSString * const NBClientErrorInnerErrorKey = @"inner_error";
             completionHandler(results, error);
         }
     }]];
+    return [self startTask:task];
+}
+
+- (NSURLSessionDataTask *)startTask:(NSURLSessionDataTask *)task
+{
     [task resume];
     return task;
 }
