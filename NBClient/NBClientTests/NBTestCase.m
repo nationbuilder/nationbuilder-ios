@@ -98,7 +98,6 @@
 {
     XCTAssertTrue(task && task.state == NSURLSessionTaskStateRunning,
                   @"Client should have created and ran task.");
-    NSLog(@"REQUEST: %@", task.currentRequest.nb_debugDescription);
 }
 
 #pragma mark - Async API

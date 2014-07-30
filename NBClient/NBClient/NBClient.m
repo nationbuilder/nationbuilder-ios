@@ -145,9 +145,11 @@ NSString * const NBClientErrorInnerErrorKey = @"inner_error";
                             [(*paginationInfo).dictionary nb_queryStringWithEncoding:NSASCIIStringEncoding
                                                          skipPercentEncodingPairKeys:nil charactersToLeaveUnescaped:nil]];
     }
+    NSURLRequest *request = [self baseFetchRequestWithURL:components.URL];
+    NSLog(@"REQUEST: %@", request.nb_debugDescription);
     NSURLSessionDataTask *task =
     [self.urlSession
-     dataTaskWithRequest:[self baseFetchRequestWithURL:components.URL]
+     dataTaskWithRequest:request
      completionHandler:[self dataTaskCompletionHandlerForFetchResultsKey:resultsKey completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
         if (paginationInfo) { // If pointer is non-NULL.
             *paginationInfo = [[NBPaginationInfo alloc] initWithDictionary:jsonObject];
@@ -177,6 +179,7 @@ NSString * const NBClientErrorInnerErrorKey = @"inner_error";
                                           resultsKey:(NSString *)resultsKey
                                    completionHandler:(void (^)(id, NSError *))completionHandler
 {
+    NSLog(@"REQUEST: %@", request.nb_debugDescription);
     NSURLSessionDataTask *task =
     [self.urlSession
      dataTaskWithRequest:request
@@ -201,9 +204,11 @@ NSString * const NBClientErrorInnerErrorKey = @"inner_error";
 - (NSURLSessionDataTask *)baseDeleteTaskWithURL:(NSURL *)url
                               completionHandler:(void (^)(id, NSError *))completionHandler
 {
+    NSURLRequest *request = [self baseDeleteRequestWithURL:url];
+    NSLog(@"REQUEST: %@", request.nb_debugDescription);
     NSURLSessionDataTask *task =
     [self.urlSession
-     dataTaskWithRequest:[self baseDeleteRequestWithURL:url]
+     dataTaskWithRequest:request
      completionHandler:[self dataTaskCompletionHandlerForFetchResultsKey:nil completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
         if (completionHandler) {
             completionHandler(results, error);
