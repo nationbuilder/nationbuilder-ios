@@ -44,9 +44,8 @@
 - (void (^)(NSData *, NSURLResponse *, NSError *))dataTaskCompletionHandlerForFetchResultsKey:(NSString *)resultsKey
                                                                             completionHandler:(void (^)(id results, NSDictionary *jsonObject, NSError *error))completionHandler;
 
-- (NSError *)httpErrorForResponse:(NSHTTPURLResponse *)response jsonData:(NSDictionary *)data;
-- (NSError *)invalidErrorForJsonData:(NSDictionary *)data resultsKey:(NSString *)resultsKey;
-- (NSError *)nonHTTPErrorForResponse:(NSHTTPURLResponse *)response jsonData:(NSDictionary *)data;
+- (NSError *)errorForResponse:(NSHTTPURLResponse *)response jsonData:(NSDictionary *)data;
+- (NSError *)errorForJsonData:(NSDictionary *)data resultsKey:(NSString *)resultsKey;
 - (void)logResponse:(NSHTTPURLResponse *)response data:(NSData *)data;
 
 @end

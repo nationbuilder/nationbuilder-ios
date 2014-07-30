@@ -15,6 +15,10 @@ typedef void (^NBClientResourceListCompletionHandler)(NSArray *items, NSError *e
 typedef void (^NBClientResourceItemCompletionHandler)(NSDictionary *item, NSError *error);
 
 extern NSUInteger const NBClientErrorCodeService;
+extern NSString * const NBClientErrorCodeKey;
+extern NSString * const NBClientErrorMessageKey;
+extern NSString * const NBClientErrorValidationErrorsKey;
+extern NSString * const NBClientErrorInnerErrorKey;
 
 @interface NBClient : NSObject <NSURLSessionDelegate>
 

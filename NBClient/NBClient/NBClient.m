@@ -15,6 +15,10 @@
 #import "NBPaginationInfo.h"
 
 NSUInteger const NBClientErrorCodeService = 1;
+NSString * const NBClientErrorCodeKey = @"code";
+NSString * const NBClientErrorMessageKey = @"message";
+NSString * const NBClientErrorValidationErrorsKey = @"validation_errors";
+NSString * const NBClientErrorInnerErrorKey = @"inner_error";
 
 @implementation NBClient
 
@@ -240,7 +244,7 @@ NSUInteger const NBClientErrorCodeService = 1;
                                                                      error:&error];
         // Handle HTTP error.
         if (![[NSIndexSet nb_indexSetOfSuccessfulHTTPStatusCodes] containsIndex:httpResponse.statusCode]) {
-            error = [self httpErrorForResponse:httpResponse jsonData:jsonObject];
+            error = [self errorForResponse:httpResponse jsonData:jsonObject];
             if (completionHandler) {
                 completionHandler(nil, nil, error);
             }
@@ -255,12 +259,12 @@ NSUInteger const NBClientErrorCodeService = 1;
         }
         // Handle Non-HTTP error.
         if (jsonObject[@"code"]) {
-            error = [self nonHTTPErrorForResponse:httpResponse jsonData:jsonObject];
+            error = [self errorForResponse:httpResponse jsonData:jsonObject];
         }
         id results = jsonObject[resultsKey];
         // Handle invalid response.
         if (!results) {
-            error = [self invalidErrorForJsonData:jsonObject resultsKey:resultsKey];
+            error = [self errorForJsonData:jsonObject resultsKey:resultsKey];
         }
         if (completionHandler) {
             completionHandler(results, jsonObject, error);
@@ -270,21 +274,33 @@ NSUInteger const NBClientErrorCodeService = 1;
 
 #pragma mark Helpers
 
-- (NSError *)httpErrorForResponse:(NSHTTPURLResponse *)response
-                         jsonData:(NSDictionary *)data
+- (NSError *)errorForResponse:(NSHTTPURLResponse *)response
+                     jsonData:(NSDictionary *)data
 {
+    NSString *description;
+    if ([[NSIndexSet nb_indexSetOfSuccessfulHTTPStatusCodes] containsIndex:response.statusCode]) {
+        description = [NSString localizedStringWithFormat:
+                       NSLocalizedString(@"Service errored fulfilling request, code: %@", nil),
+                       data[@"code"]];
+    } else {
+        description = [NSString localizedStringWithFormat:
+                       NSLocalizedString(@"Service errored fulfilling request, status code: %d (%@)", nil),
+                       response.statusCode, data[@"code"]];
+    }
     return [NSError
             errorWithDomain:NBErrorDomain
             code:NBClientErrorCodeService
-            userInfo:@{ NSLocalizedDescriptionKey: [NSString localizedStringWithFormat:
-                                                    NSLocalizedString(@"Service errored fulfilling request, status code: %d (%@)", nil),
-                                                    response.statusCode, data[@"code"]],
+            userInfo:@{ NSLocalizedDescriptionKey: description,
                         NSLocalizedFailureReasonErrorKey: NSLocalizedString(data[@"message"] ? data[@"message"] : @"Reason unknown.", nil),
-                        NSLocalizedRecoverySuggestionErrorKey: self.defaultErrorRecoverySuggestion }];
+                        NSLocalizedRecoverySuggestionErrorKey: self.defaultErrorRecoverySuggestion,
+                        NBClientErrorCodeKey: (data[NBClientErrorCodeKey] ? data[NBClientErrorCodeKey] : @""),
+                        NBClientErrorMessageKey: (data[NBClientErrorMessageKey] ? data[NBClientErrorMessageKey] : @""),
+                        NBClientErrorValidationErrorsKey: (data[NBClientErrorValidationErrorsKey] ? data[NBClientErrorValidationErrorsKey] : @[]),
+                        NBClientErrorInnerErrorKey: (data[NBClientErrorInnerErrorKey] ? data[NBClientErrorInnerErrorKey] : @{}) }];
 }
 
-- (NSError *)invalidErrorForJsonData:(NSDictionary *)data
-                          resultsKey:(NSString *)resultsKey
+- (NSError *)errorForJsonData:(NSDictionary *)data
+                   resultsKey:(NSString *)resultsKey
 {
     return [NSError
             errorWithDomain:NBErrorDomain
@@ -293,19 +309,6 @@ NSUInteger const NBClientErrorCodeService = 1;
                         NSLocalizedFailureReasonErrorKey: [NSString localizedStringWithFormat:
                                                            NSLocalizedString(@"No results found at '%@'.", nil),
                                                            resultsKey],
-                        NSLocalizedRecoverySuggestionErrorKey: self.defaultErrorRecoverySuggestion }];
-}
-
-- (NSError *)nonHTTPErrorForResponse:(NSHTTPURLResponse *)response
-                            jsonData:(NSDictionary *)data
-{
-    return [NSError
-            errorWithDomain:NBErrorDomain
-            code:NBClientErrorCodeService
-            userInfo:@{ NSLocalizedDescriptionKey: [NSString localizedStringWithFormat:
-                                                    NSLocalizedString(@"Service errored fulfilling request, status code: %d (%@)", nil),
-                                                    response.statusCode, data[@"code"]],
-                        NSLocalizedFailureReasonErrorKey: NSLocalizedString(data[@"message"] ? data[@"message"] : @"Reason unknown.", nil),
                         NSLocalizedRecoverySuggestionErrorKey: self.defaultErrorRecoverySuggestion }];
 }
 
