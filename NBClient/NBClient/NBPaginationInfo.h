@@ -17,9 +17,14 @@ extern NSString * const NBClientNumberOfTotalItemsKey;
 
 @interface NBPaginationInfo : NSObject <NBDictionarySerializing>
 
-@property (nonatomic) NSUInteger currentPageNumber;
+@property (nonatomic) NSUInteger currentPageNumber; // Starts at 1s.
 @property (nonatomic) NSUInteger numberOfTotalPages;
 @property (nonatomic) NSUInteger numberOfItemsPerPage;
 @property (nonatomic) NSUInteger numberOfTotalItems;
+
+@property (nonatomic) NSUInteger numberOfTotalAvailableItems;
+
+- (NSUInteger)indexOfFirstItemAtPage:(NSUInteger)pageNumber;
+- (NSUInteger)numberOfItemsAtPage:(NSUInteger)pageNumber;
 
 @end

@@ -24,15 +24,16 @@
 - (void)setUp
 {
     [super setUp];
-    self.dictionary = @{ NBClientCurrentPageNumberKey: @1,
-                         NBClientNumberOfTotalPagesKey: @2,
+    self.dictionary = @{ NBClientCurrentPageNumberKey: @2,
+                         NBClientNumberOfTotalPagesKey: @10,
                          NBClientNumberOfItemsPerPageKey: @10,
-                         NBClientNumberOfTotalItemsKey: @15 };
+                         NBClientNumberOfTotalItemsKey: @100 };
     self.paginationInfo = [[NBPaginationInfo alloc] init];
-    self.paginationInfo.currentPageNumber = 1;
-    self.paginationInfo.numberOfTotalPages = 2;
+    self.paginationInfo.currentPageNumber = 2;
+    self.paginationInfo.numberOfTotalPages = 10;
     self.paginationInfo.numberOfItemsPerPage = 10;
-    self.paginationInfo.numberOfTotalItems = 15;
+    self.paginationInfo.numberOfTotalItems = 100;
+    self.paginationInfo.numberOfTotalAvailableItems = 15;
 }
 
 - (void)tearDown
@@ -58,6 +59,27 @@
 {
     XCTAssertTrue([self.paginationInfo isEqualToDictionary:self.dictionary],
                   @"Pagination should be equal to dictionary.");
+}
+
+- (void)testCurrentPageNumberConstraints
+{
+    self.paginationInfo.currentPageNumber = 0;
+    XCTAssertEqual(self.paginationInfo.currentPageNumber, 1,
+                   @"Current page number should not be less than 1.");
+}
+
+- (void)testIndexOfFirstItemAtPage
+{
+    XCTAssertEqual([self.paginationInfo indexOfFirstItemAtPage:2], 10,
+                   @"First page item index should be properly calculated.");
+}
+
+- (void)testNumberOfItemsAtPage
+{
+    XCTAssertEqual([self.paginationInfo numberOfItemsAtPage:1], 10,
+                   @"Non-last page item count should be properly calculated.");
+    XCTAssertEqual([self.paginationInfo numberOfItemsAtPage:2], 5,
+                   @"Last page item count should be properly calculated.");
 }
 
 @end
