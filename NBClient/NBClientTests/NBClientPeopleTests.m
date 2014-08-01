@@ -65,8 +65,8 @@
     [[NBPaginationInfo alloc] initWithDictionary:paginationParameters];
     NSURLSessionDataTask *task =
     [self.client
-     fetchPeopleWithPaginationInfo:&paginationInfo
-     completionHandler:^(NSArray *items, NSError *error) {
+     fetchPeopleWithPaginationInfo:paginationInfo
+     completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
          [self assertServiceError:error];
          [self assertPeopleArray:items];
          [self assertPaginationInfo:paginationInfo withPaginationParameters:paginationParameters];
@@ -86,8 +86,8 @@
     NSURLSessionDataTask *task =
     [self.client
      fetchPeopleByParameters:@{ @"city": @"Los Angeles" }
-     withPaginationInfo:nil
-     completionHandler:^(NSArray *items, NSError *error) {
+     withPaginationInfo:paginationInfo
+     completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
          [self assertServiceError:error];
          [self assertPeopleArray:items];
          [self assertPaginationInfo:paginationInfo withPaginationParameters:paginationParameters];

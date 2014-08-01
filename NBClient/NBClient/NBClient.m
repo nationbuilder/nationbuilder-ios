@@ -137,13 +137,15 @@ NSString * const NBClientErrorInnerErrorKey = @"inner_error";
 
 - (NSURLSessionDataTask *)baseFetchTaskWithURLComponents:(NSURLComponents *)components
                                               resultsKey:(NSString *)resultsKey
-                                          paginationInfo:(NBPaginationInfo *__autoreleasing *)paginationInfo
-                                       completionHandler:(void (^)(id, NSError *))completionHandler
+                                          paginationInfo:(NBPaginationInfo*)paginationInfo
+                                       completionHandler:(NBClientResourceListCompletionHandler)completionHandler
 {
-    if (paginationInfo && *paginationInfo) {
+    if (paginationInfo) {
+        NSMutableDictionary *dictionary = paginationInfo.dictionary.mutableCopy;
+        [dictionary removeObjectsForKeys:@[ NBClientNumberOfTotalPagesKey, NBClientNumberOfTotalItemsKey ]];
         components.query = [components.query stringByAppendingFormat:@"&%@",
-                            [(*paginationInfo).dictionary nb_queryStringWithEncoding:NSASCIIStringEncoding
-                                                         skipPercentEncodingPairKeys:nil charactersToLeaveUnescaped:nil]];
+                            [dictionary nb_queryStringWithEncoding:NSASCIIStringEncoding
+                                       skipPercentEncodingPairKeys:nil charactersToLeaveUnescaped:nil]];
     }
     NSURLRequest *request = [self baseFetchRequestWithURL:components.URL];
     NSLog(@"REQUEST: %@", request.nb_debugDescription);
@@ -151,9 +153,24 @@ NSString * const NBClientErrorInnerErrorKey = @"inner_error";
     [self.urlSession
      dataTaskWithRequest:request
      completionHandler:[self dataTaskCompletionHandlerForFetchResultsKey:resultsKey completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
-        if (paginationInfo) { // If pointer is non-NULL.
-            *paginationInfo = [[NBPaginationInfo alloc] initWithDictionary:jsonObject];
+        NBPaginationInfo *paginationInfo = [[NBPaginationInfo alloc] initWithDictionary:jsonObject];
+        if (completionHandler) {
+            completionHandler(results, paginationInfo, error);
         }
+    }]];
+    return [self startTask:task];
+}
+
+- (NSURLSessionDataTask *)baseFetchTaskWithURLComponents:(NSURLComponents *)components
+                                              resultsKey:(NSString *)resultsKey
+                                       completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
+{
+    NSURLRequest *request = [self baseFetchRequestWithURL:components.URL];
+    NSLog(@"REQUEST: %@", request.nb_debugDescription);
+    NSURLSessionDataTask *task =
+    [self.urlSession
+     dataTaskWithRequest:request
+     completionHandler:[self dataTaskCompletionHandlerForFetchResultsKey:resultsKey completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
         if (completionHandler) {
             completionHandler(results, error);
         }
@@ -177,7 +194,7 @@ NSString * const NBClientErrorInnerErrorKey = @"inner_error";
 
 - (NSURLSessionDataTask *)baseSaveTaskWithURLRequest:(NSURLRequest *)request
                                           resultsKey:(NSString *)resultsKey
-                                   completionHandler:(void (^)(id, NSError *))completionHandler
+                                   completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
     NSLog(@"REQUEST: %@", request.nb_debugDescription);
     NSURLSessionDataTask *task =
@@ -202,7 +219,7 @@ NSString * const NBClientErrorInnerErrorKey = @"inner_error";
 }
 
 - (NSURLSessionDataTask *)baseDeleteTaskWithURL:(NSURL *)url
-                              completionHandler:(void (^)(id, NSError *))completionHandler
+                              completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
     NSURLRequest *request = [self baseDeleteRequestWithURL:url];
     NSLog(@"REQUEST: %@", request.nb_debugDescription);

@@ -11,7 +11,7 @@
 @class NBAuthenticator;
 @class NBPaginationInfo;
 
-typedef void (^NBClientResourceListCompletionHandler)(NSArray *items, NSError *error);
+typedef void (^NBClientResourceListCompletionHandler)(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error);
 typedef void (^NBClientResourceItemCompletionHandler)(NSDictionary *item, NSError *error);
 
 extern NSUInteger const NBClientErrorCodeService;

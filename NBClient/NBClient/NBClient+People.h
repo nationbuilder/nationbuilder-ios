@@ -18,11 +18,11 @@
  */
 
 // GET /people
-- (NSURLSessionDataTask *)fetchPeopleWithPaginationInfo:(NBPaginationInfo **)paginationInfo
+- (NSURLSessionDataTask *)fetchPeopleWithPaginationInfo:(NBPaginationInfo *)paginationInfo
                                       completionHandler:(NBClientResourceListCompletionHandler)completionHandler;
 // GET /people/search
 - (NSURLSessionDataTask *)fetchPeopleByParameters:(NSDictionary *)parameters
-                               withPaginationInfo:(NBPaginationInfo **)paginationInfo
+                               withPaginationInfo:(NBPaginationInfo *)paginationInfo
                                 completionHandler:(NBClientResourceListCompletionHandler)completionHandler;
 // GET /people/:id
 - (NSURLSessionDataTask *)fetchPersonByIdentifier:(NSUInteger)identifier

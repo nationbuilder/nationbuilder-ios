@@ -14,7 +14,7 @@
 
 @implementation NBClient (People)
 
-- (NSURLSessionDataTask *)fetchPeopleWithPaginationInfo:(NBPaginationInfo *__autoreleasing *)paginationInfo
+- (NSURLSessionDataTask *)fetchPeopleWithPaginationInfo:(NBPaginationInfo *)paginationInfo
                                       completionHandler:(NBClientResourceListCompletionHandler)completionHandler
 {
     NSURLComponents *components = self.baseURLComponents.copy;
@@ -23,7 +23,7 @@
 }
 
 - (NSURLSessionDataTask *)fetchPeopleByParameters:(NSDictionary *)parameters
-                               withPaginationInfo:(NBPaginationInfo *__autoreleasing *)paginationInfo
+                               withPaginationInfo:(NBPaginationInfo *)paginationInfo
                                 completionHandler:(NBClientResourceListCompletionHandler)completionHandler
 {
     NSURLComponents *components = self.baseURLComponents.copy;
@@ -40,7 +40,7 @@
     NSURLComponents *components = self.baseURLComponents.copy;
     components.path = [components.path stringByAppendingString:
                        [NSString stringWithFormat:@"/people/%d", identifier]];
-    return [self baseFetchTaskWithURLComponents:components resultsKey:@"person" paginationInfo:nil completionHandler:completionHandler];
+    return [self baseFetchTaskWithURLComponents:components resultsKey:@"person" completionHandler:completionHandler];
 }
 
 - (NSURLSessionDataTask *)fetchPersonByParameters:(NSDictionary *)parameters
@@ -52,7 +52,7 @@
                                    skipPercentEncodingPairKeys:[NSSet setWithObject:@"email"]
                                     charactersToLeaveUnescaped:nil]
                         stringByAppendingFormat:@"&%@", components.query];
-    return [self baseFetchTaskWithURLComponents:components resultsKey:@"person" paginationInfo:nil completionHandler:completionHandler];
+    return [self baseFetchTaskWithURLComponents:components resultsKey:@"person" completionHandler:completionHandler];
 }
 
 - (NSURLSessionDataTask *)createPersonWithParameters:(NSDictionary *)parameters

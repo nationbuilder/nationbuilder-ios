@@ -72,16 +72,12 @@
 - (void)assertPaginationInfo:(NBPaginationInfo *)paginationInfo
     withPaginationParameters:(NSDictionary *)paginationParameters
 {
-    XCTAssertTrue((@(paginationInfo.currentPageNumber) &&
-                   paginationInfo.currentPageNumber == [paginationParameters[NBClientCurrentPageNumberKey] unsignedIntegerValue]),
+    XCTAssertTrue(paginationInfo.currentPageNumber == [paginationParameters[NBClientCurrentPageNumberKey] unsignedIntegerValue],
                   @"Pagination info should be properly populated.");
-    XCTAssertNotNil(@(paginationInfo.numberOfTotalPages),
-                    @"Pagination info should be properly populated.");
-    XCTAssertTrue((@(paginationInfo.numberOfItemsPerPage) &&
-                   paginationInfo.numberOfItemsPerPage == [paginationParameters[NBClientNumberOfItemsPerPageKey] unsignedIntegerValue]),
+    XCTAssertTrue(paginationInfo.numberOfItemsPerPage == [paginationParameters[NBClientNumberOfItemsPerPageKey] unsignedIntegerValue],
                   @"Pagination info should be properly populated.");
-    XCTAssertNotNil(@(paginationInfo.numberOfTotalItems),
-                    @"Pagination info should be properly populated.");
+    XCTAssertTrue(paginationInfo.numberOfTotalPages > 0,
+                  @"Pagination info should be properly populated.");
 }
 
 - (void)assertServiceError:(NSError *)error
