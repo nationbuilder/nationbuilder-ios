@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+#ifndef _SECURITY_SECITEM_H_
+#warning Security framework not found in project, or not included in precompiled header.
+#endif
+
 @class NBAuthenticationCredential;
 
 typedef void (^NBAuthenticationCompletionHandler)(NBAuthenticationCredential *credential, NSError *error);
@@ -32,10 +36,20 @@ extern NSUInteger const NBAuthenticationErrorCodeService;
 
 @property (nonatomic, strong, readonly) NSURL *baseURL;
 @property (nonatomic, strong, readonly) NSString *clientIdentifier;
+@property (nonatomic, strong, readonly) NSString *credentialIdentifier;
 
+@property (nonatomic) BOOL shouldAutomaticallySaveCredential;
+
+// Designated initializer.
 - (instancetype)initWithBaseURL:(NSURL *)baseURL
                clientIdentifier:(NSString *)clientIdentifier
                    clientSecret:(NSString *)clientSecret;
+
+/**
+ Authentication API
+ 
+ @note Completion handlers may be dispatched synchronously. Async should not be assumed.
+ */
 
 - (NSURLSessionDataTask *)authenticateWithUserName:(NSString *)userName
                                           password:(NSString *)password
@@ -47,9 +61,18 @@ extern NSUInteger const NBAuthenticationErrorCodeService;
 
 @end
 
-@interface NBAuthenticationCredential : NSObject
+@interface NBAuthenticationCredential : NSObject <NSCoding>
 
 @property (nonatomic, strong, readonly) NSString *accessToken;
 @property (nonatomic, strong, readonly) NSString *tokenType;
+
+// Designated initializer.
+- (instancetype)initWithAccessToken:(NSString *)accessToken
+                          tokenType:(NSString *)tokenType;
+
++ (BOOL)saveCredential:(NBAuthenticationCredential *)credential
+        withIdentifier:(NSString *)identifier;
++ (BOOL)deleteCredentialWithIdentifier:(NSString *)identifier;
++ (NBAuthenticationCredential *)fetchCredentialWithIdentifier:(NSString *)identifier;
 
 @end

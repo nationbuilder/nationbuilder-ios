@@ -12,8 +12,6 @@
 
 @interface NBClientPeopleTests : NBTestCase
 
-@property (nonatomic, strong) NBClient *client;
-
 - (void)assertPeopleArray:(NSArray *)array;
 - (void)assertPersonDictionary:(NSDictionary *)dictionary;
 
@@ -24,13 +22,7 @@
 - (void)setUp
 {
     [super setUp];
-    // We need to use the shared session because we need to be in an application
-    // for an app-specific cache.
-    self.client = [[NBClient alloc] initWithNationName:self.nationName
-                                                apiKey:self.apiKey
-                                         customBaseURL:self.baseURL
-                                      customURLSession:[NSURLSession sharedSession]
-                         customURLSessionConfiguration:nil];
+    [self setUpSharedClient];
 }
 
 - (void)tearDown

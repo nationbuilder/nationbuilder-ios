@@ -17,6 +17,7 @@
 		AA6FF3C1197DADEA0049B747 /* NBPaginationInfoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FF3C0197DADEA0049B747 /* NBPaginationInfoTests.m */; };
 		AA6FF3C4197DF2E00049B747 /* NBClient+People.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FF3C3197DF2E00049B747 /* NBClient+People.m */; };
 		AA6FF3C5197DF2E00049B747 /* NBClient+People.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FF3C3197DF2E00049B747 /* NBClient+People.m */; };
+		AA6FF3C8197EDEE60049B747 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA6FF3C7197EDEE60049B747 /* Security.framework */; };
 		AA862851196F1651005060C9 /* NBAuthenticator.m in Sources */ = {isa = PBXBuildFile; fileRef = AA862850196F1651005060C9 /* NBAuthenticator.m */; };
 		AA862852196F1651005060C9 /* NBAuthenticator.m in Sources */ = {isa = PBXBuildFile; fileRef = AA862850196F1651005060C9 /* NBAuthenticator.m */; };
 		AA8B6822196F5539009DDA91 /* NBAuthenticatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA8B6821196F5539009DDA91 /* NBAuthenticatorTests.m */; };
@@ -68,6 +69,7 @@
 		AA6FF3C2197DF2E00049B747 /* NBClient+People.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NBClient+People.h"; sourceTree = "<group>"; };
 		AA6FF3C3197DF2E00049B747 /* NBClient+People.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NBClient+People.m"; sourceTree = "<group>"; };
 		AA6FF3C6197DF5B10049B747 /* NBClient_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBClient_Internal.h; sourceTree = "<group>"; };
+		AA6FF3C7197EDEE60049B747 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		AA86284F196F1651005060C9 /* NBAuthenticator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBAuthenticator.h; sourceTree = "<group>"; };
 		AA862850196F1651005060C9 /* NBAuthenticator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAuthenticator.m; sourceTree = "<group>"; };
 		AA8B6821196F5539009DDA91 /* NBAuthenticatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAuthenticatorTests.m; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA6FF3C8197EDEE60049B747 /* Security.framework in Frameworks */,
 				AAAEFC25196CD13D00222A48 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -131,6 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				AAAEFC24196CD13D00222A48 /* Foundation.framework */,
+				AA6FF3C7197EDEE60049B747 /* Security.framework */,
 				AAAEFC32196CD13D00222A48 /* XCTest.framework */,
 			);
 			name = Frameworks;

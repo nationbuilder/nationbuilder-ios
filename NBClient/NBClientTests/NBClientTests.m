@@ -10,7 +10,13 @@
 
 #import "Main.h"
 
-@interface NBClientTests : NBTestCase @end
+@interface NBClientTests : NBTestCase
+
+@property (nonatomic, weak, readonly) NBClient *baseClientWithAuthenticator;
+
+- (void)assertCredential:(NBAuthenticationCredential *)credential;
+
+@end
 
 @implementation NBClientTests
 
@@ -23,6 +29,29 @@
 {
     [super tearDown];
 }
+
+#pragma mark - Helpers
+
+- (NBClient *)baseClientWithAuthenticator
+{
+    NBAuthenticator *authenticator = [[NBAuthenticator alloc] initWithBaseURL:self.baseURL
+                                                             clientIdentifier:self.clientIdentifier
+                                                                 clientSecret:self.clientSecret];
+    NBClient *client = [[NBClient alloc] initWithNationName:self.nationName
+                                              authenticator:authenticator
+                                           customURLSession:nil customURLSessionConfiguration:nil];
+    return client;
+}
+
+- (void)assertCredential:(NBAuthenticationCredential *)credential
+{
+    XCTAssertNotNil(credential.accessToken,
+                    @"Credential should have access token.");
+    XCTAssertNotNil(credential.tokenType,
+                    @"Credential should have token type.");
+}
+
+#pragma mark - Tests
 
 - (void)testDefaultInitialization
 {
@@ -41,14 +70,10 @@
 - (void)testAsyncAuthenticatedInitialization
 {
     [self setUpAsync];
-    NBAuthenticator *authenticator = [[NBAuthenticator alloc] initWithBaseURL:self.baseURL
-                                                             clientIdentifier:self.clientIdentifier
-                                                                 clientSecret:self.clientSecret];
-    NBClient *client = [[NBClient alloc] initWithNationName:self.nationName
-                                              authenticator:authenticator
-                                           customURLSession:nil customURLSessionConfiguration:nil];
-    XCTAssertEqual(client.authenticator, authenticator,
-                   @"Client should have authenticator.");
+    NBClient *client = self.baseClientWithAuthenticator;
+    XCTAssertNotNil(client.authenticator,
+                    @"Client should have authenticator.");
+    [NBAuthenticationCredential deleteCredentialWithIdentifier:client.authenticator.credentialIdentifier];
     NSURLSessionDataTask *task =
     [client.authenticator
      authenticateWithUserName:self.userEmailAddress
@@ -58,13 +83,26 @@
              XCTFail(@"Authentication service returned error %@", error);
          }
          NSLog(@"CREDENTIAL: %@", credential);
-         XCTAssertNotNil(credential.accessToken,
-                         @"Credential should have access token.");
-         XCTAssertNotNil(credential.tokenType,
-                         @"Credential should have token type.");
+         [self assertCredential:credential];
          client.apiKey = credential.accessToken;
+         // Test credential persistence across initializations.
+         XCTAssertTrue(client.authenticator.shouldAutomaticallySaveCredential,
+                       @"Authenticator should have automatically saved credential to keychain.");
+         NBClient *client = self.baseClientWithAuthenticator;
+         NSURLSessionDataTask *task =
+         [client.authenticator
+          authenticateWithUserName:self.userEmailAddress
+          password:self.userPassword
+          completionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
+              if (error) {
+                  XCTFail(@"Authentication service returned error %@", error);
+              }
+              [self assertCredential:credential];
+          }];
+         XCTAssertNil(task,
+                      @"Saved credential should have been fetched to obviate authenticating against service.");
          [self completeAsync];
-    }];
+     }];
     XCTAssertTrue(task && task.state == NSURLSessionTaskStateRunning,
                   @"Authenticator should have created and ran task.");
     NSLog(@"REQUEST: %@", task.currentRequest.nb_debugDescription);

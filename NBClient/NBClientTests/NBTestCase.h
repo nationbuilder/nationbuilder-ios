@@ -8,6 +8,7 @@
 
 #import <XCTest/XCTest.h>
 
+@class NBClient;
 @class NBPaginationInfo;
 
 @interface NBTestCase : XCTestCase
@@ -21,6 +22,10 @@
 @property (nonatomic, strong) NSString *userEmailAddress;
 @property (nonatomic) NSUInteger userIdentifier;
 @property (nonatomic, strong) NSString *userPassword;
+
+@property (nonatomic, strong, readonly) NBClient *client;
+
+- (void)setUpSharedClient;
 
 - (void)assertPaginationInfo:(NBPaginationInfo *)paginationInfo
     withPaginationParameters:(NSDictionary *)paginationParameters;
