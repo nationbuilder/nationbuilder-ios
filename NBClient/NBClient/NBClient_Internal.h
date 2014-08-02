@@ -27,26 +27,30 @@
 - (NSMutableURLRequest *)baseFetchRequestWithURL:(NSURL *)url;
 - (NSURLSessionDataTask *)baseFetchTaskWithURLComponents:(NSURLComponents *)components
                                               resultsKey:(NSString *)resultsKey
-                                          paginationInfo:(NBPaginationInfo **)paginationInfo
-                                       completionHandler:(void (^)(id, NSError *))completionHandler;
+                                          paginationInfo:(NBPaginationInfo *)paginationInfo
+                                       completionHandler:(NBClientResourceListCompletionHandler)completionHandler;
+- (NSURLSessionDataTask *)baseFetchTaskWithURLComponents:(NSURLComponents *)components
+                                              resultsKey:(NSString *)resultsKey
+                                       completionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
 
 - (NSMutableURLRequest *)baseSaveRequestWithURL:(NSURL *)url
                                      parameters:(NSDictionary *)parameters
                                           error:(NSError **)error;
 - (NSURLSessionDataTask *)baseSaveTaskWithURLRequest:(NSURLRequest *)request
                                           resultsKey:(NSString *)resultsKey
-                                   completionHandler:(void (^)(id results, NSError *error))completionHandler;
+                                   completionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
 
 - (NSMutableURLRequest *)baseDeleteRequestWithURL:(NSURL *)url;
 - (NSURLSessionDataTask *)baseDeleteTaskWithURL:(NSURL *)url
-                              completionHandler:(void (^)(id results, NSError *error))completionHandler;
+                              completionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+
+- (NSURLSessionDataTask *)startTask:(NSURLSessionDataTask *)task;
 
 - (void (^)(NSData *, NSURLResponse *, NSError *))dataTaskCompletionHandlerForFetchResultsKey:(NSString *)resultsKey
                                                                             completionHandler:(void (^)(id results, NSDictionary *jsonObject, NSError *error))completionHandler;
 
-- (NSError *)httpErrorForResponse:(NSHTTPURLResponse *)response jsonData:(NSDictionary *)data;
-- (NSError *)invalidErrorForJsonData:(NSDictionary *)data resultsKey:(NSString *)resultsKey;
-- (NSError *)nonHTTPErrorForResponse:(NSHTTPURLResponse *)response jsonData:(NSDictionary *)data;
+- (NSError *)errorForResponse:(NSHTTPURLResponse *)response jsonData:(NSDictionary *)data;
+- (NSError *)errorForJsonData:(NSDictionary *)data resultsKey:(NSString *)resultsKey;
 - (void)logResponse:(NSHTTPURLResponse *)response data:(NSData *)data;
 
 @end

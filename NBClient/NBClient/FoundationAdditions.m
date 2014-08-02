@@ -98,10 +98,16 @@
 
 - (NSString *)nb_debugDescription
 {
+    NSMutableURLRequest *request = self.mutableCopy;
     return [NSString stringWithFormat:
             @"%@\n"
-            @"HEADERS: %@\n",
-            self.debugDescription, self.allHTTPHeaderFields];
+            @"METHOD: %@\n"
+            @"HEADERS: %@\n"
+            @"BODY: %@\n",
+            request.debugDescription,
+            request.HTTPMethod,
+            request.allHTTPHeaderFields,
+            [[NSString alloc] initWithData:request.HTTPBody encoding:NSUTF8StringEncoding]];
 }
 
 @end
