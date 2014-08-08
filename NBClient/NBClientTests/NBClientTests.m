@@ -112,4 +112,15 @@
     [self tearDownAsync];
 }
 
+- (void)testConfiguringAPIVersion
+{
+    NBClient *client = self.baseClientWithTestToken;
+    client.apiVersion = [NBClientDefaultAPIVersion stringByAppendingString:@"0"];
+    NSURLSessionDataTask *task = [client fetchPeopleWithPaginationInfo:nil completionHandler:nil];
+    [task cancel];
+    NSString *path = [[NSURLComponents componentsWithURL:task.currentRequest.URL resolvingAgainstBaseURL:YES] path];
+    XCTAssertTrue([path rangeOfString:client.apiVersion].location != NSNotFound,
+                  @"Version string in all future request URLs should have been updated.");
+}
+
 @end

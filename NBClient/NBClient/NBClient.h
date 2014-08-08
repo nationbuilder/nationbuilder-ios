@@ -21,6 +21,8 @@ extern NSString * const NBClientErrorMessageKey;
 extern NSString * const NBClientErrorValidationErrorsKey;
 extern NSString * const NBClientErrorInnerErrorKey;
 
+extern NSString * const NBClientDefaultAPIVersion;
+
 @interface NBClient : NSObject <NSURLSessionDelegate>
 
 @property (nonatomic, strong, readonly) NSString *nationName;
@@ -30,6 +32,7 @@ extern NSString * const NBClientErrorInnerErrorKey;
 @property (nonatomic, strong, readonly) NBAuthenticator *authenticator;
 
 @property (nonatomic, strong) NSString *apiKey;
+@property (nonatomic, strong) NSString *apiVersion;
 
 - (instancetype)initWithNationName:(NSString *)nationName
                      authenticator:(NBAuthenticator *)authenticator
