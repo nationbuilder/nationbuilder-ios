@@ -13,6 +13,7 @@
 @interface NBClientTests : NBTestCase
 
 @property (nonatomic, weak, readonly) NBClient *baseClientWithAuthenticator;
+@property (nonatomic, weak, readonly) NBClient *baseClientWithTestToken;
 
 - (void)assertCredential:(NBAuthenticationCredential *)credential;
 
@@ -37,10 +38,16 @@
     NBAuthenticator *authenticator = [[NBAuthenticator alloc] initWithBaseURL:self.baseURL
                                                              clientIdentifier:self.clientIdentifier
                                                                  clientSecret:self.clientSecret];
-    NBClient *client = [[NBClient alloc] initWithNationName:self.nationName
-                                              authenticator:authenticator
-                                           customURLSession:nil customURLSessionConfiguration:nil];
-    return client;
+    return [[NBClient alloc] initWithNationName:self.nationName
+                                  authenticator:authenticator
+                               customURLSession:nil customURLSessionConfiguration:nil];
+}
+- (NBClient *)baseClientWithTestToken
+{
+    return [[NBClient alloc] initWithNationName:self.nationName
+                                         apiKey:self.testToken
+                                  customBaseURL:self.baseURL
+                               customURLSession:nil customURLSessionConfiguration:nil];
 }
 
 - (void)assertCredential:(NBAuthenticationCredential *)credential
@@ -55,10 +62,7 @@
 
 - (void)testDefaultInitialization
 {
-    NBClient *client = [[NBClient alloc] initWithNationName:self.nationName
-                                                     apiKey:self.apiKey
-                                              customBaseURL:self.baseURL
-                                           customURLSession:nil customURLSessionConfiguration:nil];
+    NBClient *client = self.baseClientWithTestToken;
     XCTAssertNotNil(client.urlSession,
                     @"Client should have default session.");
     XCTAssertNotNil(client.sessionConfiguration,
