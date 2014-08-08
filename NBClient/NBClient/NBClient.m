@@ -137,7 +137,7 @@ NSString * const NBClientErrorInnerErrorKey = @"inner_error";
 
 - (NSURLSessionDataTask *)baseFetchTaskWithURLComponents:(NSURLComponents *)components
                                               resultsKey:(NSString *)resultsKey
-                                          paginationInfo:(NBPaginationInfo*)paginationInfo
+                                          paginationInfo:(NBPaginationInfo *)paginationInfo
                                        completionHandler:(NBClientResourceListCompletionHandler)completionHandler
 {
     if (paginationInfo) {

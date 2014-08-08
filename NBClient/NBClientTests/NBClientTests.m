@@ -105,7 +105,6 @@
      }];
     XCTAssertTrue(task && task.state == NSURLSessionTaskStateRunning,
                   @"Authenticator should have created and ran task.");
-    NSLog(@"REQUEST: %@", task.currentRequest.nb_debugDescription);
     [self tearDownAsync];
 }
 

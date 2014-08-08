@@ -14,6 +14,7 @@
 typedef void (^NBClientResourceListCompletionHandler)(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error);
 typedef void (^NBClientResourceItemCompletionHandler)(NSDictionary *item, NSError *error);
 
+// Use these constants when working with the client's errors.
 extern NSUInteger const NBClientErrorCodeService;
 extern NSString * const NBClientErrorCodeKey;
 extern NSString * const NBClientErrorMessageKey;
