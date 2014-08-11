@@ -27,8 +27,13 @@
 
 @interface NSString (NBAdditions)
 
+- (NSDictionary *)nb_queryStringParametersWithEncoding:(NSStringEncoding)stringEncoding;
+
 - (NSString *)nb_percentEscapedQueryStringWithEncoding:(NSStringEncoding)stringEncoding
                             charactersToLeaveUnescaped:(NSString *)charactersToLeaveUnescaped;
+
+- (NSString *)nb_percentUnescapedQueryStringWithEncoding:(NSStringEncoding)stringEncoding
+                                charactersToLeaveEscaped:(NSString *)charactersToLeaveEscaped;
 
 @end
 
