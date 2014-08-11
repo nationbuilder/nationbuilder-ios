@@ -7,7 +7,7 @@
 		<key>Base URL Format</key>
 		<string>http://%@.nbuild.dev</string>
 		<key>Client ID</key>
-		<string></string>
+		<string>ca76d8aa658b4a0af4aba5599f4443bed47895025799a63f9f75669ebc67dd9d</string>
 		<key>Nation Name</key>
 		<string>abeforprez</string>
 		<key>Test Token</key>
@@ -18,7 +18,7 @@
 		<key>Base URL Format</key>
 		<string>https://%@.nationbuilder.com</string>
 		<key>Client ID</key>
-		<string></string>
+		<string>d69aa7b7ad57efd69c3ef688c15e4318d501612d0c258d7ac92f3f1bb3a539aa</string>
 		<key>Nation Name</key>
 		<string>pengtest1</string>
 		<key>Test Token</key>
