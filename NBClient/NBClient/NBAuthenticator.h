@@ -32,6 +32,8 @@ extern NSString * const NBAuthenticationGrantTypeRefresh; // (NOTE: Not implemen
 
 extern NSUInteger const NBAuthenticationErrorCodeService;
 
+extern NSString * const NBAuthenticationRedirectTokenKey;
+
 @interface NBAuthenticator : NSObject
 
 @property (nonatomic, strong, readonly) NSURL *baseURL;

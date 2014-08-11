@@ -18,6 +18,8 @@ NSString * const NBAuthenticationGrantTypeRefresh = @"refresh_token";
 
 NSUInteger const NBAuthenticationErrorCodeService = 1;
 
+NSString * const NBAuthenticationRedirectTokenKey = @"token";
+
 static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
 
 @interface NBAuthenticator ()
