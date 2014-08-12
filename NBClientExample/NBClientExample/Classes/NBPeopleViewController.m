@@ -33,7 +33,7 @@ static void *observationContext = &observationContext;
 
 @interface NBPeopleViewController ()
 
-<UICollectionViewDelegateFlowLayout, NBCollectionViewCellDelegate>
+<UICollectionViewDelegateFlowLayout, UINavigationControllerDelegate, NBCollectionViewCellDelegate>
 
 @property (nonatomic, strong, readwrite) NSMutableDictionary *nibNames;
 
@@ -63,8 +63,6 @@ static void *observationContext = &observationContext;
 - (void)tearDownPagination;
 
 - (IBAction)presentErrorView:(id)sender;
-
-- (NBPersonCellView *)previousCellForCell:(NBPersonCellView *)cell;
 
 @end
 
@@ -137,6 +135,9 @@ static void *observationContext = &observationContext;
         }
     }
     // END: Boilerplate.
+    if (self.navigationController) {
+        self.navigationController.delegate = self;
+    }
     [self setUpCreating];
     [self setUpPagination];
 }
@@ -149,14 +150,6 @@ static void *observationContext = &observationContext;
     if (!dataSource.people.count) {
         self.busy = YES;
         [(id)self.dataSource fetchAll];
-    }
-}
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    // Manually deselect on successful navigation.
-    if (self.selectedIndexPath) {
-        [self.collectionView deselectItemAtIndexPath:self.selectedIndexPath animated:NO];
     }
 }
 
@@ -353,7 +346,7 @@ static void *observationContext = &observationContext;
 
 - (void)collectionViewCell:(UICollectionViewCell *)cell didSetHighlighted:(BOOL)highlighted
 {
-    NBPersonCellView *previousCell = [self previousCellForCell:(id)cell];
+    NBPersonCellView *previousCell = (id)[(id)self.collectionViewLayout previousVerticalCellForCell:cell];
     if (previousCell) {
         previousCell.bottomBorderView.hidden = highlighted;
     }
@@ -361,7 +354,7 @@ static void *observationContext = &observationContext;
 
 - (void)collectionViewCell:(UICollectionViewCell *)cell didSetSelected:(BOOL)selected
 {
-    NBPersonCellView *previousCell = [self previousCellForCell:(id)cell];
+    NBPersonCellView *previousCell = (id)[(id)self.collectionViewLayout previousVerticalCellForCell:cell];
     if (previousCell) {
         previousCell.bottomBorderView.hidden = selected;
     }
@@ -410,6 +403,23 @@ static void *observationContext = &observationContext;
         } else if (didPassThresold && scrollView.isDragging && offsetOverflow > 0.0f && self.refreshState == NBScrollViewPullActionStateStopped) {
             self.refreshState = NBScrollViewPullActionStatePlanned;
         }
+    }
+}
+
+#pragma mark - UINavigationControllerDelegate
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    // Manually deselect on successful navigation.
+    if (!self.selectedIndexPath) {
+        return;
+    }
+    if (viewController.modalPresentationStyle == UIModalPresentationFormSheet) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.collectionView deselectItemAtIndexPath:self.selectedIndexPath animated:NO];
+        });
+    } else if (viewController == self) {
+        [self.collectionView deselectItemAtIndexPath:self.selectedIndexPath animated:NO];
     }
 }
 
@@ -465,21 +475,32 @@ static void *observationContext = &observationContext;
 - (IBAction)presentPersonView:(id)sender
 {
     NBPersonViewController *viewController = [[NBPersonViewController alloc] initWithNibNames:nil bundle:nil];
+    NBPeopleViewFlowLayout *layout = (id)self.collectionViewLayout;
+    BOOL shouldPresentAsModal = layout.hasMultipleColumns;
     if (sender == self.createButtonItem) {
         // We're creating.
-        viewController.modalPresentationStyle = UIModalPresentationPageSheet;
+        shouldPresentAsModal = YES;
         viewController.dataSource = [(id)self.dataSource dataSourceForItem:nil];
         viewController.mode = NBPersonViewControllerModeCreate;
-        // Boilerplate.
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-        navigationController.view.backgroundColor = [UIColor whiteColor];
-        // END: Boilerplate.
-        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
     } else {
+        // We're editing.
         viewController.mode = NBPersonViewControllerModeViewAndEdit;
         NBPaginationInfo *paginationInfo = ((NBPeopleDataSource *)self.dataSource).paginationInfo;
         NSUInteger startItemIndex = [paginationInfo indexOfFirstItemAtPage:(self.selectedIndexPath.section + 1)];
         viewController.dataSource = [(id)self.dataSource dataSourceForItemAtIndex:startItemIndex + self.selectedIndexPath.item];
+    }
+    if (shouldPresentAsModal) {
+        // Use modals, with smaller ones for iPad.
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+        navigationController.delegate = self;
+        navigationController.view.backgroundColor = [UIColor whiteColor];
+        if (layout.hasMultipleColumns) {
+            navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+        } else {
+            navigationController.modalPresentationStyle = UIModalPresentationPageSheet;
+        }
+        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    } else {
         [self.navigationController pushViewController:viewController animated:YES];
     }
 }
@@ -623,13 +644,20 @@ static void *observationContext = &observationContext;
     }
     scrollView.contentInset = contentInset;
     if (self.loadMoreState == NBScrollViewPullActionStateStopped && previousState == NBScrollViewPullActionStateInProgress) {
-        // Auto-scroll to new page.
-        CGPoint contentOffset = scrollView.contentOffset;
-        contentOffset.y += scrollView.bounds.size.height - scrollView.contentInset.top;
-        [scrollView setContentOffset:contentOffset animated:YES];
-        dispatch_async(dispatch_get_main_queue(), ^{ // Defer showing the indicator until offset animation finishes.
-            scrollView.showsVerticalScrollIndicator = YES;
-        });
+        // Auto-scroll to new page only if we actually have content overflow.
+        CGFloat itemHeight = layout.itemSize.height;
+        CGFloat pageHeight = ([paginationInfo numberOfItemsAtPage:paginationInfo.currentPageNumber]
+                              * (layout.hasMultipleColumns ? (itemHeight / layout.numberOfColumnsInMultipleColumnLayout) : itemHeight)
+                              + layout.headerReferenceSize.height);
+        BOOL shouldAutoScroll = (layout.intrinsicContentSize.height + pageHeight) > scrollView.bounds.size.height + itemHeight;
+        if (shouldAutoScroll) {
+            CGPoint contentOffset = scrollView.contentOffset;
+            contentOffset.y += pageHeight;
+            [scrollView setContentOffset:contentOffset animated:YES];
+            dispatch_async(dispatch_get_main_queue(), ^{ // Defer showing the indicator until offset animation finishes.
+                scrollView.showsVerticalScrollIndicator = YES;
+            });
+        }
     } else {
         scrollView.showsVerticalScrollIndicator = !shouldHideIndicator;
     }
@@ -638,6 +666,12 @@ static void *observationContext = &observationContext;
 - (void)setUpPagination
 {
     [self.collectionView addObserver:self forKeyPath:ContentOffsetKeyPath options:0 context:&observationContext];
+    NBPeopleDataSource *dataSource = (id)self.dataSource;
+    NBPeopleViewFlowLayout *layout = (id)self.collectionViewLayout;
+    CGFloat numberOfItemsPerPage = 10;
+    dataSource.paginationInfo.numberOfItemsPerPage = (layout.hasMultipleColumns
+                                                      ? layout.numberOfColumnsInMultipleColumnLayout * numberOfItemsPerPage
+                                                      : numberOfItemsPerPage);
 }
 - (void)completePaginationSetup
 {
@@ -659,18 +693,6 @@ static void *observationContext = &observationContext;
                                                        delegate:self cancelButtonTitle:nil
                                               otherButtonTitles:NSLocalizedString(@"title.ok", nil), nil];
     [alertView show];
-}
-
-#pragma mark Helpers
-
-- (NBPersonCellView *)previousCellForCell:(UICollectionViewCell *)cell
-{
-    NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
-    if (indexPath.item == 0) {
-        return nil;
-    }
-    return (id)[self.collectionView cellForItemAtIndexPath:
-                [NSIndexPath indexPathForItem:indexPath.item - 1 inSection:indexPath.section]];
 }
 
 @end

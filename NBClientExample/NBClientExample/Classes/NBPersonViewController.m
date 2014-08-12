@@ -58,6 +58,7 @@ static NSDictionary *DataToFieldKeyPathsMap;
 @property (nonatomic, strong) UIView *activeField;
 
 @property (nonatomic, readonly, getter = isPresentedAsModal) BOOL presentedAsModal;
+@property (nonatomic, strong) UIBarButtonItem *closeButtonItem;
 
 - (void)reloadData;
 - (void)saveData;
@@ -138,8 +139,16 @@ static NSDictionary *DataToFieldKeyPathsMap;
     }
     if (editing) {
         [self changeToNextField];
+        if (self.navigationItem.leftBarButtonItem != self.cancelButtonItem) {
+            [self.navigationItem setLeftBarButtonItem:self.cancelButtonItem animated:YES];
+        }
     } else {
         self.activeField = nil;
+        if (self.navigationController.modalPresentationStyle == UIModalPresentationFormSheet) {
+            [self.navigationItem setLeftBarButtonItem:self.closeButtonItem animated:YES];
+        } else {
+            self.navigationItem.leftBarButtonItem = nil;
+        }
     }
 }
 
@@ -214,7 +223,11 @@ static NSDictionary *DataToFieldKeyPathsMap;
 - (IBAction)cancelPendingAction:(id)sender
 {
     [(id)self.dataSource cancelSave];
-    [self dismiss:sender];
+    if (self.mode == NBPersonViewControllerModeCreate) {
+        [self dismiss:sender];
+    } else {
+        [self toggleEditing:sender];
+    }
 }
 
 #pragma mark - NSKeyValueObserving
@@ -306,6 +319,12 @@ static NSDictionary *DataToFieldKeyPathsMap;
             [self.tabBarController.presentingViewController isKindOfClass:[UITabBarController class]]);
 }
 
+- (UIBarButtonItem *)closeButtonItem
+{
+    return [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop
+                                                         target:self action:@selector(dismiss:)];
+}
+
 #pragma mark - Data
 
 - (void)reloadData
@@ -378,7 +397,11 @@ static NSDictionary *DataToFieldKeyPathsMap;
         }
     }
     if (self.isPresentedAsModal) {
-        self.navigationItem.leftBarButtonItem = self.cancelButtonItem;
+        if (self.navigationController.modalPresentationStyle == UIModalPresentationFormSheet) {
+            self.navigationItem.leftBarButtonItem = self.closeButtonItem;
+        } else {
+            self.navigationItem.leftBarButtonItem = self.cancelButtonItem;
+        }
     }
 }
 
@@ -407,6 +430,10 @@ static NSDictionary *DataToFieldKeyPathsMap;
     [[NSNotificationCenter defaultCenter]
      addObserverForName:UIKeyboardDidShowNotification object:nil queue:[NSOperationQueue mainQueue]
      usingBlock:^(NSNotification *note) {
+         if (self.navigationController.modalPresentationStyle == UIModalPresentationFormSheet) {
+             // TODO: Handle size as form-sheet modal.
+             return;
+         }
          CGRect keyboardFrame = [note.userInfo[UIKeyboardFrameBeginUserInfoKey] CGRectValue];
          keyboardFrame = [weakSelf.scrollView convertRect:keyboardFrame fromView:nil];
          [UIView
@@ -421,6 +448,10 @@ static NSDictionary *DataToFieldKeyPathsMap;
     [[NSNotificationCenter defaultCenter]
      addObserverForName:UIKeyboardWillHideNotification object:nil queue:[NSOperationQueue mainQueue]
      usingBlock:^(NSNotification *note) {
+         if (self.navigationController.modalPresentationStyle == UIModalPresentationFormSheet) {
+             // TODO: Handle size as form-sheet modal.
+             return;
+         }
          [UIView
           animateWithDuration:[note.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue] delay:0.0f
           options:[note.userInfo[UIKeyboardAnimationCurveUserInfoKey] unsignedIntegerValue]|UIViewAnimationOptionBeginFromCurrentState
@@ -456,11 +487,11 @@ static NSDictionary *DataToFieldKeyPathsMap;
 
 - (IBAction)toggleEditing:(id)sender
 {
-    BOOL shouldSave = self.isEditing;
+    BOOL shouldSave = self.isEditing && sender != self.cancelButtonItem;
     if (shouldSave) {
         [self saveData];
     }
-    BOOL editing = !shouldSave;
+    BOOL editing = !self.isEditing;
     // More code here to guard against setting `editing` as needed.
     [self setEditing:editing animated:YES];
 }

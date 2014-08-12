@@ -18,10 +18,17 @@
 
 @property (nonatomic) UIEdgeInsets originalContentInset;
 
+@property (nonatomic) NSUInteger numberOfColumnsInMultipleColumnLayout;
+
 @property (nonatomic, readonly) CGFloat bottomOffsetOverflow;
 @property (nonatomic, readonly) CGFloat topOffsetOverflow;
 
 @property (nonatomic, readonly) NSArray *decorationViewClasses;
+
+@property (nonatomic, readonly) BOOL hasMultipleColumns;
+@property (nonatomic, readonly) CGSize intrinsicContentSize;
+
+- (UICollectionViewCell *)previousVerticalCellForCell:(UICollectionViewCell *)cell;
 
 @end
 

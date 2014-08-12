@@ -12,6 +12,7 @@
 
 @property (nonatomic, getter = isLandscape) BOOL landscape;
 @property (nonatomic) CGFloat originalItemHeight;
+@property (nonatomic, readonly) CGFloat visibleCollectionViewHeight;
 
 @property (nonatomic, strong) NSArray *decorationViewAttributes;
 
@@ -31,7 +32,7 @@
     CGFloat fullWidth = self.collectionView.bounds.size.width;
     
     CGSize itemSize = self.itemSize;
-    itemSize.width = fullWidth;
+    itemSize.width = self.hasMultipleColumns ? (fullWidth / self.numberOfColumnsInMultipleColumnLayout) : fullWidth;
     CGFloat heightScalar = self.isLandscape ? 0.9f : 1.0f;
     itemSize.height = self.originalItemHeight * heightScalar;
     self.itemSize = itemSize;
@@ -65,6 +66,13 @@
         return YES;
     }
     return [super shouldInvalidateLayoutForBoundsChange:newBounds];
+}
+
+- (CGSize)collectionViewContentSize
+{
+    CGSize contentSize = self.intrinsicContentSize;
+    contentSize.height = MAX(contentSize.height, self.visibleCollectionViewHeight);
+    return contentSize;
 }
 
 #pragma mark - Decoration Views
@@ -103,7 +111,7 @@
     }]].firstObject;
     // Customize position.
     if ([decorationViewKind isEqual:NSStringFromClass([NBPeopleLoadMoreDecorationLabel class])]) {
-        center.y = scrollView.contentSize.height + baseCenterY;
+        center.y = MAX(scrollView.contentSize.height, self.visibleCollectionViewHeight) + baseCenterY;
         offsetOverflow = self.bottomOffsetOverflow;
     } else if ([decorationViewKind isEqual:NSStringFromClass([NBPeopleRefreshDecorationLabel class])]) {
         center.y = -baseCenterY;
@@ -121,6 +129,15 @@
 
 #pragma mark - Public
 
+- (NSUInteger)numberOfColumnsInMultipleColumnLayout
+{
+    if (_numberOfColumnsInMultipleColumnLayout) {
+        return _numberOfColumnsInMultipleColumnLayout;
+    }
+    self.numberOfColumnsInMultipleColumnLayout = 2;
+    return _numberOfColumnsInMultipleColumnLayout;
+}
+
 - (CGFloat)bottomOffsetOverflow
 {
     UIScrollView *scrollView = self.collectionView;
@@ -136,6 +153,34 @@
 - (NSArray *)decorationViewClasses
 {
     return @[ [NBPeopleLoadMoreDecorationLabel class], [NBPeopleRefreshDecorationLabel class] ];
+}
+
+- (BOOL)hasMultipleColumns
+{
+    return UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
+}
+
+- (CGSize)intrinsicContentSize
+{
+    return [super collectionViewContentSize];
+}
+
+- (UICollectionViewCell *)previousVerticalCellForCell:(UICollectionViewCell *)cell
+{
+    NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
+    NSInteger offset = self.hasMultipleColumns ? self.numberOfColumnsInMultipleColumnLayout : 1;
+    if (indexPath.item - offset < 0) {
+        return nil;
+    }
+    return [self.collectionView cellForItemAtIndexPath:
+            [NSIndexPath indexPathForItem:indexPath.item - offset inSection:indexPath.section]];
+}
+
+#pragma mark - Private
+
+- (CGFloat)visibleCollectionViewHeight
+{
+    return self.collectionView.bounds.size.height - self.collectionView.contentInset.top + 1.0f;
 }
 
 @end

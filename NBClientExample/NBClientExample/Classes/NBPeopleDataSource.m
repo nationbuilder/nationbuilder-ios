@@ -114,7 +114,6 @@ static void *observationContext = &observationContext;
 {
     NBPersonDataSource *dataSource;
     if (index >= self.people.count) {
-        NSAssert(self.paginationInfo.numberOfTotalItems > self.people.count, @"Index should not be this big.");
         return nil;
     }
     NSDictionary *person = self.people[index];
@@ -126,6 +125,15 @@ static void *observationContext = &observationContext;
 }
 
 #pragma mark - NBDataSource
+
+- (NBPaginationInfo *)paginationInfo
+{
+    if (_paginationInfo) {
+        return _paginationInfo;
+    }
+    self.paginationInfo = [[NBPaginationInfo alloc] init];
+    return _paginationInfo;
+}
 
 - (void)cleanUp:(NSError *__autoreleasing *)error
 {
