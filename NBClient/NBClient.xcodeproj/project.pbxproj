@@ -9,20 +9,16 @@
 /* Begin PBXBuildFile section */
 		AA668DC619705FC800A952B0 /* NBTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = AA668DC519705FC800A952B0 /* NBTestCase.m */; };
 		AA668DD11970B81800A952B0 /* FoundationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AA668DD01970B81800A952B0 /* FoundationAdditions.m */; };
-		AA668DD21970B81800A952B0 /* FoundationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AA668DD01970B81800A952B0 /* FoundationAdditions.m */; };
 		AA668DD41976EA1600A952B0 /* NBClientPeopleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA668DD31976EA1600A952B0 /* NBClientPeopleTests.m */; };
 		AA668DD61978418F00A952B0 /* FoundationAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA668DD51978418F00A952B0 /* FoundationAdditionsTests.m */; };
 		AA6FF3BE197D95220049B747 /* NBPaginationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FF3BD197D95220049B747 /* NBPaginationInfo.m */; };
-		AA6FF3BF197D95220049B747 /* NBPaginationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FF3BD197D95220049B747 /* NBPaginationInfo.m */; };
 		AA6FF3C1197DADEA0049B747 /* NBPaginationInfoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FF3C0197DADEA0049B747 /* NBPaginationInfoTests.m */; };
 		AA6FF3C4197DF2E00049B747 /* NBClient+People.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FF3C3197DF2E00049B747 /* NBClient+People.m */; };
-		AA6FF3C5197DF2E00049B747 /* NBClient+People.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FF3C3197DF2E00049B747 /* NBClient+People.m */; };
 		AA6FF3C8197EDEE60049B747 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA6FF3C7197EDEE60049B747 /* Security.framework */; };
+		AA78ED61199AC2F60043B7C0 /* libPods-NBClientTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA78ED60199AC2F60043B7C0 /* libPods-NBClientTests.a */; };
 		AA862851196F1651005060C9 /* NBAuthenticator.m in Sources */ = {isa = PBXBuildFile; fileRef = AA862850196F1651005060C9 /* NBAuthenticator.m */; };
-		AA862852196F1651005060C9 /* NBAuthenticator.m in Sources */ = {isa = PBXBuildFile; fileRef = AA862850196F1651005060C9 /* NBAuthenticator.m */; };
 		AA8B6822196F5539009DDA91 /* NBAuthenticatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA8B6821196F5539009DDA91 /* NBAuthenticatorTests.m */; };
 		AA8B6825196F82D4009DDA91 /* NBDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = AA8B6824196F82D4009DDA91 /* NBDefines.m */; };
-		AA8B6826196F82D4009DDA91 /* NBDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = AA8B6824196F82D4009DDA91 /* NBDefines.m */; };
 		AA90915319834164009BE1E9 /* Main.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AABD0029196F1FD6003A745F /* Main.h */; };
 		AA90915419834164009BE1E9 /* FoundationAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA668DCF1970B81800A952B0 /* FoundationAdditions.h */; };
 		AA90915519834164009BE1E9 /* NBAuthenticator.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA86284F196F1651005060C9 /* NBAuthenticator.h */; };
@@ -71,6 +67,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A5E9606179F341C6AFED8499 /* Pods-NBClientTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NBClientTests.xcconfig"; path = "../Pods/Pods-NBClientTests.xcconfig"; sourceTree = "<group>"; };
 		AA668DC419705FC800A952B0 /* NBTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBTestCase.h; sourceTree = "<group>"; };
 		AA668DC519705FC800A952B0 /* NBTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBTestCase.m; sourceTree = "<group>"; };
 		AA668DCF1970B81800A952B0 /* FoundationAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoundationAdditions.h; sourceTree = "<group>"; };
@@ -84,6 +81,7 @@
 		AA6FF3C3197DF2E00049B747 /* NBClient+People.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NBClient+People.m"; sourceTree = "<group>"; };
 		AA6FF3C6197DF5B10049B747 /* NBClient_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBClient_Internal.h; sourceTree = "<group>"; };
 		AA6FF3C7197EDEE60049B747 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		AA78ED60199AC2F60043B7C0 /* libPods-NBClientTests.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-NBClientTests.a"; path = "../Pods/build/Debug-iphoneos/libPods-NBClientTests.a"; sourceTree = "<group>"; };
 		AA86284F196F1651005060C9 /* NBAuthenticator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBAuthenticator.h; sourceTree = "<group>"; };
 		AA862850196F1651005060C9 /* NBAuthenticator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAuthenticator.m; sourceTree = "<group>"; };
 		AA8B6821196F5539009DDA91 /* NBAuthenticatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAuthenticatorTests.m; sourceTree = "<group>"; };
@@ -116,6 +114,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA78ED61199AC2F60043B7C0 /* libPods-NBClientTests.a in Frameworks */,
 				AAAEFC33196CD13D00222A48 /* XCTest.framework in Frameworks */,
 				AAAEFC39196CD13D00222A48 /* libNBClient.a in Frameworks */,
 				AAAEFC34196CD13D00222A48 /* Foundation.framework in Frameworks */,
@@ -132,6 +131,7 @@
 				AAAEFC3A196CD13D00222A48 /* NBClientTests */,
 				AAAEFC23196CD13D00222A48 /* Frameworks */,
 				AAAEFC22196CD13D00222A48 /* Products */,
+				A5E9606179F341C6AFED8499 /* Pods-NBClientTests.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -147,6 +147,7 @@
 		AAAEFC23196CD13D00222A48 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AA78ED60199AC2F60043B7C0 /* libPods-NBClientTests.a */,
 				AAAEFC24196CD13D00222A48 /* Foundation.framework */,
 				AA6FF3C7197EDEE60049B747 /* Security.framework */,
 				AAAEFC32196CD13D00222A48 /* XCTest.framework */,
@@ -232,9 +233,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AAAEFC47196CD13D00222A48 /* Build configuration list for PBXNativeTarget "NBClientTests" */;
 			buildPhases = (
+				02CC2C7BDCED418996E22D0B /* Check Pods Manifest.lock */,
 				AAAEFC2D196CD13D00222A48 /* Sources */,
 				AAAEFC2E196CD13D00222A48 /* Frameworks */,
 				AAAEFC2F196CD13D00222A48 /* Resources */,
+				4E2293EFB86F4FE3A69DCB10 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -284,6 +287,39 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		02CC2C7BDCED418996E22D0B /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		4E2293EFB86F4FE3A69DCB10 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Pods-NBClientTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		AAAEFC1D196CD13D00222A48 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -303,16 +339,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA668DD61978418F00A952B0 /* FoundationAdditionsTests.m in Sources */,
-				AA668DD21970B81800A952B0 /* FoundationAdditions.m in Sources */,
-				AA8B6826196F82D4009DDA91 /* NBDefines.m in Sources */,
-				AA862852196F1651005060C9 /* NBAuthenticator.m in Sources */,
-				AA6FF3BF197D95220049B747 /* NBPaginationInfo.m in Sources */,
-				AA668DC619705FC800A952B0 /* NBTestCase.m in Sources */,
-				AA668DD41976EA1600A952B0 /* NBClientPeopleTests.m in Sources */,
-				AA6FF3C5197DF2E00049B747 /* NBClient+People.m in Sources */,
-				AAAEFC41196CD13D00222A48 /* NBClientTests.m in Sources */,
 				AA8B6822196F5539009DDA91 /* NBAuthenticatorTests.m in Sources */,
+				AA668DD41976EA1600A952B0 /* NBClientPeopleTests.m in Sources */,
+				AAAEFC41196CD13D00222A48 /* NBClientTests.m in Sources */,
 				AA6FF3C1197DADEA0049B747 /* NBPaginationInfoTests.m in Sources */,
+				AA668DC619705FC800A952B0 /* NBTestCase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -432,6 +463,7 @@
 		};
 		AAAEFC48196CD13D00222A48 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A5E9606179F341C6AFED8499 /* Pods-NBClientTests.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -445,6 +477,11 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "NBClientTests/NBClientTests-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SOURCE_ROOT)/..",
+					"Client/Pods/build/Debug-iphoneos",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -452,6 +489,7 @@
 		};
 		AAAEFC49196CD13D00222A48 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A5E9606179F341C6AFED8499 /* Pods-NBClientTests.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -461,6 +499,11 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NBClient/NBClient-Prefix.pch";
 				INFOPLIST_FILE = "NBClientTests/NBClientTests-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SOURCE_ROOT)/..",
+					"Client/Pods/build/Debug-iphoneos",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
 			};
