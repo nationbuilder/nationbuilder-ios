@@ -119,6 +119,10 @@
 
 - (void)testConfiguringAPIVersion
 {
+    if (self.shouldUseHTTPStubbing) {
+        NSLog(@"SKIPPING");
+        return;
+    }
     NBClient *client = self.baseClientWithTestToken;
     client.apiVersion = [NBClientDefaultAPIVersion stringByAppendingString:@"0"];
     NSURLSessionDataTask *task = [client fetchPeopleWithPaginationInfo:nil completionHandler:nil];

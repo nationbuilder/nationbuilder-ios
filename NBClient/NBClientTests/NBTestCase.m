@@ -19,6 +19,7 @@
 
 @property (nonatomic, strong, readwrite) NSString *nationName;
 @property (nonatomic, strong, readwrite) NSURL *baseURL;
+@property (nonatomic, strong, readwrite) NSString *baseURLString;
 
 @property (nonatomic, strong, readwrite) NSString *testToken;
 @property (nonatomic, strong, readwrite) NSString *clientIdentifier;
@@ -60,8 +61,8 @@
     NSUserDefaults *launchArguments = [NSUserDefaults standardUserDefaults];
     self.nationName = [launchArguments stringForKey:@"NBNationName"];
     NSAssert(self.nationName, @"Missing environment arguments for tests.");
-    self.baseURL = [NSURL URLWithString:
-                    [NSString stringWithFormat:[launchArguments stringForKey:@"NBBaseURLFormat"], self.nationName]];
+    self.baseURLString = [NSString stringWithFormat:[launchArguments stringForKey:@"NBBaseURLFormat"], self.nationName];
+    self.baseURL = [NSURL URLWithString:self.baseURLString];
     self.testToken = [launchArguments stringForKey:@"NBTestToken"];
     self.clientIdentifier = [launchArguments stringForKey:@"NBClientIdentifier"];
     self.clientSecret = [launchArguments stringForKey:@"NBClientSecret"];
@@ -73,9 +74,6 @@
 - (void)tearDown
 {
     [super tearDown];
-    if (self.shouldUseHTTPStubbing) {
-        [[LSNocilla sharedInstance] clearStubs];
-    }
 }
 
 #pragma mark - Helpers
@@ -88,7 +86,6 @@
         NSUserDefaults *launchArguments = [NSUserDefaults standardUserDefaults];
         shouldUse = [launchArguments objectForKey:@"NBShouldUseHTTPStubbing"] != nil;
     });
-    shouldUse = NO;
     return shouldUse;
 }
 
@@ -100,6 +97,37 @@
 - (BOOL)shouldOnlyUseTestToken
 {
     return !self.userPassword;
+}
+
+- (LSStubResponseDSL *)stubRequestWithMethod:(NSString *)method
+                                       path:(NSString *)path
+                                 identifier:(NSUInteger)identifier
+                                 parameters:(NSDictionary *)parameters
+{
+    NSURLComponents *components = [NSURLComponents componentsWithURL:self.baseURL resolvingAgainstBaseURL:NO];
+    components.path = [NSString stringWithFormat:@"/api/%@/%@", self.client.apiVersion, path];
+    BOOL hasIdentifier = identifier != NSNotFound;
+    if (hasIdentifier) {
+        components.path = [components.path stringByAppendingString:[NSString stringWithFormat:@"/%d", identifier]];
+    }
+    NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
+    mutableParameters[@"access_token"] = self.client.apiKey;
+    components.query = [mutableParameters nb_queryStringWithEncoding:NSASCIIStringEncoding
+                                         skipPercentEncodingPairKeys:[NSSet setWithObject:@"email"]
+                                          charactersToLeaveUnescaped:nil];
+    NSMutableDictionary *headers = [NSMutableDictionary dictionary];
+    headers[@"Accept"] = @"application/json";
+    if ([method isEqual:@"POST"] || [method isEqual:@"PUT"]) {
+        headers[@"Content-Type"] = @"application/json";
+    }
+    NSString *fileName = [NSString stringWithFormat:@"%@%@_%@",
+                          [path stringByReplacingOccurrencesOfString:@"/" withString:@"_"],
+                          (hasIdentifier ? @"_id" : @""),
+                          method.lowercaseString];
+    NSData *data = [NSData dataWithContentsOfFile:
+                    [[NSBundle bundleForClass:self.class] pathForResource:fileName ofType:@"txt"]];
+    NSLog(@"STUB: %@", components.URL.absoluteString);
+    return stubRequest(method, components.URL.absoluteString).withHeaders(headers).andReturnRawResponse(data);
 }
 
 - (void)setUpSharedClient
@@ -171,6 +199,9 @@
     }
     if (!self.didCallBack) {
         XCTFail(@"Async test timed out.");
+    }
+    if (self.shouldUseHTTPStubbing) {
+        [[LSNocilla sharedInstance] clearStubs];
     }
 }
 

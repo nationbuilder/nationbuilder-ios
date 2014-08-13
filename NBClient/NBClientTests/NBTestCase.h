@@ -17,6 +17,7 @@
 
 @property (nonatomic, strong, readonly) NSString *nationName;
 @property (nonatomic, strong, readonly) NSURL *baseURL;
+@property (nonatomic, strong, readonly) NSString *baseURLString;
 
 @property (nonatomic, strong, readonly) NSString *testToken;
 @property (nonatomic, strong, readonly) NSString *clientIdentifier;
@@ -31,6 +32,10 @@
 @property (nonatomic, readonly) BOOL shouldOnlyUseTestToken; // This may be temporary.
 
 - (void)setUpSharedClient;
+- (LSStubRequestDSL *)stubRequestWithMethod:(NSString *)method
+                                       path:(NSString *)path
+                                 identifier:(NSUInteger)identifier
+                                 parameters:(NSDictionary *)parameters;
 
 - (void)assertPaginationInfo:(NBPaginationInfo *)paginationInfo
     withPaginationParameters:(NSDictionary *)paginationParameters;
