@@ -73,11 +73,16 @@
 
 - (void)testAsyncAuthenticatedInitialization
 {
+    if (self.shouldOnlyUseTestToken) {
+        NSLog(@"SKIPPING");
+        return;
+    }
     [self setUpAsync];
     NBClient *client = self.baseClientWithAuthenticator;
     XCTAssertNotNil(client.authenticator,
                     @"Client should have authenticator.");
-    [NBAuthenticationCredential deleteCredentialWithIdentifier:client.authenticator.credentialIdentifier];
+    NSString *credentialIdentifier = client.authenticator.credentialIdentifier;
+    [NBAuthenticationCredential deleteCredentialWithIdentifier:credentialIdentifier];
     NSURLSessionDataTask *task =
     [client.authenticator
      authenticateWithUserName:self.userEmailAddress

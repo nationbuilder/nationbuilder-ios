@@ -8,6 +8,8 @@
 
 #import <XCTest/XCTest.h>
 
+#import <Nocilla/Nocilla.h>
+
 @class NBClient;
 @class NBPaginationInfo;
 
@@ -24,6 +26,9 @@
 @property (nonatomic, strong) NSString *userPassword;
 
 @property (nonatomic, strong, readonly) NBClient *client;
+
+@property (nonatomic, readonly) BOOL shouldUseHTTPStubbing;
+@property (nonatomic, readonly) BOOL shouldOnlyUseTestToken; // This may be temporary.
 
 - (void)setUpSharedClient;
 

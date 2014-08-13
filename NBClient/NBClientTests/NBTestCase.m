@@ -19,14 +19,34 @@
 
 @property (nonatomic, strong, readwrite) NBClient *client;
 
++ (BOOL)shouldUseHTTPStubbing;
+
 @end
 
 @implementation NBTestCase
+
++ (void)setUp
+{
+    [super setUp];
+    if ([self shouldUseHTTPStubbing]) {
+        [[LSNocilla sharedInstance] start];
+    }
+}
+
++ (void)tearDown
+{
+    [super tearDown];
+    if ([self shouldUseHTTPStubbing]) {
+        [[LSNocilla sharedInstance] stop];
+    }
+}
 
 - (void)setUp
 {
     [super setUp];
     // Provide default config for test cases.
+    // NOTE: The reason we're still using launch-argument-based configurationis
+    // because there is still hope that the xcodebuild command can leverage it.
     NSUserDefaults *launchArguments = [NSUserDefaults standardUserDefaults];
     self.nationName = [launchArguments stringForKey:@"NBNationName"];
     NSAssert(self.nationName, @"Missing environment arguments for tests.");
@@ -43,25 +63,54 @@
 - (void)tearDown
 {
     [super tearDown];
+    if (self.shouldUseHTTPStubbing) {
+        [[LSNocilla sharedInstance] clearStubs];
+    }
 }
 
 #pragma mark - Helpers
+
++ (BOOL)shouldUseHTTPStubbing
+{
+    static BOOL shouldUse;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSUserDefaults *launchArguments = [NSUserDefaults standardUserDefaults];
+        shouldUse = [launchArguments objectForKey:@"NBShouldUseHTTPStubbing"] != nil;
+    });
+    shouldUse = NO;
+    return shouldUse;
+}
+
+- (BOOL)shouldUseHTTPStubbing
+{
+    return [self.class shouldUseHTTPStubbing];
+}
+
+- (BOOL)shouldOnlyUseTestToken
+{
+    return !self.userPassword;
+}
 
 - (void)setUpSharedClient
 {
     // We need to use the shared session because we need to be in an application
     // for an app-specific cache.
-    NBAuthenticator *authenticator = [[NBAuthenticator alloc] initWithBaseURL:self.baseURL
-                                                             clientIdentifier:self.clientIdentifier
-                                                                 clientSecret:self.clientSecret];
     __block NSString *apiKey;
-    NSURLSessionDataTask *task = [authenticator
-                                  authenticateWithUserName:self.userEmailAddress
-                                  password:self.userPassword
-                                  completionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
-                                      apiKey = credential.accessToken;
-                                  }];
-    NSAssert(!task, @"Test case requires saved authentication credential. Re-authenticating should not happen.");
+    if (!self.shouldOnlyUseTestToken) {
+        NBAuthenticator *authenticator = [[NBAuthenticator alloc] initWithBaseURL:self.baseURL
+                                                                 clientIdentifier:self.clientIdentifier
+                                                                     clientSecret:self.clientSecret];
+        NSURLSessionDataTask *task = [authenticator
+                                      authenticateWithUserName:self.userEmailAddress
+                                      password:self.userPassword
+                                      completionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
+                                          apiKey = credential.accessToken;
+                                      }];
+        NSAssert(!task, @"Test case requires saved authentication credential. Re-authenticating should not happen.");
+    } else {
+        apiKey = self.testToken;
+    }
     self.client = [[NBClient alloc] initWithNationName:self.nationName
                                                 apiKey:apiKey
                                          customBaseURL:self.baseURL
