@@ -17,6 +17,16 @@
 
 @property (nonatomic) BOOL didCallBack;
 
+@property (nonatomic, strong, readwrite) NSString *nationName;
+@property (nonatomic, strong, readwrite) NSURL *baseURL;
+
+@property (nonatomic, strong, readwrite) NSString *testToken;
+@property (nonatomic, strong, readwrite) NSString *clientIdentifier;
+@property (nonatomic, strong, readwrite) NSString *clientSecret;
+@property (nonatomic, strong, readwrite) NSString *userEmailAddress;
+@property (nonatomic, readwrite) NSUInteger userIdentifier;
+@property (nonatomic, strong, readwrite) NSString *userPassword;
+
 @property (nonatomic, strong, readwrite) NBClient *client;
 
 + (BOOL)shouldUseHTTPStubbing;

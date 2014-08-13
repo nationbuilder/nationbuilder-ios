@@ -15,15 +15,15 @@
 
 @interface NBTestCase : XCTestCase
 
-@property (nonatomic, strong) NSString *nationName;
-@property (nonatomic, strong) NSURL *baseURL;
+@property (nonatomic, strong, readonly) NSString *nationName;
+@property (nonatomic, strong, readonly) NSURL *baseURL;
 
-@property (nonatomic, strong) NSString *testToken;
-@property (nonatomic, strong) NSString *clientIdentifier;
-@property (nonatomic, strong) NSString *clientSecret;
-@property (nonatomic, strong) NSString *userEmailAddress;
-@property (nonatomic) NSUInteger userIdentifier;
-@property (nonatomic, strong) NSString *userPassword;
+@property (nonatomic, strong, readonly) NSString *testToken;
+@property (nonatomic, strong, readonly) NSString *clientIdentifier;
+@property (nonatomic, strong, readonly) NSString *clientSecret;
+@property (nonatomic, strong, readonly) NSString *userEmailAddress;
+@property (nonatomic, readonly) NSUInteger userIdentifier;
+@property (nonatomic, strong, readonly) NSString *userPassword;
 
 @property (nonatomic, strong, readonly) NBClient *client;
 
