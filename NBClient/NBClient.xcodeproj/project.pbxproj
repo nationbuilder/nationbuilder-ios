@@ -16,6 +16,13 @@
 		AA6FF3C4197DF2E00049B747 /* NBClient+People.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FF3C3197DF2E00049B747 /* NBClient+People.m */; };
 		AA6FF3C8197EDEE60049B747 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA6FF3C7197EDEE60049B747 /* Security.framework */; };
 		AA78ED61199AC2F60043B7C0 /* libPods-NBClientTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA78ED60199AC2F60043B7C0 /* libPods-NBClientTests.a */; };
+		AA78ED79199C563C0043B7C0 /* people_get.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA78ED71199C563C0043B7C0 /* people_get.txt */; };
+		AA78ED7A199C563C0043B7C0 /* people_id_delete.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA78ED72199C563C0043B7C0 /* people_id_delete.txt */; };
+		AA78ED7B199C563C0043B7C0 /* people_id_get.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA78ED73199C563C0043B7C0 /* people_id_get.txt */; };
+		AA78ED7C199C563C0043B7C0 /* people_id_put.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA78ED74199C563C0043B7C0 /* people_id_put.txt */; };
+		AA78ED7D199C563C0043B7C0 /* people_match_get.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA78ED75199C563C0043B7C0 /* people_match_get.txt */; };
+		AA78ED7E199C563C0043B7C0 /* people_post.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA78ED76199C563C0043B7C0 /* people_post.txt */; };
+		AA78ED7F199C563C0043B7C0 /* people_search_get.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA78ED77199C563C0043B7C0 /* people_search_get.txt */; };
 		AA862851196F1651005060C9 /* NBAuthenticator.m in Sources */ = {isa = PBXBuildFile; fileRef = AA862850196F1651005060C9 /* NBAuthenticator.m */; };
 		AA8B6822196F5539009DDA91 /* NBAuthenticatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA8B6821196F5539009DDA91 /* NBAuthenticatorTests.m */; };
 		AA8B6825196F82D4009DDA91 /* NBDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = AA8B6824196F82D4009DDA91 /* NBDefines.m */; };
@@ -82,6 +89,13 @@
 		AA6FF3C6197DF5B10049B747 /* NBClient_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBClient_Internal.h; sourceTree = "<group>"; };
 		AA6FF3C7197EDEE60049B747 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		AA78ED60199AC2F60043B7C0 /* libPods-NBClientTests.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-NBClientTests.a"; path = "../Pods/build/Debug-iphoneos/libPods-NBClientTests.a"; sourceTree = "<group>"; };
+		AA78ED71199C563C0043B7C0 /* people_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_get.txt; sourceTree = "<group>"; };
+		AA78ED72199C563C0043B7C0 /* people_id_delete.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_id_delete.txt; sourceTree = "<group>"; };
+		AA78ED73199C563C0043B7C0 /* people_id_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_id_get.txt; sourceTree = "<group>"; };
+		AA78ED74199C563C0043B7C0 /* people_id_put.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_id_put.txt; sourceTree = "<group>"; };
+		AA78ED75199C563C0043B7C0 /* people_match_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_match_get.txt; sourceTree = "<group>"; };
+		AA78ED76199C563C0043B7C0 /* people_post.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_post.txt; sourceTree = "<group>"; };
+		AA78ED77199C563C0043B7C0 /* people_search_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_search_get.txt; sourceTree = "<group>"; };
 		AA86284F196F1651005060C9 /* NBAuthenticator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBAuthenticator.h; sourceTree = "<group>"; };
 		AA862850196F1651005060C9 /* NBAuthenticator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAuthenticator.m; sourceTree = "<group>"; };
 		AA8B6821196F5539009DDA91 /* NBAuthenticatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAuthenticatorTests.m; sourceTree = "<group>"; };
@@ -124,6 +138,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AA78ED78199C563C0043B7C0 /* Fixtures */ = {
+			isa = PBXGroup;
+			children = (
+				AA78ED71199C563C0043B7C0 /* people_get.txt */,
+				AA78ED72199C563C0043B7C0 /* people_id_delete.txt */,
+				AA78ED73199C563C0043B7C0 /* people_id_get.txt */,
+				AA78ED74199C563C0043B7C0 /* people_id_put.txt */,
+				AA78ED75199C563C0043B7C0 /* people_match_get.txt */,
+				AA78ED76199C563C0043B7C0 /* people_post.txt */,
+				AA78ED77199C563C0043B7C0 /* people_search_get.txt */,
+			);
+			path = Fixtures;
+			sourceTree = "<group>";
+		};
 		AAAEFC18196CD13D00222A48 = {
 			isa = PBXGroup;
 			children = (
@@ -196,6 +224,7 @@
 				AA668DC419705FC800A952B0 /* NBTestCase.h */,
 				AA668DC519705FC800A952B0 /* NBTestCase.m */,
 				AAAEFC3B196CD13D00222A48 /* Supporting Files */,
+				AA78ED78199C563C0043B7C0 /* Fixtures */,
 			);
 			path = NBClientTests;
 			sourceTree = "<group>";
@@ -281,7 +310,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA78ED7A199C563C0043B7C0 /* people_id_delete.txt in Resources */,
+				AA78ED79199C563C0043B7C0 /* people_get.txt in Resources */,
+				AA78ED7C199C563C0043B7C0 /* people_id_put.txt in Resources */,
 				AAAEFC3F196CD13D00222A48 /* InfoPlist.strings in Resources */,
+				AA78ED7F199C563C0043B7C0 /* people_search_get.txt in Resources */,
+				AA78ED7D199C563C0043B7C0 /* people_match_get.txt in Resources */,
+				AA78ED7E199C563C0043B7C0 /* people_post.txt in Resources */,
+				AA78ED7B199C563C0043B7C0 /* people_id_get.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
