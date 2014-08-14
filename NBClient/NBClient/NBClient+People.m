@@ -28,9 +28,11 @@
 {
     NSURLComponents *components = self.baseURLComponents.copy;
     components.path = [components.path stringByAppendingString:@"/people/search"];
-    components.query = [components.query stringByAppendingFormat:@"&%@",
-                        [parameters nb_queryStringWithEncoding:NSASCIIStringEncoding
-                                   skipPercentEncodingPairKeys:nil charactersToLeaveUnescaped:nil]];
+    NSMutableDictionary *mutableParameters = parameters.mutableCopy;
+    [mutableParameters addEntriesFromDictionary:[components.query nb_queryStringParametersWithEncoding:NSASCIIStringEncoding]];
+    components.query = [mutableParameters nb_queryStringWithEncoding:NSASCIIStringEncoding
+                                         skipPercentEncodingPairKeys:[NSSet setWithObject:@"email"]
+                                          charactersToLeaveUnescaped:nil];
     return [self baseFetchTaskWithURLComponents:components resultsKey:@"results" paginationInfo:paginationInfo completionHandler:completionHandler];
 }
 
@@ -48,10 +50,11 @@
 {
     NSURLComponents *components = self.baseURLComponents.copy;
     components.path = [components.path stringByAppendingString:@"/people/match"];
-    components.query = [[parameters nb_queryStringWithEncoding:NSASCIIStringEncoding
-                                   skipPercentEncodingPairKeys:[NSSet setWithObject:@"email"]
-                                    charactersToLeaveUnescaped:nil]
-                        stringByAppendingFormat:@"&%@", components.query];
+    NSMutableDictionary *mutableParameters = parameters.mutableCopy;
+    [mutableParameters addEntriesFromDictionary:[components.query nb_queryStringParametersWithEncoding:NSASCIIStringEncoding]];
+    components.query = [mutableParameters nb_queryStringWithEncoding:NSASCIIStringEncoding
+                                         skipPercentEncodingPairKeys:[NSSet setWithObject:@"email"]
+                                          charactersToLeaveUnescaped:nil];
     return [self baseFetchTaskWithURLComponents:components resultsKey:@"person" completionHandler:completionHandler];
 }
 

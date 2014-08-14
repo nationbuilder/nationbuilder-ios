@@ -133,7 +133,8 @@ NSString * const NBClientDefaultAPIVersion = @"v1";
     NSDictionary *queryParameters = @{ @"access_token": self.apiKey };
     _baseURLComponents.path = [NSString stringWithFormat:@"/api/%@", self.apiVersion];
     _baseURLComponents.query = [queryParameters nb_queryStringWithEncoding:NSASCIIStringEncoding
-                                               skipPercentEncodingPairKeys:nil charactersToLeaveUnescaped:nil];
+                                               skipPercentEncodingPairKeys:[NSSet setWithObject:@"email"]
+                                                charactersToLeaveUnescaped:nil];
     return _baseURLComponents;
 }
 
@@ -152,11 +153,12 @@ NSString * const NBClientDefaultAPIVersion = @"v1";
                                        completionHandler:(NBClientResourceListCompletionHandler)completionHandler
 {
     if (paginationInfo) {
-        NSMutableDictionary *dictionary = paginationInfo.dictionary.mutableCopy;
-        [dictionary removeObjectsForKeys:@[ NBClientNumberOfTotalPagesKey, NBClientNumberOfTotalItemsKey ]];
-        components.query = [components.query stringByAppendingFormat:@"&%@",
-                            [dictionary nb_queryStringWithEncoding:NSASCIIStringEncoding
-                                       skipPercentEncodingPairKeys:nil charactersToLeaveUnescaped:nil]];
+        NSMutableDictionary *mutableParameters = paginationInfo.dictionary.mutableCopy;
+        [mutableParameters removeObjectsForKeys:@[ NBClientNumberOfTotalPagesKey, NBClientNumberOfTotalItemsKey ]];
+        [mutableParameters addEntriesFromDictionary:[components.query nb_queryStringParametersWithEncoding:NSASCIIStringEncoding]];
+        components.query = [mutableParameters nb_queryStringWithEncoding:NSASCIIStringEncoding
+                                             skipPercentEncodingPairKeys:[NSSet setWithObject:@"email"]
+                                              charactersToLeaveUnescaped:nil];
     }
     NSURLRequest *request = [self baseFetchRequestWithURL:components.URL];
     NSLog(@"REQUEST: %@", request.nb_debugDescription);
