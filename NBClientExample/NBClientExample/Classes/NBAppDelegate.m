@@ -36,6 +36,20 @@
     return YES;
 }
 
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    // In addition to setting CFBundleURLTypes, this is the basics of what is
+    // required for the preferred way of authenticating against NationBuilder.
+    BOOL didOpen = NO;
+    NSURLComponents *components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
+    NSDictionary *parameters = [components.fragment nb_queryStringParametersWithEncoding:NSUTF8StringEncoding];
+    if (parameters[NBAuthenticationRedirectTokenKey]) {
+        self.client.apiKey = parameters[NBAuthenticationRedirectTokenKey];
+        didOpen = YES;
+    }
+    return didOpen;
+}
+
 #pragma mark - Private
 
 - (NBClient *)client

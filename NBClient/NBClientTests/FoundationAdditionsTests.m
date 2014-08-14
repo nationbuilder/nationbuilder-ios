@@ -67,11 +67,29 @@
     NSString *escapedString = [valueString nb_percentEscapedQueryStringWithEncoding:NSUTF8StringEncoding
                                                          charactersToLeaveUnescaped:@"[]"];
     XCTAssertTrue([escapedString isEqualToString:@"[%20%21%22%23%24%25%26%27%28%29%2A%2B%2C%2F]"],
-                  @"Query string should be properly formed.");
+                  @"Query string value should be properly formed.");
     NSString *escapedEscapedString = [escapedString nb_percentEscapedQueryStringWithEncoding:NSUTF8StringEncoding
                                                                   charactersToLeaveUnescaped:@"[]"];
     XCTAssertTrue([escapedEscapedString isEqualToString:@"[%2520%2521%2522%2523%2524%2525%2526%2527%2528%2529%252A%252B%252C%252F]"],
-                  @"Query string should be properly formed.");
+                  @"Query string value should be properly formed.");
+}
+
+- (void)testBuildingDictionaryFromQueryString
+{
+    NSString *string = @"age=1&email=foo@bar.com&name=Foo%20Bar";
+    NSDictionary *parameters = [string nb_queryStringParametersWithEncoding:NSUTF8StringEncoding];
+    NSDictionary *expectedParameters = @{ @"name": @"Foo Bar", @"age": @"1", @"email": @"foo@bar.com" };
+    XCTAssertEqualObjects(parameters, expectedParameters,
+                          @"Query parameters should be properly formed");
+}
+
+- (void)testPercentUnescapingQueryStringPairValue
+{
+    NSString *escapedString = @"%20%21%22%23%24%25%26%27%28%29%2A%2B%2C%2F";
+    NSString *unescapedString = [escapedString nb_percentUnescapedQueryStringWithEncoding:NSUTF8StringEncoding
+                                                                 charactersToLeaveEscaped:nil];
+    XCTAssertTrue([unescapedString isEqualToString:@" !\"#$%&'()*+,/"],
+                  @"Query string value should be properly formed.");
 }
 
 @end

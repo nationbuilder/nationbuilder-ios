@@ -32,7 +32,7 @@
     NSAssert(self.nationName, @"Missing environment arguments for tests.");
     self.baseURL = [NSURL URLWithString:
                     [NSString stringWithFormat:[launchArguments stringForKey:@"NBBaseURLFormat"], self.nationName]];
-    self.apiKey = [launchArguments stringForKey:@"NBTestToken"];
+    self.testToken = [launchArguments stringForKey:@"NBTestToken"];
     self.clientIdentifier = [launchArguments stringForKey:@"NBClientIdentifier"];
     self.clientSecret = [launchArguments stringForKey:@"NBClientSecret"];
     self.userEmailAddress = [launchArguments stringForKey:@"NBUserEmailAddress"];

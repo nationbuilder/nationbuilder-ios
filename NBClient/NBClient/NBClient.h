@@ -14,11 +14,14 @@
 typedef void (^NBClientResourceListCompletionHandler)(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error);
 typedef void (^NBClientResourceItemCompletionHandler)(NSDictionary *item, NSError *error);
 
+// Use these constants when working with the client's errors.
 extern NSUInteger const NBClientErrorCodeService;
 extern NSString * const NBClientErrorCodeKey;
 extern NSString * const NBClientErrorMessageKey;
 extern NSString * const NBClientErrorValidationErrorsKey;
 extern NSString * const NBClientErrorInnerErrorKey;
+
+extern NSString * const NBClientDefaultAPIVersion;
 
 @interface NBClient : NSObject <NSURLSessionDelegate>
 
@@ -29,6 +32,7 @@ extern NSString * const NBClientErrorInnerErrorKey;
 @property (nonatomic, strong, readonly) NBAuthenticator *authenticator;
 
 @property (nonatomic, strong) NSString *apiKey;
+@property (nonatomic, strong) NSString *apiVersion;
 
 - (instancetype)initWithNationName:(NSString *)nationName
                      authenticator:(NBAuthenticator *)authenticator

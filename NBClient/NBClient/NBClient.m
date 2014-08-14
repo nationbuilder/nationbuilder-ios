@@ -20,6 +20,8 @@ NSString * const NBClientErrorMessageKey = @"message";
 NSString * const NBClientErrorValidationErrorsKey = @"validation_errors";
 NSString * const NBClientErrorInnerErrorKey = @"inner_error";
 
+NSString * const NBClientDefaultAPIVersion = @"v1";
+
 @implementation NBClient
 
 #pragma mark - Initializers
@@ -102,6 +104,15 @@ NSString * const NBClientErrorInnerErrorKey = @"inner_error";
     return _urlSession;
 }
 
+- (NSString *)apiVersion
+{
+    if (_apiVersion) {
+        return _apiVersion;
+    }
+    self.apiVersion = NBClientDefaultAPIVersion;
+    return _apiVersion;
+}
+
 #pragma mark Requests & Tasks
 
 - (NSURL *)baseURL
@@ -120,7 +131,7 @@ NSString * const NBClientErrorInnerErrorKey = @"inner_error";
     }
     self.baseURLComponents = [NSURLComponents componentsWithURL:self.baseURL resolvingAgainstBaseURL:YES];
     NSDictionary *queryParameters = @{ @"access_token": self.apiKey };
-    _baseURLComponents.path = @"/api/v1";
+    _baseURLComponents.path = [NSString stringWithFormat:@"/api/%@", self.apiVersion];
     _baseURLComponents.query = [queryParameters nb_queryStringWithEncoding:NSASCIIStringEncoding
                                                skipPercentEncodingPairKeys:nil charactersToLeaveUnescaped:nil];
     return _baseURLComponents;
@@ -137,7 +148,7 @@ NSString * const NBClientErrorInnerErrorKey = @"inner_error";
 
 - (NSURLSessionDataTask *)baseFetchTaskWithURLComponents:(NSURLComponents *)components
                                               resultsKey:(NSString *)resultsKey
-                                          paginationInfo:(NBPaginationInfo*)paginationInfo
+                                          paginationInfo:(NBPaginationInfo *)paginationInfo
                                        completionHandler:(NBClientResourceListCompletionHandler)completionHandler
 {
     if (paginationInfo) {

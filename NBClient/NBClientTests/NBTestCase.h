@@ -16,7 +16,7 @@
 @property (nonatomic, strong) NSString *nationName;
 @property (nonatomic, strong) NSURL *baseURL;
 
-@property (nonatomic, strong) NSString *apiKey;
+@property (nonatomic, strong) NSString *testToken;
 @property (nonatomic, strong) NSString *clientIdentifier;
 @property (nonatomic, strong) NSString *clientSecret;
 @property (nonatomic, strong) NSString *userEmailAddress;

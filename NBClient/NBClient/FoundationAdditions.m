@@ -32,6 +32,9 @@
 
 @end
 
+static NSString *QueryJoiner = @"&";
+static NSString *QueryPairJoiner = @"=";
+
 @implementation NSDictionary (NBAdditions)
 
 - (BOOL)nb_containsDictionary:(NSDictionary *)dictionary
@@ -48,8 +51,6 @@
              skipPercentEncodingPairKeys:(NSSet *)skipPairKeys
               charactersToLeaveUnescaped:(NSString *)charactersToLeaveUnescaped
 {
-    static NSString *pairFormat = @"%@=%@";
-    static NSString *joiner = @"&";
     NSMutableArray *mutablePairs = [NSMutableArray array];
     NSArray *keys = [self.allKeys sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
     for (NSString *key in keys) {
@@ -64,16 +65,17 @@
         }
         NSString *valueString = [NSString stringWithFormat:@"%@", value];
         BOOL shouldPercentEncode = !skipPairKeys || ![skipPairKeys containsObject:key];
-        NSString *pair = [NSString stringWithFormat:pairFormat,
+        NSString *pair = [NSString stringWithFormat:@"%@%@%@",
                           !shouldPercentEncode ? key :
                           [key nb_percentEscapedQueryStringWithEncoding:stringEncoding
                                              charactersToLeaveUnescaped:charactersToLeaveUnescaped],
+                          QueryPairJoiner,
                           !shouldPercentEncode ? valueString :
                           [valueString nb_percentEscapedQueryStringWithEncoding:stringEncoding
                                                      charactersToLeaveUnescaped:charactersToLeaveUnescaped]];
         [mutablePairs addObject:pair];
     }
-    return [mutablePairs componentsJoinedByString:joiner];
+    return [mutablePairs componentsJoinedByString:QueryJoiner];
 }
 
 @end
@@ -89,6 +91,35 @@
     /* originalString: */ (__bridge CFStringRef)self,
     /* charactersToLeaveUnescaped: */ charactersToLeaveUnescaped ? (__bridge CFStringRef)charactersToLeaveUnescaped : NULL,
     /* legalURLCharactersToBeEscaped: */ (__bridge CFStringRef)charactersToBeEscapedInQueryString,
+    /* encoding */ CFStringConvertNSStringEncodingToEncoding(stringEncoding));
+}
+
+- (NSDictionary *)nb_queryStringParametersWithEncoding:(NSStringEncoding)stringEncoding
+{
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    NSArray *pairs = [self componentsSeparatedByString:QueryJoiner];
+    for (NSString *pairString in pairs) {
+        NSArray *pair = [pairString componentsSeparatedByString:QueryPairJoiner];
+        NSString *key = [pair[0] nb_percentUnescapedQueryStringWithEncoding:NSUTF8StringEncoding
+                                                   charactersToLeaveEscaped:nil];
+        if (pair.count > 1) {
+            NSString *valueString = [pair[1] nb_percentUnescapedQueryStringWithEncoding:NSUTF8StringEncoding
+                                                               charactersToLeaveEscaped:nil];
+            // TODO: Add support for collection-based data types.
+            parameters[key] = valueString;
+        }
+    }
+    return [NSDictionary dictionaryWithDictionary:parameters];
+}
+
+- (NSString *)nb_percentUnescapedQueryStringWithEncoding:(NSStringEncoding)stringEncoding
+                                charactersToLeaveEscaped:(NSString *)charactersToLeaveEscaped
+{
+    NSString *result = [self stringByReplacingOccurrencesOfString:@"+" withString:@" "];
+    return (__bridge_transfer NSString *)CFURLCreateStringByReplacingPercentEscapesUsingEncoding(
+    /* allocator */ kCFAllocatorDefault,
+    /* originalString: */ (__bridge CFStringRef)result,
+    /* charactersToLeaveEscaped */ charactersToLeaveEscaped ? (__bridge CFStringRef)charactersToLeaveEscaped : CFSTR(""),
     /* encoding */ CFStringConvertNSStringEncodingToEncoding(stringEncoding));
 }
 
