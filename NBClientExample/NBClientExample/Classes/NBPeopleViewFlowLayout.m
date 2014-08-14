@@ -70,6 +70,7 @@
 
 - (CGSize)collectionViewContentSize
 {
+    // Ensure minimum content size for scrolling / bouncing.
     CGSize contentSize = self.intrinsicContentSize;
     contentSize.height = MAX(contentSize.height, self.visibleCollectionViewHeight);
     return contentSize;
@@ -81,6 +82,9 @@
 {
     NSMutableArray *allAttributes = [super layoutAttributesForElementsInRect:rect].mutableCopy;
     for (Class aClass in self.decorationViewClasses) {
+        if (!self.shouldShowLoadMore && aClass == [NBPeopleLoadMoreDecorationLabel class]) {
+            continue;
+        }
         UICollectionViewLayoutAttributes *attributes =
         [self layoutAttributesForDecorationViewOfKind:NSStringFromClass(aClass)
                                           atIndexPath:[NSIndexPath indexPathWithIndex:0]];

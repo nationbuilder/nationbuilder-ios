@@ -28,6 +28,8 @@
 @property (nonatomic, readonly) BOOL hasMultipleColumns;
 @property (nonatomic, readonly) CGSize intrinsicContentSize;
 
+@property (nonatomic) BOOL shouldShowLoadMore;
+
 - (UICollectionViewCell *)previousVerticalCellForCell:(UICollectionViewCell *)cell;
 
 @end

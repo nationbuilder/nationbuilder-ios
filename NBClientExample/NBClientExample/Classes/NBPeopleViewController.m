@@ -381,7 +381,10 @@ static void *observationContext = &observationContext;
     CGFloat offsetOverflow;
     CGFloat requiredOffsetOverflow = layout.requiredContentOffsetOverflow.floatValue;
     BOOL didPassThresold;
-    if (self.loadMoreState != NBScrollViewPullActionStateInProgress) {
+    NBPaginationInfo *paginationInfo = ((NBPeopleDataSource *)self.dataSource).paginationInfo;
+    BOOL canLoadMore = paginationInfo.currentPageNumber < paginationInfo.numberOfTotalPages;
+    layout.shouldShowLoadMore = canLoadMore;
+    if (canLoadMore && self.loadMoreState != NBScrollViewPullActionStateInProgress) {
         // Update load-more state.
         offsetOverflow = layout.bottomOffsetOverflow;
         didPassThresold = offsetOverflow > requiredOffsetOverflow;
