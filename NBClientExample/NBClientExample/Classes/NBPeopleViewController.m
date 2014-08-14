@@ -417,7 +417,7 @@ static void *observationContext = &observationContext;
     if (!self.selectedIndexPath) {
         return;
     }
-    if (viewController.modalPresentationStyle == UIModalPresentationFormSheet) {
+    if (viewController.navigationController.modalPresentationStyle == UIModalPresentationFormSheet) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self.collectionView deselectItemAtIndexPath:self.selectedIndexPath animated:NO];
         });
