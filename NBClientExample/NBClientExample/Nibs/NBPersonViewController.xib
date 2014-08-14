@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NBPersonViewController">
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="number" keyPath="editingAnimationDuration">
+                    <real key="value" value="0.29999999999999999"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="color" keyPath="editingBackgroundColor">
+                    <color key="value" red="0.73333333329999995" green="0.72941176470000002" blue="0.76078431369999999" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="number" keyPath="subviewCornerRadius">
+                    <integer key="value" value="2"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="string" keyPath="tagDelimiterString" value=","/>
+                <userDefinedRuntimeAttribute type="size" keyPath="textFieldInsetSize">
+                    <size key="value" width="8" height="4"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
+            <connections>
+                <outlet property="contentView" destination="8sH-lr-uLG" id="Fah-Ma-yD5"/>
+                <outlet property="emailField" destination="Wiv-Xy-1pO" id="dWt-YR-7RM"/>
+                <outlet property="emailLabel" destination="nQp-Sg-jod" id="gdz-5u-OA7"/>
+                <outlet property="nameField" destination="pQC-x3-DV6" id="cdj-hr-OwU"/>
+                <outlet property="phoneField" destination="0vc-Rv-TCR" id="hSQ-OS-9T8"/>
+                <outlet property="phoneLabel" destination="ZSh-hX-gNT" id="eRP-lG-gqA"/>
+                <outlet property="profileImageView" destination="M3R-wa-agK" id="CWs-7r-tYP"/>
+                <outlet property="scrollView" destination="3Hv-Kc-RTV" id="fcG-jJ-fBk"/>
+                <outlet property="scrollViewBottomConstraint" destination="BQR-HT-X3k" id="Qbf-Du-ofl"/>
+                <outlet property="tagsField" destination="Y3i-GW-chM" id="dkO-Eg-Rnb"/>
+                <outlet property="tagsLabel" destination="Lez-Fz-ezv" id="gJb-ct-dO1"/>
+                <outlet property="titleField" destination="Geo-Pn-wY5" id="Lal-SB-od7"/>
+                <outlet property="titleLabel" destination="Bs8-Ce-B4G" id="tJx-8M-tzv"/>
+                <outlet property="view" destination="5p9-HT-6oW" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <view contentMode="scaleToFill" id="5p9-HT-6oW">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Hv-Kc-RTV">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8sH-lr-uLG" userLabel="Content View">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="307"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="M3R-wa-agK" userLabel="Profile Image View">
+                                    <rect key="frame" x="20" y="20" width="96" height="96"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="96" id="NJ0-Fa-JjO"/>
+                                        <constraint firstAttribute="width" constant="96" id="qdv-12-AkM"/>
+                                    </constraints>
+                                </imageView>
+                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="1000" scrollEnabled="NO" text="Full Name" translatesAutoresizingMaskIntoConstraints="NO" id="pQC-x3-DV6" userLabel="Name Field">
+                                    <rect key="frame" x="128" y="20" width="172" height="42"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="Gyz-yH-bmi"/>
+                                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="96" id="hjh-QU-Poi"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
+                                    <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" returnKeyType="next"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="gWY-Ld-waf"/>
+                                    </connections>
+                                </textView>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nQp-Sg-jod" userLabel="Email Label">
+                                    <rect key="frame" x="20" y="141" width="38" height="18"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="38" id="etC-RG-Nhc"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                    <color key="textColor" red="0.73333333333333328" green="0.72941176470588232" blue="0.76078431372549016" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="foobar@gmail.com" placeholder="Unknown" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Wiv-Xy-1pO" userLabel="Email Field" customClass="NBTextField">
+                                    <rect key="frame" x="68" y="136" width="232" height="30"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="30" id="wCL-NP-ibn"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress" returnKeyType="next"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="5gB-Kv-Ap1"/>
+                                    </connections>
+                                </textField>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZSh-hX-gNT" userLabel="Phone Label">
+                                    <rect key="frame" x="20" y="179" width="44" height="18"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="Thn-Hq-4rj"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                    <color key="textColor" red="0.73333333333333328" green="0.72941176470588232" blue="0.76078431372549016" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="1-555-555-5555" placeholder="Unknown" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="0vc-Rv-TCR" userLabel="Phone Field" customClass="NBTextField">
+                                    <rect key="frame" x="74" y="174" width="226" height="30"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="30" id="TsS-2l-j1Z"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numbersAndPunctuation" returnKeyType="next"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="Uvu-5h-Rxu"/>
+                                    </connections>
+                                </textField>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bs8-Ce-B4G" userLabel="Title Label">
+                                    <rect key="frame" x="20" y="217" width="29" height="18"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="29" id="V9E-fN-zn0"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                    <color key="textColor" red="0.73333333333333328" green="0.72941176470588232" blue="0.76078431372549016" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Dummy Account Holder" placeholder="Unknown" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Geo-Pn-wY5" userLabel="Title Field" customClass="NBTextField">
+                                    <rect key="frame" x="59" y="212" width="241" height="30"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="30" id="V3r-Gk-BaM"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="next"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="sFT-Hr-4ja"/>
+                                    </connections>
+                                </textField>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tags" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lez-Fz-ezv" userLabel="Tags Label">
+                                    <rect key="frame" x="20" y="255" width="32" height="18"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="32" id="h07-Zj-tlL"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                    <color key="textColor" red="0.73333333333333328" green="0.72941176470588232" blue="0.76078431372549016" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <textView multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="1000" scrollEnabled="NO" text="Tag, Tag " translatesAutoresizingMaskIntoConstraints="NO" id="Y3i-GW-chM" userLabel="Tags Field">
+                                    <rect key="frame" x="64" y="250" width="236" height="37"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="96" id="4Vy-a0-x5r"/>
+                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="C73-dN-5dP"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
+                                    <attributedString key="userComments">
+                                        <fragment content="The leading and top space seems inconsistently big because the custom insets gets dynamically applied in code.">
+                                            <attributes>
+                                                <font key="NSFont" metaFont="toolTip"/>
+                                                <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="jln-SV-Me7"/>
+                                    </connections>
+                                </textView>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="nQp-Sg-jod" firstAttribute="top" secondItem="M3R-wa-agK" secondAttribute="bottom" constant="25" id="1X0-fD-VNg"/>
+                                <constraint firstItem="Wiv-Xy-1pO" firstAttribute="leading" secondItem="nQp-Sg-jod" secondAttribute="trailing" constant="10" id="6Yx-dc-w6X"/>
+                                <constraint firstItem="Lez-Fz-ezv" firstAttribute="top" secondItem="Bs8-Ce-B4G" secondAttribute="bottom" constant="20" id="6Zp-mD-kxP"/>
+                                <constraint firstAttribute="trailing" secondItem="pQC-x3-DV6" secondAttribute="trailing" constant="20" id="6nJ-Du-N8p"/>
+                                <constraint firstItem="ZSh-hX-gNT" firstAttribute="top" secondItem="nQp-Sg-jod" secondAttribute="bottom" constant="20" id="75P-cp-5WY"/>
+                                <constraint firstAttribute="trailing" secondItem="0vc-Rv-TCR" secondAttribute="trailing" constant="20" id="8DG-31-N5q"/>
+                                <constraint firstItem="0vc-Rv-TCR" firstAttribute="top" secondItem="Wiv-Xy-1pO" secondAttribute="bottom" constant="8" id="BRX-WI-hSw"/>
+                                <constraint firstItem="M3R-wa-agK" firstAttribute="leading" secondItem="8sH-lr-uLG" secondAttribute="leading" constant="20" id="D7T-wk-doF"/>
+                                <constraint firstItem="Bs8-Ce-B4G" firstAttribute="top" secondItem="ZSh-hX-gNT" secondAttribute="bottom" constant="20" id="FIS-eq-dBi"/>
+                                <constraint firstItem="Geo-Pn-wY5" firstAttribute="leading" secondItem="Bs8-Ce-B4G" secondAttribute="trailing" constant="10" id="IfJ-tk-KgW"/>
+                                <constraint firstItem="Bs8-Ce-B4G" firstAttribute="leading" secondItem="8sH-lr-uLG" secondAttribute="leading" constant="20" id="Nyk-ER-Olh"/>
+                                <constraint firstItem="ZSh-hX-gNT" firstAttribute="leading" secondItem="8sH-lr-uLG" secondAttribute="leading" constant="20" id="Q1p-cc-naj"/>
+                                <constraint firstAttribute="trailing" secondItem="Y3i-GW-chM" secondAttribute="trailing" constant="20" id="TgJ-Ee-BIj"/>
+                                <constraint firstAttribute="bottom" secondItem="Y3i-GW-chM" secondAttribute="bottom" constant="20" id="Uqm-J2-iMd"/>
+                                <constraint firstItem="Lez-Fz-ezv" firstAttribute="leading" secondItem="8sH-lr-uLG" secondAttribute="leading" constant="20" id="VeU-pE-Qqz"/>
+                                <constraint firstAttribute="trailing" secondItem="Wiv-Xy-1pO" secondAttribute="trailing" constant="20" id="VrD-nG-3zm"/>
+                                <constraint firstItem="Y3i-GW-chM" firstAttribute="top" secondItem="Geo-Pn-wY5" secondAttribute="bottom" constant="8" id="WlK-VW-db2"/>
+                                <constraint firstItem="nQp-Sg-jod" firstAttribute="leading" secondItem="8sH-lr-uLG" secondAttribute="leading" constant="20" id="XDj-BK-r4z"/>
+                                <constraint firstItem="Geo-Pn-wY5" firstAttribute="top" secondItem="0vc-Rv-TCR" secondAttribute="bottom" constant="8" id="Zwn-dS-oOp"/>
+                                <constraint firstItem="Wiv-Xy-1pO" firstAttribute="top" secondItem="M3R-wa-agK" secondAttribute="bottom" constant="20" id="fhL-F3-ES1"/>
+                                <constraint firstItem="pQC-x3-DV6" firstAttribute="leading" secondItem="M3R-wa-agK" secondAttribute="trailing" constant="12" id="h6b-VI-KOQ"/>
+                                <constraint firstItem="M3R-wa-agK" firstAttribute="top" secondItem="8sH-lr-uLG" secondAttribute="top" constant="20" id="hkj-cR-MM0"/>
+                                <constraint firstItem="0vc-Rv-TCR" firstAttribute="leading" secondItem="ZSh-hX-gNT" secondAttribute="trailing" constant="10" id="k9Y-62-Q70"/>
+                                <constraint firstItem="pQC-x3-DV6" firstAttribute="top" secondItem="8sH-lr-uLG" secondAttribute="top" constant="20" id="liD-qA-zag"/>
+                                <constraint firstItem="Y3i-GW-chM" firstAttribute="leading" secondItem="Lez-Fz-ezv" secondAttribute="trailing" constant="12" id="roX-hW-JUk"/>
+                                <constraint firstAttribute="trailing" secondItem="Geo-Pn-wY5" secondAttribute="trailing" constant="20" id="x9X-Xk-ggL"/>
+                            </constraints>
+                            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+                            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                            <attributedString key="userComments">
+                                <fragment>
+                                    <string key="content">The inputs seem vertically misaligned from their labels because there's a 2pt difference between what's shown here and what get's rendered in the app.</string>
+                                    <attributes>
+                                        <font key="NSFont" metaFont="toolTip"/>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                    </attributes>
+                                </fragment>
+                            </attributedString>
+                        </view>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="8sH-lr-uLG" firstAttribute="width" secondItem="3Hv-Kc-RTV" secondAttribute="width" id="Jcp-5c-rn2"/>
+                        <constraint firstItem="8sH-lr-uLG" firstAttribute="leading" secondItem="3Hv-Kc-RTV" secondAttribute="leading" id="WLt-TG-71e"/>
+                        <constraint firstAttribute="bottom" secondItem="8sH-lr-uLG" secondAttribute="bottom" id="goB-Rr-ewf"/>
+                        <constraint firstItem="8sH-lr-uLG" firstAttribute="top" secondItem="3Hv-Kc-RTV" secondAttribute="top" id="sCc-9O-zao"/>
+                        <constraint firstAttribute="trailing" secondItem="8sH-lr-uLG" secondAttribute="trailing" id="wYg-qx-jut"/>
+                    </constraints>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="qSf-BD-8fH"/>
+                    </connections>
+                </scrollView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="3Hv-Kc-RTV" secondAttribute="bottom" id="BQR-HT-X3k"/>
+                <constraint firstItem="3Hv-Kc-RTV" firstAttribute="leading" secondItem="5p9-HT-6oW" secondAttribute="leading" id="j9a-FF-5Rv"/>
+                <constraint firstAttribute="trailing" secondItem="3Hv-Kc-RTV" secondAttribute="trailing" id="lcg-H0-Enr"/>
+                <constraint firstItem="3Hv-Kc-RTV" firstAttribute="top" secondItem="5p9-HT-6oW" secondAttribute="top" id="sFf-Mk-9Fg"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+    </objects>
+</document>

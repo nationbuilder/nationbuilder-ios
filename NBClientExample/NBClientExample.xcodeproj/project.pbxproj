@@ -1,0 +1,589 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AA15FAA21983317400A2E84B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA15FAA11983317400A2E84B /* Foundation.framework */; };
+		AA15FAA41983317400A2E84B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA15FAA31983317400A2E84B /* CoreGraphics.framework */; };
+		AA15FAA61983317400A2E84B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA15FAA51983317400A2E84B /* UIKit.framework */; };
+		AA15FAAC1983317400A2E84B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AA15FAAA1983317400A2E84B /* InfoPlist.strings */; };
+		AA15FAAE1983317400A2E84B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AA15FAAD1983317400A2E84B /* main.m */; };
+		AA15FAB21983317400A2E84B /* NBAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AA15FAB11983317400A2E84B /* NBAppDelegate.m */; };
+		AA15FAB41983317400A2E84B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA15FAB31983317400A2E84B /* Images.xcassets */; };
+		AA15FABB1983317400A2E84B /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA15FABA1983317400A2E84B /* XCTest.framework */; };
+		AA15FABC1983317400A2E84B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA15FAA11983317400A2E84B /* Foundation.framework */; };
+		AA15FABD1983317400A2E84B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA15FAA51983317400A2E84B /* UIKit.framework */; };
+		AA15FAC51983317400A2E84B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AA15FAC31983317400A2E84B /* InfoPlist.strings */; };
+		AA15FAC71983317400A2E84B /* NBClientExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA15FAC61983317400A2E84B /* NBClientExampleTests.m */; };
+		AA15FAD31983339800A2E84B /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA15FAD21983339800A2E84B /* Crashlytics.framework */; };
+		AA602C2E198C3966001A7DB2 /* NBPeoplePageHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA602C2D198C3966001A7DB2 /* NBPeoplePageHeaderView.xib */; };
+		AA602C2F198C3966001A7DB2 /* NBPeoplePageHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA602C2D198C3966001A7DB2 /* NBPeoplePageHeaderView.xib */; };
+		AA602C32199157B7001A7DB2 /* NBPeopleViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = AA602C31199157B7001A7DB2 /* NBPeopleViewFlowLayout.m */; };
+		AA602C33199157B7001A7DB2 /* NBPeopleViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = AA602C31199157B7001A7DB2 /* NBPeopleViewFlowLayout.m */; };
+		AA8BD9E0199447EF00400E5F /* NationBuilder-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA8BD9DF199447EF00400E5F /* NationBuilder-Info.plist */; };
+		AA8BD9E1199447EF00400E5F /* NationBuilder-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA8BD9DF199447EF00400E5F /* NationBuilder-Info.plist */; };
+		AA909123198339EA009BE1E9 /* libNBClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA909122198339EA009BE1E9 /* libNBClient.a */; };
+		AA90912D19833B0E009BE1E9 /* NBPeopleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA90912A19833B0E009BE1E9 /* NBPeopleViewController.xib */; };
+		AA90912E19833B0E009BE1E9 /* NBPeopleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA90912A19833B0E009BE1E9 /* NBPeopleViewController.xib */; };
+		AA90912F19833B0E009BE1E9 /* NBPersonCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA90912B19833B0E009BE1E9 /* NBPersonCellView.xib */; };
+		AA90913019833B0E009BE1E9 /* NBPersonCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA90912B19833B0E009BE1E9 /* NBPersonCellView.xib */; };
+		AA90913119833B0E009BE1E9 /* NBPersonViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA90912C19833B0E009BE1E9 /* NBPersonViewController.xib */; };
+		AA90913219833B0E009BE1E9 /* NBPersonViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA90912C19833B0E009BE1E9 /* NBPersonViewController.xib */; };
+		AA90913619833B8D009BE1E9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AA90913919833B8D009BE1E9 /* Localizable.strings */; };
+		AA90913719833B8D009BE1E9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AA90913919833B8D009BE1E9 /* Localizable.strings */; };
+		AA90913C19833BC0009BE1E9 /* NBUIDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = AA90913B19833BC0009BE1E9 /* NBUIDefines.m */; };
+		AA90913D19833BC0009BE1E9 /* NBUIDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = AA90913B19833BC0009BE1E9 /* NBUIDefines.m */; };
+		AA90914219833C22009BE1E9 /* NBPeopleDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = AA90913F19833C22009BE1E9 /* NBPeopleDataSource.m */; };
+		AA90914319833C22009BE1E9 /* NBPeopleDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = AA90913F19833C22009BE1E9 /* NBPeopleDataSource.m */; };
+		AA90914419833C22009BE1E9 /* NBPersonDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = AA90914119833C22009BE1E9 /* NBPersonDataSource.m */; };
+		AA90914519833C22009BE1E9 /* NBPersonDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = AA90914119833C22009BE1E9 /* NBPersonDataSource.m */; };
+		AA90914C19833D01009BE1E9 /* NBPeopleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA90914719833D01009BE1E9 /* NBPeopleViewController.m */; };
+		AA90914D19833D01009BE1E9 /* NBPeopleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA90914719833D01009BE1E9 /* NBPeopleViewController.m */; };
+		AA90914E19833D01009BE1E9 /* NBPersonCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = AA90914919833D01009BE1E9 /* NBPersonCellView.m */; };
+		AA90914F19833D01009BE1E9 /* NBPersonCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = AA90914919833D01009BE1E9 /* NBPersonCellView.m */; };
+		AA90915019833D01009BE1E9 /* NBPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA90914B19833D01009BE1E9 /* NBPersonViewController.m */; };
+		AA90915119833D01009BE1E9 /* NBPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA90914B19833D01009BE1E9 /* NBPersonViewController.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		AA15FABE1983317400A2E84B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AA15FA961983317400A2E84B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AA15FA9D1983317400A2E84B;
+			remoteInfo = NBClientExample;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		AA15FA9E1983317400A2E84B /* NBClientExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NBClientExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA15FAA11983317400A2E84B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		AA15FAA31983317400A2E84B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		AA15FAA51983317400A2E84B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		AA15FAA91983317400A2E84B /* NBClientExample-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "NBClientExample-Info.plist"; sourceTree = "<group>"; };
+		AA15FAAB1983317400A2E84B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		AA15FAAD1983317400A2E84B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		AA15FAAF1983317400A2E84B /* NBClientExample-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NBClientExample-Prefix.pch"; sourceTree = "<group>"; };
+		AA15FAB01983317400A2E84B /* NBAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NBAppDelegate.h; path = Classes/NBAppDelegate.h; sourceTree = "<group>"; };
+		AA15FAB11983317400A2E84B /* NBAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = NBAppDelegate.m; path = Classes/NBAppDelegate.m; sourceTree = "<group>"; };
+		AA15FAB31983317400A2E84B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		AA15FAB91983317400A2E84B /* NBClientExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NBClientExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA15FABA1983317400A2E84B /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		AA15FAC21983317400A2E84B /* NBClientExampleTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "NBClientExampleTests-Info.plist"; sourceTree = "<group>"; };
+		AA15FAC41983317400A2E84B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		AA15FAC61983317400A2E84B /* NBClientExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NBClientExampleTests.m; sourceTree = "<group>"; };
+		AA15FAD21983339800A2E84B /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		AA602C30199157B7001A7DB2 /* NBPeopleViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPeopleViewFlowLayout.h; path = Classes/NBPeopleViewFlowLayout.h; sourceTree = "<group>"; };
+		AA602C31199157B7001A7DB2 /* NBPeopleViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBPeopleViewFlowLayout.m; path = Classes/NBPeopleViewFlowLayout.m; sourceTree = "<group>"; };
+		AA602C2D198C3966001A7DB2 /* NBPeoplePageHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NBPeoplePageHeaderView.xib; path = Nibs/NBPeoplePageHeaderView.xib; sourceTree = "<group>"; };
+		AA8BD9DF199447EF00400E5F /* NationBuilder-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "NationBuilder-Info.plist"; sourceTree = "<group>"; };
+		AA909122198339EA009BE1E9 /* libNBClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libNBClient.a; path = "../NBClient/build/Debug-iphoneos/libNBClient.a"; sourceTree = "<group>"; };
+		AA90912A19833B0E009BE1E9 /* NBPeopleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NBPeopleViewController.xib; path = Nibs/NBPeopleViewController.xib; sourceTree = "<group>"; };
+		AA90912B19833B0E009BE1E9 /* NBPersonCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NBPersonCellView.xib; path = Nibs/NBPersonCellView.xib; sourceTree = "<group>"; };
+		AA90912C19833B0E009BE1E9 /* NBPersonViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NBPersonViewController.xib; path = Nibs/NBPersonViewController.xib; sourceTree = "<group>"; };
+		AA90913819833B8D009BE1E9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		AA90913A19833BC0009BE1E9 /* NBUIDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBUIDefines.h; sourceTree = "<group>"; };
+		AA90913B19833BC0009BE1E9 /* NBUIDefines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBUIDefines.m; sourceTree = "<group>"; };
+		AA90913E19833C22009BE1E9 /* NBPeopleDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPeopleDataSource.h; path = Classes/NBPeopleDataSource.h; sourceTree = "<group>"; };
+		AA90913F19833C22009BE1E9 /* NBPeopleDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBPeopleDataSource.m; path = Classes/NBPeopleDataSource.m; sourceTree = "<group>"; };
+		AA90914019833C22009BE1E9 /* NBPersonDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPersonDataSource.h; path = Classes/NBPersonDataSource.h; sourceTree = "<group>"; };
+		AA90914119833C22009BE1E9 /* NBPersonDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBPersonDataSource.m; path = Classes/NBPersonDataSource.m; sourceTree = "<group>"; };
+		AA90914619833D01009BE1E9 /* NBPeopleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPeopleViewController.h; path = Classes/NBPeopleViewController.h; sourceTree = "<group>"; };
+		AA90914719833D01009BE1E9 /* NBPeopleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBPeopleViewController.m; path = Classes/NBPeopleViewController.m; sourceTree = "<group>"; };
+		AA90914819833D01009BE1E9 /* NBPersonCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPersonCellView.h; path = Classes/NBPersonCellView.h; sourceTree = "<group>"; };
+		AA90914919833D01009BE1E9 /* NBPersonCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBPersonCellView.m; path = Classes/NBPersonCellView.m; sourceTree = "<group>"; };
+		AA90914A19833D01009BE1E9 /* NBPersonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPersonViewController.h; path = Classes/NBPersonViewController.h; sourceTree = "<group>"; };
+		AA90914B19833D01009BE1E9 /* NBPersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBPersonViewController.m; path = Classes/NBPersonViewController.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AA15FA9B1983317400A2E84B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA909123198339EA009BE1E9 /* libNBClient.a in Frameworks */,
+				AA15FAD31983339800A2E84B /* Crashlytics.framework in Frameworks */,
+				AA15FAA41983317400A2E84B /* CoreGraphics.framework in Frameworks */,
+				AA15FAA61983317400A2E84B /* UIKit.framework in Frameworks */,
+				AA15FAA21983317400A2E84B /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AA15FAB61983317400A2E84B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA15FABB1983317400A2E84B /* XCTest.framework in Frameworks */,
+				AA15FABD1983317400A2E84B /* UIKit.framework in Frameworks */,
+				AA15FABC1983317400A2E84B /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		AA15FA951983317400A2E84B = {
+			isa = PBXGroup;
+			children = (
+				AA15FAA71983317400A2E84B /* NBClientExample */,
+				AA15FAC01983317400A2E84B /* NBClientExampleTests */,
+				AA15FAA01983317400A2E84B /* Frameworks */,
+				AA15FA9F1983317400A2E84B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		AA15FA9F1983317400A2E84B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AA15FA9E1983317400A2E84B /* NBClientExample.app */,
+				AA15FAB91983317400A2E84B /* NBClientExampleTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AA15FAA01983317400A2E84B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AA909122198339EA009BE1E9 /* libNBClient.a */,
+				AA15FAD21983339800A2E84B /* Crashlytics.framework */,
+				AA15FAA11983317400A2E84B /* Foundation.framework */,
+				AA15FAA31983317400A2E84B /* CoreGraphics.framework */,
+				AA15FAA51983317400A2E84B /* UIKit.framework */,
+				AA15FABA1983317400A2E84B /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AA15FAA71983317400A2E84B /* NBClientExample */ = {
+			isa = PBXGroup;
+			children = (
+				AA15FAB31983317400A2E84B /* Images.xcassets */,
+				AA90913919833B8D009BE1E9 /* Localizable.strings */,
+				AA15FAB01983317400A2E84B /* NBAppDelegate.h */,
+				AA15FAB11983317400A2E84B /* NBAppDelegate.m */,
+				AA602C2D198C3966001A7DB2 /* NBPeoplePageHeaderView.xib */,
+				AA90913E19833C22009BE1E9 /* NBPeopleDataSource.h */,
+				AA90913F19833C22009BE1E9 /* NBPeopleDataSource.m */,
+				AA90914619833D01009BE1E9 /* NBPeopleViewController.h */,
+				AA90914719833D01009BE1E9 /* NBPeopleViewController.m */,
+				AA90912A19833B0E009BE1E9 /* NBPeopleViewController.xib */,
+				AA602C30199157B7001A7DB2 /* NBPeopleViewFlowLayout.h */,
+				AA602C31199157B7001A7DB2 /* NBPeopleViewFlowLayout.m */,
+				AA90914819833D01009BE1E9 /* NBPersonCellView.h */,
+				AA90914919833D01009BE1E9 /* NBPersonCellView.m */,
+				AA90912B19833B0E009BE1E9 /* NBPersonCellView.xib */,
+				AA90914019833C22009BE1E9 /* NBPersonDataSource.h */,
+				AA90914119833C22009BE1E9 /* NBPersonDataSource.m */,
+				AA90914A19833D01009BE1E9 /* NBPersonViewController.h */,
+				AA90914B19833D01009BE1E9 /* NBPersonViewController.m */,
+				AA90912C19833B0E009BE1E9 /* NBPersonViewController.xib */,
+				AA90913A19833BC0009BE1E9 /* NBUIDefines.h */,
+				AA90913B19833BC0009BE1E9 /* NBUIDefines.m */,
+				AA15FAA81983317400A2E84B /* Supporting Files */,
+			);
+			path = NBClientExample;
+			sourceTree = "<group>";
+		};
+		AA15FAA81983317400A2E84B /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				AA8BD9DF199447EF00400E5F /* NationBuilder-Info.plist */,
+				AA15FAA91983317400A2E84B /* NBClientExample-Info.plist */,
+				AA15FAAA1983317400A2E84B /* InfoPlist.strings */,
+				AA15FAAD1983317400A2E84B /* main.m */,
+				AA15FAAF1983317400A2E84B /* NBClientExample-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		AA15FAC01983317400A2E84B /* NBClientExampleTests */ = {
+			isa = PBXGroup;
+			children = (
+				AA15FAC61983317400A2E84B /* NBClientExampleTests.m */,
+				AA15FAC11983317400A2E84B /* Supporting Files */,
+			);
+			path = NBClientExampleTests;
+			sourceTree = "<group>";
+		};
+		AA15FAC11983317400A2E84B /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				AA15FAC21983317400A2E84B /* NBClientExampleTests-Info.plist */,
+				AA15FAC31983317400A2E84B /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AA15FA9D1983317400A2E84B /* NBClientExample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AA15FACA1983317400A2E84B /* Build configuration list for PBXNativeTarget "NBClientExample" */;
+			buildPhases = (
+				AA15FA9A1983317400A2E84B /* Sources */,
+				AA15FA9B1983317400A2E84B /* Frameworks */,
+				AA15FA9C1983317400A2E84B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NBClientExample;
+			productName = NBClientExample;
+			productReference = AA15FA9E1983317400A2E84B /* NBClientExample.app */;
+			productType = "com.apple.product-type.application";
+		};
+		AA15FAB81983317400A2E84B /* NBClientExampleTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AA15FACD1983317400A2E84B /* Build configuration list for PBXNativeTarget "NBClientExampleTests" */;
+			buildPhases = (
+				AA15FAB51983317400A2E84B /* Sources */,
+				AA15FAB61983317400A2E84B /* Frameworks */,
+				AA15FAB71983317400A2E84B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AA15FABF1983317400A2E84B /* PBXTargetDependency */,
+			);
+			name = NBClientExampleTests;
+			productName = NBClientExampleTests;
+			productReference = AA15FAB91983317400A2E84B /* NBClientExampleTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AA15FA961983317400A2E84B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = NB;
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = NationBuilder;
+				TargetAttributes = {
+					AA15FAB81983317400A2E84B = {
+						TestTargetID = AA15FA9D1983317400A2E84B;
+					};
+				};
+			};
+			buildConfigurationList = AA15FA991983317400A2E84B /* Build configuration list for PBXProject "NBClientExample" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = AA15FA951983317400A2E84B;
+			productRefGroup = AA15FA9F1983317400A2E84B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AA15FA9D1983317400A2E84B /* NBClientExample */,
+				AA15FAB81983317400A2E84B /* NBClientExampleTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AA15FA9C1983317400A2E84B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA90912D19833B0E009BE1E9 /* NBPeopleViewController.xib in Resources */,
+				AA602C2E198C3966001A7DB2 /* NBPeoplePageHeaderView.xib in Resources */,
+				AA90913619833B8D009BE1E9 /* Localizable.strings in Resources */,
+				AA8BD9E0199447EF00400E5F /* NationBuilder-Info.plist in Resources */,
+				AA15FAAC1983317400A2E84B /* InfoPlist.strings in Resources */,
+				AA15FAB41983317400A2E84B /* Images.xcassets in Resources */,
+				AA90912F19833B0E009BE1E9 /* NBPersonCellView.xib in Resources */,
+				AA90913119833B0E009BE1E9 /* NBPersonViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AA15FAB71983317400A2E84B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA90913719833B8D009BE1E9 /* Localizable.strings in Resources */,
+				AA8BD9E1199447EF00400E5F /* NationBuilder-Info.plist in Resources */,
+				AA602C2F198C3966001A7DB2 /* NBPeoplePageHeaderView.xib in Resources */,
+				AA15FAC51983317400A2E84B /* InfoPlist.strings in Resources */,
+				AA90913219833B0E009BE1E9 /* NBPersonViewController.xib in Resources */,
+				AA90913019833B0E009BE1E9 /* NBPersonCellView.xib in Resources */,
+				AA90912E19833B0E009BE1E9 /* NBPeopleViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AA15FA9A1983317400A2E84B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA90914E19833D01009BE1E9 /* NBPersonCellView.m in Sources */,
+				AA90915019833D01009BE1E9 /* NBPersonViewController.m in Sources */,
+				AA602C32199157B7001A7DB2 /* NBPeopleViewFlowLayout.m in Sources */,
+				AA90914419833C22009BE1E9 /* NBPersonDataSource.m in Sources */,
+				AA90913C19833BC0009BE1E9 /* NBUIDefines.m in Sources */,
+				AA15FAB21983317400A2E84B /* NBAppDelegate.m in Sources */,
+				AA90914C19833D01009BE1E9 /* NBPeopleViewController.m in Sources */,
+				AA15FAAE1983317400A2E84B /* main.m in Sources */,
+				AA90914219833C22009BE1E9 /* NBPeopleDataSource.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AA15FAB51983317400A2E84B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA90913D19833BC0009BE1E9 /* NBUIDefines.m in Sources */,
+				AA602C33199157B7001A7DB2 /* NBPeopleViewFlowLayout.m in Sources */,
+				AA90915119833D01009BE1E9 /* NBPersonViewController.m in Sources */,
+				AA90914F19833D01009BE1E9 /* NBPersonCellView.m in Sources */,
+				AA90914519833C22009BE1E9 /* NBPersonDataSource.m in Sources */,
+				AA90914D19833D01009BE1E9 /* NBPeopleViewController.m in Sources */,
+				AA90914319833C22009BE1E9 /* NBPeopleDataSource.m in Sources */,
+				AA15FAC71983317400A2E84B /* NBClientExampleTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AA15FABF1983317400A2E84B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AA15FA9D1983317400A2E84B /* NBClientExample */;
+			targetProxy = AA15FABE1983317400A2E84B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		AA15FAAA1983317400A2E84B /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AA15FAAB1983317400A2E84B /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		AA15FAC31983317400A2E84B /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AA15FAC41983317400A2E84B /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		AA90913919833B8D009BE1E9 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AA90913819833B8D009BE1E9 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		AA15FAC81983317400A2E84B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		AA15FAC91983317400A2E84B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		AA15FACB1983317400A2E84B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NBClientExample/NBClientExample-Prefix.pch";
+				INFOPLIST_FILE = "NBClientExample/NBClientExample-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SOURCE_ROOT)/include",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		AA15FACC1983317400A2E84B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NBClientExample/NBClientExample-Prefix.pch";
+				INFOPLIST_FILE = "NBClientExample/NBClientExample-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SOURCE_ROOT)/include",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		AA15FACE1983317400A2E84B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/NBClientExample.app/NBClientExample";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NBClientExample/NBClientExample-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "NBClientExampleTests/NBClientExampleTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		AA15FACF1983317400A2E84B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/NBClientExample.app/NBClientExample";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NBClientExample/NBClientExample-Prefix.pch";
+				INFOPLIST_FILE = "NBClientExampleTests/NBClientExampleTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AA15FA991983317400A2E84B /* Build configuration list for PBXProject "NBClientExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA15FAC81983317400A2E84B /* Debug */,
+				AA15FAC91983317400A2E84B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AA15FACA1983317400A2E84B /* Build configuration list for PBXNativeTarget "NBClientExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA15FACB1983317400A2E84B /* Debug */,
+				AA15FACC1983317400A2E84B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AA15FACD1983317400A2E84B /* Build configuration list for PBXNativeTarget "NBClientExampleTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA15FACE1983317400A2E84B /* Debug */,
+				AA15FACF1983317400A2E84B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = AA15FA961983317400A2E84B /* Project object */;
+}

@@ -47,10 +47,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "AAAEFC53196CD61200222A48"
-            BuildableName = "NBClientCatalogue.app"
-            BlueprintName = "NBClientCatalogue"
-            ReferencedContainer = "container:../NBClientCatalogue/NBClientCatalogue.xcodeproj">
+            BlueprintIdentifier = "AAAEFC20196CD13D00222A48"
+            BuildableName = "libNBClient.a"
+            BlueprintName = "NBClient"
+            ReferencedContainer = "container:NBClient.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <CommandLineArguments>
@@ -67,7 +67,7 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-NBClientAPIKey 9a888b2e71393a3c6b327b32366754287c813714ae51e0f7938a7ee608a064f1"
+            argument = "-NBTestToken 9a888b2e71393a3c6b327b32366754287c813714ae51e0f7938a7ee608a064f1"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
@@ -97,6 +97,15 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "AAAEFC20196CD13D00222A48"
+            BuildableName = "libNBClient.a"
+            BlueprintName = "NBClient"
+            ReferencedContainer = "container:NBClient.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>

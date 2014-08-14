@@ -15,6 +15,35 @@ NSString * const NBClientNumberOfTotalItemsKey = @"total";
 
 @implementation NBPaginationInfo
 
+- (void)setCurrentPageNumber:(NSUInteger)currentPageNumber
+{
+    currentPageNumber = MAX(1, currentPageNumber);
+    // Boilerplate.
+    static NSString *key;
+    key = key ?: NSStringFromSelector(@selector(currentPageNumber));
+    [self willChangeValueForKey:key];
+    _currentPageNumber = currentPageNumber;
+    [self didChangeValueForKey:key];
+    // END: Boilerplate.
+}
+
+- (NSUInteger)indexOfFirstItemAtPage:(NSUInteger)pageNumber
+{
+    return self.numberOfItemsPerPage * (pageNumber - 1);
+}
+
+- (NSUInteger)numberOfItemsAtPage:(NSUInteger)pageNumber
+{
+    NSUInteger number = self.numberOfItemsPerPage;
+    if (pageNumber == self.currentPageNumber) {
+        NSUInteger remainder = self.numberOfTotalAvailableItems % self.numberOfItemsPerPage;
+        if (remainder) {
+            number = remainder;
+        }
+    }
+    return number;
+}
+
 #pragma mark - NBDictionarySerializing
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary

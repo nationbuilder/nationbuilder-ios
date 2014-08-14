@@ -5,6 +5,6 @@
       location = "group:NBClient/NBClient.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:NBClientCatalogue/NBClientCatalogue.xcodeproj">
+      location = "group:NBClientExample/NBClientExample.xcodeproj">
    </FileRef>
 </Workspace>
