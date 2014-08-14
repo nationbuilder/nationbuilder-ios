@@ -2,7 +2,7 @@
 
 ## Testing
 
-```
+```bash
 # Install dependencies:
 > gem install xcpretty
 
