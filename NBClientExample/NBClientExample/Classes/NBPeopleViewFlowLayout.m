@@ -12,7 +12,6 @@
 
 @property (nonatomic, getter = isLandscape) BOOL landscape;
 @property (nonatomic) CGFloat originalItemHeight;
-@property (nonatomic, readonly) CGFloat visibleCollectionViewHeight;
 
 @property (nonatomic, strong) NSArray *decorationViewAttributes;
 
@@ -179,8 +178,6 @@
     return [self.collectionView cellForItemAtIndexPath:
             [NSIndexPath indexPathForItem:indexPath.item - offset inSection:indexPath.section]];
 }
-
-#pragma mark - Private
 
 - (CGFloat)visibleCollectionViewHeight
 {

@@ -655,7 +655,7 @@ static void *observationContext = &observationContext;
         BOOL shouldAutoScroll = (layout.intrinsicContentSize.height + pageHeight) > scrollView.bounds.size.height + itemHeight;
         if (shouldAutoScroll) {
             CGPoint contentOffset = scrollView.contentOffset;
-            contentOffset.y += pageHeight;
+            contentOffset.y += MIN(pageHeight, layout.visibleCollectionViewHeight);
             [scrollView setContentOffset:contentOffset animated:YES];
             dispatch_async(dispatch_get_main_queue(), ^{ // Defer showing the indicator until offset animation finishes.
                 scrollView.showsVerticalScrollIndicator = YES;
