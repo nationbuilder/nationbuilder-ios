@@ -8,24 +8,34 @@
 
 #import <XCTest/XCTest.h>
 
+#import <Nocilla/Nocilla.h>
+
 @class NBClient;
 @class NBPaginationInfo;
 
 @interface NBTestCase : XCTestCase
 
-@property (nonatomic, strong) NSString *nationName;
-@property (nonatomic, strong) NSURL *baseURL;
+@property (nonatomic, strong, readonly) NSString *nationName;
+@property (nonatomic, strong, readonly) NSURL *baseURL;
+@property (nonatomic, strong, readonly) NSString *baseURLString;
 
-@property (nonatomic, strong) NSString *testToken;
-@property (nonatomic, strong) NSString *clientIdentifier;
-@property (nonatomic, strong) NSString *clientSecret;
-@property (nonatomic, strong) NSString *userEmailAddress;
-@property (nonatomic) NSUInteger userIdentifier;
-@property (nonatomic, strong) NSString *userPassword;
+@property (nonatomic, strong, readonly) NSString *testToken;
+@property (nonatomic, strong, readonly) NSString *clientIdentifier;
+@property (nonatomic, strong, readonly) NSString *clientSecret;
+@property (nonatomic, strong, readonly) NSString *userEmailAddress;
+@property (nonatomic, readonly) NSUInteger userIdentifier;
+@property (nonatomic, strong, readonly) NSString *userPassword;
 
 @property (nonatomic, strong, readonly) NBClient *client;
 
+@property (nonatomic, readonly) BOOL shouldUseHTTPStubbing;
+@property (nonatomic, readonly) BOOL shouldOnlyUseTestToken; // This may be temporary.
+
 - (void)setUpSharedClient;
+- (LSStubRequestDSL *)stubRequestWithMethod:(NSString *)method
+                                       path:(NSString *)path
+                                 identifier:(NSUInteger)identifier
+                                 parameters:(NSDictionary *)parameters;
 
 - (void)assertPaginationInfo:(NBPaginationInfo *)paginationInfo
     withPaginationParameters:(NSDictionary *)paginationParameters;

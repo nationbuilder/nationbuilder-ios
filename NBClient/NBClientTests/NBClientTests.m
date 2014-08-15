@@ -73,11 +73,16 @@
 
 - (void)testAsyncAuthenticatedInitialization
 {
+    if (self.shouldOnlyUseTestToken) {
+        NSLog(@"SKIPPING");
+        return;
+    }
     [self setUpAsync];
     NBClient *client = self.baseClientWithAuthenticator;
     XCTAssertNotNil(client.authenticator,
                     @"Client should have authenticator.");
-    [NBAuthenticationCredential deleteCredentialWithIdentifier:client.authenticator.credentialIdentifier];
+    NSString *credentialIdentifier = client.authenticator.credentialIdentifier;
+    [NBAuthenticationCredential deleteCredentialWithIdentifier:credentialIdentifier];
     NSURLSessionDataTask *task =
     [client.authenticator
      authenticateWithUserName:self.userEmailAddress
@@ -114,6 +119,10 @@
 
 - (void)testConfiguringAPIVersion
 {
+    if (self.shouldUseHTTPStubbing) {
+        NSLog(@"SKIPPING");
+        return;
+    }
     NBClient *client = self.baseClientWithTestToken;
     client.apiVersion = [NBClientDefaultAPIVersion stringByAppendingString:@"0"];
     NSURLSessionDataTask *task = [client fetchPeopleWithPaginationInfo:nil completionHandler:nil];

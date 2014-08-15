@@ -9,14 +9,14 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "AAAEFC20196CD13D00222A48"
-               BuildableName = "libNBClient.a"
-               BlueprintName = "NBClient"
+               BlueprintIdentifier = "AAAEFC30196CD13D00222A48"
+               BuildableName = "NBClientTests.xctest"
+               BlueprintName = "NBClientTests"
                ReferencedContainer = "container:NBClient.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -37,44 +37,35 @@
                BlueprintName = "NBClientTests"
                ReferencedContainer = "container:NBClient.xcodeproj">
             </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "NBTestCase">
-               </Test>
-            </SkippedTests>
          </TestableReference>
       </Testables>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "-NBNationName abeforprez"
+            argument = "-NBShouldUseHTTPStubbing 1"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-NBUserIdentifier 15236"
+            argument = "-NBNationName pengtest1"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-NBBaseURLFormat &quot;http://%@.nbuild.dev&quot;"
+            argument = "-NBUserIdentifier 2"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-NBTestToken 9a888b2e71393a3c6b327b32366754287c813714ae51e0f7938a7ee608a064f1"
+            argument = "-NBBaseURLFormat &quot;https://%@.nationbuilder.com&quot;"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-NBClientIdentifier ca76d8aa658b4a0af4aba5599f4443bed47895025799a63f9f75669ebc67dd9d"
+            argument = "-NBTestToken de3e244113b4c8737da10c0fa24486d60e253ff50e41226ba9a368448eb2e065"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-NBClientSecret 6c63db2494d69f715157075d1794074a522990a97dc1324910d605c89859b4a8"
+            argument = "-NBClientIdentifier d69aa7b7ad57efd69c3ef688c15e4318d501612d0c258d7ac92f3f1bb3a539aa"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-NBUserEmailAddress help@nationbuilder.com"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "-NBUserPassword password"
+            argument = "-NBUserEmailAddress peng@pengxwang.com"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
