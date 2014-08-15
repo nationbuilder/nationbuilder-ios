@@ -4,7 +4,9 @@
 
 ```bash
 # Install dependencies:
-> gem install xcpretty
+~> gem install -N xcpretty
+~> sudo gem install -N cocoapods
+nationbuilder-ios> pod install
 
 # Run unit tests against sandbox:
 nationbuilder-ios> rake test
