@@ -26,8 +26,11 @@
 @property (nonatomic, strong) NSString *tagDelimiterString UI_APPEARANCE_SELECTOR;
 
 @property (nonatomic, getter = areBordersDisabled) BOOL bordersDisabled;
+@property (nonatomic, readonly, getter = isDeleteSwitchVisible) BOOL deleteSwitchVisible;
 
 @property (nonatomic, weak) id<NBCollectionViewCellDelegate> delegate;
+
+- (void)setDeleteSwitchVisible:(BOOL)deleteSwitchVisible animated:(BOOL)animated;
 
 @end
 
