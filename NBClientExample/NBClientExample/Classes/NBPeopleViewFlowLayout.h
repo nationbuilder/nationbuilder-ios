@@ -27,6 +27,7 @@
 
 @property (nonatomic, readonly) BOOL hasMultipleColumns;
 @property (nonatomic, readonly) CGSize intrinsicContentSize;
+@property (nonatomic, readonly) CGFloat visibleCollectionViewHeight;
 
 @property (nonatomic) BOOL shouldShowLoadMore;
 

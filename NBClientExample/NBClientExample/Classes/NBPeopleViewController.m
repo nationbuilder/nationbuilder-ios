@@ -43,7 +43,7 @@ static void *observationContext = &observationContext;
 @property (nonatomic, strong) UIBarButtonItem *deleteButtonItem;
 
 @property (nonatomic) NSUInteger numberToDelete;
-@property (nonatomic, readonly, getter = isDeleting) BOOL deleting;
+@property (nonatomic, getter = isDeleting) BOOL deleting;
 
 @property (nonatomic) NBScrollViewPullActionState refreshState;
 @property (nonatomic) NBScrollViewPullActionState loadMoreState;
@@ -54,7 +54,7 @@ static void *observationContext = &observationContext;
 - (IBAction)startCreating:(id)sender;
 
 - (void)setUpDeleting;
-- (IBAction)toggleDeleting:(id)sender;
+- (IBAction)updateDeleting:(id)sender;
 - (IBAction)deleteHighlighted:(id)sender;
 - (IBAction)clearNeedsDeletes:(id)sender;
 
@@ -139,6 +139,7 @@ static void *observationContext = &observationContext;
         self.navigationController.delegate = self;
     }
     [self setUpCreating];
+    [self setUpDeleting];
     [self setUpPagination];
 }
 
@@ -248,7 +249,8 @@ static void *observationContext = &observationContext;
 - (IBAction)cancelPendingAction:(id)sender
 {
     if (self.isDeleting) {
-        self.numberToDelete = 0;
+        self.deleting = NO;
+        [self updateDeleting:sender];
     }
 }
 
@@ -278,7 +280,8 @@ static void *observationContext = &observationContext;
         }
         [self.collectionView reloadData];
         if (self.isDeleting) {
-            self.numberToDelete = 0;
+            self.deleting = NO;
+            [self updateDeleting:self];
         }
     } else if ([keyPath isEqual:NBDataSourceErrorKeyPath] && self.dataSource.error) {
         if (self.isBusy) { // If we were busy refreshing data, now we're not.
@@ -314,6 +317,7 @@ static void *observationContext = &observationContext;
     NSUInteger index = [dataSource.paginationInfo indexOfFirstItemAtPage:(indexPath.section + 1)] + indexPath.item;
     cell.dataSource = [(id)self.dataSource dataSourceForItemAtIndex:index]; // Automatically calls refreshData.
     cell.delegate = self;
+    [cell setDeleteSwitchVisible:self.isDeleting animated:NO];
     return cell;
 }
 
@@ -417,7 +421,7 @@ static void *observationContext = &observationContext;
     if (!self.selectedIndexPath) {
         return;
     }
-    if (viewController.modalPresentationStyle == UIModalPresentationFormSheet) {
+    if (viewController.navigationController.modalPresentationStyle == UIModalPresentationFormSheet) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self.collectionView deselectItemAtIndexPath:self.selectedIndexPath animated:NO];
         });
@@ -540,7 +544,7 @@ static void *observationContext = &observationContext;
     }
     self.deleteButtonItem = [[UIBarButtonItem alloc]
                              initWithBarButtonSystemItem:UIBarButtonSystemItemTrash
-                             target:self action:@selector(deleteHighlighted:)];
+                             target:self action:@selector(updateDeleting:)];
     return _deleteButtonItem;
 }
 
@@ -558,33 +562,40 @@ static void *observationContext = &observationContext;
     _numberToDelete = numberToDelete;
     [self didChangeValueForKey:key];
     // END: Boilerplate.
-    [self toggleDeleting:self];
 }
 
-- (BOOL)isDeleting
+- (void)setDeleting:(BOOL)deleting
 {
-    return self.navigationItem.rightBarButtonItem == self.deleteButtonItem;
+    // Boilerplate.
+    static NSString *key;
+    key = key ?: NSStringFromSelector(@selector(isDeleting));
+    [self willChangeValueForKey:key];
+    _deleting = deleting;
+    [self didChangeValueForKey:key];
+    // END: Boilerplate.
+    self.numberToDelete = 0;
 }
 
 - (void)setUpDeleting
 {
-    _numberToDelete = 0;
+    self.numberToDelete = 0;
+    self.navigationItem.leftBarButtonItem = self.deleteButtonItem;
 }
-    
-- (IBAction)toggleDeleting:(id)sender
+
+- (IBAction)updateDeleting:(id)sender
 {
-    UIBarButtonItem *buttonItem;
-    UIBarButtonItem *cancelButtonItem;
-    if (self.numberToDelete > 0) {
-        buttonItem = self.deleteButtonItem;
-        cancelButtonItem = self.cancelButtonItem;
-    } else {
-        _numberToDelete = 0;
-        buttonItem = self.createButtonItem;
-        cancelButtonItem = nil;
+    if (sender == self.deleteButtonItem) {
+        if (!self.isDeleting) {
+            self.deleting = YES;
+        } else if (self.numberToDelete > 0) {
+            [self deleteHighlighted:sender];
+        }
     }
-    [self.navigationItem setRightBarButtonItem:buttonItem animated:YES];
-    [self.navigationItem setLeftBarButtonItem:cancelButtonItem animated:YES];
+    UIBarButtonItem *rightButtonItem = self.isDeleting ? self.cancelButtonItem : self.createButtonItem;
+    [self.navigationItem setRightBarButtonItem:rightButtonItem animated:YES];
+    for (NBPersonCellView *cell in self.collectionView.visibleCells) {
+        [cell setDeleteSwitchVisible:self.isDeleting animated:YES];
+    }
 }
 
 - (IBAction)deleteHighlighted:(id)sender
@@ -655,7 +666,7 @@ static void *observationContext = &observationContext;
         BOOL shouldAutoScroll = (layout.intrinsicContentSize.height + pageHeight) > scrollView.bounds.size.height + itemHeight;
         if (shouldAutoScroll) {
             CGPoint contentOffset = scrollView.contentOffset;
-            contentOffset.y += pageHeight;
+            contentOffset.y += MIN(pageHeight, layout.visibleCollectionViewHeight);
             [scrollView setContentOffset:contentOffset animated:YES];
             dispatch_async(dispatch_get_main_queue(), ^{ // Defer showing the indicator until offset animation finishes.
                 scrollView.showsVerticalScrollIndicator = YES;

@@ -19,13 +19,15 @@ static void *observationContext = &observationContext;
 @interface NBPersonCellView ()
 
 @property (nonatomic, weak, readwrite) IBOutlet UIView *bottomBorderView;
-
-@property (nonatomic, weak) IBOutlet UISwitch *deleteSwitch;
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *tagsLabel;
-
 @property (nonatomic, strong) NSArray *borderViews;
 @property (nonatomic, strong) NSArray *labeledViews;
+
+@property (nonatomic, weak) IBOutlet UISwitch *deleteSwitch;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *deleteSwitchWidthConstraint;
+@property (nonatomic, readwrite, getter = isDeleteSwitchVisible) BOOL deleteSwitchVisible;
+@property (nonatomic) CGFloat originalDeleteSwitchWidth;
 
 - (IBAction)toggleNeedsDelete:(id)sender;
 
@@ -45,6 +47,7 @@ static void *observationContext = &observationContext;
     self.bottomBorderView.backgroundColor = self.borderColor;
     self.deleteSwitch.alpha = self.deleteSwitchDimmedAlpha.floatValue;
     self.deleteSwitch.tintColor = self.borderColor;
+    self.originalDeleteSwitchWidth = self.deleteSwitch.frame.size.width;
     if (!self.selectedBackgroundColor) {
         self.selectedBackgroundColor = self.tintColor;
     }
@@ -184,6 +187,22 @@ static void *observationContext = &observationContext;
     // Bind.
     for (UIView *view in self.borderViews) {
         view.hidden = self.bordersDisabled;
+    }
+}
+
+- (void)setDeleteSwitchVisible:(BOOL)deleteSwitchVisible animated:(BOOL)animated
+{
+    self.deleteSwitchVisible = deleteSwitchVisible;
+    self.deleteSwitchWidthConstraint.constant = self.deleteSwitchVisible ? self.originalDeleteSwitchWidth : 0.0f;
+    [self setNeedsUpdateConstraints];
+    void (^changes)(void) = ^{
+        [self layoutIfNeeded];
+        self.deleteSwitch.alpha = self.deleteSwitchVisible ? 1.0f : 0.0f;
+    };
+    if (animated) {
+        [UIView animateWithDuration:0.3f animations:changes];
+    } else {
+        changes();
     }
 }
 

@@ -43,6 +43,9 @@
                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="oT1-Ho-FgS" userLabel="Delete Switch">
                         <rect key="frame" x="256" y="34" width="51" height="31"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="49" id="o0b-QT-I6n"/>
+                        </constraints>
                         <color key="onTintColor" red="0.80361515283584595" green="0.0" blue="0.033877875655889511" alpha="1" colorSpace="calibratedRGB"/>
                         <connections>
                             <action selector="toggleNeedsDelete:" destination="Grz-w3-y7q" eventType="valueChanged" id="rWm-id-mzk"/>
@@ -54,7 +57,6 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="Llr-6f-IVD" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Mbg-Ys-SBl" secondAttribute="bottom" id="0kF-a9-86N"/>
-                <constraint firstAttribute="trailing" secondItem="Mbg-Ys-SBl" secondAttribute="trailing" constant="77" id="1N9-th-GSC"/>
                 <constraint firstItem="lO3-2n-xHR" firstAttribute="leading" secondItem="Grz-w3-y7q" secondAttribute="leading" constant="15" id="3xi-Ez-Kdr"/>
                 <constraint firstAttribute="centerY" secondItem="oT1-Ho-FgS" secondAttribute="centerY" id="IF6-Hl-ZZF"/>
                 <constraint firstItem="lO3-2n-xHR" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Llr-6f-IVD" secondAttribute="bottom" constant="15" id="L14-CE-Lzp"/>
@@ -64,6 +66,7 @@
                 <constraint firstAttribute="trailing" secondItem="lO3-2n-xHR" secondAttribute="trailing" id="QDZ-Tk-ETy"/>
                 <constraint firstAttribute="bottom" secondItem="lO3-2n-xHR" secondAttribute="bottom" id="b1B-ve-wGb"/>
                 <constraint firstItem="Llr-6f-IVD" firstAttribute="trailing" secondItem="Mbg-Ys-SBl" secondAttribute="trailing" id="g1U-3w-U8B"/>
+                <constraint firstItem="oT1-Ho-FgS" firstAttribute="leading" secondItem="Mbg-Ys-SBl" secondAttribute="trailing" constant="13" id="jGQ-Ai-10s"/>
                 <constraint firstItem="Mbg-Ys-SBl" firstAttribute="top" relation="lessThanOrEqual" secondItem="Grz-w3-y7q" secondAttribute="top" constant="28" id="nS6-V3-p0o"/>
                 <constraint firstAttribute="trailing" secondItem="oT1-Ho-FgS" secondAttribute="trailing" constant="15" id="oyQ-sl-Nv8"/>
                 <constraint firstItem="Mbg-Ys-SBl" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Grz-w3-y7q" secondAttribute="top" constant="20" id="ue0-cZ-FhQ"/>
@@ -96,6 +99,7 @@
             <connections>
                 <outlet property="bottomBorderView" destination="lO3-2n-xHR" id="Tdw-xN-lv9"/>
                 <outlet property="deleteSwitch" destination="oT1-Ho-FgS" id="gKK-xf-Q3P"/>
+                <outlet property="deleteSwitchWidthConstraint" destination="o0b-QT-I6n" id="iQg-os-NP1"/>
                 <outlet property="nameLabel" destination="Mbg-Ys-SBl" id="avB-J0-y13"/>
                 <outlet property="tagsLabel" destination="Llr-6f-IVD" id="lvH-DD-h4u"/>
             </connections>
