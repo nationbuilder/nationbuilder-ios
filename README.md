@@ -7,8 +7,8 @@
 
 ## Usage
 
-To run the NBClientExample project, clone the repo, and run `pod install` from
-the NBClientExample directory first.
+To run the NBClientExample project, open the NBClient workspace and build the
+NBClientExample scheme.
 
 ## Requirements
 
