@@ -17,7 +17,9 @@ the NBClientExample directory first.
 NBClient is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
-    pod "NBClient"
+```ruby
+pod 'NBClient'
+```
 
 ## License
 
