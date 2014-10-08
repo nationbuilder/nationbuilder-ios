@@ -11,6 +11,10 @@
 		AA668DD11970B81800A952B0 /* FoundationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AA668DD01970B81800A952B0 /* FoundationAdditions.m */; };
 		AA668DD41976EA1600A952B0 /* NBClientPeopleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA668DD31976EA1600A952B0 /* NBClientPeopleTests.m */; };
 		AA668DD61978418F00A952B0 /* FoundationAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA668DD51978418F00A952B0 /* FoundationAdditionsTests.m */; };
+		AA674EE519E60170009C6D4B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA674EE419E60170009C6D4B /* UIKit.framework */; };
+		AA674F0219E60A54009C6D4B /* UI.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA674EFE19E60A2E009C6D4B /* UI.h */; };
+		AA674F0719E60CFD009C6D4B /* NBAccountButton.m in Sources */ = {isa = PBXBuildFile; fileRef = AA674F0519E60CFD009C6D4B /* NBAccountButton.m */; };
+		AA674F0919E60D1F009C6D4B /* NBAccountButton.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA674F0419E60CFD009C6D4B /* NBAccountButton.h */; };
 		AA6FF3BE197D95220049B747 /* NBPaginationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FF3BD197D95220049B747 /* NBPaginationInfo.m */; };
 		AA6FF3C1197DADEA0049B747 /* NBPaginationInfoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FF3C0197DADEA0049B747 /* NBPaginationInfoTests.m */; };
 		AA6FF3C4197DF2E00049B747 /* NBClient+People.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FF3C3197DF2E00049B747 /* NBClient+People.m */; };
@@ -60,6 +64,8 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				AA674F0919E60D1F009C6D4B /* NBAccountButton.h in CopyFiles */,
+				AA674F0219E60A54009C6D4B /* UI.h in CopyFiles */,
 				AA90915A19834186009BE1E9 /* NBDefines.h in CopyFiles */,
 				AA90915319834164009BE1E9 /* Main.h in CopyFiles */,
 				AA90915419834164009BE1E9 /* FoundationAdditions.h in CopyFiles */,
@@ -80,6 +86,11 @@
 		AA668DD01970B81800A952B0 /* FoundationAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FoundationAdditions.m; sourceTree = "<group>"; };
 		AA668DD31976EA1600A952B0 /* NBClientPeopleTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBClientPeopleTests.m; sourceTree = "<group>"; };
 		AA668DD51978418F00A952B0 /* FoundationAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FoundationAdditionsTests.m; sourceTree = "<group>"; };
+		AA674EE419E60170009C6D4B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		AA674EFE19E60A2E009C6D4B /* UI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UI.h; path = NBClient/UI.h; sourceTree = SOURCE_ROOT; };
+		AA674F0419E60CFD009C6D4B /* NBAccountButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBAccountButton.h; sourceTree = "<group>"; };
+		AA674F0519E60CFD009C6D4B /* NBAccountButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAccountButton.m; sourceTree = "<group>"; };
+		AA674F0619E60CFD009C6D4B /* NBAccountButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NBAccountButton.xib; sourceTree = "<group>"; };
 		AA6FF3BC197D95220049B747 /* NBPaginationInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBPaginationInfo.h; sourceTree = "<group>"; };
 		AA6FF3BD197D95220049B747 /* NBPaginationInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBPaginationInfo.m; sourceTree = "<group>"; };
 		AA6FF3C0197DADEA0049B747 /* NBPaginationInfoTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBPaginationInfoTests.m; sourceTree = "<group>"; };
@@ -120,6 +131,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA674EE519E60170009C6D4B /* UIKit.framework in Frameworks */,
 				AA6FF3C8197EDEE60049B747 /* Security.framework in Frameworks */,
 				AAAEFC25196CD13D00222A48 /* Foundation.framework in Frameworks */,
 			);
@@ -139,6 +151,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AA674EDA19E4D516009C6D4B /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				AA674F0419E60CFD009C6D4B /* NBAccountButton.h */,
+				AA674F0519E60CFD009C6D4B /* NBAccountButton.m */,
+				AA674F0619E60CFD009C6D4B /* NBAccountButton.xib */,
+				AA674EFE19E60A2E009C6D4B /* UI.h */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
 		AA78ED78199C563C0043B7C0 /* Fixtures */ = {
 			isa = PBXGroup;
 			children = (
@@ -179,6 +202,7 @@
 				AA78ED60199AC2F60043B7C0 /* libPods-NBClientTests.a */,
 				AAAEFC24196CD13D00222A48 /* Foundation.framework */,
 				AA6FF3C7197EDEE60049B747 /* Security.framework */,
+				AA674EE419E60170009C6D4B /* UIKit.framework */,
 				AAAEFC32196CD13D00222A48 /* XCTest.framework */,
 			);
 			name = Frameworks;
@@ -202,6 +226,7 @@
 				AA6FF3BC197D95220049B747 /* NBPaginationInfo.h */,
 				AA6FF3BD197D95220049B747 /* NBPaginationInfo.m */,
 				AAAEFC27196CD13D00222A48 /* Supporting Files */,
+				AA674EDA19E4D516009C6D4B /* UI */,
 			);
 			path = NBClient;
 			sourceTree = "<group>";
@@ -373,6 +398,7 @@
 			files = (
 				AA6FF3BE197D95220049B747 /* NBPaginationInfo.m in Sources */,
 				AA6FF3C4197DF2E00049B747 /* NBClient+People.m in Sources */,
+				AA674F0719E60CFD009C6D4B /* NBAccountButton.m in Sources */,
 				AA668DD11970B81800A952B0 /* FoundationAdditions.m in Sources */,
 				AA862851196F1651005060C9 /* NBAuthenticator.m in Sources */,
 				AAAEFC2C196CD13D00222A48 /* NBClient.m in Sources */,
