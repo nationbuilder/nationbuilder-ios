@@ -1,1489 +1,591 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>archiveVersion</key>
-	<string>1</string>
-	<key>classes</key>
-	<dict/>
-	<key>objectVersion</key>
-	<string>46</string>
-	<key>objects</key>
-	<dict>
-		<key>02CC2C7BDCED418996E22D0B</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>inputPaths</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXShellScriptBuildPhase</string>
-			<key>name</key>
-			<string>Check Pods Manifest.lock</string>
-			<key>outputPaths</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>shellPath</key>
-			<string>/bin/sh</string>
-			<key>shellScript</key>
-			<string>diff "${PODS_ROOT}/../Podfile.lock" "${PODS_ROOT}/Manifest.lock" &gt; /dev/null
-if [[ $? != 0 ]] ; then
-    cat &lt;&lt; EOM
-error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.
-EOM
-    exit 1
-fi
-</string>
-			<key>showEnvVarsInLog</key>
-			<string>0</string>
-		</dict>
-		<key>4E2293EFB86F4FE3A69DCB10</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>inputPaths</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXShellScriptBuildPhase</string>
-			<key>name</key>
-			<string>Copy Pods Resources</string>
-			<key>outputPaths</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>shellPath</key>
-			<string>/bin/sh</string>
-			<key>shellScript</key>
-			<string>"${SRCROOT}/../Pods/Target Support Files/Pods-NBClientTests/Pods-NBClientTests-resources.sh"
-</string>
-			<key>showEnvVarsInLog</key>
-			<string>0</string>
-		</dict>
-		<key>AA668DC419705FC800A952B0</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>NBTestCase.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AA668DC519705FC800A952B0</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>NBTestCase.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AA668DC619705FC800A952B0</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AA668DC519705FC800A952B0</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AA668DCF1970B81800A952B0</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>FoundationAdditions.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AA668DD01970B81800A952B0</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>FoundationAdditions.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AA668DD11970B81800A952B0</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AA668DD01970B81800A952B0</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AA668DD31976EA1600A952B0</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>NBClientPeopleTests.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AA668DD41976EA1600A952B0</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AA668DD31976EA1600A952B0</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AA668DD51978418F00A952B0</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>FoundationAdditionsTests.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AA668DD61978418F00A952B0</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AA668DD51978418F00A952B0</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AA6FF3BC197D95220049B747</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>NBPaginationInfo.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AA6FF3BD197D95220049B747</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>NBPaginationInfo.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AA6FF3BE197D95220049B747</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AA6FF3BD197D95220049B747</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AA6FF3C0197DADEA0049B747</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>NBPaginationInfoTests.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AA6FF3C1197DADEA0049B747</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AA6FF3C0197DADEA0049B747</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AA6FF3C2197DF2E00049B747</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>NBClient+People.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AA6FF3C3197DF2E00049B747</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>NBClient+People.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AA6FF3C4197DF2E00049B747</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AA6FF3C3197DF2E00049B747</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AA6FF3C6197DF5B10049B747</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>NBClient_Internal.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AA6FF3C7197EDEE60049B747</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>Security.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/Security.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>AA6FF3C8197EDEE60049B747</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AA6FF3C7197EDEE60049B747</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AA78ED60199AC2F60043B7C0</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>archive.ar</string>
-			<key>name</key>
-			<string>libPods-NBClientTests.a</string>
-			<key>path</key>
-			<string>../Pods/build/Debug-iphoneos/libPods-NBClientTests.a</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AA78ED61199AC2F60043B7C0</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AA78ED60199AC2F60043B7C0</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AA78ED71199C563C0043B7C0</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text</string>
-			<key>path</key>
-			<string>people_get.txt</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AA78ED72199C563C0043B7C0</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text</string>
-			<key>path</key>
-			<string>people_id_delete.txt</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AA78ED73199C563C0043B7C0</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text</string>
-			<key>path</key>
-			<string>people_id_get.txt</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AA78ED74199C563C0043B7C0</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text</string>
-			<key>path</key>
-			<string>people_id_put.txt</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AA78ED75199C563C0043B7C0</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text</string>
-			<key>path</key>
-			<string>people_match_get.txt</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AA78ED76199C563C0043B7C0</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text</string>
-			<key>path</key>
-			<string>people_post.txt</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AA78ED77199C563C0043B7C0</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text</string>
-			<key>path</key>
-			<string>people_search_get.txt</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AA78ED78199C563C0043B7C0</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>AA78ED71199C563C0043B7C0</string>
-				<string>AA78ED72199C563C0043B7C0</string>
-				<string>AA78ED73199C563C0043B7C0</string>
-				<string>AA78ED74199C563C0043B7C0</string>
-				<string>AA78ED75199C563C0043B7C0</string>
-				<string>AA78ED76199C563C0043B7C0</string>
-				<string>AA78ED77199C563C0043B7C0</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Fixtures</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AA78ED79199C563C0043B7C0</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AA78ED71199C563C0043B7C0</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AA78ED7A199C563C0043B7C0</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AA78ED72199C563C0043B7C0</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AA78ED7B199C563C0043B7C0</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AA78ED73199C563C0043B7C0</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AA78ED7C199C563C0043B7C0</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AA78ED74199C563C0043B7C0</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AA78ED7D199C563C0043B7C0</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AA78ED75199C563C0043B7C0</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AA78ED7E199C563C0043B7C0</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AA78ED76199C563C0043B7C0</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AA78ED7F199C563C0043B7C0</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AA78ED77199C563C0043B7C0</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AA86284F196F1651005060C9</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>NBAuthenticator.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AA862850196F1651005060C9</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>NBAuthenticator.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AA862851196F1651005060C9</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AA862850196F1651005060C9</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AA8B6821196F5539009DDA91</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>NBAuthenticatorTests.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AA8B6822196F5539009DDA91</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AA8B6821196F5539009DDA91</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AA8B6823196F82D4009DDA91</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>NBDefines.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AA8B6824196F82D4009DDA91</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>NBDefines.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AA8B6825196F82D4009DDA91</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AA8B6824196F82D4009DDA91</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AA90915319834164009BE1E9</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AABD0029196F1FD6003A745F</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AA90915419834164009BE1E9</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AA668DCF1970B81800A952B0</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AA90915519834164009BE1E9</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AA86284F196F1651005060C9</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AA90915619834164009BE1E9</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AAAEFC29196CD13D00222A48</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AA90915719834164009BE1E9</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AA6FF3C6197DF5B10049B747</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AA90915819834164009BE1E9</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AA6FF3C2197DF2E00049B747</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AA90915919834164009BE1E9</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AA6FF3BC197D95220049B747</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AA90915A19834186009BE1E9</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AA8B6823196F82D4009DDA91</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AAAEFC18196CD13D00222A48</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>AAAEFC26196CD13D00222A48</string>
-				<string>AAAEFC3A196CD13D00222A48</string>
-				<string>AAAEFC23196CD13D00222A48</string>
-				<string>AAAEFC22196CD13D00222A48</string>
-				<string>E41E70135B07288B1EB5428F</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AAAEFC19196CD13D00222A48</key>
-		<dict>
-			<key>attributes</key>
-			<dict>
-				<key>LastUpgradeCheck</key>
-				<string>0510</string>
-				<key>ORGANIZATIONNAME</key>
-				<string>NationBuilder</string>
-			</dict>
-			<key>buildConfigurationList</key>
-			<string>AAAEFC1C196CD13D00222A48</string>
-			<key>compatibilityVersion</key>
-			<string>Xcode 3.2</string>
-			<key>developmentRegion</key>
-			<string>English</string>
-			<key>hasScannedForEncodings</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXProject</string>
-			<key>knownRegions</key>
-			<array>
-				<string>en</string>
-			</array>
-			<key>mainGroup</key>
-			<string>AAAEFC18196CD13D00222A48</string>
-			<key>productRefGroup</key>
-			<string>AAAEFC22196CD13D00222A48</string>
-			<key>projectDirPath</key>
-			<string></string>
-			<key>projectReferences</key>
-			<array/>
-			<key>projectRoot</key>
-			<string></string>
-			<key>targets</key>
-			<array>
-				<string>AAAEFC20196CD13D00222A48</string>
-				<string>AAAEFC30196CD13D00222A48</string>
-			</array>
-		</dict>
-		<key>AAAEFC1C196CD13D00222A48</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>AAAEFC42196CD13D00222A48</string>
-				<string>AAAEFC43196CD13D00222A48</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Release</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>AAAEFC1D196CD13D00222A48</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>AA6FF3BE197D95220049B747</string>
-				<string>AA6FF3C4197DF2E00049B747</string>
-				<string>AA668DD11970B81800A952B0</string>
-				<string>AA862851196F1651005060C9</string>
-				<string>AAAEFC2C196CD13D00222A48</string>
-				<string>AA8B6825196F82D4009DDA91</string>
-			</array>
-			<key>isa</key>
-			<string>PBXSourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>AAAEFC1E196CD13D00222A48</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>AA6FF3C8197EDEE60049B747</string>
-				<string>AAAEFC25196CD13D00222A48</string>
-			</array>
-			<key>isa</key>
-			<string>PBXFrameworksBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>AAAEFC1F196CD13D00222A48</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>dstPath</key>
-			<string>include/$(PRODUCT_NAME)</string>
-			<key>dstSubfolderSpec</key>
-			<string>16</string>
-			<key>files</key>
-			<array>
-				<string>AA90915A19834186009BE1E9</string>
-				<string>AA90915319834164009BE1E9</string>
-				<string>AA90915419834164009BE1E9</string>
-				<string>AA90915519834164009BE1E9</string>
-				<string>AA90915619834164009BE1E9</string>
-				<string>AA90915719834164009BE1E9</string>
-				<string>AA90915819834164009BE1E9</string>
-				<string>AA90915919834164009BE1E9</string>
-			</array>
-			<key>isa</key>
-			<string>PBXCopyFilesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>AAAEFC20196CD13D00222A48</key>
-		<dict>
-			<key>buildConfigurationList</key>
-			<string>AAAEFC44196CD13D00222A48</string>
-			<key>buildPhases</key>
-			<array>
-				<string>AAAEFC1D196CD13D00222A48</string>
-				<string>AAAEFC1E196CD13D00222A48</string>
-				<string>AAAEFC1F196CD13D00222A48</string>
-			</array>
-			<key>buildRules</key>
-			<array/>
-			<key>dependencies</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXNativeTarget</string>
-			<key>name</key>
-			<string>NBClient</string>
-			<key>productName</key>
-			<string>NBClient</string>
-			<key>productReference</key>
-			<string>AAAEFC21196CD13D00222A48</string>
-			<key>productType</key>
-			<string>com.apple.product-type.library.static</string>
-		</dict>
-		<key>AAAEFC21196CD13D00222A48</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>archive.ar</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>libNBClient.a</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>AAAEFC22196CD13D00222A48</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>AAAEFC21196CD13D00222A48</string>
-				<string>AAAEFC31196CD13D00222A48</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Products</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AAAEFC23196CD13D00222A48</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>AA78ED60199AC2F60043B7C0</string>
-				<string>AAAEFC24196CD13D00222A48</string>
-				<string>AA6FF3C7197EDEE60049B747</string>
-				<string>AAAEFC32196CD13D00222A48</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Frameworks</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AAAEFC24196CD13D00222A48</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>Foundation.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/Foundation.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>AAAEFC25196CD13D00222A48</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AAAEFC24196CD13D00222A48</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AAAEFC26196CD13D00222A48</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>AABD0029196F1FD6003A745F</string>
-				<string>AA668DCF1970B81800A952B0</string>
-				<string>AA668DD01970B81800A952B0</string>
-				<string>AA86284F196F1651005060C9</string>
-				<string>AA862850196F1651005060C9</string>
-				<string>AAAEFC29196CD13D00222A48</string>
-				<string>AA6FF3C6197DF5B10049B747</string>
-				<string>AAAEFC2B196CD13D00222A48</string>
-				<string>AA6FF3C2197DF2E00049B747</string>
-				<string>AA6FF3C3197DF2E00049B747</string>
-				<string>AA8B6823196F82D4009DDA91</string>
-				<string>AA8B6824196F82D4009DDA91</string>
-				<string>AA6FF3BC197D95220049B747</string>
-				<string>AA6FF3BD197D95220049B747</string>
-				<string>AAAEFC27196CD13D00222A48</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>NBClient</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AAAEFC27196CD13D00222A48</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>AAAEFC28196CD13D00222A48</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Supporting Files</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AAAEFC28196CD13D00222A48</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>NBClient-Prefix.pch</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AAAEFC29196CD13D00222A48</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>NBClient.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AAAEFC2B196CD13D00222A48</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>NBClient.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AAAEFC2C196CD13D00222A48</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AAAEFC2B196CD13D00222A48</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AAAEFC2D196CD13D00222A48</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>AA668DD61978418F00A952B0</string>
-				<string>AA8B6822196F5539009DDA91</string>
-				<string>AA668DD41976EA1600A952B0</string>
-				<string>AAAEFC41196CD13D00222A48</string>
-				<string>AA6FF3C1197DADEA0049B747</string>
-				<string>AA668DC619705FC800A952B0</string>
-			</array>
-			<key>isa</key>
-			<string>PBXSourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>AAAEFC2E196CD13D00222A48</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>AA78ED61199AC2F60043B7C0</string>
-				<string>AAAEFC33196CD13D00222A48</string>
-				<string>AAAEFC39196CD13D00222A48</string>
-				<string>AAAEFC34196CD13D00222A48</string>
-			</array>
-			<key>isa</key>
-			<string>PBXFrameworksBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>AAAEFC2F196CD13D00222A48</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>AA78ED7A199C563C0043B7C0</string>
-				<string>AA78ED79199C563C0043B7C0</string>
-				<string>AA78ED7C199C563C0043B7C0</string>
-				<string>AAAEFC3F196CD13D00222A48</string>
-				<string>AA78ED7F199C563C0043B7C0</string>
-				<string>AA78ED7D199C563C0043B7C0</string>
-				<string>AA78ED7E199C563C0043B7C0</string>
-				<string>AA78ED7B199C563C0043B7C0</string>
-			</array>
-			<key>isa</key>
-			<string>PBXResourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>AAAEFC30196CD13D00222A48</key>
-		<dict>
-			<key>buildConfigurationList</key>
-			<string>AAAEFC47196CD13D00222A48</string>
-			<key>buildPhases</key>
-			<array>
-				<string>02CC2C7BDCED418996E22D0B</string>
-				<string>AAAEFC2D196CD13D00222A48</string>
-				<string>AAAEFC2E196CD13D00222A48</string>
-				<string>AAAEFC2F196CD13D00222A48</string>
-				<string>4E2293EFB86F4FE3A69DCB10</string>
-			</array>
-			<key>buildRules</key>
-			<array/>
-			<key>dependencies</key>
-			<array>
-				<string>AAAEFC38196CD13D00222A48</string>
-			</array>
-			<key>isa</key>
-			<string>PBXNativeTarget</string>
-			<key>name</key>
-			<string>NBClientTests</string>
-			<key>productName</key>
-			<string>NBClientTests</string>
-			<key>productReference</key>
-			<string>AAAEFC31196CD13D00222A48</string>
-			<key>productType</key>
-			<string>com.apple.product-type.bundle.unit-test</string>
-		</dict>
-		<key>AAAEFC31196CD13D00222A48</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>wrapper.cfbundle</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>NBClientTests.xctest</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>AAAEFC32196CD13D00222A48</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>XCTest.framework</string>
-			<key>path</key>
-			<string>Library/Frameworks/XCTest.framework</string>
-			<key>sourceTree</key>
-			<string>DEVELOPER_DIR</string>
-		</dict>
-		<key>AAAEFC33196CD13D00222A48</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AAAEFC32196CD13D00222A48</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AAAEFC34196CD13D00222A48</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AAAEFC24196CD13D00222A48</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AAAEFC37196CD13D00222A48</key>
-		<dict>
-			<key>containerPortal</key>
-			<string>AAAEFC19196CD13D00222A48</string>
-			<key>isa</key>
-			<string>PBXContainerItemProxy</string>
-			<key>proxyType</key>
-			<string>1</string>
-			<key>remoteGlobalIDString</key>
-			<string>AAAEFC20196CD13D00222A48</string>
-			<key>remoteInfo</key>
-			<string>NBClient</string>
-		</dict>
-		<key>AAAEFC38196CD13D00222A48</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXTargetDependency</string>
-			<key>target</key>
-			<string>AAAEFC20196CD13D00222A48</string>
-			<key>targetProxy</key>
-			<string>AAAEFC37196CD13D00222A48</string>
-		</dict>
-		<key>AAAEFC39196CD13D00222A48</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AAAEFC21196CD13D00222A48</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AAAEFC3A196CD13D00222A48</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>AA668DD51978418F00A952B0</string>
-				<string>AA8B6821196F5539009DDA91</string>
-				<string>AA668DD31976EA1600A952B0</string>
-				<string>AAAEFC40196CD13D00222A48</string>
-				<string>AA6FF3C0197DADEA0049B747</string>
-				<string>AA668DC419705FC800A952B0</string>
-				<string>AA668DC519705FC800A952B0</string>
-				<string>AAAEFC3B196CD13D00222A48</string>
-				<string>AA78ED78199C563C0043B7C0</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>NBClientTests</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AAAEFC3B196CD13D00222A48</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>AAAEFC3C196CD13D00222A48</string>
-				<string>AAAEFC3D196CD13D00222A48</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Supporting Files</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AAAEFC3C196CD13D00222A48</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.xml</string>
-			<key>path</key>
-			<string>NBClientTests-Info.plist</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AAAEFC3D196CD13D00222A48</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>AAAEFC3E196CD13D00222A48</string>
-			</array>
-			<key>isa</key>
-			<string>PBXVariantGroup</string>
-			<key>name</key>
-			<string>InfoPlist.strings</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AAAEFC3E196CD13D00222A48</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.strings</string>
-			<key>name</key>
-			<string>en</string>
-			<key>path</key>
-			<string>en.lproj/InfoPlist.strings</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AAAEFC3F196CD13D00222A48</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AAAEFC3D196CD13D00222A48</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AAAEFC40196CD13D00222A48</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>NBClientTests.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>AAAEFC41196CD13D00222A48</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AAAEFC40196CD13D00222A48</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>AAAEFC42196CD13D00222A48</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>ALWAYS_SEARCH_USER_PATHS</key>
-				<string>NO</string>
-				<key>CLANG_CXX_LANGUAGE_STANDARD</key>
-				<string>gnu++0x</string>
-				<key>CLANG_CXX_LIBRARY</key>
-				<string>libc++</string>
-				<key>CLANG_ENABLE_MODULES</key>
-				<string>YES</string>
-				<key>CLANG_ENABLE_OBJC_ARC</key>
-				<string>YES</string>
-				<key>CLANG_WARN_BOOL_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_CONSTANT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_DIRECT_OBJC_ISA_USAGE</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN_EMPTY_BODY</key>
-				<string>YES</string>
-				<key>CLANG_WARN_ENUM_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_INT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_OBJC_ROOT_CLASS</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN__DUPLICATE_METHOD_MATCH</key>
-				<string>YES</string>
-				<key>COPY_PHASE_STRIP</key>
-				<string>NO</string>
-				<key>GCC_C_LANGUAGE_STANDARD</key>
-				<string>gnu99</string>
-				<key>GCC_DYNAMIC_NO_PIC</key>
-				<string>NO</string>
-				<key>GCC_OPTIMIZATION_LEVEL</key>
-				<string>0</string>
-				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
-				<array>
-					<string>DEBUG=1</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>GCC_SYMBOLS_PRIVATE_EXTERN</key>
-				<string>NO</string>
-				<key>GCC_WARN_64_TO_32_BIT_CONVERSION</key>
-				<string>YES</string>
-				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
-				<string>YES_ERROR</string>
-				<key>GCC_WARN_UNDECLARED_SELECTOR</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
-				<string>YES_AGGRESSIVE</string>
-				<key>GCC_WARN_UNUSED_FUNCTION</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNUSED_VARIABLE</key>
-				<string>YES</string>
-				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
-				<string>7.1</string>
-				<key>ONLY_ACTIVE_ARCH</key>
-				<string>YES</string>
-				<key>SDKROOT</key>
-				<string>iphoneos</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-		</dict>
-		<key>AAAEFC43196CD13D00222A48</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>ALWAYS_SEARCH_USER_PATHS</key>
-				<string>NO</string>
-				<key>CLANG_CXX_LANGUAGE_STANDARD</key>
-				<string>gnu++0x</string>
-				<key>CLANG_CXX_LIBRARY</key>
-				<string>libc++</string>
-				<key>CLANG_ENABLE_MODULES</key>
-				<string>YES</string>
-				<key>CLANG_ENABLE_OBJC_ARC</key>
-				<string>YES</string>
-				<key>CLANG_WARN_BOOL_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_CONSTANT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_DIRECT_OBJC_ISA_USAGE</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN_EMPTY_BODY</key>
-				<string>YES</string>
-				<key>CLANG_WARN_ENUM_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_INT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_OBJC_ROOT_CLASS</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN__DUPLICATE_METHOD_MATCH</key>
-				<string>YES</string>
-				<key>COPY_PHASE_STRIP</key>
-				<string>YES</string>
-				<key>ENABLE_NS_ASSERTIONS</key>
-				<string>NO</string>
-				<key>GCC_C_LANGUAGE_STANDARD</key>
-				<string>gnu99</string>
-				<key>GCC_WARN_64_TO_32_BIT_CONVERSION</key>
-				<string>YES</string>
-				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
-				<string>YES_ERROR</string>
-				<key>GCC_WARN_UNDECLARED_SELECTOR</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
-				<string>YES_AGGRESSIVE</string>
-				<key>GCC_WARN_UNUSED_FUNCTION</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNUSED_VARIABLE</key>
-				<string>YES</string>
-				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
-				<string>7.1</string>
-				<key>SDKROOT</key>
-				<string>iphoneos</string>
-				<key>VALIDATE_PRODUCT</key>
-				<string>YES</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>AAAEFC44196CD13D00222A48</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>AAAEFC45196CD13D00222A48</string>
-				<string>AAAEFC46196CD13D00222A48</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Release</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>AAAEFC45196CD13D00222A48</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>DSTROOT</key>
-				<string>/tmp/NBClient.dst</string>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>NBClient/NBClient-Prefix.pch</string>
-				<key>OTHER_LDFLAGS</key>
-				<string>-ObjC</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>SKIP_INSTALL</key>
-				<string>YES</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-		</dict>
-		<key>AAAEFC46196CD13D00222A48</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>DSTROOT</key>
-				<string>/tmp/NBClient.dst</string>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>NBClient/NBClient-Prefix.pch</string>
-				<key>OTHER_LDFLAGS</key>
-				<string>-ObjC</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>SKIP_INSTALL</key>
-				<string>YES</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>AAAEFC47196CD13D00222A48</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>AAAEFC48196CD13D00222A48</string>
-				<string>AAAEFC49196CD13D00222A48</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Release</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>AAAEFC48196CD13D00222A48</key>
-		<dict>
-			<key>baseConfigurationReference</key>
-			<string>B1E2655016ADDC9B53544AA6</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>FRAMEWORK_SEARCH_PATHS</key>
-				<array>
-					<string>$(SDKROOT)/Developer/Library/Frameworks</string>
-					<string>$(inherited)</string>
-					<string>$(DEVELOPER_FRAMEWORKS_DIR)</string>
-				</array>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>NBClient/NBClient-Prefix.pch</string>
-				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
-				<array>
-					<string>DEBUG=1</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>INFOPLIST_FILE</key>
-				<string>NBClientTests/NBClientTests-Info.plist</string>
-				<key>LIBRARY_SEARCH_PATHS</key>
-				<array>
-					<string>$(inherited)</string>
-					<string>$(SOURCE_ROOT)/..</string>
-					<string>Client/Pods/build/Debug-iphoneos</string>
-				</array>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>WRAPPER_EXTENSION</key>
-				<string>xctest</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-		</dict>
-		<key>AAAEFC49196CD13D00222A48</key>
-		<dict>
-			<key>baseConfigurationReference</key>
-			<string>B7BA94556F404DEF440C3621</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>FRAMEWORK_SEARCH_PATHS</key>
-				<array>
-					<string>$(SDKROOT)/Developer/Library/Frameworks</string>
-					<string>$(inherited)</string>
-					<string>$(DEVELOPER_FRAMEWORKS_DIR)</string>
-				</array>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>NBClient/NBClient-Prefix.pch</string>
-				<key>INFOPLIST_FILE</key>
-				<string>NBClientTests/NBClientTests-Info.plist</string>
-				<key>LIBRARY_SEARCH_PATHS</key>
-				<array>
-					<string>$(inherited)</string>
-					<string>$(SOURCE_ROOT)/..</string>
-					<string>Client/Pods/build/Debug-iphoneos</string>
-				</array>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>WRAPPER_EXTENSION</key>
-				<string>xctest</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>AABD0029196F1FD6003A745F</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>Main.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>B1E2655016ADDC9B53544AA6</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.xcconfig</string>
-			<key>name</key>
-			<string>Pods-NBClientTests.debug.xcconfig</string>
-			<key>path</key>
-			<string>../Pods/Target Support Files/Pods-NBClientTests/Pods-NBClientTests.debug.xcconfig</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>B7BA94556F404DEF440C3621</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.xcconfig</string>
-			<key>name</key>
-			<string>Pods-NBClientTests.release.xcconfig</string>
-			<key>path</key>
-			<string>../Pods/Target Support Files/Pods-NBClientTests/Pods-NBClientTests.release.xcconfig</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>E41E70135B07288B1EB5428F</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>B1E2655016ADDC9B53544AA6</string>
-				<string>B7BA94556F404DEF440C3621</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Pods</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-	</dict>
-	<key>rootObject</key>
-	<string>AAAEFC19196CD13D00222A48</string>
-</dict>
-</plist>
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AA668DC619705FC800A952B0 /* NBTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = AA668DC519705FC800A952B0 /* NBTestCase.m */; };
+		AA668DD11970B81800A952B0 /* FoundationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AA668DD01970B81800A952B0 /* FoundationAdditions.m */; };
+		AA668DD41976EA1600A952B0 /* NBClientPeopleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA668DD31976EA1600A952B0 /* NBClientPeopleTests.m */; };
+		AA668DD61978418F00A952B0 /* FoundationAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA668DD51978418F00A952B0 /* FoundationAdditionsTests.m */; };
+		AA6FF3BE197D95220049B747 /* NBPaginationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FF3BD197D95220049B747 /* NBPaginationInfo.m */; };
+		AA6FF3C1197DADEA0049B747 /* NBPaginationInfoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FF3C0197DADEA0049B747 /* NBPaginationInfoTests.m */; };
+		AA6FF3C4197DF2E00049B747 /* NBClient+People.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FF3C3197DF2E00049B747 /* NBClient+People.m */; };
+		AA6FF3C8197EDEE60049B747 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA6FF3C7197EDEE60049B747 /* Security.framework */; };
+		AA78ED61199AC2F60043B7C0 /* libPods-NBClientTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA78ED60199AC2F60043B7C0 /* libPods-NBClientTests.a */; };
+		AA78ED79199C563C0043B7C0 /* people_get.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA78ED71199C563C0043B7C0 /* people_get.txt */; };
+		AA78ED7A199C563C0043B7C0 /* people_id_delete.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA78ED72199C563C0043B7C0 /* people_id_delete.txt */; };
+		AA78ED7B199C563C0043B7C0 /* people_id_get.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA78ED73199C563C0043B7C0 /* people_id_get.txt */; };
+		AA78ED7C199C563C0043B7C0 /* people_id_put.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA78ED74199C563C0043B7C0 /* people_id_put.txt */; };
+		AA78ED7D199C563C0043B7C0 /* people_match_get.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA78ED75199C563C0043B7C0 /* people_match_get.txt */; };
+		AA78ED7E199C563C0043B7C0 /* people_post.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA78ED76199C563C0043B7C0 /* people_post.txt */; };
+		AA78ED7F199C563C0043B7C0 /* people_search_get.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA78ED77199C563C0043B7C0 /* people_search_get.txt */; };
+		AA862851196F1651005060C9 /* NBAuthenticator.m in Sources */ = {isa = PBXBuildFile; fileRef = AA862850196F1651005060C9 /* NBAuthenticator.m */; };
+		AA8B6822196F5539009DDA91 /* NBAuthenticatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA8B6821196F5539009DDA91 /* NBAuthenticatorTests.m */; };
+		AA8B6825196F82D4009DDA91 /* NBDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = AA8B6824196F82D4009DDA91 /* NBDefines.m */; };
+		AA90915319834164009BE1E9 /* Main.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AABD0029196F1FD6003A745F /* Main.h */; };
+		AA90915419834164009BE1E9 /* FoundationAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA668DCF1970B81800A952B0 /* FoundationAdditions.h */; };
+		AA90915519834164009BE1E9 /* NBAuthenticator.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA86284F196F1651005060C9 /* NBAuthenticator.h */; };
+		AA90915619834164009BE1E9 /* NBClient.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AAAEFC29196CD13D00222A48 /* NBClient.h */; };
+		AA90915719834164009BE1E9 /* NBClient_Internal.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA6FF3C6197DF5B10049B747 /* NBClient_Internal.h */; };
+		AA90915819834164009BE1E9 /* NBClient+People.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA6FF3C2197DF2E00049B747 /* NBClient+People.h */; };
+		AA90915919834164009BE1E9 /* NBPaginationInfo.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA6FF3BC197D95220049B747 /* NBPaginationInfo.h */; };
+		AA90915A19834186009BE1E9 /* NBDefines.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA8B6823196F82D4009DDA91 /* NBDefines.h */; };
+		AAAEFC25196CD13D00222A48 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAAEFC24196CD13D00222A48 /* Foundation.framework */; };
+		AAAEFC2C196CD13D00222A48 /* NBClient.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAEFC2B196CD13D00222A48 /* NBClient.m */; };
+		AAAEFC33196CD13D00222A48 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAAEFC32196CD13D00222A48 /* XCTest.framework */; };
+		AAAEFC34196CD13D00222A48 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAAEFC24196CD13D00222A48 /* Foundation.framework */; };
+		AAAEFC39196CD13D00222A48 /* libNBClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AAAEFC21196CD13D00222A48 /* libNBClient.a */; };
+		AAAEFC3F196CD13D00222A48 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AAAEFC3D196CD13D00222A48 /* InfoPlist.strings */; };
+		AAAEFC41196CD13D00222A48 /* NBClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAEFC40196CD13D00222A48 /* NBClientTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		AAAEFC37196CD13D00222A48 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AAAEFC19196CD13D00222A48 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AAAEFC20196CD13D00222A48;
+			remoteInfo = NBClient;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		AAAEFC1F196CD13D00222A48 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				AA90915A19834186009BE1E9 /* NBDefines.h in CopyFiles */,
+				AA90915319834164009BE1E9 /* Main.h in CopyFiles */,
+				AA90915419834164009BE1E9 /* FoundationAdditions.h in CopyFiles */,
+				AA90915519834164009BE1E9 /* NBAuthenticator.h in CopyFiles */,
+				AA90915619834164009BE1E9 /* NBClient.h in CopyFiles */,
+				AA90915719834164009BE1E9 /* NBClient_Internal.h in CopyFiles */,
+				AA90915819834164009BE1E9 /* NBClient+People.h in CopyFiles */,
+				AA90915919834164009BE1E9 /* NBPaginationInfo.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		AA668DC419705FC800A952B0 /* NBTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBTestCase.h; sourceTree = "<group>"; };
+		AA668DC519705FC800A952B0 /* NBTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBTestCase.m; sourceTree = "<group>"; };
+		AA668DCF1970B81800A952B0 /* FoundationAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoundationAdditions.h; sourceTree = "<group>"; };
+		AA668DD01970B81800A952B0 /* FoundationAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FoundationAdditions.m; sourceTree = "<group>"; };
+		AA668DD31976EA1600A952B0 /* NBClientPeopleTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBClientPeopleTests.m; sourceTree = "<group>"; };
+		AA668DD51978418F00A952B0 /* FoundationAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FoundationAdditionsTests.m; sourceTree = "<group>"; };
+		AA6FF3BC197D95220049B747 /* NBPaginationInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBPaginationInfo.h; sourceTree = "<group>"; };
+		AA6FF3BD197D95220049B747 /* NBPaginationInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBPaginationInfo.m; sourceTree = "<group>"; };
+		AA6FF3C0197DADEA0049B747 /* NBPaginationInfoTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBPaginationInfoTests.m; sourceTree = "<group>"; };
+		AA6FF3C2197DF2E00049B747 /* NBClient+People.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NBClient+People.h"; sourceTree = "<group>"; };
+		AA6FF3C3197DF2E00049B747 /* NBClient+People.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NBClient+People.m"; sourceTree = "<group>"; };
+		AA6FF3C6197DF5B10049B747 /* NBClient_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBClient_Internal.h; sourceTree = "<group>"; };
+		AA6FF3C7197EDEE60049B747 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		AA78ED60199AC2F60043B7C0 /* libPods-NBClientTests.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-NBClientTests.a"; path = "../Pods/build/Debug-iphoneos/libPods-NBClientTests.a"; sourceTree = "<group>"; };
+		AA78ED71199C563C0043B7C0 /* people_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_get.txt; sourceTree = "<group>"; };
+		AA78ED72199C563C0043B7C0 /* people_id_delete.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_id_delete.txt; sourceTree = "<group>"; };
+		AA78ED73199C563C0043B7C0 /* people_id_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_id_get.txt; sourceTree = "<group>"; };
+		AA78ED74199C563C0043B7C0 /* people_id_put.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_id_put.txt; sourceTree = "<group>"; };
+		AA78ED75199C563C0043B7C0 /* people_match_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_match_get.txt; sourceTree = "<group>"; };
+		AA78ED76199C563C0043B7C0 /* people_post.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_post.txt; sourceTree = "<group>"; };
+		AA78ED77199C563C0043B7C0 /* people_search_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_search_get.txt; sourceTree = "<group>"; };
+		AA86284F196F1651005060C9 /* NBAuthenticator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBAuthenticator.h; sourceTree = "<group>"; };
+		AA862850196F1651005060C9 /* NBAuthenticator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAuthenticator.m; sourceTree = "<group>"; };
+		AA8B6821196F5539009DDA91 /* NBAuthenticatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAuthenticatorTests.m; sourceTree = "<group>"; };
+		AA8B6823196F82D4009DDA91 /* NBDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBDefines.h; sourceTree = "<group>"; };
+		AA8B6824196F82D4009DDA91 /* NBDefines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBDefines.m; sourceTree = "<group>"; };
+		AAAEFC21196CD13D00222A48 /* libNBClient.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNBClient.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAAEFC24196CD13D00222A48 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		AAAEFC28196CD13D00222A48 /* NBClient-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NBClient-Prefix.pch"; sourceTree = "<group>"; };
+		AAAEFC29196CD13D00222A48 /* NBClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NBClient.h; sourceTree = "<group>"; };
+		AAAEFC2B196CD13D00222A48 /* NBClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NBClient.m; sourceTree = "<group>"; };
+		AAAEFC31196CD13D00222A48 /* NBClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NBClientTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAAEFC32196CD13D00222A48 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		AAAEFC3C196CD13D00222A48 /* NBClientTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "NBClientTests-Info.plist"; sourceTree = "<group>"; };
+		AAAEFC3E196CD13D00222A48 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		AAAEFC40196CD13D00222A48 /* NBClientTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NBClientTests.m; sourceTree = "<group>"; };
+		AABD0029196F1FD6003A745F /* Main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Main.h; sourceTree = "<group>"; };
+		B1E2655016ADDC9B53544AA6 /* Pods-NBClientTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NBClientTests.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-NBClientTests/Pods-NBClientTests.debug.xcconfig"; sourceTree = "<group>"; };
+		B7BA94556F404DEF440C3621 /* Pods-NBClientTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NBClientTests.release.xcconfig"; path = "../Pods/Target Support Files/Pods-NBClientTests/Pods-NBClientTests.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AAAEFC1E196CD13D00222A48 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA6FF3C8197EDEE60049B747 /* Security.framework in Frameworks */,
+				AAAEFC25196CD13D00222A48 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AAAEFC2E196CD13D00222A48 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA78ED61199AC2F60043B7C0 /* libPods-NBClientTests.a in Frameworks */,
+				AAAEFC33196CD13D00222A48 /* XCTest.framework in Frameworks */,
+				AAAEFC39196CD13D00222A48 /* libNBClient.a in Frameworks */,
+				AAAEFC34196CD13D00222A48 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		AA78ED78199C563C0043B7C0 /* Fixtures */ = {
+			isa = PBXGroup;
+			children = (
+				AA78ED71199C563C0043B7C0 /* people_get.txt */,
+				AA78ED72199C563C0043B7C0 /* people_id_delete.txt */,
+				AA78ED73199C563C0043B7C0 /* people_id_get.txt */,
+				AA78ED74199C563C0043B7C0 /* people_id_put.txt */,
+				AA78ED75199C563C0043B7C0 /* people_match_get.txt */,
+				AA78ED76199C563C0043B7C0 /* people_post.txt */,
+				AA78ED77199C563C0043B7C0 /* people_search_get.txt */,
+			);
+			path = Fixtures;
+			sourceTree = "<group>";
+		};
+		AAAEFC18196CD13D00222A48 = {
+			isa = PBXGroup;
+			children = (
+				AAAEFC26196CD13D00222A48 /* NBClient */,
+				AAAEFC3A196CD13D00222A48 /* NBClientTests */,
+				AAAEFC23196CD13D00222A48 /* Frameworks */,
+				AAAEFC22196CD13D00222A48 /* Products */,
+				E41E70135B07288B1EB5428F /* Pods */,
+			);
+			sourceTree = "<group>";
+		};
+		AAAEFC22196CD13D00222A48 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AAAEFC21196CD13D00222A48 /* libNBClient.a */,
+				AAAEFC31196CD13D00222A48 /* NBClientTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AAAEFC23196CD13D00222A48 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AA78ED60199AC2F60043B7C0 /* libPods-NBClientTests.a */,
+				AAAEFC24196CD13D00222A48 /* Foundation.framework */,
+				AA6FF3C7197EDEE60049B747 /* Security.framework */,
+				AAAEFC32196CD13D00222A48 /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AAAEFC26196CD13D00222A48 /* NBClient */ = {
+			isa = PBXGroup;
+			children = (
+				AABD0029196F1FD6003A745F /* Main.h */,
+				AA668DCF1970B81800A952B0 /* FoundationAdditions.h */,
+				AA668DD01970B81800A952B0 /* FoundationAdditions.m */,
+				AA86284F196F1651005060C9 /* NBAuthenticator.h */,
+				AA862850196F1651005060C9 /* NBAuthenticator.m */,
+				AAAEFC29196CD13D00222A48 /* NBClient.h */,
+				AA6FF3C6197DF5B10049B747 /* NBClient_Internal.h */,
+				AAAEFC2B196CD13D00222A48 /* NBClient.m */,
+				AA6FF3C2197DF2E00049B747 /* NBClient+People.h */,
+				AA6FF3C3197DF2E00049B747 /* NBClient+People.m */,
+				AA8B6823196F82D4009DDA91 /* NBDefines.h */,
+				AA8B6824196F82D4009DDA91 /* NBDefines.m */,
+				AA6FF3BC197D95220049B747 /* NBPaginationInfo.h */,
+				AA6FF3BD197D95220049B747 /* NBPaginationInfo.m */,
+				AAAEFC27196CD13D00222A48 /* Supporting Files */,
+			);
+			path = NBClient;
+			sourceTree = "<group>";
+		};
+		AAAEFC27196CD13D00222A48 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				AAAEFC28196CD13D00222A48 /* NBClient-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		AAAEFC3A196CD13D00222A48 /* NBClientTests */ = {
+			isa = PBXGroup;
+			children = (
+				AA668DD51978418F00A952B0 /* FoundationAdditionsTests.m */,
+				AA8B6821196F5539009DDA91 /* NBAuthenticatorTests.m */,
+				AA668DD31976EA1600A952B0 /* NBClientPeopleTests.m */,
+				AAAEFC40196CD13D00222A48 /* NBClientTests.m */,
+				AA6FF3C0197DADEA0049B747 /* NBPaginationInfoTests.m */,
+				AA668DC419705FC800A952B0 /* NBTestCase.h */,
+				AA668DC519705FC800A952B0 /* NBTestCase.m */,
+				AAAEFC3B196CD13D00222A48 /* Supporting Files */,
+				AA78ED78199C563C0043B7C0 /* Fixtures */,
+			);
+			path = NBClientTests;
+			sourceTree = "<group>";
+		};
+		AAAEFC3B196CD13D00222A48 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				AAAEFC3C196CD13D00222A48 /* NBClientTests-Info.plist */,
+				AAAEFC3D196CD13D00222A48 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E41E70135B07288B1EB5428F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B1E2655016ADDC9B53544AA6 /* Pods-NBClientTests.debug.xcconfig */,
+				B7BA94556F404DEF440C3621 /* Pods-NBClientTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AAAEFC20196CD13D00222A48 /* NBClient */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AAAEFC44196CD13D00222A48 /* Build configuration list for PBXNativeTarget "NBClient" */;
+			buildPhases = (
+				AAAEFC1D196CD13D00222A48 /* Sources */,
+				AAAEFC1E196CD13D00222A48 /* Frameworks */,
+				AAAEFC1F196CD13D00222A48 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NBClient;
+			productName = NBClient;
+			productReference = AAAEFC21196CD13D00222A48 /* libNBClient.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		AAAEFC30196CD13D00222A48 /* NBClientTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AAAEFC47196CD13D00222A48 /* Build configuration list for PBXNativeTarget "NBClientTests" */;
+			buildPhases = (
+				02CC2C7BDCED418996E22D0B /* Check Pods Manifest.lock */,
+				AAAEFC2D196CD13D00222A48 /* Sources */,
+				AAAEFC2E196CD13D00222A48 /* Frameworks */,
+				AAAEFC2F196CD13D00222A48 /* Resources */,
+				4E2293EFB86F4FE3A69DCB10 /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AAAEFC38196CD13D00222A48 /* PBXTargetDependency */,
+			);
+			name = NBClientTests;
+			productName = NBClientTests;
+			productReference = AAAEFC31196CD13D00222A48 /* NBClientTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AAAEFC19196CD13D00222A48 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = NationBuilder;
+			};
+			buildConfigurationList = AAAEFC1C196CD13D00222A48 /* Build configuration list for PBXProject "NBClient" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = AAAEFC18196CD13D00222A48;
+			productRefGroup = AAAEFC22196CD13D00222A48 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AAAEFC20196CD13D00222A48 /* NBClient */,
+				AAAEFC30196CD13D00222A48 /* NBClientTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AAAEFC2F196CD13D00222A48 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA78ED7A199C563C0043B7C0 /* people_id_delete.txt in Resources */,
+				AA78ED79199C563C0043B7C0 /* people_get.txt in Resources */,
+				AA78ED7C199C563C0043B7C0 /* people_id_put.txt in Resources */,
+				AAAEFC3F196CD13D00222A48 /* InfoPlist.strings in Resources */,
+				AA78ED7F199C563C0043B7C0 /* people_search_get.txt in Resources */,
+				AA78ED7D199C563C0043B7C0 /* people_match_get.txt in Resources */,
+				AA78ED7E199C563C0043B7C0 /* people_post.txt in Resources */,
+				AA78ED7B199C563C0043B7C0 /* people_id_get.txt in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		02CC2C7BDCED418996E22D0B /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		4E2293EFB86F4FE3A69DCB10 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-NBClientTests/Pods-NBClientTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AAAEFC1D196CD13D00222A48 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA6FF3BE197D95220049B747 /* NBPaginationInfo.m in Sources */,
+				AA6FF3C4197DF2E00049B747 /* NBClient+People.m in Sources */,
+				AA668DD11970B81800A952B0 /* FoundationAdditions.m in Sources */,
+				AA862851196F1651005060C9 /* NBAuthenticator.m in Sources */,
+				AAAEFC2C196CD13D00222A48 /* NBClient.m in Sources */,
+				AA8B6825196F82D4009DDA91 /* NBDefines.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AAAEFC2D196CD13D00222A48 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA668DD61978418F00A952B0 /* FoundationAdditionsTests.m in Sources */,
+				AA8B6822196F5539009DDA91 /* NBAuthenticatorTests.m in Sources */,
+				AA668DD41976EA1600A952B0 /* NBClientPeopleTests.m in Sources */,
+				AAAEFC41196CD13D00222A48 /* NBClientTests.m in Sources */,
+				AA6FF3C1197DADEA0049B747 /* NBPaginationInfoTests.m in Sources */,
+				AA668DC619705FC800A952B0 /* NBTestCase.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AAAEFC38196CD13D00222A48 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AAAEFC20196CD13D00222A48 /* NBClient */;
+			targetProxy = AAAEFC37196CD13D00222A48 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		AAAEFC3D196CD13D00222A48 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AAAEFC3E196CD13D00222A48 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		AAAEFC42196CD13D00222A48 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		AAAEFC43196CD13D00222A48 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		AAAEFC45196CD13D00222A48 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/NBClient.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NBClient/NBClient-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		AAAEFC46196CD13D00222A48 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/NBClient.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NBClient/NBClient-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		AAAEFC48196CD13D00222A48 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B1E2655016ADDC9B53544AA6 /* Pods-NBClientTests.debug.xcconfig */;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NBClient/NBClient-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "NBClientTests/NBClientTests-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SOURCE_ROOT)/..",
+					"Client/Pods/build/Debug-iphoneos",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		AAAEFC49196CD13D00222A48 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B7BA94556F404DEF440C3621 /* Pods-NBClientTests.release.xcconfig */;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NBClient/NBClient-Prefix.pch";
+				INFOPLIST_FILE = "NBClientTests/NBClientTests-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SOURCE_ROOT)/..",
+					"Client/Pods/build/Debug-iphoneos",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AAAEFC1C196CD13D00222A48 /* Build configuration list for PBXProject "NBClient" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AAAEFC42196CD13D00222A48 /* Debug */,
+				AAAEFC43196CD13D00222A48 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AAAEFC44196CD13D00222A48 /* Build configuration list for PBXNativeTarget "NBClient" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AAAEFC45196CD13D00222A48 /* Debug */,
+				AAAEFC46196CD13D00222A48 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AAAEFC47196CD13D00222A48 /* Build configuration list for PBXNativeTarget "NBClientTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AAAEFC48196CD13D00222A48 /* Debug */,
+				AAAEFC49196CD13D00222A48 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = AAAEFC19196CD13D00222A48 /* Project object */;
+}
