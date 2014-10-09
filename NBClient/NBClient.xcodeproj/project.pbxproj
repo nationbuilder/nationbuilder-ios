@@ -48,6 +48,8 @@
 		AAEFEAEF19E6E73800777BC1 /* NBAccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEFEAED19E6E73800777BC1 /* NBAccountsViewController.m */; };
 		AAEFEAF619E6EC7F00777BC1 /* NBAccountsPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEFEAF519E6EC7F00777BC1 /* NBAccountsPickerView.m */; };
 		AAEFEAF919E6EE8B00777BC1 /* NBAccountsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEFEAF819E6EE8B00777BC1 /* NBAccountsManager.m */; };
+		AAEFEAFF19E7131E00777BC1 /* NBAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEFEAFE19E7131E00777BC1 /* NBAccount.m */; };
+		AAEFEB0019E716CE00777BC1 /* NBAccount.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AAEFEAFD19E7131E00777BC1 /* NBAccount.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +69,7 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				AAEFEB0019E716CE00777BC1 /* NBAccount.h in CopyFiles */,
 				AA674F0919E60D1F009C6D4B /* NBAccountButton.h in CopyFiles */,
 				AA674F0219E60A54009C6D4B /* UI.h in CopyFiles */,
 				AA90915A19834186009BE1E9 /* NBDefines.h in CopyFiles */,
@@ -133,6 +136,8 @@
 		AAEFEAF519E6EC7F00777BC1 /* NBAccountsPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAccountsPickerView.m; sourceTree = "<group>"; };
 		AAEFEAF719E6EE8B00777BC1 /* NBAccountsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBAccountsManager.h; sourceTree = "<group>"; };
 		AAEFEAF819E6EE8B00777BC1 /* NBAccountsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAccountsManager.m; sourceTree = "<group>"; };
+		AAEFEAFD19E7131E00777BC1 /* NBAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBAccount.h; sourceTree = "<group>"; };
+		AAEFEAFE19E7131E00777BC1 /* NBAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAccount.m; sourceTree = "<group>"; };
 		B1E2655016ADDC9B53544AA6 /* Pods-NBClientTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NBClientTests.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-NBClientTests/Pods-NBClientTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B7BA94556F404DEF440C3621 /* Pods-NBClientTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NBClientTests.release.xcconfig"; path = "../Pods/Target Support Files/Pods-NBClientTests/Pods-NBClientTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -233,6 +238,8 @@
 				AABD0029196F1FD6003A745F /* Main.h */,
 				AA668DCF1970B81800A952B0 /* FoundationAdditions.h */,
 				AA668DD01970B81800A952B0 /* FoundationAdditions.m */,
+				AAEFEAFD19E7131E00777BC1 /* NBAccount.h */,
+				AAEFEAFE19E7131E00777BC1 /* NBAccount.m */,
 				AA86284F196F1651005060C9 /* NBAuthenticator.h */,
 				AA862850196F1651005060C9 /* NBAuthenticator.m */,
 				AAAEFC29196CD13D00222A48 /* NBClient.h */,
@@ -423,6 +430,7 @@
 				AAEFEAEF19E6E73800777BC1 /* NBAccountsViewController.m in Sources */,
 				AA862851196F1651005060C9 /* NBAuthenticator.m in Sources */,
 				AAAEFC2C196CD13D00222A48 /* NBClient.m in Sources */,
+				AAEFEAFF19E7131E00777BC1 /* NBAccount.m in Sources */,
 				AA8B6825196F82D4009DDA91 /* NBDefines.m in Sources */,
 				AAEFEAF919E6EE8B00777BC1 /* NBAccountsManager.m in Sources */,
 			);

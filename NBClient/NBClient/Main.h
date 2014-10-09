@@ -9,6 +9,7 @@
 #ifndef _NBCLIENT_
     #define _NBCLIENT_
 
+    #import "NBAccount.h"
     #import "NBAuthenticator.h"
     #import "NBClient.h"
     #import "NBClient+People.h"
