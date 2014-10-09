@@ -12,5 +12,7 @@
     #import <UIKit/UIKit.h>
 
     #import "NBAccountButton.h"
+    #import "NBAccountsViewController.h"
+    #import "NBAccountsViewDefines.h"
 
 #endif /* _NBCLIENT_UI_ */
