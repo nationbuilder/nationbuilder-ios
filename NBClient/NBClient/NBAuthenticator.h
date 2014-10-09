@@ -8,10 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-#ifndef _SECURITY_SECITEM_H_
-#warning Security framework not found in project, or not included in precompiled header.
-#endif
-
 @class NBAuthenticationCredential;
 
 typedef void (^NBAuthenticationCompletionHandler)(NBAuthenticationCredential *credential, NSError *error);
