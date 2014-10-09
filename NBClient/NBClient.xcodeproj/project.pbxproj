@@ -47,6 +47,7 @@
 		AAAEFC41196CD13D00222A48 /* NBClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAEFC40196CD13D00222A48 /* NBClientTests.m */; };
 		AAEFEAEF19E6E73800777BC1 /* NBAccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEFEAED19E6E73800777BC1 /* NBAccountsViewController.m */; };
 		AAEFEAF619E6EC7F00777BC1 /* NBAccountsPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEFEAF519E6EC7F00777BC1 /* NBAccountsPickerView.m */; };
+		AAEFEAF919E6EE8B00777BC1 /* NBAccountsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEFEAF819E6EE8B00777BC1 /* NBAccountsManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -130,6 +131,8 @@
 		AAEFEAF019E6EADC00777BC1 /* NBAccountsViewDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBAccountsViewDefines.h; sourceTree = "<group>"; };
 		AAEFEAF419E6EC7F00777BC1 /* NBAccountsPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBAccountsPickerView.h; sourceTree = "<group>"; };
 		AAEFEAF519E6EC7F00777BC1 /* NBAccountsPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAccountsPickerView.m; sourceTree = "<group>"; };
+		AAEFEAF719E6EE8B00777BC1 /* NBAccountsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBAccountsManager.h; sourceTree = "<group>"; };
+		AAEFEAF819E6EE8B00777BC1 /* NBAccountsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAccountsManager.m; sourceTree = "<group>"; };
 		B1E2655016ADDC9B53544AA6 /* Pods-NBClientTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NBClientTests.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-NBClientTests/Pods-NBClientTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B7BA94556F404DEF440C3621 /* Pods-NBClientTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NBClientTests.release.xcconfig"; path = "../Pods/Target Support Files/Pods-NBClientTests/Pods-NBClientTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -165,6 +168,8 @@
 				AA674F0419E60CFD009C6D4B /* NBAccountButton.h */,
 				AA674F0519E60CFD009C6D4B /* NBAccountButton.m */,
 				AA674F0619E60CFD009C6D4B /* NBAccountButton.xib */,
+				AAEFEAF719E6EE8B00777BC1 /* NBAccountsManager.h */,
+				AAEFEAF819E6EE8B00777BC1 /* NBAccountsManager.m */,
 				AAEFEAF419E6EC7F00777BC1 /* NBAccountsPickerView.h */,
 				AAEFEAF519E6EC7F00777BC1 /* NBAccountsPickerView.m */,
 				AAEFEAEC19E6E73800777BC1 /* NBAccountsViewController.h */,
@@ -419,6 +424,7 @@
 				AA862851196F1651005060C9 /* NBAuthenticator.m in Sources */,
 				AAAEFC2C196CD13D00222A48 /* NBClient.m in Sources */,
 				AA8B6825196F82D4009DDA91 /* NBDefines.m in Sources */,
+				AAEFEAF919E6EE8B00777BC1 /* NBAccountsManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
