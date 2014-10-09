@@ -47,6 +47,7 @@
 		AA90914F19833D01009BE1E9 /* NBPersonCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = AA90914919833D01009BE1E9 /* NBPersonCellView.m */; };
 		AA90915019833D01009BE1E9 /* NBPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA90914B19833D01009BE1E9 /* NBPersonViewController.m */; };
 		AA90915119833D01009BE1E9 /* NBPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA90914B19833D01009BE1E9 /* NBPersonViewController.m */; };
+		AAEFEAEB19E62F9600777BC1 /* NBAccountButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAEFEAEA19E62F9600777BC1 /* NBAccountButton.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,9 +78,9 @@
 		AA15FAC41983317400A2E84B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AA15FAC61983317400A2E84B /* NBClientExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NBClientExampleTests.m; sourceTree = "<group>"; };
 		AA15FAD21983339800A2E84B /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		AA602C2D198C3966001A7DB2 /* NBPeoplePageHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NBPeoplePageHeaderView.xib; path = Nibs/NBPeoplePageHeaderView.xib; sourceTree = "<group>"; };
 		AA602C30199157B7001A7DB2 /* NBPeopleViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPeopleViewFlowLayout.h; path = Classes/NBPeopleViewFlowLayout.h; sourceTree = "<group>"; };
 		AA602C31199157B7001A7DB2 /* NBPeopleViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBPeopleViewFlowLayout.m; path = Classes/NBPeopleViewFlowLayout.m; sourceTree = "<group>"; };
-		AA602C2D198C3966001A7DB2 /* NBPeoplePageHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NBPeoplePageHeaderView.xib; path = Nibs/NBPeoplePageHeaderView.xib; sourceTree = "<group>"; };
 		AA8BD9DF199447EF00400E5F /* NationBuilder-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "NationBuilder-Info.plist"; sourceTree = "<group>"; };
 		AA909122198339EA009BE1E9 /* libNBClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libNBClient.a; path = "../NBClient/build/Debug-iphoneos/libNBClient.a"; sourceTree = "<group>"; };
 		AA90912A19833B0E009BE1E9 /* NBPeopleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NBPeopleViewController.xib; path = Nibs/NBPeopleViewController.xib; sourceTree = "<group>"; };
@@ -98,6 +99,7 @@
 		AA90914919833D01009BE1E9 /* NBPersonCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBPersonCellView.m; path = Classes/NBPersonCellView.m; sourceTree = "<group>"; };
 		AA90914A19833D01009BE1E9 /* NBPersonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPersonViewController.h; path = Classes/NBPersonViewController.h; sourceTree = "<group>"; };
 		AA90914B19833D01009BE1E9 /* NBPersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBPersonViewController.m; path = Classes/NBPersonViewController.m; sourceTree = "<group>"; };
+		AAEFEAEA19E62F9600777BC1 /* NBAccountButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NBAccountButton.xib; path = ../NBClient/NBClient/UI/NBAccountButton.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,7 +150,7 @@
 		AA15FAA01983317400A2E84B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				AA909122198339EA009BE1E9 /* libNBClient.a */,
+				AAEFEAE719E62D9F00777BC1 /* NBClient */,
 				AA15FAD21983339800A2E84B /* Crashlytics.framework */,
 				AA15FAA11983317400A2E84B /* Foundation.framework */,
 				AA15FAA31983317400A2E84B /* CoreGraphics.framework */,
@@ -216,6 +218,15 @@
 				AA15FAC31983317400A2E84B /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		AAEFEAE719E62D9F00777BC1 /* NBClient */ = {
+			isa = PBXGroup;
+			children = (
+				AA909122198339EA009BE1E9 /* libNBClient.a */,
+				AAEFEAEA19E62F9600777BC1 /* NBAccountButton.xib */,
+			);
+			name = NBClient;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -299,6 +310,7 @@
 				AA90913619833B8D009BE1E9 /* Localizable.strings in Resources */,
 				AA8BD9E0199447EF00400E5F /* NationBuilder-Info.plist in Resources */,
 				AA15FAAC1983317400A2E84B /* InfoPlist.strings in Resources */,
+				AAEFEAEB19E62F9600777BC1 /* NBAccountButton.xib in Resources */,
 				AA15FAB41983317400A2E84B /* Images.xcassets in Resources */,
 				AA90912F19833B0E009BE1E9 /* NBPersonCellView.xib in Resources */,
 				AA90913119833B0E009BE1E9 /* NBPersonViewController.xib in Resources */,
@@ -423,10 +435,16 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/../NBClient",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
 		};
@@ -456,9 +474,15 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/../NBClient",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

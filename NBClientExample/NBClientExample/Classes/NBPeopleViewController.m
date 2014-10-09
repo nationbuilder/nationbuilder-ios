@@ -10,6 +10,8 @@
 
 #import <NBClient/NBPaginationInfo.h>
 
+#import <NBClient/UI/NBAccountButton.h>
+
 #import "NBPeopleDataSource.h"
 #import "NBPeopleViewFlowLayout.h"
 #import "NBPersonCellView.h"
@@ -580,6 +582,9 @@ static void *observationContext = &observationContext;
 {
     self.numberToDelete = 0;
     self.navigationItem.leftBarButtonItem = self.deleteButtonItem;
+    // TEST
+    //NBAccountButton *button = [[NSBundle mainBundle] loadNibNamed:@"NBAccountButton" owner:self options:nil].firstObject;
+    //self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
 }
 
 - (IBAction)updateDeleting:(id)sender
