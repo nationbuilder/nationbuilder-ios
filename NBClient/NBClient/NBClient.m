@@ -296,6 +296,7 @@ NSString * const NBClientDefaultBaseURLFormat = @"https://%@.nationbuilder.com";
                                                                    options:NSJSONReadingAllowFragments
                                                                      error:&error];
         // Handle HTTP error.
+        // TODO: Have authenticator recover from stale token errors.
         if (![[NSIndexSet nb_indexSetOfSuccessfulHTTPStatusCodes] containsIndex:httpResponse.statusCode]) {
             error = [self errorForResponse:httpResponse jsonData:jsonObject];
             if (completionHandler) {
@@ -337,7 +338,7 @@ NSString * const NBClientDefaultBaseURLFormat = @"https://%@.nationbuilder.com";
                        data[@"code"]];
     } else {
         description = [NSString localizedStringWithFormat:
-                       NSLocalizedString(@"Service errored fulfilling request, status code: %d (%@)", nil),
+                       NSLocalizedString(@"Service errored fulfilling request, status code: %ld (%@)", nil),
                        response.statusCode, data[@"code"]];
     }
     return [NSError

@@ -30,17 +30,17 @@
 {
     NSUInteger statusCode = 404;
     XCTAssertFalse([[NSIndexSet nb_indexSetOfSuccessfulHTTPStatusCodes] containsIndex:statusCode],
-                   @"%d status code should not be considered successful.", statusCode);
+                   @"%lu status code should not be considered successful.", statusCode);
     statusCode = 200;
     XCTAssertTrue([[NSIndexSet nb_indexSetOfSuccessfulHTTPStatusCodes] containsIndex:statusCode],
-                  @"%d status code should be considered successful.", statusCode);
+                  @"%lu status code should be considered successful.", statusCode);
 }
 
 - (void)testCheckingSuccessfulEmptyResponseHTTPStatusCode
 {
     NSUInteger statusCode = 204;
     XCTAssertTrue([[NSIndexSet nb_indexSetOfSuccessfulEmptyResponseHTTPStatusCodes] containsIndex:statusCode],
-                  @"%d status code should be considered successful.", statusCode);
+                  @"%lu status code should be considered successful.", statusCode);
 }
 
 - (void)testCheckingIfDictionaryContainsDictionary

@@ -552,7 +552,7 @@ static void *observationContext = &observationContext;
 {
     BOOL shouldClear = numberToDelete == 0 && abs(numberToDelete - self.numberToDelete) > 0;
     if (shouldClear) {
-        NSLog(@"INFO: Clearing %d pending deletes.", self.numberToDelete);
+        NSLog(@"INFO: Clearing %lu pending deletes.", self.numberToDelete);
         [self clearNeedsDeletes:self];
     }
     // Boilerplate.
