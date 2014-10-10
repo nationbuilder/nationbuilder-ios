@@ -27,6 +27,7 @@ static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
 @property (nonatomic, strong, readwrite) NSURL *baseURL;
 @property (nonatomic, strong, readwrite) NSString *clientIdentifier;
 @property (nonatomic, strong, readwrite) NSString *credentialIdentifier;
+@property (nonatomic, strong, readwrite) NBAuthenticationCredential *credential;
 
 @end
 
@@ -56,6 +57,33 @@ static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
     return self;
 }
 
+#pragma mark - Accessors
+
+@synthesize credential = _credential;
+
+- (NBAuthenticationCredential *)credential
+{
+    if (_credential) {
+        return _credential;
+    }
+    self.credential = [NBAuthenticationCredential fetchCredentialWithIdentifier:self.credentialIdentifier];
+    return _credential;
+}
+
+- (void)setCredential:(NBAuthenticationCredential *)credential
+{
+    // Boilerplate.
+    static NSString *key;
+    key = key ?: NSStringFromSelector(@selector(credential));
+    [self willChangeValueForKey:key];
+    _credential = credential;
+    [self didChangeValueForKey:key];
+    // END: Boilerplate.
+    if (self.credential && self.shouldAutomaticallySaveCredential) {
+        [NBAuthenticationCredential saveCredential:self.credential withIdentifier:self.credentialIdentifier];
+    }
+}
+
 #pragma mark - Authenticate API
 
 - (NSURLSessionDataTask *)authenticateWithUserName:(NSString *)userName
@@ -73,10 +101,8 @@ static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
                                 completionHandler:(NBAuthenticationCompletionHandler)completionHandler
 {
     // Return saved credential if possible.
-    NBAuthenticationCredential *credential =
-    [NBAuthenticationCredential fetchCredentialWithIdentifier:self.credentialIdentifier];
-    if (credential) {
-        completionHandler(credential, nil);
+    if (self.credential) {
+        completionHandler(self.credential, nil);
         return nil;
     }
     // Perform authentication against service.
@@ -134,7 +160,6 @@ static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
              }
              return;
          }
-         NBAuthenticationCredential *credential;
          NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:data
                                                                     options:NSJSONReadingAllowFragments
                                                                       error:&error];
@@ -156,14 +181,11 @@ static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
                                   NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"If failure reasion is not helpful, "
                                                                                            @"contact NationBuilder for support.", nil) }];
          } else {
-             credential = [[NBAuthenticationCredential alloc] initWithAccessToken:jsonObject[@"access_token"]
-                                                                        tokenType:jsonObject[@"token_type"]];
-         }
-         if (credential && self.shouldAutomaticallySaveCredential) {
-             [NBAuthenticationCredential saveCredential:credential withIdentifier:self.credentialIdentifier];
+             self.credential = [[NBAuthenticationCredential alloc] initWithAccessToken:jsonObject[@"access_token"]
+                                                                             tokenType:jsonObject[@"token_type"]];
          }
          if (completionHandler) {
-             completionHandler(credential, error);
+             completionHandler(self.credential, error);
          }
      }];
     [task resume];

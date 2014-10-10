@@ -35,6 +35,7 @@ extern NSString * const NBAuthenticationRedirectTokenKey;
 @property (nonatomic, strong, readonly) NSURL *baseURL;
 @property (nonatomic, strong, readonly) NSString *clientIdentifier;
 @property (nonatomic, strong, readonly) NSString *credentialIdentifier;
+@property (nonatomic, strong, readonly) NBAuthenticationCredential *credential;
 
 @property (nonatomic) BOOL shouldAutomaticallySaveCredential;
 
