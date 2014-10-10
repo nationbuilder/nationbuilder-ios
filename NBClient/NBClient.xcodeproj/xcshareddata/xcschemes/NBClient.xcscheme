@@ -66,10 +66,6 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-NBClientSecret 6c63db2494d69f715157075d1794074a522990a97dc1324910d605c89859b4a8"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
             argument = "-NBUserEmailAddress help@nationbuilder.com"
             isEnabled = "YES">
          </CommandLineArgument>

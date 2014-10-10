@@ -36,8 +36,7 @@
 - (NBClient *)baseClientWithAuthenticator
 {
     NBAuthenticator *authenticator = [[NBAuthenticator alloc] initWithBaseURL:self.baseURL
-                                                             clientIdentifier:self.clientIdentifier
-                                                                 clientSecret:self.clientSecret];
+                                                             clientIdentifier:self.clientIdentifier];
     return [[NBClient alloc] initWithNationName:self.nationName
                                   authenticator:authenticator
                                customURLSession:nil customURLSessionConfiguration:nil];

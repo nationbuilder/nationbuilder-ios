@@ -22,6 +22,7 @@ extern NSString * const NBClientErrorValidationErrorsKey;
 extern NSString * const NBClientErrorInnerErrorKey;
 
 extern NSString * const NBClientDefaultAPIVersion;
+extern NSString * const NBClientDefaultBaseURLFormat;
 
 @interface NBClient : NSObject <NSURLSessionDelegate>
 

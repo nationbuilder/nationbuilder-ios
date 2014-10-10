@@ -21,6 +21,7 @@ NSString * const NBClientErrorValidationErrorsKey = @"validation_errors";
 NSString * const NBClientErrorInnerErrorKey = @"inner_error";
 
 NSString * const NBClientDefaultAPIVersion = @"v1";
+NSString * const NBClientDefaultBaseURLFormat = @"https://%@.nationbuilder.com";
 
 @implementation NBClient
 
@@ -113,6 +114,20 @@ NSString * const NBClientDefaultAPIVersion = @"v1";
     return _apiVersion;
 }
 
+- (void)setAuthenticator:(NBAuthenticator *)authenticator
+{
+    // Boilerplate.
+    static NSString *key;
+    key = key ?: NSStringFromSelector(@selector(authenticator));
+    [self willChangeValueForKey:key];
+    _authenticator = authenticator;
+    [self didChangeValueForKey:key];
+    // END: Boilerplate.
+    if (authenticator && authenticator.baseURL) {
+        self.baseURL = authenticator.baseURL;
+    }
+}
+
 #pragma mark Requests & Tasks
 
 - (NSURL *)baseURL
@@ -120,7 +135,7 @@ NSString * const NBClientDefaultAPIVersion = @"v1";
     if (_baseURL) {
         return _baseURL;
     }
-    self.baseURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@.nationbuilder.com", self.nationName]];
+    self.baseURL = [NSURL URLWithString:[NSString stringWithFormat:NBClientDefaultBaseURLFormat, self.nationName]];
     return _baseURL;
 }
 

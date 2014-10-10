@@ -34,8 +34,7 @@
 - (void)testDefaultInitialization
 {
     NBAuthenticator *authenticator = [[NBAuthenticator alloc] initWithBaseURL:self.baseURL
-                                                             clientIdentifier:self.clientIdentifier
-                                                                 clientSecret:self.clientSecret];
+                                                             clientIdentifier:self.clientIdentifier];
     XCTAssertNotNil(authenticator.baseURL,
                     @"Authenticator should have base URL.");
     XCTAssertNotNil(authenticator.clientIdentifier,
