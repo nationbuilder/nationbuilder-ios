@@ -195,12 +195,12 @@ static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
 @implementation NBAuthenticationCredential
 
 - (instancetype)initWithAccessToken:(NSString *)accessToken
-                          tokenType:(NSString *)tokenType
+                          tokenType:(NSString *)tokenTypeOrNil
 {
     self = [super init];
     if (self) {
         self.accessToken = accessToken;
-        self.tokenType = tokenType;
+        self.tokenType = tokenTypeOrNil ? tokenTypeOrNil : @"bearer";
     }
     return self;
 }

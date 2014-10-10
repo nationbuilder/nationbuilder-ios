@@ -52,7 +52,7 @@ extern NSString * const NBAuthenticationRedirectTokenKey;
 
 // Designated initializer.
 - (instancetype)initWithAccessToken:(NSString *)accessToken
-                          tokenType:(NSString *)tokenType;
+                          tokenType:(NSString *)tokenTypeOrNil;
 
 + (BOOL)saveCredential:(NBAuthenticationCredential *)credential
         withIdentifier:(NSString *)identifier;
