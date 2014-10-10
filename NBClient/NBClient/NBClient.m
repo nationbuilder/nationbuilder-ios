@@ -21,6 +21,7 @@ NSString * const NBClientErrorValidationErrorsKey = @"validation_errors";
 NSString * const NBClientErrorInnerErrorKey = @"inner_error";
 
 NSString * const NBClientDefaultAPIVersion = @"v1";
+NSString * const NBClientDefaultBaseURLFormat = @"https://%@.nationbuilder.com";
 
 @implementation NBClient
 
@@ -120,7 +121,7 @@ NSString * const NBClientDefaultAPIVersion = @"v1";
     if (_baseURL) {
         return _baseURL;
     }
-    self.baseURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://%@.nationbuilder.com", self.nationName]];
+    self.baseURL = [NSURL URLWithString:[NSString stringWithFormat:NBClientDefaultBaseURLFormat, self.nationName]];
     return _baseURL;
 }
 
