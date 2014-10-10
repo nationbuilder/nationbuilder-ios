@@ -40,8 +40,7 @@ extern NSString * const NBAuthenticationRedirectTokenKey;
 
 // Designated initializer.
 - (instancetype)initWithBaseURL:(NSURL *)baseURL
-               clientIdentifier:(NSString *)clientIdentifier
-                   clientSecret:(NSString *)clientSecret;
+               clientIdentifier:(NSString *)clientIdentifier;
 
 /**
  Authentication API

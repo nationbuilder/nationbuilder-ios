@@ -28,8 +28,6 @@ static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
 @property (nonatomic, strong, readwrite) NSString *clientIdentifier;
 @property (nonatomic, strong, readwrite) NSString *credentialIdentifier;
 
-@property (nonatomic, strong) NSString *clientSecret;
-
 @end
 
 @interface NBAuthenticationCredential ()
@@ -47,13 +45,11 @@ static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
 
 - (instancetype)initWithBaseURL:(NSURL *)baseURL
                clientIdentifier:(NSString *)clientIdentifier
-                   clientSecret:(NSString *)clientSecret
 {
     self = [super init];
     if (self) {
         self.baseURL = baseURL;
         self.clientIdentifier = clientIdentifier;
-        self.clientSecret = clientSecret;
         self.credentialIdentifier = self.baseURL.host;
         self.shouldAutomaticallySaveCredential = YES;
     }
@@ -86,7 +82,6 @@ static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
     // Perform authentication against service.
     NSMutableDictionary *mutableParameters = parameters.mutableCopy;
     mutableParameters[@"client_id"] = self.clientIdentifier;
-    mutableParameters[@"client_secret"] = self.clientSecret;
     parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
     
     NSURLComponents *components =
