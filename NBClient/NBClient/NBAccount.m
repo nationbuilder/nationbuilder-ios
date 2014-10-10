@@ -10,7 +10,6 @@
 
 #import "NBAuthenticator.h"
 #import "NBClient.h"
-#import "NBDefines.h"
 
 @interface NBAccount ()
 
@@ -82,19 +81,16 @@
     return _defaultClientInfo;
 }
 
-- (void)setActive:(BOOL)active
+#pragma mark - Active API
+
+- (void)requestActiveWithCompletionHandler:(NBGenericCompletionHandler)completionHandler
 {
-    // Boilerplate.
-    // TODO: Make into snippet.
-    static NSString *key;
-    key = key ?: NSStringFromSelector(@selector(isActive));
-    [self willChangeValueForKey:key];
-    _active = active;
-    [self didChangeValueForKey:key];
-    // END: Boilerplate.
-    // TODO: Not ideal.
     [self.authenticator authenticateWithCompletionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
-        _active = !!error;
+        if (credential) {
+            self.client.apiKey = credential.accessToken;
+            self.active = YES;
+        }
+        completionHandler(error);
     }];
 }
 

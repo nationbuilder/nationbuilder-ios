@@ -20,6 +20,8 @@ extern NSString * const NBInfoClientIdentifierKey;
 extern NSString * const NBInfoNationNameKey;
 extern NSString * const NBInfoTestTokenKey;
 
+typedef void (^NBGenericCompletionHandler)(NSError *error);
+
 @protocol NBDictionarySerializing <NSObject>
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;

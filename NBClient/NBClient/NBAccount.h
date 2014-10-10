@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "NBDefines.h"
+
 @class NBClient;
 @class NBAuthenticator;
 
@@ -23,5 +25,7 @@
 @property (nonatomic, getter = isActive) BOOL active;
 
 - (instancetype)initWithClientInfo:(NSDictionary *)clientInfoOrNil;
+
+- (void)requestActiveWithCompletionHandler:(NBGenericCompletionHandler)completionHandler;
 
 @end
