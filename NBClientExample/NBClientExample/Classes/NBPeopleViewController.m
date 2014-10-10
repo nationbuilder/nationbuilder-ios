@@ -207,9 +207,7 @@ static void *observationContext = &observationContext;
 
 - (void)setBusy:(BOOL)busy
 {
-    if (busy == self.busy) {
-        return;
-    }
+    if (busy == _busy) { return; }
     // Boilerplate.
     static NSString *key;
     key = key ?: NSStringFromSelector(@selector(isBusy));
@@ -436,9 +434,7 @@ static void *observationContext = &observationContext;
 
 - (void)setRefreshState:(NBScrollViewPullActionState)refreshState
 {
-    if (self.refreshState == refreshState) {
-        return;
-    }
+    if (refreshState == _refreshState) { return; }
     NBScrollViewPullActionState previousState = self.refreshState;
     // Boilerplate.
     static NSString *key;
@@ -616,9 +612,7 @@ static void *observationContext = &observationContext;
 
 - (void)setLoadMoreState:(NBScrollViewPullActionState)loadMoreState
 {
-    if (self.loadMoreState == loadMoreState) {
-        return;
-    }
+    if (loadMoreState == _loadMoreState) { return; }
     NBScrollViewPullActionState previousState = self.loadMoreState;
     // Boilerplate.
     static NSString *key;

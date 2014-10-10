@@ -181,9 +181,7 @@ static NSDictionary *DataToFieldKeyPathsMap;
 
 - (void)setBusy:(BOOL)busy
 {
-    if (busy == self.busy) {
-        return;
-    }
+    if (busy == _busy) { return; }
     // Boilerplate.
     static NSString *key;
     key = key ?: NSStringFromSelector(@selector(isBusy));
