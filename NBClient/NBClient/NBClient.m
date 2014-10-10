@@ -114,6 +114,20 @@ NSString * const NBClientDefaultBaseURLFormat = @"https://%@.nationbuilder.com";
     return _apiVersion;
 }
 
+- (void)setAuthenticator:(NBAuthenticator *)authenticator
+{
+    // Boilerplate.
+    static NSString *key;
+    key = key ?: NSStringFromSelector(@selector(authenticator));
+    [self willChangeValueForKey:key];
+    _authenticator = authenticator;
+    [self didChangeValueForKey:key];
+    // END: Boilerplate.
+    if (authenticator && authenticator.baseURL) {
+        self.baseURL = authenticator.baseURL;
+    }
+}
+
 #pragma mark Requests & Tasks
 
 - (NSURL *)baseURL
