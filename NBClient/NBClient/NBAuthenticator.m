@@ -11,10 +11,7 @@
 #import "NBDefines.h"
 #import "FoundationAdditions.h"
 
-NSString * const NBAuthenticationGrantTypeCode = @"authorization_code";
-NSString * const NBAuthenticationGrantTypeClientCredential = @"client_credentials";
 NSString * const NBAuthenticationGrantTypePasswordCredential = @"password";
-NSString * const NBAuthenticationGrantTypeRefresh = @"refresh_token";
 
 NSUInteger const NBAuthenticationErrorCodeService = 1;
 

@@ -12,20 +12,6 @@
 
 typedef void (^NBAuthenticationCompletionHandler)(NBAuthenticationCredential *credential, NSError *error);
 
-/**
- OAuth 2.0 provides several grant types, covering several different use cases. The following
- grant type string constants are provided:
- 
- `NBAuthenticationGrantTypeCode`: "authorization_code"
- `NBAuthenticationGrantTypeClientCredential`: "client_credentials"
- `NBAuthenticationGrantTypePasswordCredential`: "password"
- `NBAuthenticationGrantTypeRefresh`: "refresh_token"
- */
-extern NSString * const NBAuthenticationGrantTypeCode; // (NOTE: Not implemented.)
-extern NSString * const NBAuthenticationGrantTypeClientCredential; // (NOTE: Not implemented.)
-extern NSString * const NBAuthenticationGrantTypePasswordCredential;
-extern NSString * const NBAuthenticationGrantTypeRefresh; // (NOTE: Not implemented.)
-
 extern NSUInteger const NBAuthenticationErrorCodeService;
 
 extern NSString * const NBAuthenticationRedirectTokenKey;
