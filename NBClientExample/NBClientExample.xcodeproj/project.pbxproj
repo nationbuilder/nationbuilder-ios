@@ -24,8 +24,10 @@
 		AA602C2F198C3966001A7DB2 /* NBPeoplePageHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA602C2D198C3966001A7DB2 /* NBPeoplePageHeaderView.xib */; };
 		AA602C32199157B7001A7DB2 /* NBPeopleViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = AA602C31199157B7001A7DB2 /* NBPeopleViewFlowLayout.m */; };
 		AA602C33199157B7001A7DB2 /* NBPeopleViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = AA602C31199157B7001A7DB2 /* NBPeopleViewFlowLayout.m */; };
-		AA8BD9E0199447EF00400E5F /* NationBuilder-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA8BD9DF199447EF00400E5F /* NationBuilder-Info.plist */; };
-		AA8BD9E1199447EF00400E5F /* NationBuilder-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA8BD9DF199447EF00400E5F /* NationBuilder-Info.plist */; };
+		AA7904A519E8A0BA0007FF3E /* NationBuilder-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA7904A419E8A0BA0007FF3E /* NationBuilder-Info.plist */; };
+		AA7904A619E8A0BA0007FF3E /* NationBuilder-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA7904A419E8A0BA0007FF3E /* NationBuilder-Info.plist */; };
+		AA7904A819E8A0D20007FF3E /* NationBuilder-Info-Local.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA7904A719E8A0D20007FF3E /* NationBuilder-Info-Local.plist */; };
+		AA7904A919E8A0D20007FF3E /* NationBuilder-Info-Local.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA7904A719E8A0D20007FF3E /* NationBuilder-Info-Local.plist */; };
 		AA909123198339EA009BE1E9 /* libNBClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA909122198339EA009BE1E9 /* libNBClient.a */; };
 		AA90912D19833B0E009BE1E9 /* NBPeopleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA90912A19833B0E009BE1E9 /* NBPeopleViewController.xib */; };
 		AA90912E19833B0E009BE1E9 /* NBPeopleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA90912A19833B0E009BE1E9 /* NBPeopleViewController.xib */; };
@@ -80,7 +82,8 @@
 		AA602C30199157B7001A7DB2 /* NBPeopleViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPeopleViewFlowLayout.h; path = Classes/NBPeopleViewFlowLayout.h; sourceTree = "<group>"; };
 		AA602C31199157B7001A7DB2 /* NBPeopleViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBPeopleViewFlowLayout.m; path = Classes/NBPeopleViewFlowLayout.m; sourceTree = "<group>"; };
 		AA602C2D198C3966001A7DB2 /* NBPeoplePageHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NBPeoplePageHeaderView.xib; path = Nibs/NBPeoplePageHeaderView.xib; sourceTree = "<group>"; };
-		AA8BD9DF199447EF00400E5F /* NationBuilder-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "NationBuilder-Info.plist"; sourceTree = "<group>"; };
+		AA7904A419E8A0BA0007FF3E /* NationBuilder-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "NationBuilder-Info.plist"; sourceTree = "<group>"; };
+		AA7904A719E8A0D20007FF3E /* NationBuilder-Info-Local.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "NationBuilder-Info-Local.plist"; sourceTree = "<group>"; };
 		AA909122198339EA009BE1E9 /* libNBClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libNBClient.a; path = "../NBClient/build/Debug-iphoneos/libNBClient.a"; sourceTree = "<group>"; };
 		AA90912A19833B0E009BE1E9 /* NBPeopleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NBPeopleViewController.xib; path = Nibs/NBPeopleViewController.xib; sourceTree = "<group>"; };
 		AA90912B19833B0E009BE1E9 /* NBPersonCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NBPersonCellView.xib; path = Nibs/NBPersonCellView.xib; sourceTree = "<group>"; };
@@ -191,7 +194,8 @@
 		AA15FAA81983317400A2E84B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				AA8BD9DF199447EF00400E5F /* NationBuilder-Info.plist */,
+				AA7904A419E8A0BA0007FF3E /* NationBuilder-Info.plist */,
+				AA7904A719E8A0D20007FF3E /* NationBuilder-Info-Local.plist */,
 				AA15FAA91983317400A2E84B /* NBClientExample-Info.plist */,
 				AA15FAAA1983317400A2E84B /* InfoPlist.strings */,
 				AA15FAAD1983317400A2E84B /* main.m */,
@@ -295,13 +299,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA90912D19833B0E009BE1E9 /* NBPeopleViewController.xib in Resources */,
+				AA7904A819E8A0D20007FF3E /* NationBuilder-Info-Local.plist in Resources */,
 				AA602C2E198C3966001A7DB2 /* NBPeoplePageHeaderView.xib in Resources */,
 				AA90913619833B8D009BE1E9 /* Localizable.strings in Resources */,
-				AA8BD9E0199447EF00400E5F /* NationBuilder-Info.plist in Resources */,
 				AA15FAAC1983317400A2E84B /* InfoPlist.strings in Resources */,
 				AA15FAB41983317400A2E84B /* Images.xcassets in Resources */,
 				AA90912F19833B0E009BE1E9 /* NBPersonCellView.xib in Resources */,
 				AA90913119833B0E009BE1E9 /* NBPersonViewController.xib in Resources */,
+				AA7904A519E8A0BA0007FF3E /* NationBuilder-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,8 +315,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA90913719833B8D009BE1E9 /* Localizable.strings in Resources */,
-				AA8BD9E1199447EF00400E5F /* NationBuilder-Info.plist in Resources */,
+				AA7904A919E8A0D20007FF3E /* NationBuilder-Info-Local.plist in Resources */,
 				AA602C2F198C3966001A7DB2 /* NBPeoplePageHeaderView.xib in Resources */,
+				AA7904A619E8A0BA0007FF3E /* NationBuilder-Info.plist in Resources */,
 				AA15FAC51983317400A2E84B /* InfoPlist.strings in Resources */,
 				AA90913219833B0E009BE1E9 /* NBPersonViewController.xib in Resources */,
 				AA90913019833B0E009BE1E9 /* NBPersonCellView.xib in Resources */,

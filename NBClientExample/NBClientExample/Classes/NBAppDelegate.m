@@ -57,18 +57,14 @@
     if (_client) {
         return _client;
     }
-    NSString *path = [[NSBundle mainBundle] pathForResource:NBInfoFileName ofType:@"plist"];
-    NSAssert(path, @"%@.plist could not be found. Please add it and include the proper entries.", NBInfoFileName);
-    NSDictionary *infos = [NSDictionary dictionaryWithContentsOfFile:path];
-    NSDictionary *info;
+    NSString *pathName;
 #if defined(DEBUG) && TARGET_IPHONE_SIMULATOR
-    // NOTE: This configuration group is meant for internal use only, unless
+    // NOTE: This configuration file is meant for internal use only, unless
     // you have a development-specific set of NationBuilder configuration.
-    info = infos[NBInfoDevelopmentKey];
+    pathName = [NBInfoFileName stringByAppendingString:@"-Local"];
 #endif
-    if (!info) {
-        info = infos[NBInfoProductionKey];
-    }
+    pathName = pathName ?: NBInfoFileName;
+    NSDictionary *info = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:pathName ofType:@"plist"]];
     NSString *baseURLString = [NSString stringWithFormat:info[NBInfoBaseURLFormatKey], info[NBInfoNationNameKey]];
     NSURL *url = [NSURL URLWithString:baseURLString];
     self.client = [[NBClient alloc] initWithNationName:info[NBInfoNationNameKey]
