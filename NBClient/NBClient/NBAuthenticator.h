@@ -14,14 +14,13 @@ typedef void (^NBAuthenticationCompletionHandler)(NBAuthenticationCredential *cr
 
 extern NSUInteger const NBAuthenticationErrorCodeService;
 
-extern NSString * const NBAuthenticationRedirectTokenKey;
-
 @interface NBAuthenticator : NSObject
 
 @property (nonatomic, strong, readonly) NSURL *baseURL;
 @property (nonatomic, strong, readonly) NSString *clientIdentifier;
 @property (nonatomic, strong, readonly) NSString *credentialIdentifier;
 @property (nonatomic, strong, readonly) NBAuthenticationCredential *credential;
+@property (nonatomic, readonly, getter = isAuthenticatingInWebBrowser) BOOL authenticatingInWebBrowser;
 
 @property (nonatomic) BOOL shouldAutomaticallySaveCredential;
 
@@ -35,13 +34,13 @@ extern NSString * const NBAuthenticationRedirectTokenKey;
  @note Completion handlers may be dispatched synchronously. Async should not be assumed.
  */
 
+- (void)authenticateWithCompletionHandler:(NBAuthenticationCompletionHandler)completionHandler;
+
 - (NSURLSessionDataTask *)authenticateWithUserName:(NSString *)userName
                                           password:(NSString *)password
                                  completionHandler:(NBAuthenticationCompletionHandler)completionHandler;
 
-- (NSURLSessionDataTask *)authenticateWithSubPath:(NSString *)subPath
-                                       parameters:(NSDictionary *)parameters
-                                completionHandler:(NBAuthenticationCompletionHandler)completionHandler;
++ (BOOL)finishAuthenticatingInWebBrowserWithURL:(NSURL *)url;
 
 @end
 
