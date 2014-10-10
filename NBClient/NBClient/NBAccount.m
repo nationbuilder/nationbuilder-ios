@@ -19,6 +19,8 @@
 @property (nonatomic, strong) NBAuthenticator *authenticator;
 @property (nonatomic, strong) NSDictionary *clientInfo;
 
+- (NSURL *)baseURL;
+
 @end
 
 @implementation NBAccount
@@ -27,6 +29,8 @@
 {
     self = [super init];
     if (self) {
+        // Set defaults.
+        self.shouldUseTestToken = NO;
         if (!clientInfoOrNil) {
             clientInfoOrNil = self.defaultClientInfo;
         }
@@ -52,9 +56,16 @@
     if (_client) {
         return _client;
     }
-    self.client = [[NBClient alloc] initWithNationName:self.clientInfo[NBInfoNationNameKey]
-                                         authenticator:self.authenticator
-                                      customURLSession:nil customURLSessionConfiguration:nil];
+    if (self.shouldUseTestToken) {
+        self.client = [[NBClient alloc] initWithNationName:self.clientInfo[NBInfoNationNameKey]
+                                                    apiKey:self.clientInfo[NBInfoTestTokenKey]
+                                             customBaseURL:[self baseURL]
+                                          customURLSession:nil customURLSessionConfiguration:nil];
+    } else {
+        self.client = [[NBClient alloc] initWithNationName:self.clientInfo[NBInfoNationNameKey]
+                                             authenticator:self.authenticator
+                                          customURLSession:nil customURLSessionConfiguration:nil];
+    }
     return _client;
 }
 
@@ -63,8 +74,7 @@
     if (_authenticator) {
         return _authenticator;
     }
-    NSString *baseURLString = [NSString stringWithFormat:self.clientInfo[NBInfoBaseURLFormatKey], self.clientInfo[NBInfoNationNameKey]];
-    self.authenticator = [[NBAuthenticator alloc] initWithBaseURL:[NSURL URLWithString:baseURLString]
+    self.authenticator = [[NBAuthenticator alloc] initWithBaseURL:[self baseURL]
                                                  clientIdentifier:self.clientInfo[NBInfoClientIdentifierKey]];
     return _authenticator;
 }
@@ -79,6 +89,26 @@
                    @"the constructor or ensure the proper plist exists.", NBInfoFileName);
     self.defaultClientInfo = [NSDictionary dictionaryWithContentsOfFile:path];
     return _defaultClientInfo;
+}
+
+- (void)setShouldUseTestToken:(BOOL)shouldUseTestToken
+{
+    if (shouldUseTestToken == _shouldUseTestToken) { return; }
+    NSAssert(self.clientInfo[NBInfoTestTokenKey], @"Invalid client info: test token required.");
+    // Boilerplate.
+    static NSString *key;
+    key = key ?: NSStringFromSelector(@selector(shouldUseTestToken));
+    [self willChangeValueForKey:key];
+    _shouldUseTestToken = shouldUseTestToken;
+    [self didChangeValueForKey:key];
+    // END: Boilerplate.
+    self.client = nil;
+}
+
+- (NSURL *)baseURL
+{
+    return [NSURL URLWithString:
+            [NSString stringWithFormat:self.clientInfo[NBInfoBaseURLFormatKey], self.clientInfo[NBInfoNationNameKey]]];
 }
 
 #pragma mark - Active API

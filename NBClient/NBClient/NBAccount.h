@@ -23,6 +23,7 @@
 @property (nonatomic, strong, readonly) NSString *name; // `username`, otherwise `full_name`
 
 @property (nonatomic, getter = isActive) BOOL active;
+@property (nonatomic) BOOL shouldUseTestToken;
 
 - (instancetype)initWithClientInfo:(NSDictionary *)clientInfoOrNil;
 
