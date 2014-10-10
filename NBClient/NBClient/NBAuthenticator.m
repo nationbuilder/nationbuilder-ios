@@ -79,8 +79,8 @@ static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
     _credential = credential;
     [self didChangeValueForKey:key];
     // END: Boilerplate.
-    if (self.credential && self.shouldAutomaticallySaveCredential) {
-        [NBAuthenticationCredential saveCredential:self.credential withIdentifier:self.credentialIdentifier];
+    if (credential && self.shouldAutomaticallySaveCredential) {
+        [NBAuthenticationCredential saveCredential:credential withIdentifier:self.credentialIdentifier];
     }
 }
 
