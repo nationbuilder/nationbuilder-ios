@@ -16,6 +16,7 @@ extern NSString * const NBInfoFileName;
 extern NSString * const NBInfoBaseURLFormatKey;
 extern NSString * const NBInfoClientIdentifierKey;
 extern NSString * const NBInfoNationNameKey;
+extern NSString * const NBInfoRedirectPathKey;
 extern NSString * const NBInfoTestTokenKey;
 
 typedef void (^NBGenericCompletionHandler)(NSError *error);

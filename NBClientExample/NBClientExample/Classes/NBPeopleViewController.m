@@ -50,6 +50,7 @@ static void *observationContext = &observationContext;
 @property (nonatomic) NBScrollViewPullActionState refreshState;
 @property (nonatomic) NBScrollViewPullActionState loadMoreState;
 
+- (void)fetchIfNeeded;
 - (IBAction)presentPersonView:(id)sender;
 
 - (void)setUpCreating;
@@ -92,6 +93,7 @@ static void *observationContext = &observationContext;
     [self.nibNames addEntriesFromDictionary:nibNamesOrNil];
     // END: Boilerplate.
     self = [self initWithNibName:self.nibNames[NBNibNameViewKey] bundle:nibBundleOrNil];
+    self.ready = NO;
     return self;
 }
 
@@ -149,10 +151,8 @@ static void *observationContext = &observationContext;
 {
     [super viewWillAppear:animated];
     // Try (re)fetching if list is empty.
-    NBPeopleDataSource *dataSource = (id)self.dataSource;
-    if (!dataSource.people.count) {
-        self.busy = YES;
-        [(id)self.dataSource fetchAll];
+    if (self.isReady) {
+        [self fetchIfNeeded];
     }
 }
 
@@ -430,6 +430,20 @@ static void *observationContext = &observationContext;
     }
 }
 
+#pragma mark - Public
+
+- (void)setReady:(BOOL)ready
+{
+    // Boilerplate.
+    static NSString *key;
+    key = key ?: NSStringFromSelector(@selector(isReady));
+    [self willChangeValueForKey:key];
+    _ready = ready;
+    [self didChangeValueForKey:key];
+    // END: Boilerplate.
+    [self fetchIfNeeded];
+}
+
 #pragma mark - Private
 
 #pragma mark Fetching
@@ -474,6 +488,15 @@ static void *observationContext = &observationContext;
                          completion:nil];
     } else {
         scrollView.contentInset = contentInset;
+    }
+}
+
+- (void)fetchIfNeeded
+{
+    NBPeopleDataSource *dataSource = (id)self.dataSource;
+    if (!dataSource.people.count) {
+        self.busy = YES;
+        [(id)self.dataSource fetchAll];
     }
 }
 

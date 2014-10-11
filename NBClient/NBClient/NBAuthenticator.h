@@ -13,7 +13,10 @@
 typedef void (^NBAuthenticationCompletionHandler)(NBAuthenticationCredential *credential, NSError *error);
 
 extern NSUInteger const NBAuthenticationErrorCodeService;
+extern NSUInteger const NBAuthenticationErrorCodeURLType;
 extern NSUInteger const NBAuthenticationErrorCodeWebBrowser;
+
+extern NSString * const NBAuthenticationDefaultRedirectPath;
 
 @interface NBAuthenticator : NSObject
 
@@ -35,13 +38,15 @@ extern NSUInteger const NBAuthenticationErrorCodeWebBrowser;
  @note Completion handlers may be dispatched synchronously. Async should not be assumed.
  */
 
-- (void)authenticateWithCompletionHandler:(NBAuthenticationCompletionHandler)completionHandler;
+- (void)authenticateWithRedirectPath:(NSString *)redirectPath
+                   completionHandler:(NBAuthenticationCompletionHandler)completionHandler;
 
 - (NSURLSessionDataTask *)authenticateWithUserName:(NSString *)userName
                                           password:(NSString *)password
                                  completionHandler:(NBAuthenticationCompletionHandler)completionHandler;
 
-+ (BOOL)finishAuthenticatingInWebBrowserWithURL:(NSURL *)url;
++ (NSString *)authorizationRedirectApplicationURLScheme;
++ (BOOL)finishAuthenticatingInWebBrowserWithURL:(NSURL *)url error:(NSError **)error;
 
 @end
 

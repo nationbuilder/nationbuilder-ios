@@ -43,6 +43,8 @@
         // Fill in client base URL if needed.
         mutableClientInfo[NBInfoBaseURLFormatKey] = mutableClientInfo[NBInfoBaseURLFormatKey] ?: self.defaultClientInfo[NBInfoBaseURLFormatKey];
         mutableClientInfo[NBInfoBaseURLFormatKey] = mutableClientInfo[NBInfoBaseURLFormatKey] ?: NBClientDefaultBaseURLFormat;
+        // Fill in redirect path if needed.
+        mutableClientInfo[NBInfoRedirectPathKey] = mutableClientInfo[NBInfoRedirectPathKey] ?: NBAuthenticationDefaultRedirectPath;
         // Set.
         self.clientInfo = [NSDictionary dictionaryWithDictionary:mutableClientInfo];
     }
@@ -115,13 +117,15 @@
 
 - (void)requestActiveWithCompletionHandler:(NBGenericCompletionHandler)completionHandler
 {
-    [self.authenticator authenticateWithCompletionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
-        if (credential) {
-            self.client.apiKey = credential.accessToken;
-            self.active = YES;
-        }
-        completionHandler(error);
-    }];
+    [self.authenticator
+     authenticateWithRedirectPath:self.clientInfo[NBInfoRedirectPathKey]
+     completionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
+         if (credential) {
+             self.client.apiKey = credential.accessToken;
+             self.active = YES;
+         }
+         completionHandler(error);
+     }];
 }
 
 @end

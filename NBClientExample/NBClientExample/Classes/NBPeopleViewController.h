@@ -10,4 +10,8 @@
 
 #import "NBUIDefines.h"
 
-@interface NBPeopleViewController : UICollectionViewController <NBViewController> @end
+@interface NBPeopleViewController : UICollectionViewController <NBViewController>
+
+@property (nonatomic, getter = isReady) BOOL ready;
+
+@end

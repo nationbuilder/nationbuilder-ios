@@ -14,18 +14,22 @@
 #import "FoundationAdditions.h"
 
 NSUInteger const NBAuthenticationErrorCodeService = 1;
+NSUInteger const NBAuthenticationErrorCodeURLType = 2;
 NSUInteger const NBAuthenticationErrorCodeWebBrowser = 3;
 
+NSString * const NBAuthenticationDefaultRedirectPath = @"oauth/callback";
 
 // Private consts.
 
 NSString * const NBAuthenticationGrantTypePasswordCredential = @"password";
 NSString * const NBAuthenticationResponseTypeToken = @"token";
 
+NSString * const NBAuthenticationRedirectURLIdentifier = @"com.nationbuilder.oauth";
 NSString * const NBAuthenticationRedirectNotification = @"NBAuthenticationRedirectNotification";
 NSString * const NBAuthenticationRedirectTokenKey = @"access_token";
 
 static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
+static NSString *RedirectURLScheme;
 
 @interface NBAuthenticator ()
 
@@ -114,12 +118,27 @@ static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
 
 #pragma mark - Authenticate API
 
-- (void)authenticateWithCompletionHandler:(NBAuthenticationCompletionHandler)completionHandler
+- (void)authenticateWithRedirectPath:(NSString *)redirectPath
+                   completionHandler:(NBAuthenticationCompletionHandler)completionHandler
 {
-    NSDictionary *urlType = [[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleURLTypes"] firstObject];
-    NSArray *redirectURIComponents = @[ urlType[@"CFBundleURLName"], [urlType[@"CFBundleURLSchemes"] firstObject] ];
+    if (!self.class.authorizationRedirectApplicationURLScheme) {
+        NSError *error =
+        [NSError
+         errorWithDomain:NBErrorDomain
+         code:NBAuthenticationErrorCodeURLType
+         userInfo:@{ NSLocalizedDescriptionKey: NSLocalizedString(@"No valid OAuth redirect URL scheme for app.", nil),
+                     NSLocalizedFailureReasonErrorKey: [NSString localizedStringWithFormat:
+                                                        NSLocalizedString(@"Cannot find a URL type with the URL identifier '%@'.", nil),
+                                                        NBAuthenticationRedirectURLIdentifier],
+                     NSLocalizedRecoverySuggestionErrorKey: [NSString localizedStringWithFormat:
+                                                             NSLocalizedString(@"In your main info plist, set a URL type with the URL identifier '%@'.", nil),
+                                                             NBAuthenticationRedirectURLIdentifier] }];
+        completionHandler(nil, error);
+    }
     NSDictionary *parameters = @{ @"response_type": NBAuthenticationResponseTypeToken,
-                                  @"redirect_uri": [redirectURIComponents componentsJoinedByString:@""] };
+                                  @"redirect_uri":  [NSString stringWithFormat:@"%@://%@",
+                                                     self.class.authorizationRedirectApplicationURLScheme,
+                                                     redirectPath] };
     [self authenticateWithSubPath:@"/authorize" parameters:parameters completionHandler:completionHandler];
 }
 
@@ -133,18 +152,44 @@ static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
     return [self authenticateWithSubPath:@"/token" parameters:parameters completionHandler:completionHandler];
 }
 
++ (NSString *)authorizationRedirectApplicationURLScheme
+{
+
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSArray *urlTypes = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleURLTypes"];
+        for (NSDictionary *type in urlTypes) {
+            if ([type[@"CFBundleURLName"] isEqualToString:NBAuthenticationRedirectURLIdentifier]) {
+                RedirectURLScheme = [type[@"CFBundleURLSchemes"] firstObject];
+                break;
+            }
+        }
+    });
+    return RedirectURLScheme;
+}
+
 // Since this is a stateless method, decoupled from any one authenticator, it
 // must rely on notifications.
-+ (BOOL)finishAuthenticatingInWebBrowserWithURL:(NSURL *)url
++ (BOOL)finishAuthenticatingInWebBrowserWithURL:(NSURL *)url error:(NSError *__autoreleasing *)error
 {
     BOOL didOpen = NO;
-    NSURLComponents *components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
-    NSDictionary *parameters = [components.fragment nb_queryStringParametersWithEncoding:NSUTF8StringEncoding];
-    NSString *accessToken = parameters[NBAuthenticationRedirectTokenKey];
-    if (accessToken) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:NBAuthenticationRedirectNotification object:nil
-                                                          userInfo:@{ NBAuthenticationRedirectTokenKey: accessToken }];
-        didOpen = YES;
+    NSURLComponents *components = [[NSURLComponents alloc] initWithURL:url resolvingAgainstBaseURL:NO];
+    if ([components.scheme isEqualToString:self.authorizationRedirectApplicationURLScheme]) {
+        NSDictionary *parameters = [components.fragment nb_queryStringParametersWithEncoding:NSUTF8StringEncoding];
+        NSString *accessToken = parameters[NBAuthenticationRedirectTokenKey];
+        if (accessToken) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:NBAuthenticationRedirectNotification object:nil
+                                                              userInfo:@{ NBAuthenticationRedirectTokenKey: accessToken }];
+            didOpen = YES;
+        } else {
+            *error = [NSError
+                      errorWithDomain:NBErrorDomain
+                      code:NBAuthenticationErrorCodeService
+                      userInfo:@{ NSLocalizedDescriptionKey: NSLocalizedString(@"Service errored fulfilling authorization redirect.", nil),
+                                  NSLocalizedFailureReasonErrorKey: NSLocalizedString(@"No 'access_token' query parameter was provided.", nil),
+                                  NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"If failure reason is not helpful, "
+                                                                                           @"contact NationBuilder for support.", nil) }];
+        }
     }
     return didOpen;
 }
@@ -171,7 +216,7 @@ static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
                resolvingAgainstBaseURL:YES];
     
     components.query = [parameters nb_queryStringWithEncoding:NSASCIIStringEncoding
-                                  skipPercentEncodingPairKeys:[NSSet setWithObject:@"username"]
+                                  skipPercentEncodingPairKeys:[NSSet setWithObjects:@"username", @"redirect_uri", nil]
                                    charactersToLeaveUnescaped:nil];
     
     NSURLSessionDataTask *task;
@@ -196,17 +241,8 @@ static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
                                                      selector:@selector(finishAuthenticatingInWebBrowserWithNotification:)
                                                          name:NBAuthenticationRedirectNotification object:nil];
         });
-        BOOL didOpen = [application openURL:url];
-        if (didOpen) {
-            self.currentInBrowserAuthenticationCompletionHandler = completionHandler;
-        } else {
-            error = [NSError
-                     errorWithDomain:NBErrorDomain
-                     code:NBAuthenticationErrorCodeWebBrowser
-                     userInfo:@{ NSLocalizedDescriptionKey: NSLocalizedString(@"Web browser could not open authorization URL.", nil),
-                                 NSLocalizedFailureReasonErrorKey: NSLocalizedString(@"There may be something wrong with the application.", nil),
-                                 NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"Contact app developer for support.", nil) }];
-        }
+        self.currentInBrowserAuthenticationCompletionHandler = completionHandler;
+        [application openURL:url];
     } else {
         error = [NSError
                  errorWithDomain:NBErrorDomain
