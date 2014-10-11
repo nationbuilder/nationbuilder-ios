@@ -15,7 +15,7 @@
     NSDictionary *userInfo = error.userInfo;
     return [[UIAlertView alloc] initWithTitle:userInfo[NSLocalizedDescriptionKey]
                                       message:[userInfo[NSLocalizedFailureReasonErrorKey]
-                                               stringByAppendingString:userInfo[NSLocalizedRecoverySuggestionErrorKey]]
+                                               stringByAppendingFormat:@" %@", userInfo[NSLocalizedRecoverySuggestionErrorKey]]
                                      delegate:self cancelButtonTitle:nil
                             otherButtonTitles:NSLocalizedString(@"OK", nil), nil];
 }
