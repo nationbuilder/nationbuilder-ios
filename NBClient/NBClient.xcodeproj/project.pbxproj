@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA3B62A819E8B86700798C49 /* UIKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3B62A719E8B86700798C49 /* UIKitAdditions.m */; };
+		AA3B62A919E8BCCE00798C49 /* UIKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA3B62A619E8B86700798C49 /* UIKitAdditions.h */; };
 		AA668DC619705FC800A952B0 /* NBTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = AA668DC519705FC800A952B0 /* NBTestCase.m */; };
 		AA668DD11970B81800A952B0 /* FoundationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AA668DD01970B81800A952B0 /* FoundationAdditions.m */; };
 		AA668DD41976EA1600A952B0 /* NBClientPeopleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA668DD31976EA1600A952B0 /* NBClientPeopleTests.m */; };
@@ -74,6 +76,7 @@
 				AA674F0219E60A54009C6D4B /* UI.h in CopyFiles */,
 				AA90915A19834186009BE1E9 /* NBDefines.h in CopyFiles */,
 				AA90915319834164009BE1E9 /* Main.h in CopyFiles */,
+				AA3B62A919E8BCCE00798C49 /* UIKitAdditions.h in CopyFiles */,
 				AA90915419834164009BE1E9 /* FoundationAdditions.h in CopyFiles */,
 				AA90915519834164009BE1E9 /* NBAuthenticator.h in CopyFiles */,
 				AA90915619834164009BE1E9 /* NBClient.h in CopyFiles */,
@@ -86,6 +89,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		AA3B62A619E8B86700798C49 /* UIKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIKitAdditions.h; sourceTree = "<group>"; };
+		AA3B62A719E8B86700798C49 /* UIKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIKitAdditions.m; sourceTree = "<group>"; };
 		AA668DC419705FC800A952B0 /* NBTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBTestCase.h; sourceTree = "<group>"; };
 		AA668DC519705FC800A952B0 /* NBTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBTestCase.m; sourceTree = "<group>"; };
 		AA668DCF1970B81800A952B0 /* FoundationAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoundationAdditions.h; sourceTree = "<group>"; };
@@ -182,6 +187,8 @@
 				AAEFEAEE19E6E73800777BC1 /* NBAccountsViewController.xib */,
 				AAEFEAF019E6EADC00777BC1 /* NBAccountsViewDefines.h */,
 				AA674EFE19E60A2E009C6D4B /* UI.h */,
+				AA3B62A619E8B86700798C49 /* UIKitAdditions.h */,
+				AA3B62A719E8B86700798C49 /* UIKitAdditions.m */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -430,6 +437,7 @@
 				AAEFEAEF19E6E73800777BC1 /* NBAccountsViewController.m in Sources */,
 				AA862851196F1651005060C9 /* NBAuthenticator.m in Sources */,
 				AAAEFC2C196CD13D00222A48 /* NBClient.m in Sources */,
+				AA3B62A819E8B86700798C49 /* UIKitAdditions.m in Sources */,
 				AAEFEAFF19E7131E00777BC1 /* NBAccount.m in Sources */,
 				AA8B6825196F82D4009DDA91 /* NBDefines.m in Sources */,
 				AAEFEAF919E6EE8B00777BC1 /* NBAccountsManager.m in Sources */,
