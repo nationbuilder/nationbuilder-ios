@@ -13,8 +13,6 @@ extern NSString * const NBErrorDomain;
 // Names for a dedicated NationBuilder Info.plist file, which is the suggested
 // method for storing relevant configuration.
 extern NSString * const NBInfoFileName;
-extern NSString * const NBInfoDevelopmentKey;
-extern NSString * const NBInfoProductionKey;
 extern NSString * const NBInfoBaseURLFormatKey;
 extern NSString * const NBInfoClientIdentifierKey;
 extern NSString * const NBInfoNationNameKey;

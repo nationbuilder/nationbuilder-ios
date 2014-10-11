@@ -11,8 +11,6 @@
 NSString * const NBErrorDomain = @"com.nationbuilder";
 
 NSString * const NBInfoFileName = @"NationBuilder-Info";
-NSString * const NBInfoDevelopmentKey = @"Development";
-NSString * const NBInfoProductionKey = @"Production";
 NSString * const NBInfoBaseURLFormatKey = @"Base URL Format";
 NSString * const NBInfoClientIdentifierKey = @"Client ID";
 NSString * const NBInfoNationNameKey = @"Nation Name";
