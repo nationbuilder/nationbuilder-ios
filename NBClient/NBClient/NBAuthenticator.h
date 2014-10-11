@@ -13,6 +13,7 @@
 typedef void (^NBAuthenticationCompletionHandler)(NBAuthenticationCredential *credential, NSError *error);
 
 extern NSUInteger const NBAuthenticationErrorCodeService;
+extern NSUInteger const NBAuthenticationErrorCodeWebBrowser;
 
 @interface NBAuthenticator : NSObject
 

@@ -13,14 +13,17 @@
 #import "NBDefines.h"
 #import "FoundationAdditions.h"
 
+NSUInteger const NBAuthenticationErrorCodeService = 1;
+NSUInteger const NBAuthenticationErrorCodeWebBrowser = 3;
+
+
+// Private consts.
+
 NSString * const NBAuthenticationGrantTypePasswordCredential = @"password";
 NSString * const NBAuthenticationResponseTypeToken = @"token";
 
-NSUInteger const NBAuthenticationErrorCodeService = 1;
-NSUInteger const NBAuthenticationErrorCodeWebBrowser = 2;
-
 NSString * const NBAuthenticationRedirectNotification = @"NBAuthenticationRedirectNotification";
-NSString * const NBAuthenticationRedirectTokenKey = @"token";
+NSString * const NBAuthenticationRedirectTokenKey = @"access_token";
 
 static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
 
@@ -266,7 +269,7 @@ static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
                                                               NSLocalizedString(@"Service errored fulfilling request, status code: %ld", nil),
                                                               httpResponse.statusCode],
                                   NSLocalizedFailureReasonErrorKey: NSLocalizedString(@"Invalid status code:", nil),
-                                  NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"If failure reasion is not helpful, "
+                                  NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"If failure reason is not helpful, "
                                                                                            @"contact NationBuilder for support.", nil) }];
              if (completionHandler) {
                  completionHandler(nil, error);
@@ -291,7 +294,7 @@ static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
                                   NSLocalizedFailureReasonErrorKey: (jsonObject[@"error_description"] ?
                                                                      jsonObject[@"error_description"] :
                                                                      NSLocalizedString(@"Reason unknown.", nil)),
-                                  NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"If failure reasion is not helpful, "
+                                  NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"If failure reason is not helpful, "
                                                                                            @"contact NationBuilder for support.", nil) }];
          } else {
              self.credential = [[NBAuthenticationCredential alloc] initWithAccessToken:jsonObject[@"access_token"]
