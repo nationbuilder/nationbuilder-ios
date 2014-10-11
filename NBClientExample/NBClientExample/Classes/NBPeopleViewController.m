@@ -546,7 +546,7 @@ static void *observationContext = &observationContext;
 
 - (void)setNumberToDelete:(NSUInteger)numberToDelete
 {
-    BOOL shouldClear = numberToDelete == 0 && abs(numberToDelete - self.numberToDelete) > 0;
+    BOOL shouldClear = numberToDelete == 0 && abs((int)numberToDelete - (int)self.numberToDelete) > 0;
     if (shouldClear) {
         NSLog(@"INFO: Clearing %lu pending deletes.", self.numberToDelete);
         [self clearNeedsDeletes:self];
