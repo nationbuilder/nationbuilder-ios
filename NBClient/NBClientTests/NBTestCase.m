@@ -106,7 +106,7 @@
     components.path = [NSString stringWithFormat:@"/api/%@/%@", self.client.apiVersion, path];
     BOOL hasIdentifier = identifier != NSNotFound;
     if (hasIdentifier) {
-        components.path = [components.path stringByAppendingString:[NSString stringWithFormat:@"/%d", identifier]];
+        components.path = [components.path stringByAppendingString:[NSString stringWithFormat:@"/%lu", identifier]];
     }
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
     mutableParameters[@"access_token"] = self.client.apiKey;

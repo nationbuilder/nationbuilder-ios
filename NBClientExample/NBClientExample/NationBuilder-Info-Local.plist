@@ -3,12 +3,12 @@
 <plist version="1.0">
 <dict>
 	<key>Base URL Format</key>
-	<string>https://%@.nationbuilder.com</string>
+	<string>http://%@.nbuild.dev</string>
 	<key>Client ID</key>
-	<string>d69aa7b7ad57efd69c3ef688c15e4318d501612d0c258d7ac92f3f1bb3a539aa</string>
+	<string>65b707456300f8d29123cdad3b43eddb53f0ba2f8f31f082dbd9971c2a0c4eec</string>
 	<key>Nation Name</key>
-	<string>pengtest1</string>
+	<string>abeforprez</string>
 	<key>Test Token</key>
-	<string>de3e244113b4c8737da10c0fa24486d60e253ff50e41226ba9a368448eb2e065</string>
+	<string>9540edf37beb7f12fa9f6d2eda7f315c7ffe0af4cffc60fd8d6ac31df7e3d578</string>
 </dict>
 </plist>

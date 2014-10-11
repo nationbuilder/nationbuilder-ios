@@ -263,7 +263,7 @@ static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
                       errorWithDomain:NBErrorDomain
                       code:NBAuthenticationErrorCodeService
                       userInfo:@{ NSLocalizedDescriptionKey: [NSString localizedStringWithFormat:
-                                                              NSLocalizedString(@"Service errored fulfilling request, status code: %d", nil),
+                                                              NSLocalizedString(@"Service errored fulfilling request, status code: %ld", nil),
                                                               httpResponse.statusCode],
                                   NSLocalizedFailureReasonErrorKey: NSLocalizedString(@"Invalid status code:", nil),
                                   NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"If failure reasion is not helpful, "

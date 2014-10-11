@@ -58,11 +58,11 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-NBTestToken 9a888b2e71393a3c6b327b32366754287c813714ae51e0f7938a7ee608a064f1"
+            argument = "-NBTestToken 9540edf37beb7f12fa9f6d2eda7f315c7ffe0af4cffc60fd8d6ac31df7e3d578"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-NBClientIdentifier ca76d8aa658b4a0af4aba5599f4443bed47895025799a63f9f75669ebc67dd9d"
+            argument = "-NBClientIdentifier 65b707456300f8d29123cdad3b43eddb53f0ba2f8f31f082dbd9971c2a0c4eec"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument

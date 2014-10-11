@@ -209,9 +209,7 @@ static void *observationContext = &observationContext;
 
 - (void)setBusy:(BOOL)busy
 {
-    if (busy == self.busy) {
-        return;
-    }
+    if (busy == _busy) { return; }
     // Boilerplate.
     static NSString *key;
     key = key ?: NSStringFromSelector(@selector(isBusy));
@@ -438,9 +436,7 @@ static void *observationContext = &observationContext;
 
 - (void)setRefreshState:(NBScrollViewPullActionState)refreshState
 {
-    if (self.refreshState == refreshState) {
-        return;
-    }
+    if (refreshState == _refreshState) { return; }
     NBScrollViewPullActionState previousState = self.refreshState;
     // Boilerplate.
     static NSString *key;
@@ -552,9 +548,9 @@ static void *observationContext = &observationContext;
 
 - (void)setNumberToDelete:(NSUInteger)numberToDelete
 {
-    BOOL shouldClear = numberToDelete == 0 && abs(numberToDelete - self.numberToDelete) > 0;
+    BOOL shouldClear = numberToDelete == 0 && abs((int)numberToDelete - (int)self.numberToDelete) > 0;
     if (shouldClear) {
-        NSLog(@"INFO: Clearing %d pending deletes.", self.numberToDelete);
+        NSLog(@"INFO: Clearing %lu pending deletes.", self.numberToDelete);
         [self clearNeedsDeletes:self];
     }
     // Boilerplate.
@@ -621,9 +617,7 @@ static void *observationContext = &observationContext;
 
 - (void)setLoadMoreState:(NBScrollViewPullActionState)loadMoreState
 {
-    if (self.loadMoreState == loadMoreState) {
-        return;
-    }
+    if (loadMoreState == _loadMoreState) { return; }
     NBScrollViewPullActionState previousState = self.loadMoreState;
     // Boilerplate.
     static NSString *key;
