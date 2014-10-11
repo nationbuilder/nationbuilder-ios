@@ -18,6 +18,7 @@
 @interface NBAppDelegate ()
 
 @property (nonatomic, strong) NBClient *client;
+@property (nonatomic, strong) NBPeopleViewController *peopleViewController;
 @property (nonatomic, strong) UINavigationController *rootViewController;
 
 @end
@@ -67,16 +68,23 @@
     return _client;
 }
 
+- (NBPeopleViewController *)peopleViewController
+{
+    if (_peopleViewController) {
+        return _peopleViewController;
+    }
+    self.peopleViewController = [[NBPeopleViewController alloc] initWithNibNames :nil bundle:nil];
+    self.peopleViewController.dataSource = [[NBPeopleDataSource alloc] initWithClient:self.account.client];
+    self.peopleViewController.title = NSLocalizedString(@"people.navigation-title", nil);
+    return _peopleViewController;
+}
+
 - (UIViewController *)rootViewController
 {
     if (_rootViewController) {
         return _rootViewController;
     }
-    NBPeopleDataSource *dataSource = [[NBPeopleDataSource alloc] initWithClient:self.client];
-    NBPeopleViewController *viewController = [[NBPeopleViewController alloc] initWithNibNames:nil bundle:nil];
-    viewController.dataSource = dataSource;
-    viewController.title = NSLocalizedString(@"people.navigation-title", nil);
-    self.rootViewController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    self.rootViewController = [[UINavigationController alloc] initWithRootViewController:self.peopleViewController];
     self.rootViewController.view.backgroundColor = [UIColor whiteColor];
     return _rootViewController;
 }
