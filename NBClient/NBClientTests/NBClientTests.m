@@ -86,6 +86,7 @@
     [client.authenticator
      authenticateWithUserName:self.userEmailAddress
      password:self.userPassword
+     clientSecret:self.clientSecret
      completionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
          if (error) {
              XCTFail(@"Authentication service returned error %@", error);
@@ -101,6 +102,7 @@
          [client.authenticator
           authenticateWithUserName:self.userEmailAddress
           password:self.userPassword
+          clientSecret:self.clientSecret
           completionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
               if (error) {
                   XCTFail(@"Authentication service returned error %@", error);

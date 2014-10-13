@@ -88,9 +88,11 @@ static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
 
 - (NSURLSessionDataTask *)authenticateWithUserName:(NSString *)userName
                                           password:(NSString *)password
+                                      clientSecret:(NSString *)clientSecret
                                  completionHandler:(NBAuthenticationCompletionHandler)completionHandler
 {
     NSDictionary *parameters = @{ @"grant_type": NBAuthenticationGrantTypePasswordCredential,
+                                  @"client_secret": clientSecret,
                                   @"username": userName,
                                   @"password": password };
     return [self authenticateWithSubPath:@"/token" parameters:parameters completionHandler:completionHandler];

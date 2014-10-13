@@ -23,6 +23,7 @@
 
 @property (nonatomic, strong, readwrite) NSString *testToken;
 @property (nonatomic, strong, readwrite) NSString *clientIdentifier;
+@property (nonatomic, strong, readwrite) NSString *clientSecret;
 @property (nonatomic, strong, readwrite) NSString *userEmailAddress;
 @property (nonatomic, readwrite) NSUInteger userIdentifier;
 @property (nonatomic, strong, readwrite) NSString *userPassword;
@@ -64,6 +65,7 @@
     self.baseURL = [NSURL URLWithString:self.baseURLString];
     self.testToken = [launchArguments stringForKey:@"NBTestToken"];
     self.clientIdentifier = [launchArguments stringForKey:@"NBClientIdentifier"];
+    self.clientSecret = [launchArguments stringForKey:@"NBClientSecret"];
     self.userEmailAddress = [launchArguments stringForKey:@"NBUserEmailAddress"];
     self.userIdentifier = [launchArguments integerForKey:@"NBUserIdentifier"];
     self.userPassword = [launchArguments stringForKey:@"NBUserPassword"];
@@ -139,6 +141,7 @@
         NSURLSessionDataTask *task = [authenticator
                                       authenticateWithUserName:self.userEmailAddress
                                       password:self.userPassword
+                                      clientSecret:self.clientSecret
                                       completionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
                                           apiKey = credential.accessToken;
                                       }];

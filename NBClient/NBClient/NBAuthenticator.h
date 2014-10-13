@@ -51,6 +51,7 @@ extern NSString * const NBAuthenticationRedirectTokenKey;
 
 - (NSURLSessionDataTask *)authenticateWithUserName:(NSString *)userName
                                           password:(NSString *)password
+                                      clientSecret:(NSString *)clientSecret
                                  completionHandler:(NBAuthenticationCompletionHandler)completionHandler;
 
 - (NSURLSessionDataTask *)authenticateWithSubPath:(NSString *)subPath

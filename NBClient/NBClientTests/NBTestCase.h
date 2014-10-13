@@ -21,6 +21,7 @@
 
 @property (nonatomic, strong, readonly) NSString *testToken;
 @property (nonatomic, strong, readonly) NSString *clientIdentifier;
+@property (nonatomic, strong, readonly) NSString *clientSecret;
 @property (nonatomic, strong, readonly) NSString *userEmailAddress;
 @property (nonatomic, readonly) NSUInteger userIdentifier;
 @property (nonatomic, strong, readonly) NSString *userPassword;
