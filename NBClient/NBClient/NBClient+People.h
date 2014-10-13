@@ -30,6 +30,10 @@
 // GET /people/match
 - (NSURLSessionDataTask *)fetchPersonByParameters:(NSDictionary *)parameters
                             withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+
+// GET /people/me
+- (NSURLSessionDataTask *)fetchPersonForClientUserWithCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+
 // POST /people
 - (NSURLSessionDataTask *)createPersonWithParameters:(NSDictionary *)parameters
                                    completionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
