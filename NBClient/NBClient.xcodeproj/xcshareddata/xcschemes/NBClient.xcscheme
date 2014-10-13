@@ -25,7 +25,7 @@
    <TestAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "NO"
+      shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
          <TestableReference
@@ -44,36 +44,6 @@
             </SkippedTests>
          </TestableReference>
       </Testables>
-      <CommandLineArguments>
-         <CommandLineArgument
-            argument = "-NBNationName abeforprez"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "-NBUserIdentifier 15236"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "-NBBaseURLFormat &quot;http://%@.nbuild.dev&quot;"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "-NBTestToken 9540edf37beb7f12fa9f6d2eda7f315c7ffe0af4cffc60fd8d6ac31df7e3d578"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "-NBClientIdentifier 65b707456300f8d29123cdad3b43eddb53f0ba2f8f31f082dbd9971c2a0c4eec"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "-NBUserEmailAddress help@nationbuilder.com"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "-NBUserPassword password"
-            isEnabled = "YES">
-         </CommandLineArgument>
-      </CommandLineArguments>
    </TestAction>
    <LaunchAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"

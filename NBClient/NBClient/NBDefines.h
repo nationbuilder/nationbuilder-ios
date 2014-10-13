@@ -19,6 +19,9 @@ extern NSString * const NBInfoNationNameKey;
 extern NSString * const NBInfoRedirectPathKey;
 extern NSString * const NBInfoTestTokenKey;
 
+// Storing the client secret is discouraged for apps not built by NationBuilder.
+extern NSString * const NBInfoClientSecretKey;
+
 typedef void (^NBGenericCompletionHandler)(NSError *error);
 
 @protocol NBDictionarySerializing <NSObject>

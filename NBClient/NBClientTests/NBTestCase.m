@@ -13,6 +13,12 @@
 #import "NBClient.h"
 #import "NBPaginationInfo.h"
 
+// These are additional client info keys for certain tests against a local environment.
+NSString * const NBInfoShouldUseHTTPStubbingKey = @"Should Use HTTP Stubbing";
+NSString * const NBInfoUserEmailAddressKey = @"User Email Address";
+NSString * const NBInfoUserIdentifierKey = @"User ID";
+NSString * const NBInfoUserPasswordKey = @"User Password";
+
 @interface NBTestCase ()
 
 @property (nonatomic) BOOL didCallBack;
@@ -23,11 +29,14 @@
 
 @property (nonatomic, strong, readwrite) NSString *testToken;
 @property (nonatomic, strong, readwrite) NSString *clientIdentifier;
+@property (nonatomic, strong, readwrite) NSString *clientSecret;
 @property (nonatomic, strong, readwrite) NSString *userEmailAddress;
 @property (nonatomic, readwrite) NSUInteger userIdentifier;
 @property (nonatomic, strong, readwrite) NSString *userPassword;
 
 @property (nonatomic, strong, readwrite) NBClient *client;
+
++ (NSDictionary *)dictionaryWithContentsOfInfoFile;
 
 + (BOOL)shouldUseHTTPStubbing;
 
@@ -55,18 +64,17 @@
 {
     [super setUp];
     // Provide default config for test cases.
-    // NOTE: The reason we're still using launch-argument-based configurationis
-    // because there is still hope that the xcodebuild command can leverage it.
-    NSUserDefaults *launchArguments = [NSUserDefaults standardUserDefaults];
-    self.nationName = [launchArguments stringForKey:@"NBNationName"];
+    NSDictionary *info = self.class.dictionaryWithContentsOfInfoFile;
+    self.nationName = info[NBInfoNationNameKey];
     NSAssert(self.nationName, @"Missing environment arguments for tests.");
-    self.baseURLString = [NSString stringWithFormat:[launchArguments stringForKey:@"NBBaseURLFormat"], self.nationName];
+    self.baseURLString = [NSString stringWithFormat:info[NBInfoBaseURLFormatKey], self.nationName];
     self.baseURL = [NSURL URLWithString:self.baseURLString];
-    self.testToken = [launchArguments stringForKey:@"NBTestToken"];
-    self.clientIdentifier = [launchArguments stringForKey:@"NBClientIdentifier"];
-    self.userEmailAddress = [launchArguments stringForKey:@"NBUserEmailAddress"];
-    self.userIdentifier = [launchArguments integerForKey:@"NBUserIdentifier"];
-    self.userPassword = [launchArguments stringForKey:@"NBUserPassword"];
+    self.testToken = info[NBInfoTestTokenKey];
+    self.clientIdentifier = info[NBInfoClientIdentifierKey];
+    self.clientSecret = info[NBInfoClientSecretKey];
+    self.userEmailAddress = info[NBInfoUserEmailAddressKey];
+    self.userIdentifier = [info[NBInfoUserIdentifierKey] integerValue];
+    self.userPassword = info[NBInfoUserPasswordKey];
 }
 
 - (void)tearDown
@@ -76,15 +84,24 @@
 
 #pragma mark - Helpers
 
-+ (BOOL)shouldUseHTTPStubbing
++ (NSDictionary *)dictionaryWithContentsOfInfoFile
 {
-    static BOOL shouldUse;
+    static NSDictionary *info;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        NSUserDefaults *launchArguments = [NSUserDefaults standardUserDefaults];
-        shouldUse = [launchArguments objectForKey:@"NBShouldUseHTTPStubbing"] != nil;
+        NSString *pathName;
+#ifdef DEBUG
+        pathName = [NBInfoFileName stringByAppendingString:@"-Local"];
+#endif
+        pathName = pathName ?: NBInfoFileName;
+        info = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle bundleForClass:self] pathForResource:pathName ofType:@"plist"]];
     });
-    return shouldUse;
+    return info;
+}
+
++ (BOOL)shouldUseHTTPStubbing
+{
+    return self.dictionaryWithContentsOfInfoFile[NBInfoShouldUseHTTPStubbingKey];
 }
 
 - (BOOL)shouldUseHTTPStubbing
@@ -139,6 +156,7 @@
         NSURLSessionDataTask *task = [authenticator
                                       authenticateWithUserName:self.userEmailAddress
                                       password:self.userPassword
+                                      clientSecret:self.clientSecret
                                       completionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
                                           apiKey = credential.accessToken;
                                       }];

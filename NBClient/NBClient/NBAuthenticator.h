@@ -43,6 +43,7 @@ extern NSString * const NBAuthenticationDefaultRedirectPath;
 
 - (NSURLSessionDataTask *)authenticateWithUserName:(NSString *)userName
                                           password:(NSString *)password
+                                      clientSecret:(NSString *)clientSecret
                                  completionHandler:(NBAuthenticationCompletionHandler)completionHandler;
 
 + (NSString *)authorizationRedirectApplicationURLScheme;
