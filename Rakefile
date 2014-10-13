@@ -3,8 +3,8 @@ desc "Run the NBClient iOS unit tests"
 task :test do
   command = "xcodebuild"
   command << " -workspace NBClient.xcworkspace"
-  command << " -scheme 'Travis-NBClientTests' -sdk 'iphonesimulator'"
-  command << " -configuration Debug"
+  command << " -scheme 'NBClient' -sdk 'iphonesimulator'"
+  command << " -configuration Release"
   command << " clean test"
   command << " | xcpretty -c; exit ${PIPESTATUS[0]}"
   sh(command) rescue nil

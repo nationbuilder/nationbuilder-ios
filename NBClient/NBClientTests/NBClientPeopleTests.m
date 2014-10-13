@@ -205,7 +205,7 @@
              if (self.shouldUseHTTPStubbing) {
                  [self completeAsync];
              } else {
-                 [self.client savePersonByIdentifier:identifier withParameters:@{ @"demo": @"A" }
+                 [self.client savePersonByIdentifier:identifier withParameters:@{ @"demo": @"W" }
                                    completionHandler:^(NSDictionary *item, NSError *error) { [self completeAsync]; }];
              }
          }];

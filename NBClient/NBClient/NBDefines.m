@@ -17,3 +17,5 @@ NSString * const NBInfoBaseURLFormatKey = @"Base URL Format";
 NSString * const NBInfoClientIdentifierKey = @"Client ID";
 NSString * const NBInfoNationNameKey = @"Nation Name";
 NSString * const NBInfoTestTokenKey = @"Test Token";
+
+NSString * const NBInfoClientSecretKey = @"Client Secret";
