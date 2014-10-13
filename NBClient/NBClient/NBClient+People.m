@@ -58,6 +58,13 @@
     return [self baseFetchTaskWithURLComponents:components resultsKey:@"person" completionHandler:completionHandler];
 }
 
+- (NSURLSessionDataTask *)fetchPersonForClientUserWithCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler
+{
+    NSURLComponents *components = self.baseURLComponents.copy;
+    components.path = [components.path stringByAppendingString:@"/people/me"];
+    return [self baseFetchTaskWithURLComponents:components resultsKey:@"person" completionHandler:completionHandler];
+}
+
 - (NSURLSessionDataTask *)createPersonWithParameters:(NSDictionary *)parameters
                                    completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {

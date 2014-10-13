@@ -144,6 +144,23 @@
     [self tearDownAsync];
 }
 
+- (void)testFetchPersonByClientParameters
+{
+    [self setUpAsync];
+    if (self.shouldUseHTTPStubbing) {
+        [self stubRequestWithMethod:@"GET" path:@"people/me" identifier:NSNotFound parameters:nil];
+    }
+    NSURLSessionDataTask *task =
+    [self.client
+     fetchPersonForClientUserWithCompletionHandler:^(NSDictionary *item, NSError *error) {
+         [self assertServiceError:error];
+         [self assertPersonDictionary:item];
+         [self completeAsync];
+     }];
+    [self assertSessionDataTask:task];
+    [self tearDownAsync];
+}
+
 - (void)testCreatePerson
 {
     [self setUpAsync];
