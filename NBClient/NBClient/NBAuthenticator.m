@@ -263,9 +263,9 @@ static NSString *RedirectURLScheme;
     if (!self.isAuthenticatingInWebBrowser || !notification.userInfo[NBAuthenticationRedirectTokenKey]) {
         return;
     }
-    NBAuthenticationCredential *credential = [[NBAuthenticationCredential alloc] initWithAccessToken:notification.userInfo[NBAuthenticationRedirectTokenKey]
+    self.credential = [[NBAuthenticationCredential alloc] initWithAccessToken:notification.userInfo[NBAuthenticationRedirectTokenKey]
                                                                                            tokenType:nil];
-    self.currentInBrowserAuthenticationCompletionHandler(credential, nil);
+    self.currentInBrowserAuthenticationCompletionHandler(self.credential, nil);
     self.currentInBrowserAuthenticationCompletionHandler = nil;
 }
 
