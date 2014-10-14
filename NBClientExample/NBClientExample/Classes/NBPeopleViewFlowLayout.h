@@ -37,8 +37,8 @@
 
 @interface NBPeopleDecorationLabel : UICollectionReusableView
 
-@property (strong, nonatomic) UIFont *font UI_APPEARANCE_SELECTOR;
-@property (strong, nonatomic) UIColor *textColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIFont *font UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *textColor UI_APPEARANCE_SELECTOR;
 
 @end
 
