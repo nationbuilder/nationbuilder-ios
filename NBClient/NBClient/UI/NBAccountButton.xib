@@ -34,6 +34,14 @@
                 <constraint firstItem="3g9-f8-Yoe" firstAttribute="leading" secondItem="6GK-gb-yyh" secondAttribute="trailing" constant="8" id="ywC-g7-7QG"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="number" keyPath="dimmedAlpha">
+                    <real key="value" value="0.59999999999999998"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="number" keyPath="highlightAnimationDuration">
+                    <real key="value" value="0.14999999999999999"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
             <connections>
                 <outlet property="avatarImageView" destination="6GK-gb-yyh" id="yRe-Dm-CZx"/>
                 <outlet property="nameLabel" destination="3g9-f8-Yoe" id="1Zg-kD-SqF"/>

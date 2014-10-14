@@ -13,4 +13,7 @@
 @property (nonatomic, weak, readonly) UILabel *nameLabel;
 @property (nonatomic, weak, readonly) UIImageView *avatarImageView;
 
+@property (nonatomic, strong) NSNumber *dimmedAlpha UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) NSNumber *highlightAnimationDuration UI_APPEARANCE_SELECTOR;
+
 @end
