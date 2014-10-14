@@ -10,4 +10,7 @@
 
 @interface NBAccountButton : UIControl
 
+@property (nonatomic, weak, readonly) UILabel *nameLabel;
+@property (nonatomic, weak, readonly) UIImageView *avatarImageView;
+
 @end

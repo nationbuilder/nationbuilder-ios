@@ -8,13 +8,24 @@
 
 #import "NBAccountButton.h"
 
+#import "QuartzCore/QuartzCore.h"
+
+@interface NBAccountButton ()
+
+@property (nonatomic, weak, readwrite) IBOutlet UILabel *nameLabel;
+@property (nonatomic, weak, readwrite) IBOutlet UIImageView *avatarImageView;
+
+- (void)setUp;
+
+@end
+
 @implementation NBAccountButton
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
+        [self setUp];
     }
     return self;
 }
@@ -23,9 +34,17 @@
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
-        
+        [self setUp];
     }
     return self;
 }
+
+- (void)awakeFromNib
+{
+    self.avatarImageView.layer.cornerRadius = 2.0f;
+}
+
+- (void)setUp
+{}
 
 @end
