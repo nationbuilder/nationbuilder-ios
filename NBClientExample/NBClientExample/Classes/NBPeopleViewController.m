@@ -600,10 +600,7 @@ static void *observationContext = &observationContext;
 - (void)setUpDeleting
 {
     self.numberToDelete = 0;
-    self.navigationItem.leftBarButtonItem = self.deleteButtonItem;
-    // TEST
-    //NBAccountButton *button = [[NSBundle mainBundle] loadNibNamed:@"NBAccountButton" owner:self options:nil].firstObject;
-    //self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+    //self.navigationItem.leftBarButtonItem = self.deleteButtonItem;
 }
 
 - (IBAction)updateDeleting:(id)sender
