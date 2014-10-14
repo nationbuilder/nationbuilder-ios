@@ -198,7 +198,7 @@
 
 @implementation NBPeopleDecorationLabel
 
-- (id)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
@@ -245,7 +245,7 @@
 
 @implementation NBPeopleLoadMoreDecorationLabel
 
-- (id)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
@@ -258,7 +258,7 @@
 
 @implementation NBPeopleRefreshDecorationLabel
 
-- (id)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
