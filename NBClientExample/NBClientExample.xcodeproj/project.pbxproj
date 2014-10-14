@@ -504,6 +504,10 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NBClientExample/NBClientExample-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG_LOGIN=0",
+					"$(inherited)",
+				);
 				INFOPLIST_FILE = "NBClientExample/NBClientExample-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

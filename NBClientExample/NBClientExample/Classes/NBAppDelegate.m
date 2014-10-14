@@ -78,6 +78,9 @@
 #endif
     self.account = [[NBAccount alloc] initWithClientInfo:customClientInfo];
     //self.account.shouldUseTestToken = YES;
+#if DEBUG_LOGIN
+    [NBAuthenticationCredential deleteCredentialWithIdentifier:self.account.client.authenticator.credentialIdentifier];
+#endif
     return _account;
 }
 
