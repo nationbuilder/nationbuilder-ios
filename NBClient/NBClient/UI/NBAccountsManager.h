@@ -10,10 +10,10 @@
 
 #import "NBAccountsViewDefines.h"
 
+@class NBAccount;
+
 @interface NBAccountsManager : NSObject <NBAccountsViewDataSource>
 
-@end
-
-@protocol NBAccountsManagerDelegate <NSObject>
+@property (nonatomic, weak) id<NBAccountsManagerDelegate> delegate;
 
 @end

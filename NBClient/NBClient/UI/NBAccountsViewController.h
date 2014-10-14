@@ -18,4 +18,3 @@
 @property (nonatomic, strong, readonly) NBAccountsPickerView *pickerView;
 
 @end
-
