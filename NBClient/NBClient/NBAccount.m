@@ -10,6 +10,7 @@
 
 #import "NBAuthenticator.h"
 #import "NBClient.h"
+#import "NBClient+People.h"
 
 @interface NBAccount ()
 
@@ -19,7 +20,12 @@
 @property (nonatomic, strong) NBAuthenticator *authenticator;
 @property (nonatomic, strong) NSDictionary *clientInfo;
 
+@property (nonatomic, strong) NSDictionary *person;
+
 - (NSURL *)baseURL;
+
+- (void)fetchPersonWithCompletionHandler:(NBGenericCompletionHandler)completionHandler;
+- (void)fetchAvatarWithCompletionHandler:(NBGenericCompletionHandler)completionHandler;
 
 @end
 
@@ -113,6 +119,16 @@
             [NSString stringWithFormat:self.clientInfo[NBInfoBaseURLFormatKey], self.clientInfo[NBInfoNationNameKey]]];
 }
 
+#pragma mark Presentation Helpers
+
+- (NSString *)name
+{
+    if (!self.person) { return nil; }
+    NSString *name = self.person[@"username"];
+    name = name ?: self.person[@"full_name"];
+    return name;
+}
+
 #pragma mark - Active API
 
 - (void)requestActiveWithCompletionHandler:(NBGenericCompletionHandler)completionHandler
@@ -120,12 +136,59 @@
     [self.authenticator
      authenticateWithRedirectPath:self.clientInfo[NBInfoRedirectPathKey]
      completionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
-         if (credential) {
+         if (error) {
+             NSLog(@"ERROR: %@", error);
+         } else if (credential) {
+             // Success.
+             NSLog(@"INFO: Activating account for nation %@", self.clientInfo[NBInfoNationNameKey]);
              self.client.apiKey = credential.accessToken;
              self.active = YES;
+             // TODO: This will be more robust with an NSOperationQueue.
+             [self fetchPersonWithCompletionHandler:completionHandler];
+             return;
+         } else {
+             NSLog(@"WARNING: Unhandled case.");
          }
-         completionHandler(error);
+         if (completionHandler) {
+             completionHandler(error);
+         }
      }];
+}
+
+#pragma mark - Private
+
+- (void)fetchPersonWithCompletionHandler:(NBGenericCompletionHandler)completionHandler
+{
+    [self.client fetchPersonForClientUserWithCompletionHandler:^(NSDictionary *item, NSError *error) {
+        if (error) {
+            NSLog(@"ERROR: %@", error);
+        } else if (item) {
+            // Success.
+            self.person = item;
+            [self fetchAvatarWithCompletionHandler:completionHandler];
+        } else {
+            NSLog(@"WARNING: Unhandled case.");
+        }
+        if (completionHandler) {
+            completionHandler(error);
+        }
+    }];
+}
+
+- (void)fetchAvatarWithCompletionHandler:(NBGenericCompletionHandler)completionHandler
+{
+    NSURL *avatarURL = [NSURL URLWithString:self.person[@"profile_image_url_ssl"]];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        self.avatarImageData = [NSData dataWithContentsOfURL:avatarURL];
+        if (!self.avatarImageData) {
+            NSLog(@"WARNING: Invalid avatar URL %@", avatarURL.absoluteString);
+        }
+        if (completionHandler) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(nil);
+            });
+        }
+    });
 }
 
 @end

@@ -20,10 +20,12 @@
 // Will load from the conventional plist with name equal to NBInfoFileName. Useful if your app is only for one nation.
 @property (nonatomic, strong, readonly) NSDictionary *defaultClientInfo;
 
-@property (nonatomic, strong, readonly) NSString *name; // `username`, otherwise `full_name`
-
 @property (nonatomic, getter = isActive) BOOL active;
 @property (nonatomic) BOOL shouldUseTestToken;
+
+// Presentation helpers.
+@property (nonatomic, strong, readonly) NSString *name; // `username`, otherwise `full_name`
+@property (nonatomic, strong) NSData *avatarImageData; // Set to nil to clear memory.
 
 - (instancetype)initWithClientInfo:(NSDictionary *)clientInfoOrNil;
 
