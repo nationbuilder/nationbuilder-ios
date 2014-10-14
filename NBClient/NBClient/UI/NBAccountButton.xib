@@ -43,7 +43,9 @@
                 </userDefinedRuntimeAttribute>
             </userDefinedRuntimeAttributes>
             <connections>
+                <outlet property="avatarImageMarginRight" destination="ywC-g7-7QG" id="VWI-u0-cbs"/>
                 <outlet property="avatarImageView" destination="6GK-gb-yyh" id="yRe-Dm-CZx"/>
+                <outlet property="avatarImageWidth" destination="ej8-TR-Xpr" id="jU1-F6-RfJ"/>
                 <outlet property="nameLabel" destination="3g9-f8-Yoe" id="1Zg-kD-SqF"/>
             </connections>
         </view>

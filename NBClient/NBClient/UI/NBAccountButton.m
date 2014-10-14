@@ -12,10 +12,20 @@
 
 #import "NBAccountsViewDefines.h"
 
+static NSString *HiddenKeyPath = @"hidden";
+
+static void *observationContext = &observationContext;
+
 @interface NBAccountButton ()
 
 @property (nonatomic, weak, readwrite) IBOutlet UILabel *nameLabel;
 @property (nonatomic, weak, readwrite) IBOutlet UIImageView *avatarImageView;
+
+// For avatar hiding.
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *avatarImageWidth;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *avatarImageMarginRight;
+@property (nonatomic) CGFloat originalAvatarImageWidth;
+@property (nonatomic) CGFloat originalAvatarImageMarginRight;
 
 - (void)setUpSubviews;
 - (void)tearDownSubviews;
@@ -53,13 +63,32 @@
 - (void)setUpSubviews
 {
     self.avatarImageView.layer.cornerRadius = 2.0f;
+    // Set up avatar hiding.
+    [self.avatarImageView addObserver:self forKeyPath:HiddenKeyPath options:0 context:&observationContext];
+    self.originalAvatarImageWidth = self.avatarImageWidth.constant;
+    self.originalAvatarImageMarginRight = self.avatarImageMarginRight.constant;
 }
 - (void)tearDownSubviews
 {
+    [self.avatarImageView removeObserver:self forKeyPath:HiddenKeyPath context:&observationContext];
 }
 - (void)updateSubviews
 {
     self.nameLabel.textColor = self.tintColor;
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (context != &observationContext) {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+        return;
+    }
+    if ([keyPath isEqual:HiddenKeyPath]) {
+        // Toggle avatar hiding.
+        self.avatarImageWidth.constant = self.avatarImageView.isHidden ? 0.0f : self.originalAvatarImageWidth;
+        self.avatarImageMarginRight.constant = self.avatarImageView.isHidden ? 0.0f : self.originalAvatarImageMarginRight;
+        [self setNeedsUpdateConstraints];
+    }
 }
 
 #pragma mark - UIControl
