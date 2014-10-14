@@ -37,8 +37,7 @@
             return;
         }
         NBAccountButton *button = [[NSBundle mainBundle] loadNibNamed:@"NBAccountButton" owner:self options:nil].firstObject;
-        button.nameLabel.text = self.account.name;
-        button.avatarImageView.image = [UIImage imageWithData:self.account.avatarImageData];
+        button.dataSource = self.account;
         [self.peopleViewController.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:button]
                                                               animated:YES];
         self.peopleViewController.ready = YES;

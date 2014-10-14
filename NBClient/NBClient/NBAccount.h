@@ -9,11 +9,12 @@
 #import <Foundation/Foundation.h>
 
 #import "NBDefines.h"
+#import "NBAccountsViewDefines.h"
 
 @class NBClient;
 @class NBAuthenticator;
 
-@interface NBAccount : NSObject
+@interface NBAccount : NSObject <NBAccountViewDataSource>
 
 @property (nonatomic, strong, readonly) NBClient *client;
 
@@ -22,10 +23,6 @@
 
 @property (nonatomic, getter = isActive) BOOL active;
 @property (nonatomic) BOOL shouldUseTestToken;
-
-// Presentation helpers.
-@property (nonatomic, strong, readonly) NSString *name; // `username`, otherwise `full_name`
-@property (nonatomic, strong) NSData *avatarImageData; // Set to nil to clear memory.
 
 - (instancetype)initWithClientInfo:(NSDictionary *)clientInfoOrNil;
 

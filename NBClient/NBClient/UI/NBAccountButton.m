@@ -10,6 +10,8 @@
 
 #import "QuartzCore/QuartzCore.h"
 
+#import "NBAccountsViewDefines.h"
+
 @interface NBAccountButton ()
 
 @property (nonatomic, weak, readwrite) IBOutlet UILabel *nameLabel;
@@ -77,6 +79,21 @@
 {
     [super tintColorDidChange];
     [self updateSubviews];
+}
+
+#pragma mark - Accessors
+
+- (void)setDataSource:(id<NBAccountViewDataSource>)dataSource
+{
+    // Boilerplate.
+    static NSString *key;
+    key = key ?: NSStringFromSelector(@selector(dataSource));
+    [self willChangeValueForKey:key];
+    _dataSource = dataSource;
+    [self didChangeValueForKey:key];
+    // END: Boilerplate.
+    self.nameLabel.text = dataSource.name;
+    self.avatarImageView.image = [UIImage imageWithData:dataSource.avatarImageData];
 }
 
 @end

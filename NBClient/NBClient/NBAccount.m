@@ -31,6 +31,9 @@
 
 @implementation NBAccount
 
+@synthesize name = _name;
+@synthesize avatarImageData = _avatarImageData;
+
 - (instancetype)initWithClientInfo:(NSDictionary *)clientInfoOrNil;
 {
     self = [super init];

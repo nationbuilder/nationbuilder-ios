@@ -8,7 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol NBAccountViewDataSource;
+
 @interface NBAccountButton : UIControl
+
+@property (nonatomic, weak) id<NBAccountViewDataSource> dataSource;
 
 @property (nonatomic, weak, readonly) UILabel *nameLabel;
 @property (nonatomic, weak, readonly) UIImageView *avatarImageView;

@@ -24,6 +24,13 @@
 
 @end
 
+@protocol NBAccountViewDataSource <NSObject>
+
+@property (nonatomic, strong, readonly) NSString *name; // `username`, otherwise `full_name`
+@property (nonatomic, strong) NSData *avatarImageData; // Set to nil to clear memory.
+
+@end
+
 @protocol NBAccountsViewDelegate <NSObject>
 
 @end
