@@ -49,7 +49,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="320" height="307"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="M3R-wa-agK" userLabel="Profile Image View">
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="M3R-wa-agK" userLabel="Profile Image View">
                                     <rect key="frame" x="20" y="20" width="96" height="96"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -161,7 +161,7 @@
                                     <attributedString key="userComments">
                                         <fragment content="The leading and top space seems inconsistently big because the custom insets gets dynamically applied in code.">
                                             <attributes>
-                                                <font key="NSFont" metaFont="toolTip"/>
+                                                <font key="NSFont" metaFont="controlContent" size="11"/>
                                                 <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                             </attributes>
                                         </fragment>
@@ -206,7 +206,7 @@
                                 <fragment>
                                     <string key="content">The inputs seem vertically misaligned from their labels because there's a 2pt difference between what's shown here and what get's rendered in the app.</string>
                                     <attributes>
-                                        <font key="NSFont" metaFont="toolTip"/>
+                                        <font key="NSFont" metaFont="controlContent" size="11"/>
                                         <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                     </attributes>
                                 </fragment>
