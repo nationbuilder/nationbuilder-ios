@@ -323,7 +323,7 @@ static NSDictionary *DataToFieldKeyPathsMap;
                                                          target:self action:@selector(dismiss:)];
 }
 
-#pragma mark - Data
+#pragma mark Data
 
 - (void)reloadData
 {

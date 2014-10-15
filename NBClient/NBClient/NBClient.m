@@ -14,7 +14,7 @@
 #import "FoundationAdditions.h"
 #import "NBPaginationInfo.h"
 
-NSUInteger const NBClientErrorCodeService = 1;
+NSUInteger const NBClientErrorCodeService = 10;
 NSString * const NBClientErrorCodeKey = @"code";
 NSString * const NBClientErrorMessageKey = @"message";
 NSString * const NBClientErrorValidationErrorsKey = @"validation_errors";

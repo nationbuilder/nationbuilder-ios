@@ -13,9 +13,9 @@
 #import "NBDefines.h"
 #import "FoundationAdditions.h"
 
-NSUInteger const NBAuthenticationErrorCodeService = 1;
-NSUInteger const NBAuthenticationErrorCodeURLType = 2;
-NSUInteger const NBAuthenticationErrorCodeWebBrowser = 3;
+NSUInteger const NBAuthenticationErrorCodeService = 20;
+NSUInteger const NBAuthenticationErrorCodeURLType = 21;
+NSUInteger const NBAuthenticationErrorCodeWebBrowser = 22;
 
 NSString * const NBAuthenticationDefaultRedirectPath = @"oauth/callback";
 
