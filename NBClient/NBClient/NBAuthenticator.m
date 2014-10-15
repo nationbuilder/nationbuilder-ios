@@ -16,7 +16,7 @@ NSString * const NBAuthenticationGrantTypeClientCredential = @"client_credential
 NSString * const NBAuthenticationGrantTypePasswordCredential = @"password";
 NSString * const NBAuthenticationGrantTypeRefresh = @"refresh_token";
 
-NSUInteger const NBAuthenticationErrorCodeService = 1;
+NSUInteger const NBAuthenticationErrorCodeService = 20;
 
 NSString * const NBAuthenticationRedirectTokenKey = @"token";
 

@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 extern NSString * const NBErrorDomain;
+extern NSUInteger const NBErrorCodeInvalidArgument;
 
 // Names for a dedicated NationBuilder Info.plist file, which is the suggested
 // method for storing relevant configuration.
