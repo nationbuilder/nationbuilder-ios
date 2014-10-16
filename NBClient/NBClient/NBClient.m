@@ -63,8 +63,7 @@ NSString * const NBClientDefaultBaseURLFormat = @"https://%@.nationbuilder.com";
     self.urlSession = urlSession;
     self.sessionConfiguration = sessionConfiguration;
     
-    self.defaultErrorRecoverySuggestion = NSLocalizedString(@"If failure reasion is not helpful, "
-                                                            @"contact NationBuilder for support.", nil);
+    self.defaultErrorRecoverySuggestion = @"message.unknown-error-solution".nb_localizedString;
 }
 
 #pragma mark - Private
@@ -333,19 +332,16 @@ NSString * const NBClientDefaultBaseURLFormat = @"https://%@.nationbuilder.com";
 {
     NSString *description;
     if ([[NSIndexSet nb_indexSetOfSuccessfulHTTPStatusCodes] containsIndex:response.statusCode]) {
-        description = [NSString localizedStringWithFormat:
-                       NSLocalizedString(@"Service errored fulfilling request, code: %@", nil),
-                       data[@"code"]];
+        description = [NSString localizedStringWithFormat:@"message.nb-error.format".nb_localizedString, data[@"code"]];
     } else {
-        description = [NSString localizedStringWithFormat:
-                       NSLocalizedString(@"Service errored fulfilling request, status code: %ld (%@)", nil),
+        description = [NSString localizedStringWithFormat:@"message.nb-http-error.format".nb_localizedString,
                        response.statusCode, data[@"code"]];
     }
     return [NSError
             errorWithDomain:NBErrorDomain
             code:NBClientErrorCodeService
             userInfo:@{ NSLocalizedDescriptionKey: description,
-                        NSLocalizedFailureReasonErrorKey: NSLocalizedString(data[@"message"] ? data[@"message"] : @"Reason unknown.", nil),
+                        NSLocalizedFailureReasonErrorKey: (data[@"message"] ? data[@"message"] : @"message.unknown-error-reason".nb_localizedString),
                         NSLocalizedRecoverySuggestionErrorKey: self.defaultErrorRecoverySuggestion,
                         NBClientErrorCodeKey: (data[NBClientErrorCodeKey] ? data[NBClientErrorCodeKey] : @""),
                         NBClientErrorMessageKey: (data[NBClientErrorMessageKey] ? data[NBClientErrorMessageKey] : @""),
@@ -359,9 +355,9 @@ NSString * const NBClientDefaultBaseURLFormat = @"https://%@.nationbuilder.com";
     return [NSError
             errorWithDomain:NBErrorDomain
             code:NBClientErrorCodeService
-            userInfo:@{ NSLocalizedDescriptionKey: NSLocalizedString(@"Invalid response data.", nil),
+            userInfo:@{ NSLocalizedDescriptionKey: @"message.invalid-response-data".nb_localizedString,
                         NSLocalizedFailureReasonErrorKey: [NSString localizedStringWithFormat:
-                                                           NSLocalizedString(@"No results found at '%@'.", nil),
+                                                           @"message.no-json-results-for-key.format".nb_localizedString,
                                                            resultsKey],
                         NSLocalizedRecoverySuggestionErrorKey: self.defaultErrorRecoverySuggestion }];
 }
