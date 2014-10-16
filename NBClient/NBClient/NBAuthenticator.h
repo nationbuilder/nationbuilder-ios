@@ -47,6 +47,8 @@ extern NSString * const NBAuthenticationDefaultRedirectPath;
                                       clientSecret:(NSString *)clientSecret
                                  completionHandler:(NBAuthenticationCompletionHandler)completionHandler;
 
+- (BOOL)discardCredential;
+
 + (NSString *)authorizationRedirectApplicationURLScheme;
 + (BOOL)finishAuthenticatingInWebBrowserWithURL:(NSURL *)url error:(NSError **)error;
 

@@ -155,9 +155,14 @@ static NSString *RedirectURLScheme;
     return [self authenticateWithSubPath:@"/token" parameters:parameters completionHandler:completionHandler];
 }
 
+- (BOOL)discardCredential
+{
+    self.credential = nil;
+    return [NBAuthenticationCredential deleteCredentialWithIdentifier:self.credentialIdentifier];
+}
+
 + (NSString *)authorizationRedirectApplicationURLScheme
 {
-
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSArray *urlTypes = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleURLTypes"];

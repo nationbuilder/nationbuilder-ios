@@ -16,4 +16,8 @@
 
 @property (nonatomic, weak) id<NBAccountsManagerDelegate> delegate;
 
+@property (nonatomic) BOOL shouldPersistAccounts;
+
+- (instancetype)initWithClientInfo:(NSDictionary *)clientInfoOrNil;
+
 @end

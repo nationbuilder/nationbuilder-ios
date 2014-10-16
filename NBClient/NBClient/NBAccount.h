@@ -28,4 +28,6 @@
 
 - (void)requestActiveWithCompletionHandler:(NBGenericCompletionHandler)completionHandler;
 
+- (BOOL)requestCleanUpWithError:(NSError **)error;
+
 @end

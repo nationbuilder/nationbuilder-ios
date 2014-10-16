@@ -8,6 +8,7 @@
 
 #import "NBAccount.h"
 
+#import "FoundationAdditions.h"
 #import "NBAuthenticator.h"
 #import "NBClient.h"
 #import "NBClient+People.h"
@@ -16,6 +17,7 @@
 
 @property (nonatomic, strong, readwrite) NBClient *client;
 @property (nonatomic, strong, readwrite) NSDictionary *defaultClientInfo;
+@property (nonatomic, strong, readwrite) NSString *name;
 
 @property (nonatomic, strong) NBAuthenticator *authenticator;
 @property (nonatomic, strong) NSDictionary *clientInfo;
@@ -30,9 +32,6 @@
 @end
 
 @implementation NBAccount
-
-@synthesize name = _name;
-@synthesize avatarImageData = _avatarImageData;
 
 - (instancetype)initWithClientInfo:(NSDictionary *)clientInfoOrNil;
 {
@@ -58,6 +57,15 @@
         self.clientInfo = [NSDictionary dictionaryWithDictionary:mutableClientInfo];
     }
     return self;
+}
+
+#pragma mark - NBAccountViewDataSource
+
+@synthesize avatarImageData = _avatarImageData;
+
+- (NSString *)nationSlug
+{
+    return self.clientInfo[NBInfoNationNameKey];
 }
 
 #pragma mark - Accessors
@@ -126,9 +134,11 @@
 
 - (NSString *)name
 {
-    if (!self.person) { return nil; }
+    if (!self.person) {
+        return _name ? _name : nil;
+    }
     NSString *name = self.person[@"username"];
-    name = name ?: self.person[@"full_name"];
+    name = !!name && ![name isEqual:[NSNull null]] ? name : self.person[@"full_name"];
     return name;
 }
 
@@ -156,6 +166,23 @@
              completionHandler(error);
          }
      }];
+}
+
+#pragma mark - Public
+
+- (BOOL)requestCleanUpWithError:(NSError *__autoreleasing *)error
+{
+    BOOL didDelete = [self.authenticator discardCredential];
+    if (!didDelete) {
+        *error =
+        [NSError
+         errorWithDomain:NBErrorDomain code:NBAuthenticationErrorCodeKeychain
+         userInfo:@{ NSLocalizedDescriptionKey: NSLocalizedString(@"Cannot delete keychain credential.", nil),
+                     NSLocalizedFailureReasonErrorKey: NSLocalizedStringFromTable(@"message.unknown-error", @"NBClient", nil) }];
+    } else {
+        self.client.apiKey = nil;
+    }
+    return didDelete;
 }
 
 #pragma mark - Private
