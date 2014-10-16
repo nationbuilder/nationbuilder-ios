@@ -8,11 +8,14 @@
 
 "pagination.page-title.format" = "Page %1$ld / %2$ld"; // Note the custom whitespacing.
 "pagination.item-title.format" = "%1$ld – %2$ld"; // Note the custom whitespacing.
+
 "people.navigation-title" = "People";
+
 "person.full-name.format" = "%1$@ %2$@";
 "person.name-unknown" = "Unknown";
 "person.navigation-title.create" = "New Person";
+
+"label.ok" = "OK";
+"label.load-more" = "Load More";
+"label.refresh" = "Refresh";
 "title.error" = "Error";
-"title.ok" = "OK";
-"title.load-more" = "Load More";
-"title.refresh" = "Refresh";

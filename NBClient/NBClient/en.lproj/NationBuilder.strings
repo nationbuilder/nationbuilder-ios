@@ -1,0 +1,29 @@
+/* 
+  NationBuilder.strings
+  NationBuilder
+
+  Created by Peng Wang on 10/14/14.
+  Copyright (c) 2014 NationBuilder. All rights reserved.
+*/
+
+// General
+
+"label.cancel" = "Cancel";
+"label.close" = "Close";
+"label.submit" = "Submit";
+
+"message.unknown-error" = "Something went wrong. Please notify the app developer.";
+"message.unknown-error-reason" = "Reason unknown.";
+"message.unknown-error-solution" = "If failure reason is not helpful, contact NationBuilder for support.";
+
+"title.unknown-error" = "Unknown Error";
+
+// Specific
+
+"message.http-error.format" = "Service errored fulfilling request, status code: %ld";
+"message.invalid-response-data" = "Invalid response data.";
+"message.invalid-status-code" = "Invalid status code.";
+"message.nb-error.format" = "Service errored fulfilling request, code: %@";
+"message.nb-http-error.format" = "Service errored fulfilling request, status code: %ld (%@)";
+"message.no-json-results-for-key.format" = "No results found at '%@'.";
+"message.request-error.format" = "Service errored fulfilling request: %@";

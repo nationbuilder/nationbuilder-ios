@@ -35,10 +35,18 @@
 - (NSString *)nb_percentUnescapedQueryStringWithEncoding:(NSStringEncoding)stringEncoding
                                 charactersToLeaveEscaped:(NSString *)charactersToLeaveEscaped;
 
+- (NSString *)nb_localizedString;
+
 @end
 
 @interface NSURLRequest (NBAdditions)
 
 - (NSString *)nb_debugDescription;
+
+@end
+
+@interface NSError (NBAdditions)
+
++ (NSError *)nb_genericError;
 
 @end

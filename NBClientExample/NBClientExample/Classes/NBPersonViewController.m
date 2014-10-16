@@ -513,7 +513,7 @@ static NSDictionary *DataToFieldKeyPathsMap;
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:error[NBUIErrorTitleKey]
                                                         message:error[NBUIErrorMessageKey]
                                                        delegate:self cancelButtonTitle:nil
-                                              otherButtonTitles:NSLocalizedString(@"title.ok", nil), nil];
+                                              otherButtonTitles:NSLocalizedString(@"label.ok", nil), nil];
     [alertView show];
 }
 

@@ -8,6 +8,8 @@
 
 #import "FoundationAdditions.h"
 
+#import "NBDefines.h"
+
 // The implementations are heavily inspired by AFNetworking.
 
 @implementation NSIndexSet (NBAdditions)
@@ -123,6 +125,16 @@ static NSString *QueryPairJoiner = @"=";
     /* encoding */ CFStringConvertNSStringEncodingToEncoding(stringEncoding));
 }
 
+- (NSString *)nb_localizedString
+{
+    // NOTE: Cocoapods suggests using a dedicated bundle
+    NSString *localizedString = NSLocalizedStringFromTable(self, @"NationBuilder", nil);
+    if ([localizedString isEqualToString:self]) {
+        NSLog(@"WARNING: No localized string found for %@", self);
+    }
+    return localizedString;
+}
+
 @end
 
 @implementation NSURLRequest (NBAdditions)
@@ -139,6 +151,18 @@ static NSString *QueryPairJoiner = @"=";
             request.HTTPMethod,
             request.allHTTPHeaderFields,
             [[NSString alloc] initWithData:request.HTTPBody encoding:NSUTF8StringEncoding]];
+}
+
+@end
+
+@implementation NSError (NBAdditions)
+
++ (NSError *)nb_genericError
+{
+    return [NSError
+     errorWithDomain:NBErrorDomain code:0
+     userInfo:@{ NSLocalizedDescriptionKey: @"title.unknown-error".nb_localizedString,
+                 NSLocalizedFailureReasonErrorKey: @"message.unknown-error".nb_localizedString }];
 }
 
 @end

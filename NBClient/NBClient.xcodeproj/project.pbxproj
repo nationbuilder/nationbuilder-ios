@@ -131,6 +131,7 @@
 		AA84F04419EC7C9200DAA6B8 /* NationBuilder-Info-Local.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "NationBuilder-Info-Local.plist"; sourceTree = "<group>"; };
 		AA84F04619EC888A00DAA6B8 /* NationBuilder-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "NationBuilder-Info.plist"; sourceTree = "<group>"; };
 		AA84F04819EC94A700DAA6B8 /* people_me_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_me_get.txt; sourceTree = "<group>"; };
+		AA84F04B19EDF36D00DAA6B8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/NationBuilder.strings; sourceTree = "<group>"; };
 		AA86284F196F1651005060C9 /* NBAuthenticator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBAuthenticator.h; sourceTree = "<group>"; };
 		AA862850196F1651005060C9 /* NBAuthenticator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAuthenticator.m; sourceTree = "<group>"; };
 		AA8B6821196F5539009DDA91 /* NBAuthenticatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAuthenticatorTests.m; sourceTree = "<group>"; };
@@ -257,6 +258,7 @@
 		AAAEFC26196CD13D00222A48 /* NBClient */ = {
 			isa = PBXGroup;
 			children = (
+				AA84F04C19EDF36D00DAA6B8 /* NationBuilder.strings */,
 				AABD0029196F1FD6003A745F /* Main.h */,
 				AA668DCF1970B81800A952B0 /* FoundationAdditions.h */,
 				AA668DD01970B81800A952B0 /* FoundationAdditions.m */,
@@ -488,6 +490,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		AA84F04C19EDF36D00DAA6B8 /* NationBuilder.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AA84F04B19EDF36D00DAA6B8 /* en */,
+			);
+			name = NationBuilder.strings;
+			sourceTree = "<group>";
+		};
 		AAAEFC3D196CD13D00222A48 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (

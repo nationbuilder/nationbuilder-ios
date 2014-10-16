@@ -249,7 +249,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.titleLabel.text = [NSLocalizedString(@"title.load-more", nil) uppercaseStringWithLocale:[NSLocale currentLocale]];
+        self.titleLabel.text = [NSLocalizedString(@"label.load-more", nil) uppercaseStringWithLocale:[NSLocale currentLocale]];
     }
     return self;
 }
@@ -262,7 +262,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.titleLabel.text = [NSLocalizedString(@"title.refresh", nil) uppercaseStringWithLocale:[NSLocale currentLocale]];
+        self.titleLabel.text = [NSLocalizedString(@"label.refresh", nil) uppercaseStringWithLocale:[NSLocale currentLocale]];
     }
     return self;
 }
