@@ -244,7 +244,9 @@ static NSString *RedirectURLScheme;
                                                          name:NBAuthenticationRedirectNotification object:nil];
         });
         self.currentInBrowserAuthenticationCompletionHandler = completionHandler;
-        [application openURL:url];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [application openURL:url];
+        });
     } else {
         error = [NSError
                  errorWithDomain:NBErrorDomain
