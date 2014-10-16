@@ -123,6 +123,16 @@ static NSString *QueryPairJoiner = @"=";
     /* encoding */ CFStringConvertNSStringEncodingToEncoding(stringEncoding));
 }
 
+- (NSString *)nb_localizedString
+{
+    // NOTE: Cocoapods suggests using a dedicated bundle
+    NSString *localizedString = NSLocalizedStringFromTable(self, @"NationBuilder", nil);
+    if ([localizedString isEqualToString:self]) {
+        NSLog(@"WARNING: No localized string found for %@", self);
+    }
+    return localizedString;
+}
+
 @end
 
 @implementation NSURLRequest (NBAdditions)
