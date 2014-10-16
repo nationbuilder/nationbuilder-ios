@@ -8,14 +8,17 @@
 
 #import "UIKitAdditions.h"
 
+#import "FoundationAdditions.h"
+
 @implementation UIAlertView (NBAdditions)
 
 + (UIAlertView *)nb_genericAlertViewWithError:(NSError *)error
 {
+    error = error ?: [NSError nb_genericError];
     NSDictionary *userInfo = error.userInfo;
     return [[UIAlertView alloc] initWithTitle:userInfo[NSLocalizedDescriptionKey]
                                       message:[userInfo[NSLocalizedFailureReasonErrorKey]
-                                               stringByAppendingFormat:@" %@", userInfo[NSLocalizedRecoverySuggestionErrorKey]]
+                                               stringByAppendingFormat:@" %@", (userInfo[NSLocalizedRecoverySuggestionErrorKey] ?: @"")]
                                      delegate:self cancelButtonTitle:nil
                             otherButtonTitles:NSLocalizedString(@"OK", nil), nil];
 }
