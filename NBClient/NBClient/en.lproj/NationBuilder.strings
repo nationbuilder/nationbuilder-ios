@@ -13,9 +13,13 @@
 "label.submit" = "Submit";
 
 "message.unknown-error" = "Something went wrong. Please notify the app developer.";
+"message.unknown-error-reason" = "Reason unknown.";
+"message.unknown-error-solution" = "If failure reason is not helpful, contact NationBuilder for support.";
 
 "title.unknown-error" = "Unknown Error";
 
 // Specific
 
+"message.http-error.format" = "Service errored fulfilling request, status code: %ld";
 "message.invalid-status-code" = "Invalid status code.";
+"message.request-error.format" = "Service errored fulfilling request: %@";

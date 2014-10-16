@@ -148,15 +148,14 @@ static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
          }
          // Handle HTTP error.
          if (![[NSIndexSet nb_indexSetOfSuccessfulHTTPStatusCodes] containsIndex:httpResponse.statusCode]) {
-             error = [NSError
-                      errorWithDomain:NBErrorDomain
-                      code:NBAuthenticationErrorCodeService
-                      userInfo:@{ NSLocalizedDescriptionKey: [NSString localizedStringWithFormat:
-                                                              NSLocalizedString(@"Service errored fulfilling request, status code: %ld", nil),
-                                                              httpResponse.statusCode],
-                                  NSLocalizedFailureReasonErrorKey: NSLocalizedString(@"Invalid status code:", nil),
-                                  NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"If failure reasion is not helpful, "
-                                                                                           @"contact NationBuilder for support.", nil) }];
+             error =
+             [NSError
+              errorWithDomain:NBErrorDomain
+              code:NBAuthenticationErrorCodeService
+              userInfo:@{ NSLocalizedDescriptionKey: [NSString localizedStringWithFormat:@"message.http-error.format".nb_localizedString,
+                                                      httpResponse.statusCode],
+                          NSLocalizedFailureReasonErrorKey: @"message.invalid-status-code".nb_localizedString,
+                          NSLocalizedRecoverySuggestionErrorKey: @"message.unknown-error-solution".nb_localizedString }];
              if (completionHandler) {
                  completionHandler(nil, error);
              }
@@ -173,15 +172,15 @@ static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
              return;
          }
          if (jsonObject[@"error"]) {
-             error = [NSError
-                      errorWithDomain:NBErrorDomain
-                      code:NBAuthenticationErrorCodeService
-                      userInfo:@{ NSLocalizedDescriptionKey: NSLocalizedString(@"Service errored fulfilling request: %@", jsonObject[@"error"]),
-                                  NSLocalizedFailureReasonErrorKey: (jsonObject[@"error_description"] ?
-                                                                     jsonObject[@"error_description"] :
-                                                                     NSLocalizedString(@"Reason unknown.", nil)),
-                                  NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"If failure reasion is not helpful, "
-                                                                                           @"contact NationBuilder for support.", nil) }];
+             error =
+             [NSError
+              errorWithDomain:NBErrorDomain
+              code:NBAuthenticationErrorCodeService
+              userInfo:@{ NSLocalizedDescriptionKey: [NSString localizedStringWithFormat:@"message.request-error.format".nb_localizedString,
+                                                      jsonObject[@"error"]],
+                          NSLocalizedFailureReasonErrorKey: (jsonObject[@"error_description"] ?
+                                                             jsonObject[@"error_description"] : @"message.unknown-error-reason".nb_localizedString),
+                          NSLocalizedRecoverySuggestionErrorKey: @"message.unknown-error-solution".nb_localizedString }];
          } else {
              self.credential = [[NBAuthenticationCredential alloc] initWithAccessToken:jsonObject[@"access_token"]
                                                                              tokenType:jsonObject[@"token_type"]];
