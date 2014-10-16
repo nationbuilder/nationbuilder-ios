@@ -1,0 +1,21 @@
+/* 
+  NationBuilder.strings
+  NationBuilder
+
+  Created by Peng Wang on 10/14/14.
+  Copyright (c) 2014 NationBuilder. All rights reserved.
+*/
+
+// General
+
+"label.cancel" = "Cancel";
+"label.close" = "Close";
+"label.submit" = "Submit";
+
+"message.unknown-error" = "Something went wrong. Please notify the app developer.";
+
+"title.unknown-error" = "Unknown Error";
+
+// Specific
+
+"message.invalid-status-code" = "Invalid status code.";
