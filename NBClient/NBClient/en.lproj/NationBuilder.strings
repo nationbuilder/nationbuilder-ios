@@ -18,7 +18,7 @@
 
 "title.unknown-error" = "Unknown Error";
 
-// Specific
+// Errors
 
 "message.http-error.format" = "Service errored fulfilling request, status code: %ld";
 "message.invalid-response-data" = "Invalid response data.";
@@ -27,3 +27,6 @@
 "message.nb-http-error.format" = "Service errored fulfilling request, status code: %ld (%@)";
 "message.no-json-results-for-key.format" = "No results found at '%@'.";
 "message.request-error.format" = "Service errored fulfilling request: %@";
+
+// Accounts View
+
