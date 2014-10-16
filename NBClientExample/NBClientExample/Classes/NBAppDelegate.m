@@ -66,6 +66,17 @@
 
 - (NBAccount *)account
 {
+    /**
+     Instead of using a full-blown account manager, and if you're only building
+     the app for one nation to use, and don't want to give your users the ability
+     to switch between multiple user accounts, you can use NBAccount by itself.
+     
+     Just create an account and pass it directly to `self.accountButton`:
+     
+     [[NBAccount alloc] initWithClientInfo:self.customClientInfo];
+     
+     Also remember to include
+     */
     if (_account) {
         return _account;
     }
