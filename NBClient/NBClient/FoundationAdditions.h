@@ -44,3 +44,9 @@
 - (NSString *)nb_debugDescription;
 
 @end
+
+@interface NSError (NBAdditions)
+
++ (NSError *)nb_genericError;
+
+@end
