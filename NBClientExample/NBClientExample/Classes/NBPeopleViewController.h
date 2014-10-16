@@ -10,8 +10,12 @@
 
 #import "NBUIDefines.h"
 
+@class NBAccountButton;
+
 @interface NBPeopleViewController : UICollectionViewController <NBViewController>
 
 @property (nonatomic, getter = isReady) BOOL ready;
+
+- (void)showAccountButton:(NBAccountButton *)accountButton;
 
 @end

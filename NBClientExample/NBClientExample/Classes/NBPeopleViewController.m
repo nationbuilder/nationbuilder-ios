@@ -444,6 +444,13 @@ static void *observationContext = &observationContext;
     [self fetchIfNeeded];
 }
 
+- (void)showAccountButton:(NBAccountButton *)accountButton
+{
+    accountButton.avatarImageView.hidden = YES;
+    UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:accountButton];
+    [self.navigationItem setLeftBarButtonItem:buttonItem animated:YES];
+}
+
 #pragma mark - Private
 
 #pragma mark Fetching
