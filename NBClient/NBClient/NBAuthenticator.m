@@ -16,6 +16,7 @@
 NSUInteger const NBAuthenticationErrorCodeService = 20;
 NSUInteger const NBAuthenticationErrorCodeURLType = 21;
 NSUInteger const NBAuthenticationErrorCodeWebBrowser = 22;
+NSUInteger const NBAuthenticationErrorCodeKeychain = 23;
 
 NSString * const NBAuthenticationDefaultRedirectPath = @"oauth/callback";
 
