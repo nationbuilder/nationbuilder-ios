@@ -29,6 +29,7 @@
 		AA7904A619E8A0BA0007FF3E /* NationBuilder-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA7904A419E8A0BA0007FF3E /* NationBuilder-Info.plist */; };
 		AA7904A819E8A0D20007FF3E /* NationBuilder-Info-Local.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA7904A719E8A0D20007FF3E /* NationBuilder-Info-Local.plist */; };
 		AA7904A919E8A0D20007FF3E /* NationBuilder-Info-Local.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA7904A719E8A0D20007FF3E /* NationBuilder-Info-Local.plist */; };
+		AA84F05419EE0E2D00DAA6B8 /* NBAccountsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA84F05319EE0E2D00DAA6B8 /* NBAccountsViewController.xib */; };
 		AA909123198339EA009BE1E9 /* libNBClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA909122198339EA009BE1E9 /* libNBClient.a */; };
 		AA90912D19833B0E009BE1E9 /* NBPeopleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA90912A19833B0E009BE1E9 /* NBPeopleViewController.xib */; };
 		AA90912E19833B0E009BE1E9 /* NBPeopleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA90912A19833B0E009BE1E9 /* NBPeopleViewController.xib */; };
@@ -87,6 +88,7 @@
 		AA62A14919F0867200F338D0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/NationBuilder.strings; sourceTree = "<group>"; };
 		AA7904A419E8A0BA0007FF3E /* NationBuilder-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "NationBuilder-Info.plist"; sourceTree = "<group>"; };
 		AA7904A719E8A0D20007FF3E /* NationBuilder-Info-Local.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "NationBuilder-Info-Local.plist"; sourceTree = "<group>"; };
+		AA84F05319EE0E2D00DAA6B8 /* NBAccountsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NBAccountsViewController.xib; path = ../NBClient/NBClient/UI/NBAccountsViewController.xib; sourceTree = "<group>"; };
 		AA909122198339EA009BE1E9 /* libNBClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libNBClient.a; path = "../NBClient/build/Debug-iphoneos/libNBClient.a"; sourceTree = "<group>"; };
 		AA90912A19833B0E009BE1E9 /* NBPeopleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NBPeopleViewController.xib; path = Nibs/NBPeopleViewController.xib; sourceTree = "<group>"; };
 		AA90912B19833B0E009BE1E9 /* NBPersonCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NBPersonCellView.xib; path = Nibs/NBPersonCellView.xib; sourceTree = "<group>"; };
@@ -232,6 +234,7 @@
 				AA909122198339EA009BE1E9 /* libNBClient.a */,
 				AA62A14A19F0867200F338D0 /* NationBuilder.strings */,
 				AAEFEAEA19E62F9600777BC1 /* NBAccountButton.xib */,
+				AA84F05319EE0E2D00DAA6B8 /* NBAccountsViewController.xib */,
 			);
 			name = NBClient;
 			sourceTree = "<group>";
@@ -320,6 +323,7 @@
 				AA15FAAC1983317400A2E84B /* InfoPlist.strings in Resources */,
 				AAEFEAEB19E62F9600777BC1 /* NBAccountButton.xib in Resources */,
 				AA15FAB41983317400A2E84B /* Images.xcassets in Resources */,
+				AA84F05419EE0E2D00DAA6B8 /* NBAccountsViewController.xib in Resources */,
 				AA90912F19833B0E009BE1E9 /* NBPersonCellView.xib in Resources */,
 				AA90913119833B0E009BE1E9 /* NBPersonViewController.xib in Resources */,
 				AA7904A519E8A0BA0007FF3E /* NationBuilder-Info.plist in Resources */,

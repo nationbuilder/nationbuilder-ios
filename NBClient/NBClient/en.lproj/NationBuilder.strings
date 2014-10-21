@@ -30,3 +30,10 @@
 
 // Accounts View
 
+"message.provide-nation-slug" = "Please provide your nation's slug.";
+
+"title.add-account" = "Add Account";
+"title.nationbuilder-accounts" = "NB Accounts";
+"label.sign-in" = "Sign in";
+"label.sign-into-another" = "Sign into another nation";
+"label.sign-out" = "Sign out";
