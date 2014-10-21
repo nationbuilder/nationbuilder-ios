@@ -14,11 +14,13 @@
 #import "NBDefines.h"
 #import "UIKitAdditions.h"
 
+#import "NBAccountsPickerView.h"
+
 static NSString *IsSignedInKeyPath;
 static NSString *SelectedAccountKeyPath;
 static void *observationContext = &observationContext;
 
-@interface NBAccountsViewController () <UIAlertViewDelegate>
+@interface NBAccountsViewController () <UIAlertViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
 
 @property (nonatomic, weak, readwrite) IBOutlet UIImageView *avatarImageView;
 @property (nonatomic, weak, readwrite) IBOutlet UILabel *nameLabel;
@@ -27,6 +29,8 @@ static void *observationContext = &observationContext;
 
 @property (nonatomic, weak, readwrite) IBOutlet UIButton *signOutButton;
 @property (nonatomic, weak, readwrite) IBOutlet UIButton *addAccountButton;
+
+@property (nonatomic, weak, readwrite) IBOutlet NBAccountsPickerView *accountsPicker;
 
 // For account view hiding.
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *accountViewHeight;
@@ -40,8 +44,14 @@ static void *observationContext = &observationContext;
 @property (nonatomic) CGFloat originalSignOutButtonHeight;
 @property (nonatomic) CGFloat originalSignOutButtonBottomMargin;
 
+// For account picker hiding.
+@property (nonatomic, weak) IBOutlet UIView *accountsPickerContainer;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *accountsPickerHeight;
+@property (nonatomic) CGFloat originalAccountsPickerHeight;
+
 @property (nonatomic, strong) UIBarButtonItem *closeButtonItem;
 @property (nonatomic, strong) UIAlertView *nationSlugPromptView;
+@property (nonatomic, strong) UIAlertView *nationSlugErrorView;
 
 - (IBAction)dismiss:(id)sender;
 
@@ -67,6 +77,13 @@ static void *observationContext = &observationContext;
                 withCompletionHandler:(void (^)(void))completionHandler;
 - (void)updateActionButtonsAnimated:(BOOL)animated
               withCompletionHandler:(void (^)(void))completionHandler;
+
+- (void)setUpAccountsPicker;
+- (void)toggleAccountsPickerVisibility:(BOOL)visible
+                              animated:(BOOL)animated
+                 withCompletionHandler:(void (^)(void))completionHandler;
+- (void)updateAccountsPickerAnimated:(BOOL)animated
+               withCompletionHandler:(void (^)(void))completionHandler;
 
 @end
 
@@ -96,6 +113,7 @@ static void *observationContext = &observationContext;
     self.edgesForExtendedLayout = UIRectEdgeNone;
     [self setUpAccountView];
     [self setUpActionButtons];
+    [self setUpAccountsPicker];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -104,6 +122,7 @@ static void *observationContext = &observationContext;
     NSAssert(self.dataSource, @"Data source must be set before appearance.");
     [self updateAccountViewAnimated:NO withCompletionHandler:nil];
     [self updateActionButtonsAnimated:NO withCompletionHandler:nil];
+    [self updateAccountsPickerAnimated:NO withCompletionHandler:nil];
     // Customize title view.
     self.navigationController.navigationBar.titleTextAttributes =
     @{ NSFontAttributeName: [UIFont preferredFontForTextStyle:UIFontTextStyleBody] };
@@ -132,13 +151,15 @@ static void *observationContext = &observationContext;
             BOOL didAdd = [self.dataSource addAccountWithNationSlug:nationSlug error:&error];
             if (!didAdd) {
                 // Work around the fact automatic alert dismissal can't be prevented.
-                UIAlertView *errorAlertView = [UIAlertView nb_genericAlertViewWithError:error];
-                [errorAlertView show];
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [errorAlertView dismissWithClickedButtonIndex:0 animated:YES];
-                    [self promptForNationSlug];
-                });
+                self.nationSlugErrorView = [UIAlertView nb_genericAlertViewWithError:error];
+                self.nationSlugErrorView.delegate = self;
+                [self.nationSlugErrorView show];
             }
+        }
+    } else if (alertView == self.nationSlugErrorView) {
+        NSString *okText = @"label.ok".nb_localizedString;
+        if ([buttonTitle isEqualToString:okText]) {
+            [self promptForNationSlug];
         }
     } else {
         NSLog(@"WARNING: Unhandled case.");
@@ -182,14 +203,66 @@ static void *observationContext = &observationContext;
     if (object == self.dataSource) {
         if ([keyPath isEqual:IsSignedInKeyPath]) {
             [self updateAccountViewAnimated:YES withCompletionHandler:^{
-                [self updateActionButtonsAnimated:YES withCompletionHandler:nil];
+                [self updateActionButtonsAnimated:YES withCompletionHandler:^{
+                    [self updateAccountsPickerAnimated:YES withCompletionHandler:nil];
+                }];
             }];
         } else if ([keyPath isEqual:SelectedAccountKeyPath]) {
-            
+            [self updateAccountViewAnimated:YES withCompletionHandler:^{
+                [self updateAccountsPickerAnimated:YES withCompletionHandler:nil];
+            }];
         }
     }
 }
 
+#pragma mark - UIPickerViewDataSource
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return self.dataSource.accounts.count;
+}
+
+#pragma mark - UIPickerViewDelegate
+
+- (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component
+{
+    return self.originalSignOutButtonHeight;
+}
+
+- (NSAttributedString *)pickerView:(UIPickerView *)pickerView attributedTitleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    static NSString *emSpace = @" ";
+    id<NBAccountViewDataSource> account = self.dataSource.accounts[row];
+    NSString *title = [NSString stringWithFormat:@"%@%@%@", account.name, emSpace, account.nationSlug];
+    NSMutableAttributedString *attributedTitle = [[NSMutableAttributedString alloc] initWithString:title];
+    [attributedTitle addAttributes:@{ NSFontAttributeName: self.nationLabel.font,
+                                      NSForegroundColorAttributeName: self.nationLabel.textColor }
+                             range:[title rangeOfString:account.nationSlug]];
+    return [[NSAttributedString alloc] initWithAttributedString:attributedTitle];
+}
+
+- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
+{
+    UILabel *label = (UILabel *)view;
+    if (!label) {
+        label = [[UILabel alloc] initWithFrame:CGRectZero];
+        label.font = self.nameLabel.font;
+        label.textAlignment = NSTextAlignmentCenter;
+    }
+    label.attributedText = [self pickerView:pickerView attributedTitleForRow:row forComponent:component];
+    return label;
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    id<NBAccountViewDataSource> account = self.dataSource.accounts[row];
+    self.dataSource.selectedAccount = account;
+}
 
 #pragma mark - Public
 
@@ -294,13 +367,20 @@ static void *observationContext = &observationContext;
     self.signOutButton.layer.cornerRadius = self.cornerRadius.floatValue;
     self.addAccountButton.backgroundColor = self.buttonBackgroundColor;
     self.addAccountButton.layer.cornerRadius = self.cornerRadius.floatValue;
+    self.accountsPicker.layer.borderWidth = 1.0f;
+    self.accountsPicker.layer.borderColor = self.borderColor.CGColor;
+    self.accountsPicker.layer.cornerRadius = self.cornerRadius.floatValue;
 }
 
 - (void)toggleAccountViewVisibility:(BOOL)visible
                            animated:(BOOL)animated
               withCompletionHandler:(void (^)(void))completionHandler
 {
-    self.accountViewHeight.constant = visible ? self.originalAccountViewHeight : 0.0f;
+    CGFloat newHeight = visible ? self.originalAccountViewHeight : 0.0f;
+    if (animated) {
+        animated = newHeight != self.accountViewHeight.constant;
+    }
+    self.accountViewHeight.constant = newHeight;
     self.accountViewBottomMargin.constant  = visible ? self.originalAccountViewBottomMargin : 0.0f;
     [self updateVisibilityForSubview:self.accountView animated:animated withCompletionHandler:completionHandler];
 }
@@ -329,7 +409,11 @@ static void *observationContext = &observationContext;
                              animated:(BOOL)animated
                 withCompletionHandler:(void (^)(void))completionHandler
 {
-    self.signOutButtonHeight.constant = visible ? self.originalSignOutButtonHeight : 0.0f;
+    CGFloat newHeight = visible ? self.originalSignOutButtonHeight : 0.0f;
+    if (animated) {
+        animated = newHeight != self.signOutButtonHeight.constant;
+    }
+    self.signOutButtonHeight.constant = newHeight;
     self.signOutButtonBottomMargin.constant = visible ? self.originalSignOutButtonBottomMargin : 0.0f;
     [self updateVisibilityForSubview:self.signOutButton animated:animated withCompletionHandler:completionHandler];
 }
@@ -340,6 +424,33 @@ static void *observationContext = &observationContext;
     [self toggleSignOutButtonVisibility:self.dataSource.isSignedIn animated:animated withCompletionHandler:completionHandler];
     [self.addAccountButton setTitle:(self.dataSource.isSignedIn ? @"label.sign-into-another" : @"label.sign-in").nb_localizedString
                            forState:UIControlStateNormal];
+}
+
+#pragma mark Account Picker
+
+- (void)setUpAccountsPicker
+{
+    self.originalAccountsPickerHeight = self.accountsPickerHeight.constant;
+}
+
+- (void)toggleAccountsPickerVisibility:(BOOL)visible
+                              animated:(BOOL)animated
+                 withCompletionHandler:(void (^)(void))completionHandler
+{
+    CGFloat newHeight = visible ? self.originalAccountsPickerHeight : 0.0f;
+    if (animated) {
+        animated = newHeight != self.accountsPickerHeight.constant;
+    }
+    self.accountsPickerHeight.constant = newHeight;
+    [self updateVisibilityForSubview:self.accountsPickerContainer animated:animated withCompletionHandler:completionHandler];
+}
+
+- (void)updateAccountsPickerAnimated:(BOOL)animated
+               withCompletionHandler:(void (^)(void))completionHandler
+{
+    [self.accountsPicker reloadAllComponents];
+    [self toggleAccountsPickerVisibility:(self.dataSource.accounts.count > 1)
+                                animated:animated withCompletionHandler:completionHandler];
 }
 
 @end

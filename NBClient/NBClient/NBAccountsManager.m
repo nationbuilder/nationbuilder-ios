@@ -94,6 +94,9 @@ NSString * const NBAccountInfoNameKey = @"User Name";
     if (!failureReason && !nationSlug.length) {
         failureReason = @"message.invalid-nation-slug.empty".nb_localizedString;
     }
+    if (!failureReason && [nationSlug isEqualToString:self.selectedAccount.nationSlug]) {
+        failureReason = @"message.invalid-nation-slug.same-nation-note".nb_localizedString;
+    }
     if (failureReason) {
         isValid = NO;
         *error = [NSError errorWithDomain:NBErrorDomain code:NBErrorCodeInvalidArgument

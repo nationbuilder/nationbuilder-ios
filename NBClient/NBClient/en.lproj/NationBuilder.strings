@@ -31,6 +31,7 @@
 "message.invalid-nation-slug" = "Invalid nation slug.";
 "message.invalid-nation-slug.empty" = "Nation slug must be non-empty.";
 "message.invalid-nation-slug.none" = "Nation slug must exist.";
+"message.invalid-nation-slug.same-nation-note" = "To sign into another account on the same nation, you need to first sign out of your current account. Remember to also sign out in Safari.";
 
 "message.invalid-redirect-url-scheme.none" = "No valid OAuth redirect URL scheme for app.";
 "message.invalid-redirect-url-scheme.no-url-type.format" = "Cannot find a URL type with the URL identifier '%@'.";
