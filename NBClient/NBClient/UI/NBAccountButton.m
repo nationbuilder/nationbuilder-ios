@@ -10,6 +10,7 @@
 
 #import "QuartzCore/QuartzCore.h"
 
+#import "FoundationAdditions.h"
 #import "NBAccountsViewDefines.h"
 
 static NSString *HiddenKeyPath = @"hidden";
@@ -41,6 +42,7 @@ static void *observationContext = &observationContext;
     if (self) {
         [self setUpSubviews];
         [self updateSubviews];
+        self.dataSource = nil;
     }
     return self;
 }
@@ -54,6 +56,7 @@ static void *observationContext = &observationContext;
     [super awakeFromNib];
     [self setUpSubviews];
     [self updateSubviews];
+    self.dataSource = nil;
 }
 - (void)dealloc
 {
@@ -110,7 +113,9 @@ static void *observationContext = &observationContext;
     [self updateSubviews];
 }
 
-#pragma mark - Accessors
+#pragma mark - Public
+
+#pragma mark Accessors
 
 - (void)setDataSource:(id<NBAccountViewDataSource>)dataSource
 {
@@ -121,8 +126,12 @@ static void *observationContext = &observationContext;
     _dataSource = dataSource;
     [self didChangeValueForKey:key];
     // END: Boilerplate.
-    self.nameLabel.text = dataSource.name;
-    self.avatarImageView.image = [UIImage imageWithData:dataSource.avatarImageData];
+    if (dataSource) {
+        self.nameLabel.text = dataSource.name;
+        self.avatarImageView.image = [UIImage imageWithData:dataSource.avatarImageData];
+    } else {
+        self.nameLabel.text = @"label.sign-in".nb_localizedString;
+    }
 }
 
 @end
