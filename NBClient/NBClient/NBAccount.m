@@ -17,7 +17,6 @@
 
 @property (nonatomic, strong, readwrite) NBClient *client;
 @property (nonatomic, strong, readwrite) NSDictionary *defaultClientInfo;
-@property (nonatomic, strong, readwrite) NSString *name;
 
 @property (nonatomic, strong) NBAuthenticator *authenticator;
 @property (nonatomic, strong) NSDictionary *clientInfo;

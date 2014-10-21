@@ -21,6 +21,8 @@
 // Will load from the conventional plist with name equal to NBInfoFileName. Useful if your app is only for one nation.
 @property (nonatomic, strong, readonly) NSDictionary *defaultClientInfo;
 
+@property (nonatomic, strong) NSString *name; // Override.
+
 @property (nonatomic, getter = isActive) BOOL active;
 @property (nonatomic) BOOL shouldUseTestToken;
 
