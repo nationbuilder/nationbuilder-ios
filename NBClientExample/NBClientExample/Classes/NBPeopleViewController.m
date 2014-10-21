@@ -39,6 +39,8 @@ static void *observationContext = &observationContext;
 
 @property (nonatomic, strong, readwrite) NSMutableDictionary *nibNames;
 
+@property (nonatomic, strong, readwrite) UILabel *notReadyLabel;
+
 @property (nonatomic, strong) NSIndexPath *selectedIndexPath;
 
 @property (nonatomic, strong) UIBarButtonItem *createButtonItem;
@@ -142,6 +144,12 @@ static void *observationContext = &observationContext;
     if (self.navigationController) {
         self.navigationController.delegate = self;
     }
+    if (!self.isReady) {
+        self.collectionView.backgroundView = [[UIView alloc] initWithFrame:self.collectionView.bounds];
+        [self.collectionView.backgroundView addSubview:self.notReadyLabel];
+        [self.notReadyLabel sizeToFit];
+        self.notReadyLabel.center = self.collectionView.backgroundView.center;
+    }
     [self setUpCreating];
     [self setUpDeleting];
     [self setUpPagination];
@@ -151,7 +159,7 @@ static void *observationContext = &observationContext;
 {
     [super viewWillAppear:animated];
     // Try (re)fetching if list is empty.
-    if (self.isReady) {
+    if (self.isReady && !self.isBusy) {
         [self fetchIfNeeded];
     }
 }
@@ -299,7 +307,7 @@ static void *observationContext = &observationContext;
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
     NBPeopleDataSource *dataSource = (id)self.dataSource;
-    NSInteger number = dataSource.paginationInfo ? dataSource.paginationInfo.currentPageNumber : 1;
+    NSInteger number = dataSource.paginationInfo ? dataSource.paginationInfo.currentPageNumber : 0;
     return number;
 }
 
@@ -441,7 +449,20 @@ static void *observationContext = &observationContext;
     _ready = ready;
     [self didChangeValueForKey:key];
     // END: Boilerplate.
-    [self fetchIfNeeded];
+    self.createButtonItem.enabled = self.isReady;
+    self.notReadyLabel.hidden = self.isReady;
+    if (self.isReady) {
+        [self fetchIfNeeded];
+    }
+}
+
+- (UILabel *)notReadyLabel
+{
+    if (_notReadyLabel) {
+        return _notReadyLabel;
+    }
+    self.notReadyLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    return _notReadyLabel;
 }
 
 - (void)showAccountButton:(NBAccountButton *)accountButton

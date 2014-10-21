@@ -18,4 +18,7 @@
 "label.ok" = "OK";
 "label.load-more" = "Load More";
 "label.refresh" = "Refresh";
+
+"message.sign-in" = "Please sign in.";
+
 "title.error" = "Error";

@@ -16,11 +16,18 @@
 #import "NBPeopleDataSource.h"
 #import "NBPeopleViewController.h"
 
-@interface NBAppDelegate ()
+@interface NBAppDelegate () <NBAccountsManagerDelegate, NBAccountsViewDelegate>
 
-@property (nonatomic, strong) NBAccount *account;
+@property (nonatomic, strong, readonly) NBAccount *account;
+@property (nonatomic, strong) NBAccountButton *accountButton;
+@property (nonatomic, strong) NBAccountsManager *accountsManager;
+@property (nonatomic, strong) NBAccountsViewController *accountsViewController;
+
+@property (nonatomic, strong) NSDictionary *customClientInfo;
 @property (nonatomic, strong) NBPeopleViewController *peopleViewController;
 @property (nonatomic, strong) UINavigationController *rootViewController;
+
+- (IBAction)presentAccountsViewController:(id)sender;
 
 @end
 
@@ -31,22 +38,17 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [Crashlytics startWithAPIKey:@"40c37689b7be7476400be06f7b2784cc8697c931"];
-    [self.account requestActiveWithCompletionHandler:^(NSError *error) {
-        if (error) {
-            [[UIAlertView nb_genericAlertViewWithError:error] show];
-            return;
-        }
-        NBAccountButton *button = [[NSBundle mainBundle] loadNibNamed:@"NBAccountButton" owner:self options:nil].firstObject;
-        button.dataSource = self.account;
-        button.avatarImageView.hidden = YES;
-        [self.peopleViewController.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:button]
-                                                              animated:YES];
-        self.peopleViewController.ready = YES;
-    }];
-    // END: Customization.
+#if defined(DEBUG) && TARGET_IPHONE_SIMULATOR
+    // NOTE: This configuration file is meant for internal use only, unless
+    // you have a development-specific set of NationBuilder configuration.
+    self.customClientInfo = [NSDictionary dictionaryWithContentsOfFile:
+                             [[NSBundle mainBundle] pathForResource:[NBInfoFileName stringByAppendingString:@"-Local"] ofType:@"plist"]];
+#endif
+    // Boilerplate.
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.rootViewController = self.rootViewController;
     [self.window makeKeyAndVisible];
+    // END: Boilerplate.
     return YES;
 }
 
@@ -55,11 +57,46 @@
     // In addition to setting CFBundleURLTypes, this is the basics of what is
     // required for the preferred way of authenticating against NationBuilder.
     NSError *error;
-    BOOL didOpen = [NBAuthenticator finishAuthenticatingInWebBrowserWithURL:url error:&error];
+    [NBAuthenticator finishAuthenticatingInWebBrowserWithURL:url error:&error];
     if (error) {
         [[UIAlertView nb_genericAlertViewWithError:error] show];
     }
-    return didOpen;
+    // You should return NO regardless of whether or not the authentication
+    // succeeded. There's a system-level bug that prevents your app from opening
+    // the same URL after a previous successful opening.
+    return NO;
+}
+
+#pragma mark - NBAccountsManagerDelegate
+
+- (void)accountsManager:(NBAccountsManager *)accountsManager failedToSwitchToAccount:(NBAccount *)account withError:(NSError *)error
+{
+}
+
+- (void)accountsManager:(NBAccountsManager *)accountsManager willAddAccount:(NBAccount *)account
+{
+#if DEBUG_LOGIN
+    [NBAuthenticationCredential deleteCredentialWithIdentifier:account.client.authenticator.credentialIdentifier];
+#endif
+}
+
+- (void)accountsManager:(NBAccountsManager *)accountsManager didSwitchToAccount:(NBAccount *)account
+{
+    // Update the account button.
+    self.accountButton.dataSource = account;
+    // If the accounts view was shown to sign in initially, the user probably just wants to start using the app.
+    if (account && !self.peopleViewController.ready) {
+        // Dismiss the accounts view if needed.
+        if (self.rootViewController.visibleViewController == self.accountsViewController) {
+            [self.rootViewController dismissViewControllerAnimated:YES completion:nil];
+        }
+        self.peopleViewController.dataSource = [[NBPeopleDataSource alloc] initWithClient:account.client];
+        // Set our view controller to ready.
+        self.peopleViewController.ready = YES;
+    // If we're no longer signed in, update our app.
+    } else if (!account && !accountsManager.isSignedIn && self.peopleViewController.ready) {
+        self.peopleViewController.ready = NO;
+    }
 }
 
 #pragma mark - Private
@@ -68,7 +105,7 @@
 {
     /**
      Instead of using a full-blown account manager, and if you're only building
-     the app for one nation to use, and don't want to give your users the ability
+     the app for one nation to use and don't want to give your users the ability
      to switch between multiple user accounts, you can use NBAccount by itself.
      
      Just create an account and pass it directly to `self.accountButton`:
@@ -77,22 +114,38 @@
      
      Also remember to include
      */
-    if (_account) {
-        return _account;
+    return (NBAccount *)self.accountsManager.selectedAccount;
+}
+
+- (NBAccountButton *)accountButton
+{
+    if (_accountButton) {
+        return _accountButton;
     }
-    NSDictionary *customClientInfo;
-#if defined(DEBUG) && TARGET_IPHONE_SIMULATOR
-    // NOTE: This configuration file is meant for internal use only, unless
-    // you have a development-specific set of NationBuilder configuration.
-    customClientInfo = [NSDictionary dictionaryWithContentsOfFile:
-            [[NSBundle mainBundle] pathForResource:[NBInfoFileName stringByAppendingString:@"-Local"] ofType:@"plist"]];
-#endif
-    self.account = [[NBAccount alloc] initWithClientInfo:customClientInfo];
-    //self.account.shouldUseTestToken = YES;
-#if DEBUG_LOGIN
-    [NBAuthenticationCredential deleteCredentialWithIdentifier:self.account.client.authenticator.credentialIdentifier];
-#endif
-    return _account;
+    self.accountButton = [[NSBundle mainBundle] loadNibNamed:@"NBAccountButton" owner:self options:nil].firstObject;
+    [self.accountButton addTarget:self action:@selector(presentAccountsViewController:) forControlEvents:UIControlEventTouchUpInside];
+    return _accountButton;
+}
+
+- (NBAccountsManager *)accountsManager
+{
+    if (_accountsManager) {
+        return _accountsManager;
+    }
+    self.accountsManager = [[NBAccountsManager alloc] initWithClientInfo:self.customClientInfo];
+    self.accountsManager.delegate = self;
+    return _accountsManager;
+}
+
+- (NBAccountsViewController *)accountsViewController
+{
+    if (_accountsViewController) {
+        return _accountsViewController;
+    }
+    self.accountsViewController = [[NBAccountsViewController alloc] initWithNibName:nil bundle:nil];
+    self.accountsViewController.dataSource = self.accountsManager;
+    self.accountsViewController.delegate = self;
+    return _accountsViewController;
 }
 
 - (NBPeopleViewController *)peopleViewController
@@ -101,8 +154,11 @@
         return _peopleViewController;
     }
     self.peopleViewController = [[NBPeopleViewController alloc] initWithNibNames :nil bundle:nil];
-    self.peopleViewController.dataSource = [[NBPeopleDataSource alloc] initWithClient:self.account.client];
     self.peopleViewController.title = NSLocalizedString(@"people.navigation-title", nil);
+    if (!self.accountsManager.isSignedIn) {
+        self.peopleViewController.notReadyLabel.text = NSLocalizedString(@"message.sign-in", nil);
+    }
+    [self.peopleViewController showAccountButton:self.accountButton];
     return _peopleViewController;
 }
 
@@ -114,6 +170,13 @@
     self.rootViewController = [[UINavigationController alloc] initWithRootViewController:self.peopleViewController];
     self.rootViewController.view.backgroundColor = [UIColor whiteColor];
     return _rootViewController;
+}
+
+- (void)presentAccountsViewController:(id)sender
+{
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:self.accountsViewController];
+    navigationController.view.backgroundColor = [UIColor whiteColor];
+    [self.rootViewController presentViewController:navigationController animated:YES completion:nil];
 }
 
 @end
