@@ -84,7 +84,7 @@ static void *observationContext = &observationContext;
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.title = NSLocalizedStringFromTable(@"title.nationbuilder-accounts", @"NBClient", nil);
+        self.title = @"title.nationbuilder-accounts".nb_localizedString;
         self.shouldAutoPromptForNationSlug = YES;
     }
     return self;
@@ -125,7 +125,7 @@ static void *observationContext = &observationContext;
 {
     NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
     if (alertView == self.nationSlugPromptView) {
-        NSString *submitText = NSLocalizedStringFromTable(@"label.submit", @"NBClient", nil);
+        NSString *submitText = @"label.submit".nb_localizedString;
         if ([buttonTitle isEqualToString:submitText]) {
             __block NSError *error;
             NSString *nationSlug = [alertView textFieldAtIndex:0].text;
@@ -270,7 +270,7 @@ static void *observationContext = &observationContext;
     if (_closeButtonItem) {
         return _closeButtonItem;
     }
-    self.closeButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"label.close", @"NBClient", nil)
+    self.closeButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"label.close".nb_localizedString
                                                             style:UIBarButtonItemStylePlain
                                                            target:self action:@selector(dismiss:)];
     return _closeButtonItem;
@@ -292,11 +292,11 @@ static void *observationContext = &observationContext;
         return _nationSlugPromptView;
     }
     self.nationSlugPromptView =
-    [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"title.add-account", @"NBClient", nil)
-                               message:NSLocalizedStringFromTable(@"message.provide-nation-slug", @"NBClient", nil)
+    [[UIAlertView alloc] initWithTitle:@"title.add-account".nb_localizedString
+                               message:@"message.provide-nation-slug".nb_localizedString
                               delegate:self
-                     cancelButtonTitle:NSLocalizedStringFromTable(@"label.cancel", @"NBClient", nil)
-                     otherButtonTitles:NSLocalizedStringFromTable(@"label.submit", @"NBClient", nil), nil];
+                     cancelButtonTitle:@"label.cancel".nb_localizedString
+                     otherButtonTitles:@"label.submit".nb_localizedString, nil];
     self.nationSlugPromptView.alertViewStyle = UIAlertViewStylePlainTextInput;
     return _nationSlugPromptView;
 }

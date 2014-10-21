@@ -176,8 +176,8 @@
         *error =
         [NSError
          errorWithDomain:NBErrorDomain code:NBAuthenticationErrorCodeKeychain
-         userInfo:@{ NSLocalizedDescriptionKey: NSLocalizedString(@"Cannot delete keychain credential.", nil),
-                     NSLocalizedFailureReasonErrorKey: NSLocalizedStringFromTable(@"message.unknown-error", @"NBClient", nil) }];
+         userInfo:@{ NSLocalizedDescriptionKey: @"message.delete-credential-error".nb_localizedString,
+                     NSLocalizedFailureReasonErrorKey: @"message.unknown-error".nb_localizedString }];
     } else {
         self.client.apiKey = nil;
     }

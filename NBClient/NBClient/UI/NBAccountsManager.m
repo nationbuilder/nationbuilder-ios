@@ -9,6 +9,8 @@
 #import "NBAccountsManager.h"
 
 #import <UIKit/UIKit.h>
+
+#import "FoundationAdditions.h"
 #import "NBAccount.h"
 
 NSString * const NBAccountInfosDefaultsKey = @"NBAccountInfos";
@@ -98,16 +100,16 @@ NSString * const NBAccountInfoNameKey = @"User Name";
     BOOL isValid = YES;
     NSString *failureReason;
     if (!nationSlug) {
-        failureReason = NSLocalizedString(@"Nation slug must exist.", nil);
+        failureReason = @"message.invalid-nation-slug.none".nb_localizedString;
     }
     nationSlug = [nationSlug stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     if (!failureReason && !nationSlug.length) {
-        failureReason = NSLocalizedString(@"Nation slug must be non-empty.", nil);
+        failureReason = @"message.invalid-nation-slug.empty".nb_localizedString;
     }
     if (failureReason) {
         isValid = NO;
         *error = [NSError errorWithDomain:NBErrorDomain code:NBErrorCodeInvalidArgument
-                                userInfo:@{ NSLocalizedDescriptionKey: NSLocalizedString(@"Invalid nation slug.", nil),
+                                userInfo:@{ NSLocalizedDescriptionKey: @"message.invalid-nation-slug".nb_localizedString,
                                             NSLocalizedFailureReasonErrorKey: failureReason }];
     } else {
         NBAccount *account = [[NBAccount alloc] initWithClientInfo:

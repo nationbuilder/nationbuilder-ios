@@ -127,12 +127,12 @@ static NSString *RedirectURLScheme;
         [NSError
          errorWithDomain:NBErrorDomain
          code:NBAuthenticationErrorCodeURLType
-         userInfo:@{ NSLocalizedDescriptionKey: NSLocalizedString(@"No valid OAuth redirect URL scheme for app.", nil),
+         userInfo:@{ NSLocalizedDescriptionKey: @"message.invalid-redirect-url-scheme.none".nb_localizedString,
                      NSLocalizedFailureReasonErrorKey: [NSString localizedStringWithFormat:
-                                                        NSLocalizedString(@"Cannot find a URL type with the URL identifier '%@'.", nil),
+                                                        @"message.invalid-redirect-url-scheme.no-url-type.format".nb_localizedString,
                                                         NBAuthenticationRedirectURLIdentifier],
                      NSLocalizedRecoverySuggestionErrorKey: [NSString localizedStringWithFormat:
-                                                             NSLocalizedString(@"In your main info plist, set a URL type with the URL identifier '%@'.", nil),
+                                                             @"message.invalid-redirect-url-scheme.suggestion".nb_localizedString,
                                                              NBAuthenticationRedirectURLIdentifier] }];
         completionHandler(nil, error);
     }
@@ -193,10 +193,9 @@ static NSString *RedirectURLScheme;
             *error = [NSError
                       errorWithDomain:NBErrorDomain
                       code:NBAuthenticationErrorCodeService
-                      userInfo:@{ NSLocalizedDescriptionKey: NSLocalizedString(@"Service errored fulfilling authorization redirect.", nil),
-                                  NSLocalizedFailureReasonErrorKey: NSLocalizedString(@"No 'access_token' query parameter was provided.", nil),
-                                  NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"If failure reason is not helpful, "
-                                                                                           @"contact NationBuilder for support.", nil) }];
+                      userInfo:@{ NSLocalizedDescriptionKey: @"message.nb-redirect-error".nb_localizedString,
+                                  NSLocalizedFailureReasonErrorKey: @"message.nb-redirect-error.no-access-token".nb_localizedString,
+                                  NSLocalizedRecoverySuggestionErrorKey: @"message.unknown-error-solution".nb_localizedString }];
         }
     }
     return didOpen;
@@ -257,9 +256,9 @@ static NSString *RedirectURLScheme;
         error = [NSError
                  errorWithDomain:NBErrorDomain
                  code:NBAuthenticationErrorCodeWebBrowser
-                 userInfo:@{ NSLocalizedDescriptionKey: NSLocalizedString(@"Cannot find a valid web browser.", nil),
-                             NSLocalizedFailureReasonErrorKey: NSLocalizedString(@"A web browser is required to open the authorization URL.", nil),
-                             NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"Ensure Safari or its equivalent is installed.", nil) }];
+                 userInfo:@{ NSLocalizedDescriptionKey: @"message.invalid-browser".nb_localizedString,
+                             NSLocalizedFailureReasonErrorKey: @"message.invalid-browser.auth-requires-browser".nb_localizedString,
+                             NSLocalizedRecoverySuggestionErrorKey: @"message.invalid-browser.check-safari-installed".nb_localizedString }];
     }
     if (error) {
         completionHandler(nil, error);

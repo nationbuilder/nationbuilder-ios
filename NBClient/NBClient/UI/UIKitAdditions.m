@@ -20,7 +20,7 @@
                                       message:[userInfo[NSLocalizedFailureReasonErrorKey]
                                                stringByAppendingFormat:@" %@", (userInfo[NSLocalizedRecoverySuggestionErrorKey] ?: @"")]
                                      delegate:self cancelButtonTitle:nil
-                            otherButtonTitles:NSLocalizedString(@"OK", nil), nil];
+                            otherButtonTitles:@"label.ok".nb_localizedString, nil];
 }
 
 @end
