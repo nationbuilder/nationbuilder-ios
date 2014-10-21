@@ -434,13 +434,12 @@ static NSDictionary *DataToFieldKeyPathsMap;
          }
          CGRect keyboardFrame = [note.userInfo[UIKeyboardFrameBeginUserInfoKey] CGRectValue];
          keyboardFrame = [weakSelf.scrollView convertRect:keyboardFrame fromView:nil];
+         weakSelf.scrollViewBottomConstraint.constant = keyboardFrame.size.height;
+         [weakSelf.view setNeedsUpdateConstraints];
          [UIView
           animateWithDuration:[note.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue] delay:0.0f
           options:[note.userInfo[UIKeyboardAnimationCurveUserInfoKey] unsignedIntegerValue]|UIViewAnimationOptionBeginFromCurrentState
-          animations:^{
-              weakSelf.scrollViewBottomConstraint.constant = keyboardFrame.size.height;
-              [weakSelf.view layoutIfNeeded];
-          } completion:nil];
+          animations:^{ [weakSelf.view layoutIfNeeded]; } completion:nil];
      }];
     self.keyboardWillHideObserver =
     [[NSNotificationCenter defaultCenter]
@@ -450,13 +449,12 @@ static NSDictionary *DataToFieldKeyPathsMap;
              // TODO: Handle size as form-sheet modal.
              return;
          }
+         weakSelf.scrollViewBottomConstraint.constant = 0.0f;
+         [weakSelf.view setNeedsUpdateConstraints];
          [UIView
           animateWithDuration:[note.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue] delay:0.0f
           options:[note.userInfo[UIKeyboardAnimationCurveUserInfoKey] unsignedIntegerValue]|UIViewAnimationOptionBeginFromCurrentState
-          animations:^{
-              weakSelf.scrollViewBottomConstraint.constant = 0.0f;
-              [weakSelf.view layoutIfNeeded];
-          } completion:nil];
+          animations:^{ [weakSelf.view layoutIfNeeded]; } completion:nil];
      }];
 }
 - (void)tearDownEditing
