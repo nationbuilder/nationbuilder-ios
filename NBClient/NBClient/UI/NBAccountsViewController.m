@@ -41,10 +41,8 @@ static void *observationContext = &observationContext;
 @property (nonatomic) CGFloat originalSignOutButtonBottomMargin;
 
 @property (nonatomic, strong) UIBarButtonItem *closeButtonItem;
-@property (nonatomic, strong) UIBarButtonItem *doneButtonItem;
 @property (nonatomic, strong) UIAlertView *nationSlugPromptView;
 
-- (IBAction)commitChanges:(id)sender;
 - (IBAction)dismiss:(id)sender;
 
 - (IBAction)signIn:(id)sender;
@@ -95,7 +93,6 @@ static void *observationContext = &observationContext;
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.navigationItem.leftBarButtonItem = self.closeButtonItem;
-    self.navigationItem.rightBarButtonItem = self.doneButtonItem;
     self.edgesForExtendedLayout = UIRectEdgeNone;
     [self setUpAccountView];
     [self setUpActionButtons];
@@ -107,6 +104,9 @@ static void *observationContext = &observationContext;
     NSAssert(self.dataSource, @"Data source must be set before appearance.");
     [self updateAccountViewAnimated:NO withCompletionHandler:nil];
     [self updateActionButtonsAnimated:NO withCompletionHandler:nil];
+    // Customize title view.
+    self.navigationController.navigationBar.titleTextAttributes =
+    @{ NSFontAttributeName: [UIFont preferredFontForTextStyle:UIFontTextStyleBody] };
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -146,15 +146,6 @@ static void *observationContext = &observationContext;
 }
 
 #pragma mark - Actions
-
-- (IBAction)commitChanges:(id)sender
-{
-    if (sender == self.doneButtonItem || !sender) {
-        [self dismiss:nil];
-    } else {
-        NSLog(@"WARNING: Unhandled sender %@", sender);
-    }
-}
 
 - (IBAction)dismiss:(id)sender
 {
@@ -274,16 +265,6 @@ static void *observationContext = &observationContext;
                                                             style:UIBarButtonItemStylePlain
                                                            target:self action:@selector(dismiss:)];
     return _closeButtonItem;
-}
-
-- (UIBarButtonItem *)doneButtonItem
-{
-    if (_doneButtonItem) {
-        return _doneButtonItem;
-    }
-    self.doneButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                        target:self action:@selector(commitChanges:)];
-    return _doneButtonItem;
 }
 
 - (UIAlertView *)nationSlugPromptView
