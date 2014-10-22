@@ -221,8 +221,7 @@
 }
 - (void)setFont:(UIFont *)font
 {
-    static NSString *key;
-    key = key ?: NSStringFromSelector(@selector(font));
+    NSString *key = NSStringFromSelector(@selector(font));
     [self willChangeValueForKey:key];
     self.titleLabel.font = font;
     [self didChangeValueForKey:key];
@@ -234,8 +233,7 @@
 }
 - (void)setTextColor:(UIColor *)textColor
 {
-    static NSString *key;
-    key = key ?: NSStringFromSelector(@selector(textColor));
+    NSString *key = NSStringFromSelector(@selector(textColor));
     [self willChangeValueForKey:key];
     self.titleLabel.textColor = textColor;
     [self didChangeValueForKey:key];
