@@ -10,6 +10,9 @@
     #define _NBCLIENT_
 
     #import "NBAccount.h"
+    #import "NBAccountsManager.h"
+    #import "NBAccountsViewDefines.h"
+
     #import "NBAuthenticator.h"
     #import "NBClient.h"
     #import "NBClient+People.h"
