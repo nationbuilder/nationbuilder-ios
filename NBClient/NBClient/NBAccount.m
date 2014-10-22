@@ -16,10 +16,10 @@
 @interface NBAccount ()
 
 @property (nonatomic, strong, readwrite) NBClient *client;
+@property (nonatomic, strong, readwrite) NSDictionary *clientInfo;
 @property (nonatomic, strong, readwrite) NSDictionary *defaultClientInfo;
 
 @property (nonatomic, strong) NBAuthenticator *authenticator;
-@property (nonatomic, strong) NSDictionary *clientInfo;
 
 @property (nonatomic, strong) NSDictionary *person;
 
