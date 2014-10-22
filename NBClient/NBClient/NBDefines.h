@@ -14,15 +14,16 @@ extern NSUInteger const NBErrorCodeInvalidArgument;
 // Names for a dedicated NationBuilder Info.plist file, which is the suggested
 // method for storing relevant configuration.
 extern NSString * const NBInfoFileName;
-extern NSString * const NBInfoDevelopmentKey;
-extern NSString * const NBInfoProductionKey;
 extern NSString * const NBInfoBaseURLFormatKey;
 extern NSString * const NBInfoClientIdentifierKey;
 extern NSString * const NBInfoNationNameKey;
+extern NSString * const NBInfoRedirectPathKey;
 extern NSString * const NBInfoTestTokenKey;
 
 // Storing the client secret is discouraged for apps not built by NationBuilder.
 extern NSString * const NBInfoClientSecretKey;
+
+typedef void (^NBGenericCompletionHandler)(NSError *error);
 
 @protocol NBDictionarySerializing <NSObject>
 

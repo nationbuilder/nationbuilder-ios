@@ -10,6 +10,7 @@
 
 "label.cancel" = "Cancel";
 "label.close" = "Close";
+"label.ok" = "OK";
 "label.submit" = "Submit";
 
 "message.unknown-error" = "Something went wrong. Please notify the app developer.";
@@ -18,12 +19,39 @@
 
 "title.unknown-error" = "Unknown Error";
 
-// Specific
+// Errors
 
+"message.delete-credential-error" = "Cannot delete keychain credential.";
 "message.http-error.format" = "Service errored fulfilling request, status code: %ld";
+
+"message.invalid-browser" = "Cannot find a valid web browser.";
+"message.invalid-browser.auth-requires-browser" = "A web browser is required to open the authorization URL.";
+"message.invalid-browser.check-safari-installed" = "Ensure Safari or its equivalent is installed.";
+
+"message.invalid-nation-slug" = "Invalid nation slug.";
+"message.invalid-nation-slug.empty" = "Nation slug must be non-empty.";
+"message.invalid-nation-slug.none" = "Nation slug must exist.";
+
+"message.invalid-redirect-url-scheme.none" = "No valid OAuth redirect URL scheme for app.";
+"message.invalid-redirect-url-scheme.no-url-type.format" = "Cannot find a URL type with the URL identifier '%@'.";
+"message.invalid-redirect-url-scheme.suggestion" = "In your main info plist, set a URL type with the URL identifier '%@'.";
+
+"message.nb-redirect-error" = "Service errored fulfilling authorization redirect.";
+"message.nb-redirect-error.no-access-token" = "No 'access_token' query parameter was provided.";
+
 "message.invalid-response-data" = "Invalid response data.";
 "message.invalid-status-code" = "Invalid status code.";
 "message.nb-error.format" = "Service errored fulfilling request, code: %@";
 "message.nb-http-error.format" = "Service errored fulfilling request, status code: %ld (%@)";
 "message.no-json-results-for-key.format" = "No results found at '%@'.";
 "message.request-error.format" = "Service errored fulfilling request: %@";
+
+// Accounts View
+
+"message.provide-nation-slug" = "Please provide your nation's slug.";
+
+"title.add-account" = "Add Account";
+"title.nationbuilder-accounts" = "NationBuilder Accounts";
+"label.sign-in" = "Sign in";
+"label.sign-into-another" = "Sign into another nation";
+"label.sign-out" = "Sign out";

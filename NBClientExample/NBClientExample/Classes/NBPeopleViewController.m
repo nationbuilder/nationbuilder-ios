@@ -10,6 +10,8 @@
 
 #import <NBClient/NBPaginationInfo.h>
 
+#import <NBClient/UI/NBAccountButton.h>
+
 #import "NBPeopleDataSource.h"
 #import "NBPeopleViewFlowLayout.h"
 #import "NBPersonCellView.h"
@@ -37,6 +39,8 @@ static void *observationContext = &observationContext;
 
 @property (nonatomic, strong, readwrite) NSMutableDictionary *nibNames;
 
+@property (nonatomic, strong, readwrite) UILabel *notReadyLabel;
+
 @property (nonatomic, strong) NSIndexPath *selectedIndexPath;
 
 @property (nonatomic, strong) UIBarButtonItem *createButtonItem;
@@ -48,6 +52,7 @@ static void *observationContext = &observationContext;
 @property (nonatomic) NBScrollViewPullActionState refreshState;
 @property (nonatomic) NBScrollViewPullActionState loadMoreState;
 
+- (void)fetchIfNeeded;
 - (IBAction)presentPersonView:(id)sender;
 
 - (void)setUpCreating;
@@ -90,6 +95,7 @@ static void *observationContext = &observationContext;
     [self.nibNames addEntriesFromDictionary:nibNamesOrNil];
     // END: Boilerplate.
     self = [self initWithNibName:self.nibNames[NBNibNameViewKey] bundle:nibBundleOrNil];
+    self.ready = NO;
     return self;
 }
 
@@ -138,6 +144,12 @@ static void *observationContext = &observationContext;
     if (self.navigationController) {
         self.navigationController.delegate = self;
     }
+    if (!self.isReady) {
+        self.collectionView.backgroundView = [[UIView alloc] initWithFrame:self.collectionView.bounds];
+        [self.collectionView.backgroundView addSubview:self.notReadyLabel];
+        [self.notReadyLabel sizeToFit];
+        self.notReadyLabel.center = self.collectionView.backgroundView.center;
+    }
     [self setUpCreating];
     [self setUpDeleting];
     [self setUpPagination];
@@ -147,10 +159,8 @@ static void *observationContext = &observationContext;
 {
     [super viewWillAppear:animated];
     // Try (re)fetching if list is empty.
-    NBPeopleDataSource *dataSource = (id)self.dataSource;
-    if (!dataSource.people.count) {
-        self.busy = YES;
-        [(id)self.dataSource fetchAll];
+    if (self.isReady && !self.isBusy) {
+        [self fetchIfNeeded];
     }
 }
 
@@ -297,7 +307,7 @@ static void *observationContext = &observationContext;
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
     NBPeopleDataSource *dataSource = (id)self.dataSource;
-    NSInteger number = dataSource.paginationInfo ? dataSource.paginationInfo.currentPageNumber : 1;
+    NSInteger number = dataSource.paginationInfo ? dataSource.paginationInfo.currentPageNumber : 0;
     return number;
 }
 
@@ -428,6 +438,40 @@ static void *observationContext = &observationContext;
     }
 }
 
+#pragma mark - Public
+
+- (void)setReady:(BOOL)ready
+{
+    // Boilerplate.
+    static NSString *key;
+    key = key ?: NSStringFromSelector(@selector(isReady));
+    [self willChangeValueForKey:key];
+    _ready = ready;
+    [self didChangeValueForKey:key];
+    // END: Boilerplate.
+    self.createButtonItem.enabled = self.isReady;
+    self.notReadyLabel.hidden = self.isReady;
+    if (self.isReady) {
+        [self fetchIfNeeded];
+    }
+}
+
+- (UILabel *)notReadyLabel
+{
+    if (_notReadyLabel) {
+        return _notReadyLabel;
+    }
+    self.notReadyLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    return _notReadyLabel;
+}
+
+- (void)showAccountButton:(NBAccountButton *)accountButton
+{
+    accountButton.avatarImageView.hidden = YES;
+    UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:accountButton];
+    [self.navigationItem setLeftBarButtonItem:buttonItem animated:YES];
+}
+
 #pragma mark - Private
 
 #pragma mark Fetching
@@ -472,6 +516,15 @@ static void *observationContext = &observationContext;
                          completion:nil];
     } else {
         scrollView.contentInset = contentInset;
+    }
+}
+
+- (void)fetchIfNeeded
+{
+    NBPeopleDataSource *dataSource = (id)self.dataSource;
+    if (!dataSource.people.count) {
+        self.busy = YES;
+        [(id)self.dataSource fetchAll];
     }
 }
 
@@ -575,7 +628,7 @@ static void *observationContext = &observationContext;
 - (void)setUpDeleting
 {
     self.numberToDelete = 0;
-    self.navigationItem.leftBarButtonItem = self.deleteButtonItem;
+    //self.navigationItem.leftBarButtonItem = self.deleteButtonItem;
 }
 
 - (IBAction)updateDeleting:(id)sender

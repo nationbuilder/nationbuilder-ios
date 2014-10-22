@@ -12,23 +12,12 @@
 
 typedef void (^NBAuthenticationCompletionHandler)(NBAuthenticationCredential *credential, NSError *error);
 
-/**
- OAuth 2.0 provides several grant types, covering several different use cases. The following
- grant type string constants are provided:
- 
- `NBAuthenticationGrantTypeCode`: "authorization_code"
- `NBAuthenticationGrantTypeClientCredential`: "client_credentials"
- `NBAuthenticationGrantTypePasswordCredential`: "password"
- `NBAuthenticationGrantTypeRefresh`: "refresh_token"
- */
-extern NSString * const NBAuthenticationGrantTypeCode; // (NOTE: Not implemented.)
-extern NSString * const NBAuthenticationGrantTypeClientCredential; // (NOTE: Not implemented.)
-extern NSString * const NBAuthenticationGrantTypePasswordCredential;
-extern NSString * const NBAuthenticationGrantTypeRefresh; // (NOTE: Not implemented.)
-
 extern NSUInteger const NBAuthenticationErrorCodeService;
+extern NSUInteger const NBAuthenticationErrorCodeURLType;
+extern NSUInteger const NBAuthenticationErrorCodeWebBrowser;
+extern NSUInteger const NBAuthenticationErrorCodeKeychain;
 
-extern NSString * const NBAuthenticationRedirectTokenKey;
+extern NSString * const NBAuthenticationDefaultRedirectPath;
 
 @interface NBAuthenticator : NSObject
 
@@ -36,6 +25,7 @@ extern NSString * const NBAuthenticationRedirectTokenKey;
 @property (nonatomic, strong, readonly) NSString *clientIdentifier;
 @property (nonatomic, strong, readonly) NSString *credentialIdentifier;
 @property (nonatomic, strong, readonly) NBAuthenticationCredential *credential;
+@property (nonatomic, readonly, getter = isAuthenticatingInWebBrowser) BOOL authenticatingInWebBrowser;
 
 @property (nonatomic) BOOL shouldAutomaticallySaveCredential;
 
@@ -49,14 +39,18 @@ extern NSString * const NBAuthenticationRedirectTokenKey;
  @note Completion handlers may be dispatched synchronously. Async should not be assumed.
  */
 
+- (void)authenticateWithRedirectPath:(NSString *)redirectPath
+                   completionHandler:(NBAuthenticationCompletionHandler)completionHandler;
+
 - (NSURLSessionDataTask *)authenticateWithUserName:(NSString *)userName
                                           password:(NSString *)password
                                       clientSecret:(NSString *)clientSecret
                                  completionHandler:(NBAuthenticationCompletionHandler)completionHandler;
 
-- (NSURLSessionDataTask *)authenticateWithSubPath:(NSString *)subPath
-                                       parameters:(NSDictionary *)parameters
-                                completionHandler:(NBAuthenticationCompletionHandler)completionHandler;
+- (BOOL)discardCredential;
+
++ (NSString *)authorizationRedirectApplicationURLScheme;
++ (BOOL)finishAuthenticatingInWebBrowserWithURL:(NSURL *)url error:(NSError **)error;
 
 @end
 
@@ -67,7 +61,7 @@ extern NSString * const NBAuthenticationRedirectTokenKey;
 
 // Designated initializer.
 - (instancetype)initWithAccessToken:(NSString *)accessToken
-                          tokenType:(NSString *)tokenType;
+                          tokenType:(NSString *)tokenTypeOrNil;
 
 + (BOOL)saveCredential:(NBAuthenticationCredential *)credential
         withIdentifier:(NSString *)identifier;

@@ -46,6 +46,18 @@ NSString * const NBClientNumberOfTotalItemsKey = @"total";
 
 #pragma mark - NBDictionarySerializing
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.currentPageNumber = 0;
+        self.numberOfTotalPages = 0;
+        self.numberOfItemsPerPage = 10;
+        self.numberOfTotalItems = 0;
+    }
+    return self;
+}
+
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary
 {
     self = [self init];

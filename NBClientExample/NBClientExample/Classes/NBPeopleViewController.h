@@ -10,4 +10,13 @@
 
 #import "NBUIDefines.h"
 
-@interface NBPeopleViewController : UICollectionViewController <NBViewController> @end
+@class NBAccountButton;
+
+@interface NBPeopleViewController : UICollectionViewController <NBViewController>
+
+@property (nonatomic, getter = isReady) BOOL ready;
+@property (nonatomic, strong, readonly) UILabel *notReadyLabel;
+
+- (void)showAccountButton:(NBAccountButton *)accountButton;
+
+@end

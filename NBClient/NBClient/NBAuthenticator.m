@@ -8,19 +8,29 @@
 
 #import "NBAuthenticator.h"
 
+#import <UIKit/UIApplication.h>
+
 #import "NBDefines.h"
 #import "FoundationAdditions.h"
 
-NSString * const NBAuthenticationGrantTypeCode = @"authorization_code";
-NSString * const NBAuthenticationGrantTypeClientCredential = @"client_credentials";
-NSString * const NBAuthenticationGrantTypePasswordCredential = @"password";
-NSString * const NBAuthenticationGrantTypeRefresh = @"refresh_token";
-
 NSUInteger const NBAuthenticationErrorCodeService = 20;
+NSUInteger const NBAuthenticationErrorCodeURLType = 21;
+NSUInteger const NBAuthenticationErrorCodeWebBrowser = 22;
+NSUInteger const NBAuthenticationErrorCodeKeychain = 23;
 
-NSString * const NBAuthenticationRedirectTokenKey = @"token";
+NSString * const NBAuthenticationDefaultRedirectPath = @"oauth/callback";
+
+// Private consts.
+
+NSString * const NBAuthenticationGrantTypePasswordCredential = @"password";
+NSString * const NBAuthenticationResponseTypeToken = @"token";
+
+NSString * const NBAuthenticationRedirectURLIdentifier = @"com.nationbuilder.oauth";
+NSString * const NBAuthenticationRedirectNotification = @"NBAuthenticationRedirectNotification";
+NSString * const NBAuthenticationRedirectTokenKey = @"access_token";
 
 static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
+static NSString *RedirectURLScheme;
 
 @interface NBAuthenticator ()
 
@@ -28,6 +38,19 @@ static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
 @property (nonatomic, strong, readwrite) NSString *clientIdentifier;
 @property (nonatomic, strong, readwrite) NSString *credentialIdentifier;
 @property (nonatomic, strong, readwrite) NBAuthenticationCredential *credential;
+
+@property (nonatomic, strong) NBAuthenticationCompletionHandler currentInBrowserAuthenticationCompletionHandler;
+
+- (NSURLSessionDataTask *)authenticateWithSubPath:(NSString *)subPath
+                                       parameters:(NSDictionary *)parameters
+                                completionHandler:(NBAuthenticationCompletionHandler)completionHandler;
+
+- (void)authenticateInWebBrowserWithURL:(NSURL *)url
+                      completionHandler:(NBAuthenticationCompletionHandler)completionHandler;
+- (void)finishAuthenticatingInWebBrowserWithNotification:(NSNotification *)notification;
+
+- (NSURLSessionDataTask *)authenticationDataTaskWithURL:(NSURL *)url
+                                      completionHandler:(NBAuthenticationCompletionHandler)completionHandler;
 
 @end
 
@@ -57,9 +80,14 @@ static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
     return self;
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NBAuthenticationRedirectNotification object:nil];
+}
+
 #pragma mark - Accessors
 
-@synthesize credential = _credential;
+@synthesize credential = _credential; // TODO: This shouldn't be needed.
 
 - (NBAuthenticationCredential *)credential
 {
@@ -84,7 +112,36 @@ static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
     }
 }
 
+- (BOOL)isAuthenticatingInWebBrowser
+{
+    return !!self.currentInBrowserAuthenticationCompletionHandler;
+}
+
 #pragma mark - Authenticate API
+
+- (void)authenticateWithRedirectPath:(NSString *)redirectPath
+                   completionHandler:(NBAuthenticationCompletionHandler)completionHandler
+{
+    if (!self.class.authorizationRedirectApplicationURLScheme) {
+        NSError *error =
+        [NSError
+         errorWithDomain:NBErrorDomain
+         code:NBAuthenticationErrorCodeURLType
+         userInfo:@{ NSLocalizedDescriptionKey: @"message.invalid-redirect-url-scheme.none".nb_localizedString,
+                     NSLocalizedFailureReasonErrorKey: [NSString localizedStringWithFormat:
+                                                        @"message.invalid-redirect-url-scheme.no-url-type.format".nb_localizedString,
+                                                        NBAuthenticationRedirectURLIdentifier],
+                     NSLocalizedRecoverySuggestionErrorKey: [NSString localizedStringWithFormat:
+                                                             @"message.invalid-redirect-url-scheme.suggestion".nb_localizedString,
+                                                             NBAuthenticationRedirectURLIdentifier] }];
+        completionHandler(nil, error);
+    }
+    NSDictionary *parameters = @{ @"response_type": NBAuthenticationResponseTypeToken,
+                                  @"redirect_uri":  [NSString stringWithFormat:@"%@://%@",
+                                                     self.class.authorizationRedirectApplicationURLScheme,
+                                                     redirectPath] };
+    [self authenticateWithSubPath:@"/authorize" parameters:parameters completionHandler:completionHandler];
+}
 
 - (NSURLSessionDataTask *)authenticateWithUserName:(NSString *)userName
                                           password:(NSString *)password
@@ -97,6 +154,54 @@ static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
                                   @"password": password };
     return [self authenticateWithSubPath:@"/token" parameters:parameters completionHandler:completionHandler];
 }
+
+- (BOOL)discardCredential
+{
+    self.credential = nil;
+    return [NBAuthenticationCredential deleteCredentialWithIdentifier:self.credentialIdentifier];
+}
+
++ (NSString *)authorizationRedirectApplicationURLScheme
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSArray *urlTypes = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleURLTypes"];
+        for (NSDictionary *type in urlTypes) {
+            if ([type[@"CFBundleURLName"] isEqualToString:NBAuthenticationRedirectURLIdentifier]) {
+                RedirectURLScheme = [type[@"CFBundleURLSchemes"] firstObject];
+                break;
+            }
+        }
+    });
+    return RedirectURLScheme;
+}
+
+// Since this is a stateless method, decoupled from any one authenticator, it
+// must rely on notifications.
++ (BOOL)finishAuthenticatingInWebBrowserWithURL:(NSURL *)url error:(NSError *__autoreleasing *)error
+{
+    BOOL didOpen = NO;
+    NSURLComponents *components = [[NSURLComponents alloc] initWithURL:url resolvingAgainstBaseURL:NO];
+    if ([components.scheme isEqualToString:self.authorizationRedirectApplicationURLScheme]) {
+        NSDictionary *parameters = [components.fragment nb_queryStringParametersWithEncoding:NSUTF8StringEncoding];
+        NSString *accessToken = parameters[NBAuthenticationRedirectTokenKey];
+        if (accessToken) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:NBAuthenticationRedirectNotification object:nil
+                                                              userInfo:@{ NBAuthenticationRedirectTokenKey: accessToken }];
+            didOpen = YES;
+        } else {
+            *error = [NSError
+                      errorWithDomain:NBErrorDomain
+                      code:NBAuthenticationErrorCodeService
+                      userInfo:@{ NSLocalizedDescriptionKey: @"message.nb-redirect-error".nb_localizedString,
+                                  NSLocalizedFailureReasonErrorKey: @"message.nb-redirect-error.no-access-token".nb_localizedString,
+                                  NSLocalizedRecoverySuggestionErrorKey: @"message.unknown-error-solution".nb_localizedString }];
+        }
+    }
+    return didOpen;
+}
+
+#pragma mark - Private
 
 - (NSURLSessionDataTask *)authenticateWithSubPath:(NSString *)subPath
                                        parameters:(NSDictionary *)parameters
@@ -118,18 +223,72 @@ static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
                resolvingAgainstBaseURL:YES];
     
     components.query = [parameters nb_queryStringWithEncoding:NSASCIIStringEncoding
-                                  skipPercentEncodingPairKeys:[NSSet setWithObject:@"username"]
+                                  skipPercentEncodingPairKeys:[NSSet setWithObjects:@"username", @"redirect_uri", nil]
                                    charactersToLeaveUnescaped:nil];
     
-    NSMutableURLRequest *mutableRequest = [NSMutableURLRequest requestWithURL:components.URL
+    NSURLSessionDataTask *task;
+    NSURL *url = components.URL;
+    if (parameters[@"response_type"] == NBAuthenticationResponseTypeToken) {
+        [self authenticateInWebBrowserWithURL:url completionHandler:completionHandler];
+    } else if (parameters[@"grant_type"] == NBAuthenticationGrantTypePasswordCredential) {
+        task = [self authenticationDataTaskWithURL:url completionHandler:completionHandler];
+        [task resume];
+    }
+    return task;
+}
+
+- (void)authenticateInWebBrowserWithURL:(NSURL *)url completionHandler:(NBAuthenticationCompletionHandler)completionHandler
+{
+    UIApplication *application = [UIApplication sharedApplication];
+    NSError *error;
+    if ([application canOpenURL:url]) {
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(finishAuthenticatingInWebBrowserWithNotification:)
+                                                         name:NBAuthenticationRedirectNotification object:nil];
+        });
+        self.currentInBrowserAuthenticationCompletionHandler = completionHandler;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [application openURL:url];
+        });
+    } else {
+        error = [NSError
+                 errorWithDomain:NBErrorDomain
+                 code:NBAuthenticationErrorCodeWebBrowser
+                 userInfo:@{ NSLocalizedDescriptionKey: @"message.invalid-browser".nb_localizedString,
+                             NSLocalizedFailureReasonErrorKey: @"message.invalid-browser.auth-requires-browser".nb_localizedString,
+                             NSLocalizedRecoverySuggestionErrorKey: @"message.invalid-browser.check-safari-installed".nb_localizedString }];
+    }
+    if (error) {
+        completionHandler(nil, error);
+    }
+}
+
+- (void)finishAuthenticatingInWebBrowserWithNotification:(NSNotification *)notification
+{
+    if (!self.isAuthenticatingInWebBrowser || !notification.userInfo[NBAuthenticationRedirectTokenKey]) {
+        return;
+    }
+    self.credential = [[NBAuthenticationCredential alloc] initWithAccessToken:notification.userInfo[NBAuthenticationRedirectTokenKey]
+                                                                                           tokenType:nil];
+    self.currentInBrowserAuthenticationCompletionHandler(self.credential, nil);
+    self.currentInBrowserAuthenticationCompletionHandler = nil;
+}
+
+
+- (NSURLSessionDataTask *)authenticationDataTaskWithURL:(NSURL *)url
+                                      completionHandler:(NBAuthenticationCompletionHandler)completionHandler
+{
+    NSMutableURLRequest *mutableRequest = [NSMutableURLRequest requestWithURL:url
                                                                   cachePolicy:NSURLRequestReloadRevalidatingCacheData
                                                               timeoutInterval:10.0f];
     mutableRequest.HTTPMethod = @"POST";
     [mutableRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [mutableRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     
-    NSURLSessionDataTask *task =
-    [[NSURLSession sharedSession]
+
+    return [[NSURLSession sharedSession]
      dataTaskWithRequest:mutableRequest
      completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
          NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
@@ -189,9 +348,6 @@ static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
              completionHandler(self.credential, error);
          }
      }];
-    [task resume];
-    
-    return task;
 }
 
 @end
@@ -199,12 +355,12 @@ static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
 @implementation NBAuthenticationCredential
 
 - (instancetype)initWithAccessToken:(NSString *)accessToken
-                          tokenType:(NSString *)tokenType
+                          tokenType:(NSString *)tokenTypeOrNil
 {
     self = [super init];
     if (self) {
         self.accessToken = accessToken;
-        self.tokenType = tokenType;
+        self.tokenType = tokenTypeOrNil ? tokenTypeOrNil : @"bearer";
     }
     return self;
 }
