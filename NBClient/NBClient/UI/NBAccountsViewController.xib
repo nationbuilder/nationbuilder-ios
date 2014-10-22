@@ -50,7 +50,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="48" id="wA3-KC-XDQ"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                     <state key="normal" title="Sign out">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -64,7 +64,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="48" id="1su-bR-X5j"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                     <state key="normal" title="Sign in to another nation">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -85,15 +85,15 @@
                             </constraints>
                         </imageView>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="SRk-W4-610">
-                            <rect key="frame" x="97" y="15" width="173" height="21"/>
+                            <rect key="frame" x="97" y="17" width="173" height="20"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nation" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="iiD-vH-WHK">
-                            <rect key="frame" x="97" y="44" width="173" height="21"/>
+                            <rect key="frame" x="97" y="45" width="173" height="20"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -102,7 +102,7 @@
                     <constraints>
                         <constraint firstItem="SRk-W4-610" firstAttribute="leading" secondItem="iiD-vH-WHK" secondAttribute="leading" id="MHT-Sy-RHw"/>
                         <constraint firstAttribute="trailing" secondItem="SRk-W4-610" secondAttribute="trailing" constant="10" id="Too-6C-2ED"/>
-                        <constraint firstItem="SRk-W4-610" firstAttribute="top" secondItem="O26-cx-3cy" secondAttribute="top" constant="15" id="TtC-of-Idd"/>
+                        <constraint firstItem="SRk-W4-610" firstAttribute="top" secondItem="O26-cx-3cy" secondAttribute="top" constant="17" id="TtC-of-Idd"/>
                         <constraint firstItem="iiD-vH-WHK" firstAttribute="top" secondItem="SRk-W4-610" secondAttribute="bottom" constant="8" id="b6K-wt-buL"/>
                         <constraint firstItem="bli-Yd-Mg8" firstAttribute="top" secondItem="O26-cx-3cy" secondAttribute="top" constant="5" id="bBZ-IL-rzY"/>
                         <constraint firstItem="SRk-W4-610" firstAttribute="leading" secondItem="bli-Yd-Mg8" secondAttribute="trailing" constant="20" id="bpM-H8-rzj"/>

@@ -128,8 +128,10 @@ static void *observationContext = &observationContext;
     // END: Boilerplate.
     if (dataSource) {
         self.nameLabel.text = dataSource.name;
+        self.nameLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
         self.avatarImageView.image = [UIImage imageWithData:dataSource.avatarImageData];
     } else {
+        self.nameLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
         self.nameLabel.text = @"label.sign-in".nb_localizedString;
     }
 }
