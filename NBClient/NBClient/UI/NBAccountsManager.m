@@ -114,6 +114,11 @@ NSString * const NBAccountInfoNameKey = @"User Name";
     } else {
         NBAccount *account = [[NBAccount alloc] initWithClientInfo:
                               [self clientInfoForAccountWithNationSlug:nationSlug]];
+        if (!self.clientInfo) {
+            NSMutableDictionary *mutableClientInfo = account.clientInfo.mutableCopy;
+            [mutableClientInfo removeObjectForKey:NBInfoNationNameKey];
+            self.clientInfo = [NSDictionary dictionaryWithDictionary:mutableClientInfo];
+        }
         if ([self.delegate respondsToSelector:@selector(accountsManager:willAddAccount:)]) {
             [self.delegate accountsManager:self willAddAccount:account];
         }
@@ -163,7 +168,7 @@ NSString * const NBAccountInfoNameKey = @"User Name";
 
 - (NSDictionary *)clientInfoForAccountWithNationSlug:(NSString *)nationSlug
 {
-    NSMutableDictionary *mutableClientInfo = self.clientInfo.mutableCopy;
+    NSMutableDictionary *mutableClientInfo = self.clientInfo ? self.clientInfo.mutableCopy : [NSMutableDictionary dictionary];
     mutableClientInfo[NBInfoNationNameKey] = nationSlug;
     return [NSDictionary dictionaryWithDictionary:mutableClientInfo];
 }
