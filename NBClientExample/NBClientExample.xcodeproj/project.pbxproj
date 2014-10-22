@@ -526,10 +526,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "NBClientExample/NBClientExample-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SOURCE_ROOT)/include",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -551,10 +548,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NBClientExample/NBClientExample-Prefix.pch";
 				INFOPLIST_FILE = "NBClientExample/NBClientExample-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SOURCE_ROOT)/include",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
