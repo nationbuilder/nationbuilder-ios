@@ -203,18 +203,15 @@ static void *observationContext = &observationContext;
 
 - (void)setPeople:(NSArray *)people
 {
+    // Guard.
     NSAssert(!people.count || self.paginationInfo, @"Pagination info should be set before adding people.");
+    // Will.
     if (self.paginationInfo) {
         self.paginationInfo.currentPageNumber = !people ? 1 : ceil((double)people.count / self.paginationInfo.numberOfItemsPerPage);
         self.paginationInfo.numberOfTotalAvailableItems = people.count;
     }
-    // Boilerplate.
-    static NSString *key;
-    key = key ?: NSStringFromSelector(@selector(people));
-    [self willChangeValueForKey:key];
+    // Set.
     _people = people;
-    [self didChangeValueForKey:key];
-    // END: Boilerplate.
 }
 
 - (NSMutableDictionary *)mutablePersonDataSources

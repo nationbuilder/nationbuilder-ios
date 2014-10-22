@@ -111,15 +111,12 @@
 
 - (void)setShouldUseTestToken:(BOOL)shouldUseTestToken
 {
+    // Guard.
     if (shouldUseTestToken == _shouldUseTestToken) { return; }
     NSAssert(self.clientInfo[NBInfoTestTokenKey], @"Invalid client info: test token required.");
-    // Boilerplate.
-    static NSString *key;
-    key = key ?: NSStringFromSelector(@selector(shouldUseTestToken));
-    [self willChangeValueForKey:key];
+    // Set.
     _shouldUseTestToken = shouldUseTestToken;
-    [self didChangeValueForKey:key];
-    // END: Boilerplate.
+    // Did.
     self.client = nil;
 }
 

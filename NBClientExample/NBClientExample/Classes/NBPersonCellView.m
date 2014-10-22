@@ -113,17 +113,14 @@ static void *observationContext = &observationContext;
 
 - (void)setDataSource:(id<NBDataSource>)dataSource
 {
+    // Tear down.
     if (self.dataSource) {
         self.deleteSwitch.alpha = self.deleteSwitchDimmedAlpha.floatValue;
         [(id)self.dataSource removeObserver:self forKeyPath:NeedsDeleteKeyPath context:&observationContext];
     }
-    // Boilerplate.
-    static NSString *key;
-    key = key ?: NSStringFromSelector(@selector(dataSource));
-    [self willChangeValueForKey:key];
+    // Set.
     _dataSource = dataSource;
-    [self didChangeValueForKey:key];
-    // END: Boilerplate.
+    // Set up.
     if (self.dataSource) {
         NSAssert([self.dataSource isKindOfClass:[NBPersonDataSource class]], @"Data source must be of certain type.");
         NBPersonDataSource *dataSource = self.dataSource;
@@ -157,36 +154,24 @@ static void *observationContext = &observationContext;
 
 - (void)setBorderColor:(UIColor *)borderColor
 {
-    static NSString *key;
-    key = key ?: NSStringFromSelector(@selector(borderColor));
-    [self willChangeValueForKey:key];
     _borderColor = borderColor;
-    [self didChangeValueForKey:key];
-    // Bind.
+    // Did.
     self.bottomBorderView.backgroundColor = borderColor;
 }
 
 - (void)setSelectedBackgroundColor:(UIColor *)selectedBackgroundColor
 {
-    static NSString *key;
-    key = key ?: NSStringFromSelector(@selector(selectedBackgroundColor));
-    [self willChangeValueForKey:key];
     _selectedBackgroundColor = selectedBackgroundColor;
-    [self didChangeValueForKey:key];
-    // Bind.
+    // Did.
     self.selectedBackgroundView.backgroundColor = selectedBackgroundColor;
 }
 
 - (void)setBordersDisabled:(BOOL)bordersDisabled
 {
-    static NSString *key;
-    key = key ?: NSStringFromSelector(@selector(areBordersDisabled));
-    [self willChangeValueForKey:key];
     _bordersDisabled = bordersDisabled;
-    [self didChangeValueForKey:key];
-    // Bind.
+    // Did.
     for (UIView *view in self.borderViews) {
-        view.hidden = self.bordersDisabled;
+        view.hidden = self.areBordersDisabled;
     }
 }
 

@@ -61,38 +61,26 @@ NSString * const NBAccountInfoNameKey = @"User Name";
 
 - (void)setSelectedAccount:(id<NBAccountViewDataSource>)selectedAccount
 {
+    // Guard.
+    if (selectedAccount == self.selectedAccount) { return; }
+    // Will.
     NBAccount *account;
     if (selectedAccount) {
         account = (NBAccount *)selectedAccount;
     }
     if (account && !account.isActive) {
         [self activateAccount:account];
-        return;
+        return; // Defer.
     }
     if ([self.delegate respondsToSelector:@selector(accountsManager:willSwitchToAccount:)]) {
         [self.delegate accountsManager:self willSwitchToAccount:account];
     }
-    // Boilerplate.
-    static NSString *key;
-    key = key ?: NSStringFromSelector(@selector(selectedAccount));
-    [self willChangeValueForKey:key];
+    // Set.
     _selectedAccount = selectedAccount;
-    [self didChangeValueForKey:key];
-    // END: Boilerplate.
+    // Did.
     if ([self.delegate respondsToSelector:@selector(accountsManager:didSwitchToAccount:)]) {
         [self.delegate accountsManager:self didSwitchToAccount:account];
     }
-}
-
-- (void)setSignedIn:(BOOL)signedIn
-{
-    // Boilerplate.
-    static NSString *key;
-    key = key ?: NSStringFromSelector(@selector(isSignedIn));
-    [self willChangeValueForKey:key];
-    _signedIn = signedIn;
-    [self didChangeValueForKey:key];
-    // END: Boilerplate.
 }
 
 - (BOOL)addAccountWithNationSlug:(NSString *)nationSlug error:(NSError *__autoreleasing *)error

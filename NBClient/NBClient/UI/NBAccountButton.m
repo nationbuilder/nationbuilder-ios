@@ -119,13 +119,8 @@ static void *observationContext = &observationContext;
 
 - (void)setDataSource:(id<NBAccountViewDataSource>)dataSource
 {
-    // Boilerplate.
-    static NSString *key;
-    key = key ?: NSStringFromSelector(@selector(dataSource));
-    [self willChangeValueForKey:key];
     _dataSource = dataSource;
-    [self didChangeValueForKey:key];
-    // END: Boilerplate.
+    // Did.
     if (dataSource) {
         self.nameLabel.text = dataSource.name;
         self.nameLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];

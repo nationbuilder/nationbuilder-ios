@@ -161,13 +161,8 @@ static NSDictionary *DataToFieldKeyPathsMap;
         [(id)self.dataSource removeObserver:self forKeyPath:PersonKeyPath context:&observationContext];
         [(id)self.dataSource removeObserver:self forKeyPath:NBDataSourceErrorKeyPath context:&observationContext];
     }
-    // Boilerplate.
-    static NSString *key;
-    key = key ?: NSStringFromSelector(@selector(dataSource));
-    [self willChangeValueForKey:key];
+    // Set.
     _dataSource = dataSource;
-    [self didChangeValueForKey:key];
-    // END: Boilerplate.
     // Set up.
     if (self.dataSource) {
         NSAssert([self.dataSource isKindOfClass:[NBPersonDataSource class]], @"Data source must be of certain type.");
@@ -181,14 +176,11 @@ static NSDictionary *DataToFieldKeyPathsMap;
 
 - (void)setBusy:(BOOL)busy
 {
+    // Guard.
     if (busy == _busy) { return; }
-    // Boilerplate.
-    static NSString *key;
-    key = key ?: NSStringFromSelector(@selector(isBusy));
-    [self willChangeValueForKey:key];
+    // Set.
     _busy = busy;
-    [self didChangeValueForKey:key];
-    // END: Boilerplate.
+    // Did.
     if (busy) {
         self.navigationItem.titleView = self.busyIndicator;
         [self.busyIndicator startAnimating];

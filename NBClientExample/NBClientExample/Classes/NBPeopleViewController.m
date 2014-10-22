@@ -198,13 +198,8 @@ static void *observationContext = &observationContext;
         [(id)self.dataSource removeObserver:self forKeyPath:PeopleKeyPath context:&observationContext];
         [(id)self.dataSource removeObserver:self forKeyPath:NBDataSourceErrorKeyPath context:&observationContext];
     }
-    // Boilerplate.
-    static NSString *key;
-    key = key ?: NSStringFromSelector(@selector(dataSource));
-    [self willChangeValueForKey:key];
+    // Set.
     _dataSource = dataSource;
-    [self didChangeValueForKey:key];
-    // END: Boilerplate.
     // Set up.
     if (self.dataSource) {
         NSAssert([self.dataSource isKindOfClass:[NBPeopleDataSource class]], @"Data source must be of certain type.");
@@ -217,14 +212,11 @@ static void *observationContext = &observationContext;
 
 - (void)setBusy:(BOOL)busy
 {
+    // Guard.
     if (busy == _busy) { return; }
-    // Boilerplate.
-    static NSString *key;
-    key = key ?: NSStringFromSelector(@selector(isBusy));
-    [self willChangeValueForKey:key];
+    // Set.
     _busy = busy;
-    [self didChangeValueForKey:key];
-    // END: Boilerplate.
+    // Did.
     if (busy) {
         self.navigationItem.titleView = self.busyIndicator;
         [self.busyIndicator startAnimating];
@@ -442,13 +434,8 @@ static void *observationContext = &observationContext;
 
 - (void)setReady:(BOOL)ready
 {
-    // Boilerplate.
-    static NSString *key;
-    key = key ?: NSStringFromSelector(@selector(isReady));
-    [self willChangeValueForKey:key];
     _ready = ready;
-    [self didChangeValueForKey:key];
-    // END: Boilerplate.
+    // Did.
     self.createButtonItem.enabled = self.isReady;
     self.notReadyLabel.hidden = self.isReady;
     if (self.isReady) {
@@ -478,15 +465,13 @@ static void *observationContext = &observationContext;
 
 - (void)setRefreshState:(NBScrollViewPullActionState)refreshState
 {
+    // Guard.
     if (refreshState == _refreshState) { return; }
+    // Will.
     NBScrollViewPullActionState previousState = self.refreshState;
-    // Boilerplate.
-    static NSString *key;
-    key = key ?: NSStringFromSelector(@selector(refreshState));
-    [self willChangeValueForKey:key];
+    // Set.
     _refreshState = refreshState;
-    [self didChangeValueForKey:key];
-    // END: Boilerplate.
+    // Did.
     UIScrollView *scrollView = self.collectionView;
     NBPeopleDataSource *dataSource = (id)self.dataSource;
     NBPeopleViewFlowLayout *layout = (id)self.collectionViewLayout;
@@ -599,29 +584,20 @@ static void *observationContext = &observationContext;
 
 - (void)setNumberToDelete:(NSUInteger)numberToDelete
 {
+    // Will.
     BOOL shouldClear = numberToDelete == 0 && abs((int)numberToDelete - (int)self.numberToDelete) > 0;
     if (shouldClear) {
         NSLog(@"INFO: Clearing %lu pending deletes.", self.numberToDelete);
         [self clearNeedsDeletes:self];
     }
-    // Boilerplate.
-    static NSString *key;
-    key = key ?: NSStringFromSelector(@selector(numberToDelete));
-    [self willChangeValueForKey:key];
+    // Set.
     _numberToDelete = numberToDelete;
-    [self didChangeValueForKey:key];
-    // END: Boilerplate.
 }
 
 - (void)setDeleting:(BOOL)deleting
 {
-    // Boilerplate.
-    static NSString *key;
-    key = key ?: NSStringFromSelector(@selector(isDeleting));
-    [self willChangeValueForKey:key];
     _deleting = deleting;
-    [self didChangeValueForKey:key];
-    // END: Boilerplate.
+    // Did.
     self.numberToDelete = 0;
 }
 
@@ -665,15 +641,13 @@ static void *observationContext = &observationContext;
 
 - (void)setLoadMoreState:(NBScrollViewPullActionState)loadMoreState
 {
+    // Guard.
     if (loadMoreState == _loadMoreState) { return; }
+    // Will.
     NBScrollViewPullActionState previousState = self.loadMoreState;
-    // Boilerplate.
-    static NSString *key;
-    key = key ?: NSStringFromSelector(@selector(loadMoreState));
-    [self willChangeValueForKey:key];
+    // Set.
     _loadMoreState = loadMoreState;
-    [self didChangeValueForKey:key];
-    // END: Boilerplate.
+    // Did.
     UIScrollView *scrollView = self.collectionView;
     NBPeopleDataSource *dataSource = (id)self.dataSource;
     NBPaginationInfo *paginationInfo = dataSource.paginationInfo;

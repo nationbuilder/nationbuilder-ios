@@ -76,7 +76,7 @@ static void *observationContext = &observationContext;
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        IsSignedInKeyPath = NSStringFromSelector(@selector(isSignedIn));
+        IsSignedInKeyPath = @"signedIn";
         SelectedAccountKeyPath = NSStringFromSelector(@selector(selectedAccount));
     });
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -209,13 +209,8 @@ static void *observationContext = &observationContext;
         [(id)self.dataSource removeObserver:self forKeyPath:IsSignedInKeyPath context:&observationContext];
         [(id)self.dataSource removeObserver:self forKeyPath:SelectedAccountKeyPath context:&observationContext];
     }
-    // Boilerplate.
-    static NSString *key;
-    key = key ?: NSStringFromSelector(@selector(dataSource));
-    [self willChangeValueForKey:key];
+    // Set.
     _dataSource = dataSource;
-    [self didChangeValueForKey:key];
-    // END: Boilerplate.
     // Set up.
     if (self.dataSource) {
         [(id)self.dataSource addObserver:self forKeyPath:IsSignedInKeyPath options:0 context:&observationContext];

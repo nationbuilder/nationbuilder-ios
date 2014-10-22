@@ -100,13 +100,8 @@ static NSString *RedirectURLScheme;
 
 - (void)setCredential:(NBAuthenticationCredential *)credential
 {
-    // Boilerplate.
-    static NSString *key;
-    key = key ?: NSStringFromSelector(@selector(credential));
-    [self willChangeValueForKey:key];
     _credential = credential;
-    [self didChangeValueForKey:key];
-    // END: Boilerplate.
+    // Did.
     if (credential && self.shouldAutomaticallySaveCredential) {
         [NBAuthenticationCredential saveCredential:credential withIdentifier:self.credentialIdentifier];
     }

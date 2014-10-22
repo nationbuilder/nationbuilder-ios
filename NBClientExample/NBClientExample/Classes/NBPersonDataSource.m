@@ -110,26 +110,21 @@ static NSString *TagDelimiter = @", ";
 
 - (void)setChanges:(id)changes
 {
+    // Guard.
     NSAssert([_changes isKindOfClass:[NSMutableDictionary class]], @"Invalid argument for changes dictionary.");
-    static NSString *key;
-    key = key ?: NSStringFromSelector(@selector(changes));
-    [self willChangeValueForKey:key];
+    // Set.
     _changes = changes;
-    [self didChangeValueForKey:key];
 }
 
 - (void)setParentDataSource:(id<NBDataSource>)parentDataSource
 {
+    // Tear down.
     if (self.parentDataSource) {
         [self removeObserver:self.parentDataSource forKeyPath:PersonKeyPath];
     }
-    // Boilerplate.
-    static NSString *key;
-    key = key ?: NSStringFromSelector(@selector(parentDataSource));
-    [self willChangeValueForKey:key];
+    // Set.
     _parentDataSource = parentDataSource;
-    [self didChangeValueForKey:key];
-    // END: Boilerplate.
+    // Set up.
     if (self.parentDataSource) {
         [self addObserver:self.parentDataSource forKeyPath:PersonKeyPath options:0 context:NULL];
     }
