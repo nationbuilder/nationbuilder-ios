@@ -40,9 +40,7 @@ static void *observationContext = &observationContext;
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self setUpSubviews];
-        [self updateSubviews];
-        self.dataSource = nil;
+        [self setUp];
     }
     return self;
 }
@@ -54,44 +52,18 @@ static void *observationContext = &observationContext;
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    [self setUpSubviews];
-    [self updateSubviews];
-    self.dataSource = nil;
+    [self setUp];
 }
 - (void)dealloc
 {
     [self tearDownSubviews];
 }
 
-- (void)setUpSubviews
+- (void)setUp
 {
-    self.avatarImageView.layer.cornerRadius = 2.0f;
-    // Set up avatar hiding.
-    [self.avatarImageView addObserver:self forKeyPath:HiddenKeyPath options:0 context:&observationContext];
-    self.originalAvatarImageWidth = self.avatarImageWidth.constant;
-    self.originalAvatarImageMarginRight = self.avatarImageMarginRight.constant;
-}
-- (void)tearDownSubviews
-{
-    [self.avatarImageView removeObserver:self forKeyPath:HiddenKeyPath context:&observationContext];
-}
-- (void)updateSubviews
-{
-    self.nameLabel.textColor = self.tintColor;
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if (context != &observationContext) {
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-        return;
-    }
-    if ([keyPath isEqual:HiddenKeyPath]) {
-        // Toggle avatar hiding.
-        self.avatarImageWidth.constant = self.avatarImageView.isHidden ? 0.0f : self.originalAvatarImageWidth;
-        self.avatarImageMarginRight.constant = self.avatarImageView.isHidden ? 0.0f : self.originalAvatarImageMarginRight;
-        [self setNeedsUpdateConstraints];
-    }
+    self.dataSource = nil;
+    [self setUpSubviews];
+    [self updateSubviews];
 }
 
 #pragma mark - UIControl
@@ -113,6 +85,20 @@ static void *observationContext = &observationContext;
     [self updateSubviews];
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (context != &observationContext) {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+        return;
+    }
+    if ([keyPath isEqual:HiddenKeyPath]) {
+        // Toggle avatar hiding.
+        self.avatarImageWidth.constant = self.avatarImageView.isHidden ? 0.0f : self.originalAvatarImageWidth;
+        self.avatarImageMarginRight.constant = self.avatarImageView.isHidden ? 0.0f : self.originalAvatarImageMarginRight;
+        [self setNeedsUpdateConstraints];
+    }
+}
+
 #pragma mark - Public
 
 #pragma mark Accessors
@@ -129,6 +115,25 @@ static void *observationContext = &observationContext;
         self.nameLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
         self.nameLabel.text = @"label.sign-in".nb_localizedString;
     }
+}
+
+#pragma mark - Private
+
+- (void)setUpSubviews
+{
+    self.avatarImageView.layer.cornerRadius = 2.0f;
+    // Set up avatar hiding.
+    [self.avatarImageView addObserver:self forKeyPath:HiddenKeyPath options:0 context:&observationContext];
+    self.originalAvatarImageWidth = self.avatarImageWidth.constant;
+    self.originalAvatarImageMarginRight = self.avatarImageMarginRight.constant;
+}
+- (void)tearDownSubviews
+{
+    [self.avatarImageView removeObserver:self forKeyPath:HiddenKeyPath context:&observationContext];
+}
+- (void)updateSubviews
+{
+    self.nameLabel.textColor = self.tintColor;
 }
 
 @end
