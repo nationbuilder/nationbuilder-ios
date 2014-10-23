@@ -51,6 +51,7 @@
 		AA90914F19833D01009BE1E9 /* NBPersonCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = AA90914919833D01009BE1E9 /* NBPersonCellView.m */; };
 		AA90915019833D01009BE1E9 /* NBPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA90914B19833D01009BE1E9 /* NBPersonViewController.m */; };
 		AA90915119833D01009BE1E9 /* NBPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA90914B19833D01009BE1E9 /* NBPersonViewController.m */; };
+		AAC01B9519F95B7D0093EEA7 /* pe-icon-7-stroke.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AAC01B9419F95B7D0093EEA7 /* pe-icon-7-stroke.ttf */; };
 		AAEFEAEB19E62F9600777BC1 /* NBAccountButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAEFEAEA19E62F9600777BC1 /* NBAccountButton.xib */; };
 /* End PBXBuildFile section */
 
@@ -106,6 +107,7 @@
 		AA90914919833D01009BE1E9 /* NBPersonCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBPersonCellView.m; path = Classes/NBPersonCellView.m; sourceTree = "<group>"; };
 		AA90914A19833D01009BE1E9 /* NBPersonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPersonViewController.h; path = Classes/NBPersonViewController.h; sourceTree = "<group>"; };
 		AA90914B19833D01009BE1E9 /* NBPersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBPersonViewController.m; path = Classes/NBPersonViewController.m; sourceTree = "<group>"; };
+		AAC01B9419F95B7D0093EEA7 /* pe-icon-7-stroke.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "pe-icon-7-stroke.ttf"; path = "../NBClient/NBClient/UI/pe-icon-7-stroke.ttf"; sourceTree = "<group>"; };
 		AAEFEAEA19E62F9600777BC1 /* NBAccountButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NBAccountButton.xib; path = ../NBClient/NBClient/UI/NBAccountButton.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -235,6 +237,7 @@
 				AA62A14A19F0867200F338D0 /* NationBuilder.strings */,
 				AAEFEAEA19E62F9600777BC1 /* NBAccountButton.xib */,
 				AA84F05319EE0E2D00DAA6B8 /* NBAccountsViewController.xib */,
+				AAC01B9419F95B7D0093EEA7 /* pe-icon-7-stroke.ttf */,
 			);
 			name = NBClient;
 			sourceTree = "<group>";
@@ -317,6 +320,7 @@
 			files = (
 				AA90912D19833B0E009BE1E9 /* NBPeopleViewController.xib in Resources */,
 				AA62A14B19F0867200F338D0 /* NationBuilder.strings in Resources */,
+				AAC01B9519F95B7D0093EEA7 /* pe-icon-7-stroke.ttf in Resources */,
 				AA7904A819E8A0D20007FF3E /* NationBuilder-Info-Local.plist in Resources */,
 				AA602C2E198C3966001A7DB2 /* NBPeoplePageHeaderView.xib in Resources */,
 				AA90913619833B8D009BE1E9 /* Localizable.strings in Resources */,

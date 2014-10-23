@@ -19,3 +19,5 @@ NSString * const NBInfoRedirectPathKey = @"Redirect Path";
 NSString * const NBInfoTestTokenKey = @"Test Token";
 
 NSString * const NBInfoClientSecretKey = @"Client Secret";
+
+NSString * const NBIconFontFamilyName = @"pe-icon-7-stroke";
