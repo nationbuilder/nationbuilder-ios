@@ -454,7 +454,23 @@ static void *observationContext = &observationContext;
 
 - (void)showAccountButton:(NBAccountButton *)accountButton
 {
-    accountButton.avatarImageView.hidden = YES;
+    // In situations where there isn't a lot of space:
+    
+    // 1. You can just show icons that update depending on the data source.
+    
+    accountButton.buttonType = NBAccountButtonTypeIconOnly;
+    
+    // 2. You can just show the name text, which will fall back to sign-in text.
+    /*
+    accountButton.buttonType = NBAccountButtonTypeNameOnly;
+    */
+    // 3. You can only show the avatar, which will fall back to icons. Hip
+    //    circular icons are supported too.
+    /*
+    accountButton.buttonType = NBAccountButtonTypeAvatarOnly;
+    accountButton.shouldUseCircleAvatarFrame = YES;
+    */
+    
     UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:accountButton];
     [self.navigationItem setLeftBarButtonItem:buttonItem animated:YES];
 }

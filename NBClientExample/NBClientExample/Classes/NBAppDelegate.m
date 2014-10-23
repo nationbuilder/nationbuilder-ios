@@ -84,6 +84,7 @@
 {
     // Update the account button.
     self.accountButton.dataSource = account;
+    self.accountButton.contextHasMultipleActiveAccounts = self.accountsManager.accounts.count > 1;
     // If the accounts view was shown to sign in initially, the user probably just wants to start using the app.
     if (account && !self.peopleViewController.ready) {
         // Dismiss the accounts view if needed.
@@ -159,6 +160,8 @@
     if (!self.accountsManager.isSignedIn) {
         self.peopleViewController.notReadyLabel.text = NSLocalizedString(@"message.sign-in", nil);
     }
+    // Pass our account button to the view controller that will show it for
+    // further configuration. Please refer to the method for configuration options;
     [self.peopleViewController showAccountButton:self.accountButton];
     return _peopleViewController;
 }
