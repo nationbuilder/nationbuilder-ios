@@ -10,8 +10,6 @@
 
 #import "NBAccountsViewDefines.h"
 
-@class NBAccountsPickerView;
-
 @interface NBAccountsViewController : UIViewController
 
 @property (nonatomic, weak) id<NBAccountsViewDataSource> dataSource;
@@ -25,7 +23,7 @@
 @property (nonatomic, weak, readonly) UIButton *signOutButton;
 @property (nonatomic, weak, readonly) UIButton *addAccountButton;
 
-@property (nonatomic, weak, readonly) NBAccountsPickerView *accountsPicker;
+@property (nonatomic, weak, readonly) UIPickerView *accountsPicker;
 
 @property (nonatomic, strong) UIColor *borderColor UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) NSNumber *cornerRadius UI_APPEARANCE_SELECTOR;

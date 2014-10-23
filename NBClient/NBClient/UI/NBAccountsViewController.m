@@ -14,8 +14,6 @@
 #import "NBDefines.h"
 #import "UIKitAdditions.h"
 
-#import "NBAccountsPickerView.h"
-
 static NSString *IsSignedInKeyPath;
 static NSString *SelectedAccountKeyPath;
 static void *observationContext = &observationContext;
@@ -30,7 +28,7 @@ static void *observationContext = &observationContext;
 @property (nonatomic, weak, readwrite) IBOutlet UIButton *signOutButton;
 @property (nonatomic, weak, readwrite) IBOutlet UIButton *addAccountButton;
 
-@property (nonatomic, weak, readwrite) IBOutlet NBAccountsPickerView *accountsPicker;
+@property (nonatomic, weak, readwrite) IBOutlet UIPickerView *accountsPicker;
 
 // For account view hiding.
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *accountViewHeight;
