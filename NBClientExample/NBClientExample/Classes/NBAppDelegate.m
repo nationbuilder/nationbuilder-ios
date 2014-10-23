@@ -84,15 +84,19 @@
 {
     // Update the account button.
     self.accountButton.dataSource = account;
-    // If the accounts view was shown to sign in initially, the user probably just wants to start using the app.
-    if (account && !self.peopleViewController.ready) {
-        // Dismiss the accounts view if needed.
-        if (self.rootViewController.visibleViewController == self.accountsViewController) {
-            [self.rootViewController dismissViewControllerAnimated:YES completion:nil];
-        }
+    // If we have a new / different account.
+    if (account) {
+        // Clear out our data.
         self.peopleViewController.dataSource = [[NBPeopleDataSource alloc] initWithClient:account.client];
-        // Set our view controller to ready.
-        self.peopleViewController.ready = YES;
+        // If the accounts view was shown to sign in initially, the user probably just wants to start using the app.
+        if (!self.peopleViewController.ready) {
+            // Dismiss the accounts view if needed.
+            if (self.rootViewController.visibleViewController == self.accountsViewController) {
+                [self.rootViewController dismissViewControllerAnimated:YES completion:nil];
+            }
+            // Set our view controller to ready.
+            self.peopleViewController.ready = YES;
+        }
     // If we're no longer signed in, update our app.
     } else if (!account && !accountsManager.isSignedIn && self.peopleViewController.ready) {
         self.peopleViewController.ready = NO;
