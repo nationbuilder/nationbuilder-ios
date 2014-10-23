@@ -52,5 +52,9 @@
 			</array>
 		</dict>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>pe-icon-7-stroke.ttf</string>
+	</array>
 </dict>
 </plist>

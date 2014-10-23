@@ -192,6 +192,7 @@
             // Success.
             self.person = item;
             [self fetchAvatarWithCompletionHandler:completionHandler];
+            return;
         } else {
             NSLog(@"WARNING: Unhandled case.");
         }

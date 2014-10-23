@@ -50,6 +50,8 @@ static void *observationContext = &observationContext;
 @property (nonatomic) CGFloat originalAccountsPickerBottomMargin;
 
 @property (nonatomic, strong) UIBarButtonItem *closeButtonItem;
+@property (nonatomic, strong) UIButton *closeIconButton;
+
 @property (nonatomic, strong) UIAlertView *nationSlugPromptView;
 @property (nonatomic, strong) UIAlertView *nationSlugErrorView;
 
@@ -170,7 +172,7 @@ static void *observationContext = &observationContext;
 
 - (IBAction)dismiss:(id)sender
 {
-    if (sender == self.closeButtonItem || !sender) {
+    if (sender == self.closeIconButton || !sender) {
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     } else {
         NSLog(@"WARNING: Unhandled sender %@", sender);
@@ -329,10 +331,23 @@ static void *observationContext = &observationContext;
     if (_closeButtonItem) {
         return _closeButtonItem;
     }
-    self.closeButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"label.close".nb_localizedString
-                                                            style:UIBarButtonItemStylePlain
-                                                           target:self action:@selector(dismiss:)];
+    self.closeButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.closeIconButton];
+    [self.closeButtonItem setTitlePositionAdjustment:UIOffsetMake(10.0f, 0.0f) forBarMetrics:UIBarMetricsDefault];
     return _closeButtonItem;
+}
+
+- (UIButton *)closeIconButton
+{
+    if (_closeIconButton) {
+        return _closeIconButton;
+    }
+    static NSString *closeIcon = @"\ue680";
+    self.closeIconButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    self.closeIconButton.titleLabel.font = [UIFont fontWithName:NBIconFontFamilyName size:48.0f];
+    [self.closeIconButton setTitle:closeIcon forState:UIControlStateNormal];
+    [self.closeIconButton addTarget:self action:@selector(dismiss:) forControlEvents:UIControlEventTouchUpInside];
+    [self.closeIconButton sizeToFit];
+    return _closeIconButton;
 }
 
 - (UIAlertView *)nationSlugPromptView
