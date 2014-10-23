@@ -23,6 +23,10 @@ extern NSString * const NBInfoTestTokenKey;
 // Storing the client secret is discouraged for apps not built by NationBuilder.
 extern NSString * const NBInfoClientSecretKey;
 
+// To use our icon font you must add 'pe-icon-7-stroke' to 'Fonts provided by
+// application' in your Info.plist.
+extern NSString * const NBIconFontFamilyName;
+
 typedef void (^NBGenericCompletionHandler)(NSError *error);
 
 @protocol NBDictionarySerializing <NSObject>
