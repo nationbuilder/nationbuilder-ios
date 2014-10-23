@@ -38,14 +38,16 @@ static void *observationContext = &observationContext;
 
 // For sign-out button hiding.
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *signOutButtonHeight;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *signOutButtonBottomMargin;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *signOutButtonTopMargin;
 @property (nonatomic) CGFloat originalSignOutButtonHeight;
-@property (nonatomic) CGFloat originalSignOutButtonBottomMargin;
+@property (nonatomic) CGFloat originalSignOutButtonTopMargin;
 
 // For account picker hiding.
 @property (nonatomic, weak) IBOutlet UIView *accountsPickerContainer;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *accountsPickerHeight;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *accountsPickerBottomMargin;
 @property (nonatomic) CGFloat originalAccountsPickerHeight;
+@property (nonatomic) CGFloat originalAccountsPickerBottomMargin;
 
 @property (nonatomic, strong) UIBarButtonItem *closeButtonItem;
 @property (nonatomic, strong) UIAlertView *nationSlugPromptView;
@@ -400,7 +402,7 @@ static void *observationContext = &observationContext;
 - (void)setUpActionButtons
 {
     self.originalSignOutButtonHeight = self.signOutButtonHeight.constant;
-    self.originalSignOutButtonBottomMargin = self.signOutButtonBottomMargin.constant;
+    self.originalSignOutButtonTopMargin = self.signOutButtonTopMargin.constant;
 }
 
 - (void)toggleSignOutButtonVisibility:(BOOL)visible
@@ -412,7 +414,7 @@ static void *observationContext = &observationContext;
         animated = newHeight != self.signOutButtonHeight.constant;
     }
     self.signOutButtonHeight.constant = newHeight;
-    self.signOutButtonBottomMargin.constant = visible ? self.originalSignOutButtonBottomMargin : 0.0f;
+    self.signOutButtonTopMargin.constant = visible ? self.originalSignOutButtonTopMargin : 0.0f;
     [self updateVisibilityForSubview:self.signOutButton animated:animated withCompletionHandler:completionHandler];
 }
 
@@ -429,6 +431,7 @@ static void *observationContext = &observationContext;
 - (void)setUpAccountsPicker
 {
     self.originalAccountsPickerHeight = self.accountsPickerHeight.constant;
+    self.originalAccountsPickerBottomMargin = self.accountsPickerBottomMargin.constant;
 }
 
 - (void)toggleAccountsPickerVisibility:(BOOL)visible
@@ -440,6 +443,7 @@ static void *observationContext = &observationContext;
         animated = newHeight != self.accountsPickerHeight.constant;
     }
     self.accountsPickerHeight.constant = newHeight;
+    self.accountsPickerBottomMargin.constant = visible ? self.originalAccountsPickerBottomMargin : 0.0f;
     [self updateVisibilityForSubview:self.accountsPickerContainer animated:animated withCompletionHandler:completionHandler];
 }
 
