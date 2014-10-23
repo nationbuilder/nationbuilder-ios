@@ -363,13 +363,6 @@ static void *observationContext = &observationContext;
     self.avatarImageView.layer.borderWidth = 1.0f;
     self.avatarImageView.layer.borderColor = self.imageBorderColor.CGColor;
     self.avatarImageView.layer.cornerRadius = self.imageCornerRadius.floatValue;
-    self.signOutButton.backgroundColor = self.buttonBackgroundColor;
-    self.signOutButton.layer.cornerRadius = self.cornerRadius.floatValue;
-    self.addAccountButton.backgroundColor = self.buttonBackgroundColor;
-    self.addAccountButton.layer.cornerRadius = self.cornerRadius.floatValue;
-    self.accountsPicker.layer.borderWidth = 1.0f;
-    self.accountsPicker.layer.borderColor = self.borderColor.CGColor;
-    self.accountsPicker.layer.cornerRadius = self.cornerRadius.floatValue;
 }
 
 - (void)toggleAccountViewVisibility:(BOOL)visible
@@ -403,6 +396,11 @@ static void *observationContext = &observationContext;
 {
     self.originalSignOutButtonHeight = self.signOutButtonHeight.constant;
     self.originalSignOutButtonTopMargin = self.signOutButtonTopMargin.constant;
+    // Style appearance.
+    self.signOutButton.backgroundColor = self.buttonBackgroundColor;
+    self.signOutButton.layer.cornerRadius = self.cornerRadius.floatValue;
+    self.addAccountButton.backgroundColor = self.buttonBackgroundColor;
+    self.addAccountButton.layer.cornerRadius = self.cornerRadius.floatValue;
 }
 
 - (void)toggleSignOutButtonVisibility:(BOOL)visible
@@ -432,6 +430,10 @@ static void *observationContext = &observationContext;
 {
     self.originalAccountsPickerHeight = self.accountsPickerHeight.constant;
     self.originalAccountsPickerBottomMargin = self.accountsPickerBottomMargin.constant;
+    // Style appearance.
+    self.accountsPicker.layer.borderWidth = 1.0f;
+    self.accountsPicker.layer.borderColor = self.borderColor.CGColor;
+    self.accountsPicker.layer.cornerRadius = self.cornerRadius.floatValue;
 }
 
 - (void)toggleAccountsPickerVisibility:(BOOL)visible
