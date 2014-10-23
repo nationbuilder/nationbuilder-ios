@@ -112,7 +112,8 @@
      
      [[NBAccount alloc] initWithClientInfo:self.customClientInfo];
      
-     Also remember to include
+     Also remember to integrate NBAccountButton and sign-in state support in
+     your view controller.
      */
     return (NBAccount *)self.accountsManager.selectedAccount;
 }
