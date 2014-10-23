@@ -13,10 +13,7 @@
 
 #import "NBPersonDataSource.h"
 
-static NSString *PersonKeyPath;
-static void *observationContext = &observationContext;
-
-@interface NBPeopleDataSource ()
+@interface NBPeopleDataSource () <NBDataSourceDelegate>
 
 @property (nonatomic, weak, readwrite) NBClient *client;
 
@@ -35,20 +32,11 @@ static void *observationContext = &observationContext;
 
 - (instancetype)initWithClient:(NBClient *)client
 {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        PersonKeyPath = NSStringFromSelector(@selector(person));
-    });
     self = [super init];
     if (self) {
         self.client = client;
     }
     return self;
-}
-
-- (void)dealloc
-{
-    self.mutablePersonDataSources = nil;
 }
 
 #pragma mark - Public
@@ -84,27 +72,14 @@ static void *observationContext = &observationContext;
     }];
 }
 
-- (void)deleteAll
-{
-    [self.mutablePersonDataSources enumerateKeysAndObjectsUsingBlock:^(NSNumber *identifier, NBPersonDataSource *dataSource, BOOL *stop) {
-        if (dataSource.needsDelete) {
-            [self.client
-             deletePersonByIdentifier:identifier.unsignedIntegerValue
-             withCompletionHandler:^(NSDictionary *item, NSError *error) {
-                 dataSource.person = nil;
-             }];
-        }
-    }];
-}
-
 #pragma mark - NBCollectionDataSource
 
 // Create child data sources.
 - (id<NBDataSource>)dataSourceForItem:(NSDictionary *)item
 {
     NBPersonDataSource *dataSource = [[NBPersonDataSource alloc] initWithClient:self.client];
+    dataSource.delegate = self;
     dataSource.person = item;
-    dataSource.parentDataSource = self;
     if (item && item[@"id"]) {
         self.mutablePersonDataSources[item[@"id"]] = dataSource;
     }
@@ -122,6 +97,31 @@ static void *observationContext = &observationContext;
         dataSource = [self dataSourceForItem:person];
     }
     return dataSource;
+}
+
+#pragma mark - NBDataSourceDelegate
+
+- (void)dataSource:(id<NBDataSource>)dataSource didChangeValueForKeyPath:(NSString *)keyPath
+{
+    if ([dataSource isKindOfClass:[NBPersonDataSource class]] && [keyPath isEqualToString:NSStringFromSelector(@selector(person))]) {
+        NBPersonDataSource *personDataSource = dataSource;
+        NSMutableArray *people = self.people.mutableCopy;
+        NSDictionary *person = personDataSource.person;
+        if (person) {
+            // Keep `people` synced with `mutablePersonDataSources`.
+            NSUInteger index = [self.people indexOfObjectPassingTest:^BOOL(NSDictionary *aPerson, NSUInteger idx, BOOL *stop) {
+                return [aPerson[@"id"] isEqual:person[@"id"]];
+            }];
+            if (index == NSNotFound) {
+                // Handle creates.
+                [people insertObject:person atIndex:0];
+                self.mutablePersonDataSources[person[@"id"]] = [self dataSourceForItem:person];
+            } else {
+                people[index] = person;
+            }
+            self.people = [NSArray arrayWithArray:people];
+        }
+    }
 }
 
 #pragma mark - NBDataSource
@@ -157,46 +157,6 @@ static void *observationContext = &observationContext;
         [items addObject:[NBPersonDataSource parseClientResults:item]];
     }
     return [NSArray arrayWithArray:items];
-}
-
-#pragma mark - NSKeyValueObserving
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if (context == NULL && [keyPath isEqual:PersonKeyPath]) {
-        NBPersonDataSource *dataSource = object;
-        NSMutableArray *people = self.people.mutableCopy;
-        NSDictionary *person = dataSource.person;
-        if (dataSource.person) {
-            // Keep `people` synced with `mutablePersonDataSources`.
-            NSUInteger index = [self.people indexOfObjectPassingTest:^BOOL(NSDictionary *aPerson, NSUInteger idx, BOOL *stop) {
-                return [aPerson[@"id"] isEqual:person[@"id"]];
-            }];
-            if (index == NSNotFound) {
-                // Handle creates.
-                [people insertObject:person atIndex:0];
-                self.mutablePersonDataSources[person[@"id"]] = [self dataSourceForItem:person];
-            } else {
-                people[index] = person;
-            }
-            self.people = [NSArray arrayWithArray:people];
-        } else {
-            // Handle deletes.
-            NSString *identifier = [self.personDataSources keysOfEntriesPassingTest:^BOOL(NSString *identifier, NBPersonDataSource *aDataSource, BOOL *stop) {
-                return aDataSource == dataSource;
-            }].allObjects.firstObject;
-            // Remove data source and item.
-            [self.mutablePersonDataSources removeObjectForKey:identifier];
-            for (NSDictionary *person in self.people) {
-                if ([person[@"id"] isEqual:identifier]) {
-                    [people removeObject:person];
-                }
-            }
-            self.people = [NSArray arrayWithArray:people];
-        }
-    } else if (context != &observationContext) {
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-    }
 }
 
 #pragma mark - Private

@@ -24,8 +24,8 @@ static NSString *TagDelimiter = @", ";
 @implementation NBPersonDataSource
 
 @synthesize error = _error;
+@synthesize delegate = _delegate;
 @synthesize changes = _changes;
-@synthesize parentDataSource = _parentDataSource;
 
 - (instancetype)initWithClient:(NBClient *)client
 {
@@ -39,11 +39,6 @@ static NSString *TagDelimiter = @", ";
         self.person = @{};
     }
     return self;
-}
-
-- (void)dealloc
-{
-    self.parentDataSource = nil;
 }
 
 #pragma mark - Public
@@ -70,6 +65,9 @@ static NSString *TagDelimiter = @", ";
             return;
         }
         self.person = [self.class parseClientResults:item];
+        if (self.delegate && [self.delegate respondsToSelector:@selector(dataSource:didChangeValueForKeyPath:)]) {
+            [self.delegate dataSource:self didChangeValueForKeyPath:NSStringFromSelector(@selector(person))];
+        }
         self.saveTask = nil;
     };
     if (self.person[@"id"]) {
@@ -114,20 +112,6 @@ static NSString *TagDelimiter = @", ";
     NSAssert([_changes isKindOfClass:[NSMutableDictionary class]], @"Invalid argument for changes dictionary.");
     // Set.
     _changes = changes;
-}
-
-- (void)setParentDataSource:(id<NBDataSource>)parentDataSource
-{
-    // Tear down.
-    if (self.parentDataSource) {
-        [self removeObserver:self.parentDataSource forKeyPath:PersonKeyPath];
-    }
-    // Set.
-    _parentDataSource = parentDataSource;
-    // Set up.
-    if (self.parentDataSource) {
-        [self addObserver:self.parentDataSource forKeyPath:PersonKeyPath options:0 context:NULL];
-    }
 }
 
 + (id)parseChanges:(id)changes

@@ -64,6 +64,8 @@ typedef NS_ENUM(NSUInteger, NBScrollViewPullActionState) {
 - (void)collectionViewCell:(UICollectionViewCell *)cell didSetSelected:(BOOL)selected;
 - (void)collectionViewCell:(UICollectionViewCell *)cell didSetHighlighted:(BOOL)highlighted;
 
+@optional
+
 // Deletion support similar to table views.
 - (void)collectionViewCell:(UICollectionViewCell *)cell didSetNeedsDelete:(BOOL)needsDelete;
 
@@ -91,11 +93,16 @@ typedef NS_ENUM(NSUInteger, NBScrollViewPullActionState) {
 
 @property (nonatomic, weak, readonly) NBClient *client;
 
-@property (nonatomic, weak) id<NBDataSource> parentDataSource;
-
+@property (nonatomic, weak) id delegate;
 @property (nonatomic, strong) id changes;
 
 + (id)parseChanges:(id)changes;
+
+@end
+
+@protocol NBDataSourceDelegate <NSObject>
+
+- (void)dataSource:(id<NBDataSource>)dataSource didChangeValueForKeyPath:(NSString *)keyPath;
 
 @end
 

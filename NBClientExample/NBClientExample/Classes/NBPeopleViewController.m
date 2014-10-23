@@ -44,10 +44,6 @@ static void *observationContext = &observationContext;
 @property (nonatomic, strong) NSIndexPath *selectedIndexPath;
 
 @property (nonatomic, strong) UIBarButtonItem *createButtonItem;
-@property (nonatomic, strong) UIBarButtonItem *deleteButtonItem;
-
-@property (nonatomic) NSUInteger numberToDelete;
-@property (nonatomic, getter = isDeleting) BOOL deleting;
 
 @property (nonatomic) NBScrollViewPullActionState refreshState;
 @property (nonatomic) NBScrollViewPullActionState loadMoreState;
@@ -57,11 +53,6 @@ static void *observationContext = &observationContext;
 
 - (void)setUpCreating;
 - (IBAction)startCreating:(id)sender;
-
-- (void)setUpDeleting;
-- (IBAction)updateDeleting:(id)sender;
-- (IBAction)deleteHighlighted:(id)sender;
-- (IBAction)clearNeedsDeletes:(id)sender;
 
 - (void)setUpPagination;
 - (void)completePaginationSetup;
@@ -76,7 +67,6 @@ static void *observationContext = &observationContext;
 @synthesize dataSource = _dataSource;
 @synthesize busy = _busy;
 @synthesize busyIndicator = _busyIndicator;
-@synthesize cancelButtonItem = _cancelButtonItem;
 
 - (instancetype)initWithNibNames:(NSDictionary *)nibNamesOrNil
                           bundle:(NSBundle *)nibBundleOrNil
@@ -151,7 +141,6 @@ static void *observationContext = &observationContext;
         self.notReadyLabel.center = self.collectionView.backgroundView.center;
     }
     [self setUpCreating];
-    [self setUpDeleting];
     [self setUpPagination];
 }
 
@@ -208,7 +197,7 @@ static void *observationContext = &observationContext;
     }
 }
 
-#pragma mark Busy & Cancel
+#pragma mark Busy
 
 - (void)setBusy:(BOOL)busy
 {
@@ -233,25 +222,6 @@ static void *observationContext = &observationContext;
     }
     self.busyIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     return _busyIndicator;
-}
-
-- (UIBarButtonItem *)cancelButtonItem
-{
-    if (_cancelButtonItem) {
-        return _cancelButtonItem;
-    }
-    self.cancelButtonItem = [[UIBarButtonItem alloc]
-                             initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                             target:self action:@selector(cancelPendingAction:)];
-    return _cancelButtonItem;
-}
-
-- (IBAction)cancelPendingAction:(id)sender
-{
-    if (self.isDeleting) {
-        self.deleting = NO;
-        [self updateDeleting:sender];
-    }
 }
 
 #pragma mark - NSKeyValueObserving
@@ -279,10 +249,6 @@ static void *observationContext = &observationContext;
             }
         }
         [self.collectionView reloadData];
-        if (self.isDeleting) {
-            self.deleting = NO;
-            [self updateDeleting:self];
-        }
     } else if ([keyPath isEqual:NBDataSourceErrorKeyPath] && self.dataSource.error) {
         if (self.isBusy) { // If we were busy refreshing data, now we're not.
             self.busy = NO;
@@ -315,9 +281,8 @@ static void *observationContext = &observationContext;
     NBPersonCellView *cell = (id)[collectionView dequeueReusableCellWithReuseIdentifier:CellReuseIdentifier forIndexPath:indexPath];
     NBPeopleDataSource *dataSource = (id)self.dataSource;
     NSUInteger index = [dataSource.paginationInfo indexOfFirstItemAtPage:(indexPath.section + 1)] + indexPath.item;
-    cell.dataSource = [(id)self.dataSource dataSourceForItemAtIndex:index]; // Automatically calls refreshData.
+    cell.dataSource = [(id)self.dataSource dataSourceForItemAtIndex:index];
     cell.delegate = self;
-    [cell setDeleteSwitchVisible:self.isDeleting animated:NO];
     return cell;
 }
 
@@ -362,11 +327,6 @@ static void *observationContext = &observationContext;
     if (previousCell) {
         previousCell.bottomBorderView.hidden = selected;
     }
-}
-
-- (void)collectionViewCell:(UICollectionViewCell *)cell didSetNeedsDelete:(BOOL)needsDelete
-{
-    self.numberToDelete += needsDelete ? 1 : -1;
 }
 
 #pragma mark - UICollectionViewDelegate
@@ -567,74 +527,6 @@ static void *observationContext = &observationContext;
 - (IBAction)startCreating:(id)sender
 {
     [self performSegueWithIdentifier:ShowPersonSegueIdentifier sender:sender];
-}
-
-#pragma mark Deleting
-
-- (UIBarButtonItem *)deleteButtonItem
-{
-    if (_deleteButtonItem) {
-        return _deleteButtonItem;
-    }
-    self.deleteButtonItem = [[UIBarButtonItem alloc]
-                             initWithBarButtonSystemItem:UIBarButtonSystemItemTrash
-                             target:self action:@selector(updateDeleting:)];
-    return _deleteButtonItem;
-}
-
-- (void)setNumberToDelete:(NSUInteger)numberToDelete
-{
-    // Will.
-    BOOL shouldClear = numberToDelete == 0 && abs((int)numberToDelete - (int)self.numberToDelete) > 0;
-    if (shouldClear) {
-        NSLog(@"INFO: Clearing %lu pending deletes.", self.numberToDelete);
-        [self clearNeedsDeletes:self];
-    }
-    // Set.
-    _numberToDelete = numberToDelete;
-}
-
-- (void)setDeleting:(BOOL)deleting
-{
-    _deleting = deleting;
-    // Did.
-    self.numberToDelete = 0;
-}
-
-- (void)setUpDeleting
-{
-    self.numberToDelete = 0;
-    //self.navigationItem.leftBarButtonItem = self.deleteButtonItem;
-}
-
-- (IBAction)updateDeleting:(id)sender
-{
-    if (sender == self.deleteButtonItem) {
-        if (!self.isDeleting) {
-            self.deleting = YES;
-        } else if (self.numberToDelete > 0) {
-            [self deleteHighlighted:sender];
-        }
-    }
-    UIBarButtonItem *rightButtonItem = self.isDeleting ? self.cancelButtonItem : self.createButtonItem;
-    [self.navigationItem setRightBarButtonItem:rightButtonItem animated:YES];
-    for (NBPersonCellView *cell in self.collectionView.visibleCells) {
-        [cell setDeleteSwitchVisible:self.isDeleting animated:YES];
-    }
-}
-
-- (IBAction)deleteHighlighted:(id)sender
-{
-    self.busy = YES;
-    [(id)self.dataSource deleteAll];
-}
-
-- (IBAction)clearNeedsDeletes:(id)sender
-{
-    NBPeopleDataSource *dataSource = (id)self.dataSource;
-    [dataSource.personDataSources enumerateKeysAndObjectsUsingBlock:^(NSNumber *identifier, NBPersonDataSource *personDataSource, BOOL *stop) {
-        personDataSource.needsDelete = NO;
-    }];
 }
 
 #pragma mark Pagination
