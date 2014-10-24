@@ -35,6 +35,7 @@
     self = [super init];
     if (self) {
         self.client = client;
+        self.paginationInfo = [[NBPaginationInfo alloc] init];
     }
     return self;
 }
@@ -126,20 +127,9 @@
 
 #pragma mark - NBDataSource
 
-- (NBPaginationInfo *)paginationInfo
-{
-    if (_paginationInfo) {
-        return _paginationInfo;
-    }
-    self.paginationInfo = [[NBPaginationInfo alloc] init];
-    return _paginationInfo;
-}
-
 - (void)cleanUp:(NSError *__autoreleasing *)error
 {
-    if (self.paginationInfo) {
-        self.paginationInfo.currentPageNumber = 1;
-    }
+    self.paginationInfo = nil;
     self.people = [NSArray array];
     self.mutablePersonDataSources = nil;
 }
