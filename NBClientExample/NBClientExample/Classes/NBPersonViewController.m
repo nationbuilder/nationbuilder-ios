@@ -168,7 +168,9 @@ static NSDictionary *DataToFieldKeyPathsMap;
         NSAssert([self.dataSource isKindOfClass:[NBPersonDataSource class]], @"Data source must be of certain type.");
         [(id)self.dataSource addObserver:self forKeyPath:PersonKeyPath options:0 context:&observationContext];
         [(id)self.dataSource addObserver:self forKeyPath:NBDataSourceErrorKeyPath options:0 context:&observationContext];
-        [self reloadData];
+        if (self.isViewLoaded) {
+            [self reloadData];
+        }
     }
 }
 
@@ -237,7 +239,9 @@ static NSDictionary *DataToFieldKeyPathsMap;
             // Just exit on create success.
             [self dismiss:self];
         } else {
-            [self reloadData];
+            if (self.isViewLoaded) {
+                [self reloadData];
+            }
         }
     } else if ([keyPath isEqual:NBDataSourceErrorKeyPath] && self.dataSource.error) {
         if (self.isBusy) { // If we were busy refreshing data, now we're not.
@@ -248,7 +252,9 @@ static NSDictionary *DataToFieldKeyPathsMap;
             [self toggleEditing:self];
         } else {
             // Reset changes if we're updating.
-            [self reloadData];
+            if (self.isViewLoaded) {
+                [self reloadData];
+            }
         }
     }
 }
@@ -319,10 +325,6 @@ static NSDictionary *DataToFieldKeyPathsMap;
 
 - (void)reloadData
 {
-    if (!self.isViewLoaded) {
-        NSLog(@"WARNING: View must be loaded for data to be reloaded into it.");
-        return;
-    }
     NBPersonDataSource *dataSource = self.dataSource;
     NSDictionary *data = dataSource.person;
     self.title = data[@"first_name"];
