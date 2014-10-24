@@ -63,6 +63,7 @@ static void *observationContext = &observationContext;
 - (void)didSignOutOfLastAccount;
 
 - (void)updateVisibilityForSubview:(UIView *)subview
+                           visible:(BOOL)visible
                           animated:(BOOL)animated
              withCompletionHandler:(void (^)(void))completionHandler;
 
@@ -137,8 +138,6 @@ static void *observationContext = &observationContext;
         [self promptForNationSlug];
     }
 }
-
-#pragma mark - NBAccounts
 
 #pragma mark - UIAlertViewDelegate
 
@@ -310,15 +309,27 @@ static void *observationContext = &observationContext;
 }
 
 - (void)updateVisibilityForSubview:(UIView *)subview
+                           visible:(BOOL)visible
                           animated:(BOOL)animated
              withCompletionHandler:(void (^)(void))completionHandler
 {
     if (animated) {
         [self.view setNeedsUpdateConstraints];
-        [UIView animateWithDuration:self.appearanceDuration.floatValue delay:0.0f
-                            options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseInOut
-                         animations:^{ [self.view layoutIfNeeded]; }
-                         completion:^(BOOL finished) { if (completionHandler) { completionHandler(); } }];
+        if (visible) {
+            subview.hidden = NO;
+        }
+        [UIView
+         animateWithDuration:self.appearanceDuration.floatValue delay:0.0f
+         options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseInOut
+         animations:^{ [self.view layoutIfNeeded]; }
+         completion:^(BOOL finished) {
+             if (!visible) {
+                 subview.hidden = YES;
+             }
+             if (completionHandler) {
+                 completionHandler();
+             }
+         }];
     } else {
         [subview layoutIfNeeded];
         if (completionHandler) { completionHandler(); }
@@ -391,7 +402,7 @@ static void *observationContext = &observationContext;
     }
     self.accountViewHeight.constant = newHeight;
     self.accountViewBottomMargin.constant  = visible ? self.originalAccountViewBottomMargin : 0.0f;
-    [self updateVisibilityForSubview:self.accountView animated:animated withCompletionHandler:completionHandler];
+    [self updateVisibilityForSubview:self.accountView visible:visible animated:animated withCompletionHandler:completionHandler];
 }
 
 - (void)updateAccountViewAnimated:(BOOL)animated
@@ -429,7 +440,7 @@ static void *observationContext = &observationContext;
     }
     self.signOutButtonHeight.constant = newHeight;
     self.signOutButtonTopMargin.constant = visible ? self.originalSignOutButtonTopMargin : 0.0f;
-    [self updateVisibilityForSubview:self.signOutButton animated:animated withCompletionHandler:completionHandler];
+    [self updateVisibilityForSubview:self.signOutButton visible:visible animated:animated withCompletionHandler:completionHandler];
 }
 
 - (void)updateActionButtonsAnimated:(BOOL)animated
@@ -462,7 +473,7 @@ static void *observationContext = &observationContext;
     }
     self.accountsPickerHeight.constant = newHeight;
     self.accountsPickerBottomMargin.constant = visible ? self.originalAccountsPickerBottomMargin : 0.0f;
-    [self updateVisibilityForSubview:self.accountsPickerContainer animated:animated withCompletionHandler:completionHandler];
+    [self updateVisibilityForSubview:self.accountsPickerContainer visible:visible animated:animated withCompletionHandler:completionHandler];
 }
 
 - (void)updateAccountsPickerAnimated:(BOOL)animated
