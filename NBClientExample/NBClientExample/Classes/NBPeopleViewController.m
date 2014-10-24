@@ -11,6 +11,7 @@
 #import <NBClient/NBPaginationInfo.h>
 
 #import <NBClient/UI/NBAccountButton.h>
+#import <NBClient/UI/UIKitAdditions.h>
 
 #import "NBPeopleDataSource.h"
 #import "NBPeopleViewFlowLayout.h"
@@ -449,6 +450,14 @@ static void *observationContext = &observationContext;
         return _notReadyLabel;
     }
     self.notReadyLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    self.notReadyLabel.text = NSLocalizedString(@"message.sign-in", nil);
+    [self.notReadyLabel sizeToFit];
+    if (!self.collectionView.backgroundView) {
+        self.collectionView.backgroundView = [[UIView alloc] initWithFrame:self.collectionView.bounds];
+    }
+    [self.collectionView.backgroundView addSubview:self.notReadyLabel];
+    [self.notReadyLabel nb_addCenterXConstraintToSuperview];
+    [self.notReadyLabel nb_addCenterYConstraintToSuperview];
     return _notReadyLabel;
 }
 
