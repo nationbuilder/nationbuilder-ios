@@ -17,6 +17,7 @@
 @interface NBAccount : NSObject <NBAccountViewDataSource>
 
 @property (nonatomic, strong, readonly) NBClient *client;
+@property (nonatomic, strong, readonly) NBAuthenticator *authenticator;
 
 @property (nonatomic, strong, readonly) NSDictionary *clientInfo;
 // Will load from the conventional plist with name equal to NBInfoFileName. Useful if your app is only for one nation.

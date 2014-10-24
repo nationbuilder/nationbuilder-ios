@@ -78,7 +78,7 @@
 - (void)accountsManager:(NBAccountsManager *)accountsManager willAddAccount:(NBAccount *)account
 {
 #if DEBUG_LOGIN
-    [NBAuthenticationCredential deleteCredentialWithIdentifier:account.client.authenticator.credentialIdentifier];
+    [NBAuthenticationCredential deleteCredentialWithIdentifier:account.authenticator.credentialIdentifier];
 #endif
 }
 
