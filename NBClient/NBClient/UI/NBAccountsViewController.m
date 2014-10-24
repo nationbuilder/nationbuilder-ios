@@ -343,7 +343,7 @@ static void *observationContext = &observationContext;
     }
     static NSString *closeIcon = @"\ue680";
     self.closeIconButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    self.closeIconButton.titleLabel.font = [UIFont fontWithName:NBIconFontFamilyName size:48.0f];
+    self.closeIconButton.titleLabel.font = [UIFont fontWithName:NBIconFontFamilyName size:44.0f];
     [self.closeIconButton setTitle:closeIcon forState:UIControlStateNormal];
     [self.closeIconButton addTarget:self action:@selector(dismiss:) forControlEvents:UIControlEventTouchUpInside];
     [self.closeIconButton sizeToFit];
