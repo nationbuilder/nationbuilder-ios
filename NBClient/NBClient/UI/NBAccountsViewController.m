@@ -262,6 +262,7 @@ static void *observationContext = &observationContext;
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
+    // NOTE: Only called on user-interaction-driven selection.
     id<NBAccountViewDataSource> account = self.dataSource.accounts[row];
     self.dataSource.selectedAccount = account;
 }
@@ -468,8 +469,13 @@ static void *observationContext = &observationContext;
                withCompletionHandler:(void (^)(void))completionHandler
 {
     [self.accountsPicker reloadAllComponents];
-    [self toggleAccountsPickerVisibility:(self.dataSource.accounts.count > 1)
-                                animated:animated withCompletionHandler:completionHandler];
+    [self toggleAccountsPickerVisibility:(self.dataSource.accounts.count > 1) animated:animated withCompletionHandler:^{
+        // Update selected row.
+        if (self.dataSource.selectedAccount) {
+            NSUInteger index = [self.dataSource.accounts indexOfObject:self.dataSource.selectedAccount];
+            [self.accountsPicker selectRow:index inComponent:0 animated:YES];
+        }
+    }];
 }
 
 @end
