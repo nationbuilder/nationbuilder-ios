@@ -62,6 +62,8 @@ static void *observationContext = &observationContext;
 - (void)prepareForReuse
 {
     self.dataSource = nil;
+    self.highlighted = NO;
+    self.selected = NO;
 }
 
 - (void)setHighlighted:(BOOL)highlighted
