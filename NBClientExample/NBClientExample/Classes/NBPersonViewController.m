@@ -127,7 +127,9 @@ static NSDictionary *DataToFieldKeyPathsMap;
     [self reloadData];
     [self setUpAppearance];
     [self setUpEditing];
-    [self setUpCreating];
+    if (self.mode == NBPersonViewControllerModeCreate) {
+        [self setUpCreating];
+    }
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
@@ -362,11 +364,8 @@ static NSDictionary *DataToFieldKeyPathsMap;
     [DataToFieldKeyPathsMap enumerateKeysAndObjectsUsingBlock:^(NSString *dataKeyPath, NSString *fieldKeyPath, BOOL *stop) {
         [changes setValue:[self valueForKeyPath:fieldKeyPath] forKeyPath:dataKeyPath];
     }];
-    self.busy = YES;
     BOOL willSave = [(id)self.dataSource save];
-    if (!willSave) {
-        self.busy = NO;
-    }
+    self.busy = willSave;
 }
 
 #pragma mark Appearance
@@ -401,11 +400,9 @@ static NSDictionary *DataToFieldKeyPathsMap;
 
 - (void)setUpCreating
 {
-    if (self.mode == NBPersonViewControllerModeCreate) {
-        self.title = NSLocalizedString(@"person.navigation-title.create", nil);
-        NSAssert(self.keyboardDidShowObserver, @"Editing must be set up.");
-        [self toggleEditing:self];
-    }
+    self.title = NSLocalizedString(@"person.navigation-title.create", nil);
+    NSAssert(self.keyboardDidShowObserver, @"Editing must be set up.");
+    [self toggleEditing:self];
 }
 
 #pragma mark Editing
@@ -498,6 +495,8 @@ static NSDictionary *DataToFieldKeyPathsMap;
         [self toggleEditing:self];
     }
 }
+
+#pragma mark Helpers
 
 - (IBAction)presentErrorView:(id)sender
 {

@@ -80,12 +80,9 @@ static NSString *TagDelimiter = @", ";
     }
     return willSave;
 }
-
 - (void)cancelSave
 {
-    if (!self.saveTask) {
-        return;
-    }
+    if (!self.saveTask) { return; }
     [self.saveTask cancel];
 }
 
