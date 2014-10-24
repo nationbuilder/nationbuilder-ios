@@ -161,9 +161,6 @@
     }
     self.peopleViewController = [[NBPeopleViewController alloc] initWithNibNames :nil bundle:nil];
     self.peopleViewController.title = NSLocalizedString(@"people.navigation-title", nil);
-    if (!self.accountsManager.isSignedIn) {
-        self.peopleViewController.notReadyLabel.text = NSLocalizedString(@"message.sign-in", nil);
-    }
     // Pass our account button to the view controller that will show it for
     // further configuration. Please refer to the method for configuration options;
     [self.peopleViewController showAccountButton:self.accountButton];

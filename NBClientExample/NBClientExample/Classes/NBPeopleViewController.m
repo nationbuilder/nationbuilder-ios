@@ -131,15 +131,6 @@ static void *observationContext = &observationContext;
         }
     }
     // END: Boilerplate.
-    if (self.navigationController) {
-        self.navigationController.delegate = self;
-    }
-    if (!self.isReady) {
-        self.collectionView.backgroundView = [[UIView alloc] initWithFrame:self.collectionView.bounds];
-        [self.collectionView.backgroundView addSubview:self.notReadyLabel];
-        [self.notReadyLabel sizeToFit];
-        self.notReadyLabel.center = self.collectionView.backgroundView.center;
-    }
     [self setUpCreating];
     [self setUpPagination];
 }
@@ -413,6 +404,13 @@ static void *observationContext = &observationContext;
         return _notReadyLabel;
     }
     self.notReadyLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    self.notReadyLabel.text = NSLocalizedString(@"message.sign-in", nil);
+    [self.notReadyLabel sizeToFit];
+    if (!self.collectionView.backgroundView) {
+        self.collectionView.backgroundView = [[UIView alloc] initWithFrame:self.collectionView.bounds];
+    }
+    [self.collectionView.backgroundView addSubview:self.notReadyLabel];
+    self.notReadyLabel.center = self.collectionView.backgroundView.center;
     return _notReadyLabel;
 }
 
