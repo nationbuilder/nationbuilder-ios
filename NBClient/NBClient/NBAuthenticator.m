@@ -76,6 +76,9 @@ static NSString *RedirectURLScheme;
         self.clientIdentifier = clientIdentifier;
         self.credentialIdentifier = self.baseURL.host;
         self.shouldAutomaticallySaveCredential = YES;
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(finishAuthenticatingInWebBrowserWithNotification:)
+                                                     name:NBAuthenticationRedirectNotification object:nil];
     }
     return self;
 }
@@ -237,12 +240,6 @@ static NSString *RedirectURLScheme;
     UIApplication *application = [UIApplication sharedApplication];
     NSError *error;
     if ([application canOpenURL:url]) {
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            [[NSNotificationCenter defaultCenter] addObserver:self
-                                                     selector:@selector(finishAuthenticatingInWebBrowserWithNotification:)
-                                                         name:NBAuthenticationRedirectNotification object:nil];
-        });
         self.currentInBrowserAuthenticationCompletionHandler = completionHandler;
         dispatch_async(dispatch_get_main_queue(), ^{
             [application openURL:url];
@@ -266,7 +263,7 @@ static NSString *RedirectURLScheme;
         return;
     }
     self.credential = [[NBAuthenticationCredential alloc] initWithAccessToken:notification.userInfo[NBAuthenticationRedirectTokenKey]
-                                                                                           tokenType:nil];
+                                                                    tokenType:nil];
     self.currentInBrowserAuthenticationCompletionHandler(self.credential, nil);
     self.currentInBrowserAuthenticationCompletionHandler = nil;
 }
