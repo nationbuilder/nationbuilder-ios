@@ -130,6 +130,7 @@ NSString * const NBAccountInfoNameKey = @"User Name";
         [self deactivateAccount:self.selectedAccount];
         didSignOut = YES;
     }
+    self.selectedAccount = self.accounts.firstObject;
     return didSignOut;
 }
 
