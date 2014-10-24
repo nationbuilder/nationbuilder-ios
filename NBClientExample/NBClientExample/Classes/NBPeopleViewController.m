@@ -395,6 +395,9 @@ static void *observationContext = &observationContext;
     layout.shouldShowRefresh = self.isReady;
     if (self.isReady) {
         [self fetchIfNeeded];
+    } else {
+        [self.dataSource cleanUp:NULL];
+        [self.collectionView reloadData];
     }
 }
 
