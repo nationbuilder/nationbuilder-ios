@@ -24,3 +24,35 @@
 }
 
 @end
+
+@implementation UIView (NBAdditions)
+
+- (NSLayoutConstraint *)nb_addCenterXConstraintToSuperview
+{
+    if (self.translatesAutoresizingMaskIntoConstraints) {
+        self.translatesAutoresizingMaskIntoConstraints = NO;
+    }
+    NSLayoutConstraint *constraint =
+    [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeCenterX
+                                 relatedBy:NSLayoutRelationEqual
+                                    toItem:self.superview attribute:NSLayoutAttributeCenterX
+                                multiplier:1.0f constant:0.0f];
+    [self.superview addConstraint:constraint];
+    return constraint;
+}
+
+- (NSLayoutConstraint *)nb_addCenterYConstraintToSuperview
+{
+    if (self.translatesAutoresizingMaskIntoConstraints) {
+        self.translatesAutoresizingMaskIntoConstraints = NO;
+    }
+    NSLayoutConstraint *constraint =
+    [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeCenterY
+                                 relatedBy:NSLayoutRelationEqual
+                                    toItem:self.superview attribute:NSLayoutAttributeCenterY
+                                multiplier:1.0f constant:0.0f];
+    [self.superview addConstraint:constraint];
+    return constraint;
+}
+
+@end

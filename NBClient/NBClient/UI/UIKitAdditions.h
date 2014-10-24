@@ -13,3 +13,10 @@
 + (UIAlertView *)nb_genericAlertViewWithError:(NSError *)error;
 
 @end
+
+@interface UIView (NBAdditions)
+
+- (NSLayoutConstraint *)nb_addCenterXConstraintToSuperview;
+- (NSLayoutConstraint *)nb_addCenterYConstraintToSuperview;
+
+@end
