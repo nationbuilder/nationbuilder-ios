@@ -341,6 +341,7 @@ static void *observationContext = &observationContext;
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    if (!self.isReady) { return; }
     NBPeopleViewFlowLayout *layout = (id)self.collectionViewLayout;
     CGFloat offsetOverflow;
     CGFloat requiredOffsetOverflow = layout.requiredContentOffsetOverflow.floatValue;
@@ -398,6 +399,9 @@ static void *observationContext = &observationContext;
     // Did.
     self.createButtonItem.enabled = self.isReady;
     self.notReadyLabel.hidden = self.isReady;
+    NBPeopleViewFlowLayout *layout = (id)self.collectionViewLayout;
+    layout.shouldShowLoadMore = self.isReady;
+    layout.shouldShowRefresh = self.isReady;
     if (self.isReady) {
         [self fetchIfNeeded];
     }
