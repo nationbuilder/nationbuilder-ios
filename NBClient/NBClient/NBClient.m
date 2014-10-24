@@ -113,6 +113,14 @@ NSString * const NBClientDefaultBaseURLFormat = @"https://%@.nationbuilder.com";
     return _apiVersion;
 }
 
+- (void)setApiKey:(NSString *)apiKey
+{
+    _apiKey = apiKey;
+    if (!apiKey) {
+        self.baseURLComponents = nil;
+    }
+}
+
 - (void)setAuthenticator:(NBAuthenticator *)authenticator
 {
     _authenticator = authenticator;
@@ -139,7 +147,7 @@ NSString * const NBClientDefaultBaseURLFormat = @"https://%@.nationbuilder.com";
         return _baseURLComponents;
     }
     self.baseURLComponents = [NSURLComponents componentsWithURL:self.baseURL resolvingAgainstBaseURL:YES];
-    NSDictionary *queryParameters = @{ @"access_token": self.apiKey };
+    NSDictionary *queryParameters = @{ @"access_token": self.apiKey ?: @"" };
     _baseURLComponents.path = [NSString stringWithFormat:@"/api/%@", self.apiVersion];
     _baseURLComponents.query = [queryParameters nb_queryStringWithEncoding:NSASCIIStringEncoding
                                                skipPercentEncodingPairKeys:[NSSet setWithObject:@"email"]
