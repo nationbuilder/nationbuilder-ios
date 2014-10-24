@@ -20,6 +20,8 @@ static NSString *TagDelimiter = @", ";
 @property (nonatomic, strong) NSURLSessionDataTask *saveTask;
 @property (nonatomic, strong) NSURLSessionDataTask *deleteTask;
 
+@property (nonatomic, strong) NSDictionary *realChanges;
+
 @end
 
 @implementation NBPersonDataSource
@@ -47,35 +49,36 @@ static NSString *TagDelimiter = @", ";
 - (BOOL)save
 {
     BOOL willSave = NO;
-    NSMutableDictionary *realChanges = [NSMutableDictionary dictionary];
-    [self.changes enumerateKeysAndObjectsUsingBlock:^(NSString *key, id obj, BOOL *stop) {
-        id original = self.person[key];
-        if (![obj isEqual:original]) {
-            realChanges[key] = obj;
-        }
-    }];
+    // Guard.
+    NSDictionary *realChanges = [self realChanges];
     if (!realChanges.count) {
         NSLog(@"INFO: No changes detected. Aborting save.");
         return willSave;
     }
+    // Save.
     willSave = YES;
     NSMutableDictionary *parsedChanges = [self.class parseChanges:realChanges];
     void (^completion)(NSDictionary *, NSError *) = ^(NSDictionary *item, NSError *error) {
+        // Handle client error.
         if (error) {
             self.error = [self.class parseClientError:error];
             return;
         }
+        // Update and notify.
         self.person = [self.class parseClientResults:item];
         if (self.delegate && [self.delegate respondsToSelector:@selector(dataSource:didChangeValueForKeyPath:)]) {
             [self.delegate dataSource:self didChangeValueForKeyPath:NSStringFromSelector(@selector(person))];
         }
+        // Teardown canceling.
         self.saveTask = nil;
     };
     if (self.person[@"id"]) {
+        // Update existing.
         self.saveTask = [self.client savePersonByIdentifier:[self.person[@"id"] unsignedIntegerValue]
                                              withParameters:parsedChanges
                                           completionHandler:completion];
     } else {
+        // Create new.
         self.saveTask = [self.client createPersonWithParameters:parsedChanges
                                               completionHandler:completion];
     }
@@ -94,10 +97,12 @@ static NSString *TagDelimiter = @", ";
     [self.client
      deletePersonByIdentifier:[self.person[@"id"] unsignedIntegerValue]
      withCompletionHandler:^(NSDictionary *item, NSError *error) {
+         // Handle client error.
          if (error) {
              self.error = [self.class parseClientError:error];
              return;
          }
+         // Update and notify.
          [self cleanUp:&error];
          if (error) {
              self.error = error;
@@ -106,6 +111,7 @@ static NSString *TagDelimiter = @", ";
          if (self.delegate && [self.delegate respondsToSelector:@selector(dataSource:didChangeValueForKeyPath:)]) {
              [self.delegate dataSource:self didChangeValueForKeyPath:NSStringFromSelector(@selector(person))];
          }
+         // Teardown canceling.
          self.deleteTask = nil;
      }];
     return willDelete;
@@ -114,6 +120,20 @@ static NSString *TagDelimiter = @", ";
 {
     if (!self.deleteTask) { return; }
     [self.deleteTask cancel];
+}
+
+#pragma mark - Private
+
+- (NSDictionary *)realChanges
+{
+    NSMutableDictionary *realChanges = [NSMutableDictionary dictionary];
+    [self.changes enumerateKeysAndObjectsUsingBlock:^(NSString *key, id obj, BOOL *stop) {
+        id original = self.person[key];
+        if (![obj isEqual:original]) {
+            realChanges[key] = obj;
+        }
+    }];
+    return realChanges;
 }
 
 #pragma mark - NBDataSource

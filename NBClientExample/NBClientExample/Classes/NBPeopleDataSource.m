@@ -143,7 +143,7 @@
 - (void)cleanUp:(NSError *__autoreleasing *)error
 {
     self.paginationInfo = nil;
-    self.people = [NSArray array];
+    self.people = nil;
     self.mutablePersonDataSources = nil;
 }
 
