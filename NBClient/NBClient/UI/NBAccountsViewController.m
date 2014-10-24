@@ -143,26 +143,19 @@ static void *observationContext = &observationContext;
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
-    if (alertView == self.nationSlugPromptView) {
-        NSString *submitText = @"label.submit".nb_localizedString;
-        if ([buttonTitle isEqualToString:submitText]) {
-            __block NSError *error;
-            NSString *nationSlug = [alertView textFieldAtIndex:0].text;
-            BOOL didAdd = [self.dataSource addAccountWithNationSlug:nationSlug error:&error];
-            if (!didAdd) {
-                // Work around the fact automatic alert dismissal can't be prevented.
-                self.nationSlugErrorView = [UIAlertView nb_genericAlertViewWithError:error];
-                self.nationSlugErrorView.delegate = self;
-                [self.nationSlugErrorView show];
-            }
+    if (alertView == self.nationSlugPromptView && buttonIndex != alertView.cancelButtonIndex) {
+        __block NSError *error;
+        NSString *nationSlug = [alertView textFieldAtIndex:0].text;
+        BOOL didAdd = [self.dataSource addAccountWithNationSlug:nationSlug error:&error];
+        if (!didAdd) {
+            // Work around the fact automatic alert dismissal can't be prevented.
+            self.nationSlugErrorView = [UIAlertView nb_genericAlertViewWithError:error];
+            self.nationSlugErrorView.delegate = self;
+            [self.nationSlugErrorView show];
         }
     } else if (alertView == self.nationSlugErrorView) {
-        NSString *okText = @"label.ok".nb_localizedString;
-        if ([buttonTitle isEqualToString:okText]) {
-            [self promptForNationSlug];
-        }
-    } else {
+        [self promptForNationSlug];
+    } else if (buttonIndex != alertView.cancelButtonIndex){
         NSLog(@"WARNING: Unhandled case.");
     }
 }
