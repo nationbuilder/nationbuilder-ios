@@ -19,4 +19,7 @@
 - (BOOL)save;
 - (void)cancelSave;
 
+- (BOOL)nb_delete;
+- (void)cancelDelete;
+
 @end

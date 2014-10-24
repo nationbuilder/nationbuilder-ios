@@ -121,6 +121,19 @@
                 people[index] = person;
             }
             self.people = [NSArray arrayWithArray:people];
+        } else {
+            // Handle deletes.
+            NSString *identifier = [self.personDataSources keysOfEntriesPassingTest:^BOOL(NSString *identifier, NBPersonDataSource *aDataSource, BOOL *stop) {
+                return aDataSource == dataSource;
+            }].allObjects.firstObject;
+            // Remove data source and item.
+            [self.mutablePersonDataSources removeObjectForKey:identifier];
+            for (NSDictionary *person in self.people) {
+                if ([person[@"id"] isEqual:identifier]) {
+                    [people removeObject:person];
+                }
+            }
+            self.people = [NSArray arrayWithArray:people];
         }
     }
 }

@@ -18,6 +18,7 @@ static NSString *TagDelimiter = @", ";
 @property (nonatomic, weak) NBClient *client;
 
 @property (nonatomic, strong) NSURLSessionDataTask *saveTask;
+@property (nonatomic, strong) NSURLSessionDataTask *deleteTask;
 
 @end
 
@@ -84,6 +85,35 @@ static NSString *TagDelimiter = @", ";
 {
     if (!self.saveTask) { return; }
     [self.saveTask cancel];
+}
+
+- (BOOL)nb_delete
+{
+    BOOL willDelete = YES;
+    self.deleteTask =
+    [self.client
+     deletePersonByIdentifier:[self.person[@"id"] unsignedIntegerValue]
+     withCompletionHandler:^(NSDictionary *item, NSError *error) {
+         if (error) {
+             self.error = [self.class parseClientError:error];
+             return;
+         }
+         [self cleanUp:&error];
+         if (error) {
+             self.error = error;
+             return;
+         }
+         if (self.delegate && [self.delegate respondsToSelector:@selector(dataSource:didChangeValueForKeyPath:)]) {
+             [self.delegate dataSource:self didChangeValueForKeyPath:NSStringFromSelector(@selector(person))];
+         }
+         self.deleteTask = nil;
+     }];
+    return willDelete;
+}
+- (void)cancelDelete
+{
+    if (!self.deleteTask) { return; }
+    [self.deleteTask cancel];
 }
 
 #pragma mark - NBDataSource

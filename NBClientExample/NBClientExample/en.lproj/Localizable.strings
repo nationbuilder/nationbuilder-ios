@@ -6,19 +6,29 @@
   Copyright (c) 2014 NationBuilder. All rights reserved.
 */
 
-"pagination.page-title.format" = "Page %1$ld / %2$ld"; // Note the custom whitespacing.
-"pagination.item-title.format" = "%1$ld – %2$ld"; // Note the custom whitespacing.
+// General
 
-"people.navigation-title" = "People";
-
-"person.full-name.format" = "%1$@ %2$@";
-"person.name-unknown" = "Unknown";
-"person.navigation-title.create" = "New Person";
-
-"label.ok" = "OK";
+"label.cancel" = "Cancel";
+"label.confirm" = "Confirm";
 "label.load-more" = "Load More";
+"label.ok" = "OK";
 "label.refresh" = "Refresh";
 
 "message.sign-in" = "Please sign in.";
 
+"pagination.item-title.format" = "%1$ld – %2$ld"; // Note the custom whitespacing.
+"pagination.page-title.format" = "Page %1$ld / %2$ld"; // Note the custom whitespacing.
+
 "title.error" = "Error";
+
+// People
+
+"people.navigation-title" = "People";
+
+// Person
+
+"person.confirm-delete.message.format" = "Are you sure you want to delete %@ and all associated data?";
+"person.confirm-delete.title" = "Confirm Delete";
+"person.full-name.format" = "%1$@ %2$@";
+"person.name-unknown" = "Unknown";
+"person.navigation-title.create" = "New Person";

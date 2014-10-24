@@ -26,7 +26,7 @@ static NSDictionary *DataToFieldKeyPathsMap;
 
 @interface NBPersonViewController ()
 
-<UITextFieldDelegate, UITextViewDelegate>
+<UITextFieldDelegate, UITextViewDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, strong, readwrite) NSMutableDictionary *nibNames;
 
@@ -60,8 +60,12 @@ static NSDictionary *DataToFieldKeyPathsMap;
 @property (nonatomic, readonly, getter = isPresentedAsModal) BOOL presentedAsModal;
 @property (nonatomic, strong) UIBarButtonItem *closeButtonItem;
 
+@property (nonatomic, strong) UIBarButtonItem *deleteButtonItem;
+@property (nonatomic, strong) UIAlertView *deleteConfirmationView;
+
 - (void)reloadData;
 - (void)saveData;
+- (void)deleteData;
 
 - (void)setUpAppearance;
 
@@ -73,6 +77,9 @@ static NSDictionary *DataToFieldKeyPathsMap;
 - (IBAction)toggleEditing:(id)sender;
 
 - (void)changeToNextField;
+
+- (void)setUpDeleting;
+- (void)tearDownDeleting;
 
 - (IBAction)presentErrorView:(id)sender;
 - (IBAction)dismiss:(id)sender;
@@ -112,6 +119,7 @@ static NSDictionary *DataToFieldKeyPathsMap;
 {
     self.dataSource = nil;
     [self tearDownEditing];
+    [self tearDownDeleting];
 }
 
 - (void)didReceiveMemoryWarning
@@ -129,6 +137,8 @@ static NSDictionary *DataToFieldKeyPathsMap;
     [self setUpEditing];
     if (self.mode == NBPersonViewControllerModeCreate) {
         [self setUpCreating];
+    } else {
+        [self setUpDeleting];
     }
 }
 
@@ -220,6 +230,7 @@ static NSDictionary *DataToFieldKeyPathsMap;
     if (self.mode == NBPersonViewControllerModeCreate) {
         [self dismiss:sender];
     } else {
+        // Keep editing.
         [self toggleEditing:sender];
     }
 }
@@ -232,6 +243,7 @@ static NSDictionary *DataToFieldKeyPathsMap;
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
         return;
     }
+    NBPersonDataSource *dataSource = self.dataSource;
     // Update when our data source changes.
     if ([keyPath isEqual:PersonKeyPath]) {
         if (self.isBusy) { // If we were busy refreshing data, now we're not.
@@ -240,7 +252,11 @@ static NSDictionary *DataToFieldKeyPathsMap;
         if (self.mode == NBPersonViewControllerModeCreate) {
             // Just exit on create success.
             [self dismiss:self];
+        } else if (!dataSource.person) {
+            // Also exit on delete success.
+            [self dismiss:self];
         } else {
+            // Updated.
             if (self.isViewLoaded) {
                 [self reloadData];
             }
@@ -251,6 +267,7 @@ static NSDictionary *DataToFieldKeyPathsMap;
         }
         [self presentErrorView:self];
         if (self.mode == NBPersonViewControllerModeCreate) {
+            // Keep editing.
             [self toggleEditing:self];
         } else {
             // Reset changes if we're updating.
@@ -293,6 +310,15 @@ static NSDictionary *DataToFieldKeyPathsMap;
         shouldChange = NO;
     }
     return shouldChange;
+}
+
+#pragma mark - UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView == self.deleteConfirmationView && buttonIndex != alertView.cancelButtonIndex) {
+        [self confirmDeleting:alertView];
+    }
 }
 
 #pragma mark - Private
@@ -354,6 +380,8 @@ static NSDictionary *DataToFieldKeyPathsMap;
     [DataToFieldKeyPathsMap enumerateKeysAndObjectsUsingBlock:^(NSString *dataKeyPath, NSString *fieldKeyPath, BOOL *stop) {
         [self setValue:[data valueForKeyPath:dataKeyPath] forKeyPath:fieldKeyPath];
     }];
+    // Invalidate any views.
+    self.deleteConfirmationView = nil;
 }
 
 - (void)saveData
@@ -366,6 +394,12 @@ static NSDictionary *DataToFieldKeyPathsMap;
     }];
     BOOL willSave = [(id)self.dataSource save];
     self.busy = willSave;
+}
+
+- (void)deleteData
+{
+    BOOL willDelete = [(id)self.dataSource nb_delete];
+    self.busy = willDelete;
 }
 
 #pragma mark Appearance
@@ -493,6 +527,56 @@ static NSDictionary *DataToFieldKeyPathsMap;
     } else {
         [self.activeField resignFirstResponder]; // Animates.
         [self toggleEditing:self];
+    }
+}
+
+#pragma mark Deleting
+
+- (void)setUpDeleting
+{
+    [self.navigationItem setRightBarButtonItems:
+     [self.navigationItem.rightBarButtonItems arrayByAddingObject:self.deleteButtonItem]];
+}
+- (void)tearDownDeleting
+{
+    [self.deleteConfirmationView dismissWithClickedButtonIndex:NSNotFound animated:NO];
+}
+
+- (UIBarButtonItem *)deleteButtonItem
+{
+    if (_deleteButtonItem) {
+        return _deleteButtonItem;
+    }
+    self.deleteButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash
+                                                                          target:self action:@selector(confirmDeleting:)];
+    return _deleteButtonItem;
+}
+
+- (UIAlertView *)deleteConfirmationView
+{
+    if (_deleteConfirmationView) {
+        return _deleteConfirmationView;
+    }
+    NBPersonDataSource *dataSource = self.dataSource;
+    self.deleteConfirmationView = [[UIAlertView alloc]
+                                   initWithTitle:NSLocalizedString(@"person.confirm-delete.title", nil)
+                                   message:[NSString localizedStringWithFormat:
+                                            NSLocalizedString(@"person.confirm-delete.message.format", nil),
+                                            dataSource.person[@"full_name"]]
+                                   delegate:self
+                                   cancelButtonTitle:NSLocalizedString(@"label.cancel", nil)
+                                   otherButtonTitles:NSLocalizedString(@"label.confirm", nil), nil];
+    return _deleteConfirmationView;
+}
+
+- (IBAction)confirmDeleting:(id)sender
+{
+    if (sender == self.deleteButtonItem) {
+        // Start.
+        [self.deleteConfirmationView show];
+    } else if (sender == self.deleteConfirmationView) {
+        // Continue.
+        [self deleteData];
     }
 }
 
