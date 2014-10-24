@@ -508,6 +508,7 @@ static void *observationContext = &observationContext;
         NSUInteger startItemIndex = [paginationInfo indexOfFirstItemAtPage:(self.selectedIndexPath.section + 1)];
         viewController.dataSource = [(id)self.dataSource dataSourceForItemAtIndex:startItemIndex + self.selectedIndexPath.item];
     }
+    self.navigationController.delegate = self;
     if (shouldPresentAsModal) {
         // Use modals, with smaller ones for iPad.
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
