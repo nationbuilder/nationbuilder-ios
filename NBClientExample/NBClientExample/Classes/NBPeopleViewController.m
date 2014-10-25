@@ -11,6 +11,7 @@
 #import <NBClient/NBPaginationInfo.h>
 
 #import <NBClient/UI/NBAccountButton.h>
+#import <NBClient/UI/UIKitAdditions.h>
 
 #import "NBPeopleDataSource.h"
 #import "NBPeopleViewFlowLayout.h"
@@ -413,7 +414,8 @@ static void *observationContext = &observationContext;
         self.collectionView.backgroundView = [[UIView alloc] initWithFrame:self.collectionView.bounds];
     }
     [self.collectionView.backgroundView addSubview:self.notReadyLabel];
-    self.notReadyLabel.center = self.collectionView.backgroundView.center;
+    [self.notReadyLabel nb_addCenterXConstraintToSuperview];
+    [self.notReadyLabel nb_addCenterYConstraintToSuperview];
     return _notReadyLabel;
 }
 

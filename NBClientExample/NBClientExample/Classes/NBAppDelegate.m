@@ -39,11 +39,18 @@
 {
     [Crashlytics startWithAPIKey:@"40c37689b7be7476400be06f7b2784cc8697c931"];
 #if defined(DEBUG) && TARGET_IPHONE_SIMULATOR
+    // Configure log levels. Default is 'Debug' for debug configurations and
+    // 'Warning' for release configurations. By setting client logging to
+    // warning level during development parts of the sample app unrelated to
+    // the client, the noise in our log is reduced.
+    [NBClient updateLoggingToLevel:NBLogLevelWarning];
     // NOTE: This configuration file is meant for internal use only, unless
     // you have a development-specific set of NationBuilder configuration.
     self.customClientInfo = [NSDictionary dictionaryWithContentsOfFile:
                              [[NSBundle mainBundle] pathForResource:[NBInfoFileName stringByAppendingString:@"-Local"] ofType:@"plist"]];
 #endif
+    self.accountsManager = [[NBAccountsManager alloc] initWithClientInfo:self.customClientInfo];
+    self.accountsManager.delegate = self;
     // Boilerplate.
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.rootViewController = self.rootViewController;
@@ -76,7 +83,7 @@
 - (void)accountsManager:(NBAccountsManager *)accountsManager willAddAccount:(NBAccount *)account
 {
 #if DEBUG_LOGIN
-    [NBAuthenticationCredential deleteCredentialWithIdentifier:account.client.authenticator.credentialIdentifier];
+    [NBAuthenticationCredential deleteCredentialWithIdentifier:account.authenticator.credentialIdentifier];
 #endif
 }
 
@@ -131,16 +138,6 @@
     self.accountButton = [[NSBundle mainBundle] loadNibNamed:@"NBAccountButton" owner:self options:nil].firstObject;
     [self.accountButton addTarget:self action:@selector(presentAccountsViewController:) forControlEvents:UIControlEventTouchUpInside];
     return _accountButton;
-}
-
-- (NBAccountsManager *)accountsManager
-{
-    if (_accountsManager) {
-        return _accountsManager;
-    }
-    self.accountsManager = [[NBAccountsManager alloc] initWithClientInfo:self.customClientInfo];
-    self.accountsManager.delegate = self;
-    return _accountsManager;
 }
 
 - (NBAccountsViewController *)accountsViewController

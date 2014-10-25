@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "NBDefines.h"
+
 @class NBAuthenticationCredential;
 
 typedef void (^NBAuthenticationCompletionHandler)(NBAuthenticationCredential *credential, NSError *error);
@@ -19,7 +21,7 @@ extern NSUInteger const NBAuthenticationErrorCodeKeychain;
 
 extern NSString * const NBAuthenticationDefaultRedirectPath;
 
-@interface NBAuthenticator : NSObject
+@interface NBAuthenticator : NSObject <NBLogging>
 
 @property (nonatomic, strong, readonly) NSURL *baseURL;
 @property (nonatomic, strong, readonly) NSString *clientIdentifier;

@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "NBDefines.h"
+
 @class NBAuthenticator;
 @class NBPaginationInfo;
 
@@ -24,7 +26,7 @@ extern NSString * const NBClientErrorInnerErrorKey;
 extern NSString * const NBClientDefaultAPIVersion;
 extern NSString * const NBClientDefaultBaseURLFormat;
 
-@interface NBClient : NSObject <NSURLSessionDelegate>
+@interface NBClient : NSObject <NSURLSessionDelegate, NBLogging>
 
 @property (nonatomic, strong, readonly) NSString *nationName;
 @property (nonatomic, strong, readonly) NSURLSession *urlSession;

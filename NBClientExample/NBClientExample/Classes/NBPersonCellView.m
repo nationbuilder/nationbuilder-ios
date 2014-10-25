@@ -45,6 +45,8 @@ static NSString *LabelOriginalColorKey = @"originalColor";
 - (void)prepareForReuse
 {
     self.dataSource = nil;
+    self.highlighted = NO;
+    self.selected = NO;
 }
 
 - (void)setHighlighted:(BOOL)highlighted
