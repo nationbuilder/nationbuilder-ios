@@ -28,6 +28,8 @@
 - (void)fetchPersonWithCompletionHandler:(NBGenericCompletionHandler)completionHandler;
 - (void)fetchAvatarWithCompletionHandler:(NBGenericCompletionHandler)completionHandler;
 
+- (void)updateCredentialIdentifier;
+
 @end
 
 @implementation NBAccount
@@ -38,6 +40,7 @@
     if (self) {
         // Set defaults.
         self.shouldUseTestToken = NO;
+        _identifier = NSNotFound;
         if (!clientInfoOrNil) {
             clientInfoOrNil = self.defaultClientInfo;
         }
@@ -94,6 +97,7 @@
     }
     self.authenticator = [[NBAuthenticator alloc] initWithBaseURL:[self baseURL]
                                                  clientIdentifier:self.clientInfo[NBInfoClientIdentifierKey]];
+    self.authenticator.shouldAutomaticallySaveCredential = NO;
     return _authenticator;
 }
 
@@ -128,14 +132,42 @@
 
 #pragma mark Presentation Helpers
 
+@synthesize identifier = _identifier;
+@synthesize name = _name;
+
 - (NSString *)name
 {
     if (!self.person) {
-        return _name ? _name : nil;
+        return _name ?: nil;
     }
     NSString *name = self.person[@"username"];
     name = !!name && ![name isEqual:[NSNull null]] ? name : self.person[@"full_name"];
     return name;
+}
+
+- (void)setName:(NSString *)name
+{
+    _name = name;
+    // Did.
+    [self updateCredentialIdentifier];
+}
+
+- (NSUInteger)identifier
+{
+    if (_identifier != NSNotFound) {
+        return _identifier;
+    }
+    if (self.person) {
+        self.identifier = [self.person[@"id"] unsignedIntegerValue];
+    }
+    return _identifier;
+}
+
+- (void)setIdentifier:(NSUInteger)identifier
+{
+    _identifier = identifier;
+    // Did.
+    [self updateCredentialIdentifier];
 }
 
 #pragma mark - Active API
@@ -191,6 +223,10 @@
         } else if (item) {
             // Success.
             self.person = item;
+            // Save credentials with custom ID.
+            [self updateCredentialIdentifier];
+            [NBAuthenticationCredential saveCredential:self.authenticator.credential
+                                        withIdentifier:self.authenticator.credentialIdentifier];
             [self fetchAvatarWithCompletionHandler:completionHandler];
             return;
         } else {
@@ -216,6 +252,14 @@
             });
         }
     });
+}
+
+- (void)updateCredentialIdentifier
+{
+    if (![self.authenticator.credentialIdentifier isEqualToString:[self baseURL].host]) { return; }
+    self.authenticator.credentialIdentifier =
+    [self.authenticator.credentialIdentifier stringByAppendingString:
+     ((self.name && self.identifier != NSNotFound) ? [NSString stringWithFormat:@"-%@-%lu", self.name, self.identifier] : @"")];
 }
 
 @end

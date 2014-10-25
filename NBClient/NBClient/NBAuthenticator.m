@@ -41,7 +41,6 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 @property (nonatomic, strong, readwrite) NSURL *baseURL;
 @property (nonatomic, strong, readwrite) NSString *clientIdentifier;
-@property (nonatomic, strong, readwrite) NSString *credentialIdentifier;
 @property (nonatomic, strong, readwrite) NBAuthenticationCredential *credential;
 
 @property (nonatomic, strong) NBAuthenticationCompletionHandler currentInBrowserAuthenticationCompletionHandler;
@@ -79,7 +78,6 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     if (self) {
         self.baseURL = baseURL;
         self.clientIdentifier = clientIdentifier;
-        self.credentialIdentifier = self.baseURL.host;
         self.shouldAutomaticallySaveCredential = YES;
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(finishAuthenticatingInWebBrowserWithNotification:)
@@ -100,9 +98,11 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     LogLevel = logLevel;
 }
 
-#pragma mark - Accessors
+#pragma mark - Public
 
-@synthesize credential = _credential; // TODO: This shouldn't be needed.
+#pragma mark Accessors
+
+@synthesize credential = _credential;
 
 - (NBAuthenticationCredential *)credential
 {
@@ -125,6 +125,15 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 - (BOOL)isAuthenticatingInWebBrowser
 {
     return !!self.currentInBrowserAuthenticationCompletionHandler;
+}
+
+- (NSString *)credentialIdentifier
+{
+    if (_credentialIdentifier) {
+        return _credentialIdentifier;
+    }
+    self.credentialIdentifier = self.baseURL.host;
+    return _credentialIdentifier;
 }
 
 #pragma mark Authenticate API

@@ -14,8 +14,9 @@
 #import "NBAccount.h"
 
 NSString * const NBAccountInfosDefaultsKey = @"NBAccountInfos";
-NSString * const NBAccountInfoNationSlugKey = @"Nation Slug";
+NSString * const NBAccountInfoIdentifierKey = @"User ID";
 NSString * const NBAccountInfoNameKey = @"User Name";
+NSString * const NBAccountInfoNationSlugKey = @"Nation Slug";
 
 @interface NBAccountsManager ()
 
@@ -32,6 +33,7 @@ NSString * const NBAccountInfoNameKey = @"User Name";
 
 - (void)setUpAccountPersistence;
 - (void)tearDownAccountPersistence;
+- (void)loadPersistedAccounts;
 - (void)persistAccounts;
 
 @end
@@ -46,6 +48,7 @@ NSString * const NBAccountInfoNameKey = @"User Name";
         self.clientInfo = clientInfoOrNil;
         self.mutableAccounts = [NSMutableArray array];
         [self setUpAccountPersistence];
+        [self loadPersistedAccounts];
     }
     return self;
 }
@@ -94,9 +97,6 @@ NSString * const NBAccountInfoNameKey = @"User Name";
     if (!failureReason && !nationSlug.length) {
         failureReason = @"message.invalid-nation-slug.empty".nb_localizedString;
     }
-    if (!failureReason && [nationSlug isEqualToString:self.selectedAccount.nationSlug]) {
-        failureReason = @"message.invalid-nation-slug.same-nation-note".nb_localizedString;
-    }
     if (failureReason) {
         isValid = NO;
         *error = [NSError errorWithDomain:NBErrorDomain code:NBErrorCodeInvalidArgument
@@ -139,8 +139,30 @@ NSString * const NBAccountInfoNameKey = @"User Name";
 - (void)activateAccount:(NBAccount *)account
 {
     [account requestActiveWithCompletionHandler:^(NSError *error) {
+        BOOL shouldBail = NO;
         if (error) {
+            [self.mutableAccounts removeObject:account];
             [self.delegate accountsManager:self failedToSwitchToAccount:account withError:error];
+            shouldBail = YES;
+        } else {
+            for (NBAccount *existingAccount in self.accounts) {
+                if (existingAccount != account && existingAccount.identifier == account.identifier) {
+                    shouldBail = YES;
+                    break;
+                }
+            }
+            if (shouldBail) {
+                [self.mutableAccounts removeObject:account];
+                NSLog(@"INFO: User attempted to activate duplicate account with identifier %lu",
+                      account.identifier);
+            }
+        }
+        if (shouldBail) {
+            if (!self.selectedAccount && self.mutableAccounts.count) {
+                // Try again with another account if needed and possible.
+                [self activateAccount:self.mutableAccounts.firstObject];
+            }
+            return;
         }
         self.selectedAccount = account;
         if (!self.isSignedIn) {
@@ -169,20 +191,11 @@ NSString * const NBAccountInfoNameKey = @"User Name";
 
 - (void)setUpAccountPersistence
 {
+    // Guard.
     if (!self.shouldPersistAccounts) { return; }
-    NSArray *accountInfos = [[NSUserDefaults standardUserDefaults] arrayForKey:NBAccountInfosDefaultsKey];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:NBAccountInfosDefaultsKey];
-    if (accountInfos) {
-        for (NSDictionary *accountInfo in accountInfos) {
-            NBAccount *account = [[NBAccount alloc] initWithClientInfo:
-                                  [self clientInfoForAccountWithNationSlug:accountInfo[NBAccountInfoNationSlugKey]]];
-            account.name = accountInfo[NBAccountInfoNameKey];
-            [self.mutableAccounts addObject:account];
-            if (!self.selectedAccount) {
-                [self activateAccount:account];
-            }
-        }
+    // Continue.
     }
+    self.persistedAccountsIdentifier = self.persistedAccountsIdentifier ?: NBAccountInfosDefaultsKey;
     __weak __typeof(self)weakSelf = self;
     self.applicationWillTerminateObserver =
     [[NSNotificationCenter defaultCenter]
@@ -198,6 +211,23 @@ NSString * const NBAccountInfoNameKey = @"User Name";
 {
     if (!self.shouldPersistAccounts) { return; }
     [[NSNotificationCenter defaultCenter] removeObserver:self.applicationWillTerminateObserver];
+
+- (void)loadPersistedAccounts
+{
+    if (!self.shouldPersistAccounts) { return; }
+    NSArray *accountInfos = [[NSUserDefaults standardUserDefaults] arrayForKey:self.persistedAccountsIdentifier];
+    if (accountInfos) {
+        for (NSDictionary *accountInfo in accountInfos) {
+            NBAccount *account = [[NBAccount alloc] initWithClientInfo:
+                                  [self clientInfoForAccountWithNationSlug:accountInfo[NBAccountInfoNationSlugKey]]];
+            account.name = accountInfo[NBAccountInfoNameKey];
+            account.identifier = [accountInfo[NBAccountInfoIdentifierKey] unsignedIntegerValue];
+            [self.mutableAccounts addObject:account];
+        }
+        [self activateAccount:self.accounts.firstObject];
+        NSLog(@"INFO: Loaded %lu persisted account(s) for identifier \"%@\"",
+              accountInfos.count, self.persistedAccountsIdentifier);
+    }
 }
 
 - (void)persistAccounts
@@ -205,7 +235,9 @@ NSString * const NBAccountInfoNameKey = @"User Name";
     if (!self.shouldPersistAccounts) { return; }
     NSMutableArray *accountInfos = [NSMutableArray array];
     for (NBAccount *account in self.accounts) {
-        [accountInfos addObject:@{ NBAccountInfoNameKey: account.name,
+        if (!account.name) { continue; }
+        [accountInfos addObject:@{ NBAccountInfoIdentifierKey: @(account.identifier),
+                                   NBAccountInfoNameKey: account.name,
                                    NBAccountInfoNationSlugKey: account.nationSlug }];
     }
     [[NSUserDefaults standardUserDefaults] setObject:accountInfos forKey:NBAccountInfosDefaultsKey];
