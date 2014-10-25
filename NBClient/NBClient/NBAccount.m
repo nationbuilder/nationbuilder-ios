@@ -70,7 +70,9 @@
     return self.clientInfo[NBInfoNationNameKey];
 }
 
-#pragma mark - Accessors
+#pragma mark - Public
+
+#pragma mark Accessors
 
 - (NBClient *)client
 {
@@ -170,7 +172,7 @@
     [self updateCredentialIdentifier];
 }
 
-#pragma mark - Active API
+#pragma mark Active API
 
 - (void)requestActiveWithPriorSignout:(BOOL)needsPriorSignout
                     completionHandler:(NBGenericCompletionHandler)completionHandler
@@ -197,8 +199,6 @@
          }
      }];
 }
-
-#pragma mark - Public
 
 - (BOOL)requestCleanUpWithError:(NSError *__autoreleasing *)error
 {
