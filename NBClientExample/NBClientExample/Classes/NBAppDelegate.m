@@ -39,6 +39,11 @@
 {
     [Crashlytics startWithAPIKey:@"40c37689b7be7476400be06f7b2784cc8697c931"];
 #if defined(DEBUG) && TARGET_IPHONE_SIMULATOR
+    // Configure log levels. Default is 'Debug' for debug configurations and
+    // 'Warning' for release configurations. By setting client logging to
+    // warning level during development parts of the sample app unrelated to
+    // the client, the noise in our log is reduced.
+    [NBClient updateLoggingToLevel:NBLogLevelWarning];
     // NOTE: This configuration file is meant for internal use only, unless
     // you have a development-specific set of NationBuilder configuration.
     self.customClientInfo = [NSDictionary dictionaryWithContentsOfFile:

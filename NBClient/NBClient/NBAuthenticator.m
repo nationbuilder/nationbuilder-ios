@@ -10,7 +10,6 @@
 
 #import <UIKit/UIApplication.h>
 
-#import "NBDefines.h"
 #import "FoundationAdditions.h"
 
 NSUInteger const NBAuthenticationErrorCodeService = 20;
@@ -31,6 +30,12 @@ NSString * const NBAuthenticationRedirectTokenKey = @"access_token";
 
 static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
 static NSString *RedirectURLScheme;
+
+#ifdef DEBUG
+static NBLogLevel LogLevel = NBLogLevelDebug;
+#else
+static NBLogLevel LogLevel = NBLogLevelWarning;
+#endif
 
 @interface NBAuthenticator ()
 
@@ -85,6 +90,13 @@ static NSString *RedirectURLScheme;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:NBAuthenticationRedirectNotification object:nil];
 }
 
+#pragma mark - NBLogging
+
++ (void)updateLoggingToLevel:(NBLogLevel)logLevel
+{
+    LogLevel = logLevel;
+}
+
 #pragma mark - Accessors
 
 @synthesize credential = _credential; // TODO: This shouldn't be needed.
@@ -112,7 +124,7 @@ static NSString *RedirectURLScheme;
     return !!self.currentInBrowserAuthenticationCompletionHandler;
 }
 
-#pragma mark - Authenticate API
+#pragma mark Authenticate API
 
 - (void)authenticateWithRedirectPath:(NSString *)redirectPath
                    completionHandler:(NBAuthenticationCompletionHandler)completionHandler
@@ -287,7 +299,7 @@ static NSString *RedirectURLScheme;
      dataTaskWithRequest:mutableRequest
      completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
          NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-         if (data) {
+         if (data && LogLevel >= NBLogLevelInfo) {
              NSLog(@"RESPONSE: %@\n"
                    @"BODY: %@",
                    httpResponse,
@@ -408,7 +420,7 @@ static NSString *RedirectURLScheme;
         status = SecItemAdd((__bridge CFDictionaryRef)query, NULL);
     }
     // Handle error.
-    if (status != errSecSuccess) {
+    if (status != errSecSuccess && LogLevel >= NBLogLevelError) {
         NSLog(@"Unable to %@ credential in keychain with identifier \"%@\" (Error %li)",
               alreadyExists ? @"update" : @"create", identifier, (long int)status);
     } else {
@@ -422,7 +434,7 @@ static NSString *RedirectURLScheme;
     BOOL didDelete = NO;
     NSMutableDictionary *query = [self baseKeychainQueryDictionaryWithIdentifier:identifier];
     OSStatus status = SecItemDelete((__bridge CFDictionaryRef)query);
-    if (status != errSecSuccess) {
+    if (status != errSecSuccess && LogLevel >= NBLogLevelError) {
         NSLog(@"Unable to delete from keychain credential with identifier \"%@\" (Error %li)",
               identifier, (long int)status);
     } else {
@@ -439,7 +451,7 @@ static NSString *RedirectURLScheme;
     CFDataRef result = nil;
     OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)query, (CFTypeRef *)&result);
     // Handle errors.
-    if (status != errSecSuccess) {
+    if (status != errSecSuccess && LogLevel >= NBLogLevelError) {
         NSLog(@"Unable to fetch from keychain credential with identifier \"%@\" (Error %li)",
               identifier, (long int)status);
         return nil;

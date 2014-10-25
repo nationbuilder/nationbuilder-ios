@@ -10,7 +10,6 @@
 #import "NBClient_Internal.h"
 
 #import "NBAuthenticator.h"
-#import "NBDefines.h"
 #import "FoundationAdditions.h"
 #import "NBPaginationInfo.h"
 
@@ -22,6 +21,12 @@ NSString * const NBClientErrorInnerErrorKey = @"inner_error";
 
 NSString * const NBClientDefaultAPIVersion = @"v1";
 NSString * const NBClientDefaultBaseURLFormat = @"https://%@.nationbuilder.com";
+
+#ifdef DEBUG
+static NBLogLevel LogLevel = NBLogLevelDebug;
+#else
+static NBLogLevel LogLevel = NBLogLevelWarning;
+#endif
 
 @implementation NBClient
 
@@ -64,6 +69,13 @@ NSString * const NBClientDefaultBaseURLFormat = @"https://%@.nationbuilder.com";
     self.sessionConfiguration = sessionConfiguration;
     
     self.defaultErrorRecoverySuggestion = @"message.unknown-error-solution".nb_localizedString;
+}
+
+#pragma mark - NBLogging
+
++ (void)updateLoggingToLevel:(NBLogLevel)logLevel
+{
+    LogLevel = logLevel;
 }
 
 #pragma mark - Private
@@ -170,7 +182,9 @@ NSString * const NBClientDefaultBaseURLFormat = @"https://%@.nationbuilder.com";
                                               charactersToLeaveUnescaped:nil];
     }
     NSURLRequest *request = [self baseFetchRequestWithURL:components.URL];
-    NSLog(@"REQUEST: %@", request.nb_debugDescription);
+    if (LogLevel >= NBLogLevelInfo) {
+        NSLog(@"REQUEST: %@", request.nb_debugDescription);
+    }
     NSURLSessionDataTask *task =
     [self.urlSession
      dataTaskWithRequest:request
@@ -188,7 +202,9 @@ NSString * const NBClientDefaultBaseURLFormat = @"https://%@.nationbuilder.com";
                                        completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
     NSURLRequest *request = [self baseFetchRequestWithURL:components.URL];
-    NSLog(@"REQUEST: %@", request.nb_debugDescription);
+    if (LogLevel >= NBLogLevelInfo) {
+        NSLog(@"REQUEST: %@", request.nb_debugDescription);
+    }
     NSURLSessionDataTask *task =
     [self.urlSession
      dataTaskWithRequest:request
@@ -218,7 +234,9 @@ NSString * const NBClientDefaultBaseURLFormat = @"https://%@.nationbuilder.com";
                                           resultsKey:(NSString *)resultsKey
                                    completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
-    NSLog(@"REQUEST: %@", request.nb_debugDescription);
+    if (LogLevel >= NBLogLevelInfo) {
+        NSLog(@"REQUEST: %@", request.nb_debugDescription);
+    }
     NSURLSessionDataTask *task =
     [self.urlSession
      dataTaskWithRequest:request
@@ -244,7 +262,9 @@ NSString * const NBClientDefaultBaseURLFormat = @"https://%@.nationbuilder.com";
                               completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
     NSURLRequest *request = [self baseDeleteRequestWithURL:url];
-    NSLog(@"REQUEST: %@", request.nb_debugDescription);
+    if (LogLevel >= NBLogLevelInfo) {
+        NSLog(@"REQUEST: %@", request.nb_debugDescription);
+    }
     NSURLSessionDataTask *task =
     [self.urlSession
      dataTaskWithRequest:request
@@ -360,10 +380,12 @@ NSString * const NBClientDefaultBaseURLFormat = @"https://%@.nationbuilder.com";
 - (void)logResponse:(NSHTTPURLResponse *)response
                data:(NSData *)data
 {
-    NSLog(@"RESPONSE: %@\n"
-          @"BODY: %@",
-          response,
-          [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+    if (LogLevel >= NBLogLevelInfo) {
+        NSLog(@"RESPONSE: %@\n"
+              @"BODY: %@",
+              response,
+              [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+    }
 }
 
 @end

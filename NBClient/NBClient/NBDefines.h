@@ -27,7 +27,25 @@ extern NSString * const NBInfoClientSecretKey;
 // application' in your Info.plist.
 extern NSString * const NBIconFontFamilyName;
 
+// Completion handlers are always called.
 typedef void (^NBGenericCompletionHandler)(NSError *error);
+
+// Class(file)-based log levels give you more control over what library log messages
+// show up.
+typedef NS_ENUM(NSUInteger, NBLogLevel) {
+    NBLogLevelNone,
+    NBLogLevelError,
+    NBLogLevelWarning,
+    NBLogLevelInfo,
+    NBLogLevelDebug,
+};
+// But they only work for classes that implement this protocol and allow you to
+// change the log level.
+@protocol NBLogging <NSObject>
+
++ (void)updateLoggingToLevel:(NBLogLevel)logLevel;
+
+@end
 
 @protocol NBDictionarySerializing <NSObject>
 
