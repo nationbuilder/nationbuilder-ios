@@ -20,12 +20,17 @@ NSString * const NBAccountInfoNationSlugKey = @"Nation Slug";
 
 @interface NBAccountsManager ()
 
+@property (nonatomic, weak, readwrite) id<NBAccountsManagerDelegate> delegate;
+
+// NBAccountsViewDataSource
 @property (nonatomic, readwrite) BOOL signedIn;
 
 @property (nonatomic, strong) NSDictionary *clientInfo;
 @property (nonatomic, strong) NSMutableArray *mutableAccounts;
 
 @property (nonatomic, strong) id applicationWillTerminateObserver;
+@property (nonatomic) BOOL shouldPersistAccounts;
+@property (nonatomic, strong) NSString *persistedAccountsIdentifier;
 
 - (void)activateAccount:(NBAccount *)account;
 - (void)deactivateAccount:(NBAccount *)account;
@@ -41,10 +46,12 @@ NSString * const NBAccountInfoNationSlugKey = @"Nation Slug";
 @implementation NBAccountsManager
 
 - (instancetype)initWithClientInfo:(NSDictionary *)clientInfoOrNil
+                          delegate:(id<NBAccountsManagerDelegate>)delegate
 {
     self = [super init];
     if (self) {
-        self.shouldPersistAccounts = YES;
+        NSAssert(delegate, @"A delegate is required.");
+        self.delegate = delegate;
         self.clientInfo = clientInfoOrNil;
         self.mutableAccounts = [NSMutableArray array];
         [self setUpAccountPersistence];
@@ -192,10 +199,18 @@ NSString * const NBAccountInfoNationSlugKey = @"Nation Slug";
 - (void)setUpAccountPersistence
 {
     // Guard.
+    self.shouldPersistAccounts = YES;
+    if ([self.delegate respondsToSelector:@selector(accountsManagerShouldPersistAccounts:)]) {
+        self.shouldPersistAccounts = [self.delegate accountsManagerShouldPersistAccounts:self];
+    }
     if (!self.shouldPersistAccounts) { return; }
     // Continue.
+    if ([self.delegate respondsToSelector:@selector(persistedAccountsIdentifierForAccountsManager:)]) {
+        self.persistedAccountsIdentifier = [self.delegate persistedAccountsIdentifierForAccountsManager:self];
     }
-    self.persistedAccountsIdentifier = self.persistedAccountsIdentifier ?: NBAccountInfosDefaultsKey;
+    self.persistedAccountsIdentifier = (self.persistedAccountsIdentifier
+                                        ?: [NSString stringWithFormat:@"%@-%@",
+                                            NBAccountInfosDefaultsKey, NSStringFromClass(self.delegate.class)]);
     __weak __typeof(self)weakSelf = self;
     self.applicationWillTerminateObserver =
     [[NSNotificationCenter defaultCenter]
@@ -240,7 +255,9 @@ NSString * const NBAccountInfoNationSlugKey = @"Nation Slug";
                                    NBAccountInfoNameKey: account.name,
                                    NBAccountInfoNationSlugKey: account.nationSlug }];
     }
-    [[NSUserDefaults standardUserDefaults] setObject:accountInfos forKey:NBAccountInfosDefaultsKey];
+    [[NSUserDefaults standardUserDefaults] setObject:accountInfos forKey:self.persistedAccountsIdentifier];
+    NSLog(@"INFO: Persisted %lu persisted account(s) for identifier \"%@\"",
+          accountInfos.count, self.persistedAccountsIdentifier);
 }
 
 @end

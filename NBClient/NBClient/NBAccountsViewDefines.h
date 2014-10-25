@@ -19,6 +19,13 @@
 
 @optional
 
+- (BOOL)accountsManagerShouldPersistAccounts:(NBAccountsManager *)accountsManager;
+// NOTE: Accounts persistence does not support all configurations by default.
+// Multiple instance properties of account managers is not supported. Neither is
+// multiple instances of a class with an account manager property. Set this
+// property to customize.
+- (NSString *)persistedAccountsIdentifierForAccountsManager:(NBAccountsManager *)accountsManager;
+
 - (void)accountsManager:(NBAccountsManager *)accountsManager willAddAccount:(NBAccount *)account;
 - (void)accountsManager:(NBAccountsManager *)accountsManager willSwitchToAccount:(NBAccount *)account;
 - (void)accountsManager:(NBAccountsManager *)accountsManager didSwitchToAccount:(NBAccount *)account;
