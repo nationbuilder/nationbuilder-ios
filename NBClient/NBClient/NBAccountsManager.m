@@ -145,7 +145,8 @@ NSString * const NBAccountInfoNationSlugKey = @"Nation Slug";
 
 - (void)activateAccount:(NBAccount *)account
 {
-    [account requestActiveWithCompletionHandler:^(NSError *error) {
+    BOOL needsPriorSignout = self.selectedAccount && [self.selectedAccount.nationSlug isEqualToString:account.nationSlug];
+    [account requestActiveWithPriorSignout:needsPriorSignout completionHandler:^(NSError *error) {
         BOOL shouldBail = NO;
         if (error) {
             [self.mutableAccounts removeObject:account];

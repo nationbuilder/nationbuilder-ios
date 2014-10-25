@@ -42,6 +42,7 @@ extern NSString * const NBAuthenticationDefaultRedirectPath;
  */
 
 - (void)authenticateWithRedirectPath:(NSString *)redirectPath
+                        priorSignout:(BOOL)needsPriorSignout
                    completionHandler:(NBAuthenticationCompletionHandler)completionHandler;
 
 - (NSURLSessionDataTask *)authenticateWithUserName:(NSString *)userName

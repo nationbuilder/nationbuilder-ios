@@ -31,7 +31,8 @@
 
 - (instancetype)initWithClientInfo:(NSDictionary *)clientInfoOrNil;
 
-- (void)requestActiveWithCompletionHandler:(NBGenericCompletionHandler)completionHandler;
+- (void)requestActiveWithPriorSignout:(BOOL)needsPriorSignout
+                    completionHandler:(NBGenericCompletionHandler)completionHandler;
 
 - (BOOL)requestCleanUpWithError:(NSError **)error;
 

@@ -172,10 +172,12 @@
 
 #pragma mark - Active API
 
-- (void)requestActiveWithCompletionHandler:(NBGenericCompletionHandler)completionHandler
+- (void)requestActiveWithPriorSignout:(BOOL)needsPriorSignout
+                    completionHandler:(NBGenericCompletionHandler)completionHandler
 {
     [self.authenticator
      authenticateWithRedirectPath:self.clientInfo[NBInfoRedirectPathKey]
+     priorSignout:needsPriorSignout
      completionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
          if (error) {
              NSLog(@"ERROR: %@", error);
