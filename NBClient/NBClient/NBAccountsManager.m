@@ -28,8 +28,8 @@ NSString * const NBAccountInfoNationSlugKey = @"Nation Slug";
 @property (nonatomic, strong) NSDictionary *clientInfo;
 @property (nonatomic, strong) NSMutableArray *mutableAccounts;
 
-@property (nonatomic, strong) id applicationWillTerminateObserver;
 @property (nonatomic) BOOL shouldPersistAccounts;
+@property (nonatomic, strong) id applicationDidEnterBackgroundNotifier;
 @property (nonatomic, strong) NSString *persistedAccountsIdentifier;
 
 - (void)activateAccount:(NBAccount *)account;
@@ -212,9 +212,9 @@ NSString * const NBAccountInfoNationSlugKey = @"Nation Slug";
                                         ?: [NSString stringWithFormat:@"%@-%@",
                                             NBAccountInfosDefaultsKey, NSStringFromClass(self.delegate.class)]);
     __weak __typeof(self)weakSelf = self;
-    self.applicationWillTerminateObserver =
+    self.applicationDidEnterBackgroundNotifier =
     [[NSNotificationCenter defaultCenter]
-     addObserverForName:UIApplicationWillTerminateNotification
+     addObserverForName:UIApplicationDidEnterBackgroundNotification
      object:[UIApplication sharedApplication] queue:[NSOperationQueue mainQueue]
      usingBlock:^(NSNotification *note) {
          NSAssert(weakSelf, @"Account manager dereferenced before application received termination signal.");
@@ -225,7 +225,8 @@ NSString * const NBAccountInfoNationSlugKey = @"Nation Slug";
 - (void)tearDownAccountPersistence
 {
     if (!self.shouldPersistAccounts) { return; }
-    [[NSNotificationCenter defaultCenter] removeObserver:self.applicationWillTerminateObserver];
+    [[NSNotificationCenter defaultCenter] removeObserver:self.applicationDidEnterBackgroundNotifier];
+}
 
 - (void)loadPersistedAccounts
 {
