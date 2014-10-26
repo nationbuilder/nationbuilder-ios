@@ -55,6 +55,9 @@ static void *observationContext = &observationContext;
 @property (nonatomic, strong) UIAlertView *nationSlugPromptView;
 @property (nonatomic, strong) UIAlertView *nationSlugErrorView;
 
+@property (nonatomic, readonly) NSUInteger selectedIndex;
+@property (nonatomic, getter = isSelectingAccount) BOOL selectingAccount;
+
 - (IBAction)dismiss:(id)sender;
 
 - (IBAction)signIn:(id)sender;
@@ -254,7 +257,11 @@ static void *observationContext = &observationContext;
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-    // NOTE: Only called on user-interaction-driven selection.
+    // NOTE: Only called on user-interaction-driven selection, so there's no
+    // infinite loop.
+    // Raise our flag before having the view interaction update state, so as to
+    // distinguish from state being updated by our data source.
+    self.selectingAccount = YES;
     id<NBAccountViewDataSource> account = self.dataSource.accounts[row];
     self.dataSource.selectedAccount = account;
 }
@@ -370,6 +377,14 @@ static void *observationContext = &observationContext;
     return _nationSlugPromptView;
 }
 
+- (NSUInteger)selectedIndex
+{
+    if (!self.dataSource || !self.dataSource.selectedAccount) {
+        return NSNotFound;
+    }
+    return [self.dataSource.accounts indexOfObject:self.dataSource.selectedAccount];
+}
+
 #pragma mark Account View
 
 - (void)setUpAccountView
@@ -475,9 +490,16 @@ static void *observationContext = &observationContext;
     [self.accountsPicker reloadAllComponents];
     [self toggleAccountsPickerVisibility:(self.dataSource.accounts.count > 1) animated:animated withCompletionHandler:^{
         // Update selected row.
-        if (self.dataSource.selectedAccount) {
-            NSUInteger index = [self.dataSource.accounts indexOfObject:self.dataSource.selectedAccount];
-            [self.accountsPicker selectRow:index inComponent:0 animated:YES];
+        if (!self.isSelectingAccount && self.dataSource.selectedAccount) {
+            // Only update the picker if it did not trigger the account selection.
+            NSUInteger selectedIndex = [self selectedIndex];
+            if (selectedIndex == NSNotFound) {
+                NSLog(@"ERROR: Invalid selected account index. Aborting row selection.");
+            }
+            [self.accountsPicker selectRow:selectedIndex inComponent:0 animated:YES];
+        } else {
+            // Otherwise restore our flag.
+            self.selectingAccount = NO;
         }
     }];
 }
