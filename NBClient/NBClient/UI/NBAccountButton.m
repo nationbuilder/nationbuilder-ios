@@ -43,6 +43,9 @@ static void *observationContext = &observationContext;
 
 - (void)updateButtonType;
 
+- (void)toggleAvatarImageViewHidden;
+- (void)toggleNameLabelHidden;
+
 @end
 
 @implementation NBAccountButton
@@ -105,18 +108,9 @@ static void *observationContext = &observationContext;
     }
     if ([keyPath isEqual:HiddenKeyPath]) {
         if (object == self.avatarImageView) {
-            // Toggle avatar hiding.
-            self.avatarImageWidth.constant = self.avatarImageView.isHidden ? 0.0f : self.originalAvatarImageWidth;
-            self.avatarImageMarginRight.constant = self.avatarImageView.isHidden ? 0.0f : self.originalAvatarImageMarginRight;
-            [self setNeedsUpdateConstraints];
+            [self toggleAvatarImageViewHidden];
         } else if (object == self.nameLabel) {
-            CGRect frame = self.nameLabel.frame;
-            if (self.nameLabel.isHidden) {
-                frame.size.width = 0.0f;
-            } else {
-                frame.size.width = self.originalNameLabelWidth;
-            }
-            self.nameLabel.frame = frame;
+            [self toggleNameLabelHidden];
         }
     }
 }
@@ -240,26 +234,49 @@ static void *observationContext = &observationContext;
     self.actualButtonType = actualButtonType;
 }
 
+- (void)toggleAvatarImageViewHidden
+{
+    self.avatarImageWidth.constant = self.avatarImageView.isHidden ? 0.0f : self.originalAvatarImageWidth;
+    self.avatarImageMarginRight.constant = (self.avatarImageView.isHidden || self.nameLabel.isHidden
+                                            ? 0.0f : self.originalAvatarImageMarginRight);
+    [self setNeedsUpdateConstraints];
+}
+
+- (void)toggleNameLabelHidden
+{
+    CGRect frame = self.nameLabel.frame;
+    if (self.nameLabel.isHidden) {
+        frame.size.width = 0.0f;
+    } else {
+        frame.size.width = self.originalNameLabelWidth;
+    }
+    self.nameLabel.frame = frame;
+}
+
 #pragma mark Accessors
 
 - (void)setActualButtonType:(NBAccountButtonType)actualButtonType
 {
     _actualButtonType = actualButtonType;
     // Did.
-    self.nameLabel.hidden = NO;
-    self.avatarImageView.hidden = NO;
+    BOOL shouldHideNameLabel = NO;
+    BOOL shouldHideAvatarImageView = NO;
     switch (actualButtonType) {
         case NBAccountButtonTypeIconOnly:
-            self.avatarImageView.hidden = YES;
+            shouldHideAvatarImageView = YES;
             break;
         case NBAccountButtonTypeAvatarOnly:
-            self.nameLabel.hidden = YES;
+            shouldHideNameLabel = YES;
             break;
         case NBAccountButtonTypeNameOnly:
-            self.avatarImageView.hidden = YES;
+            shouldHideAvatarImageView = YES;
             break;
         case NBAccountButtonTypeDefault: break;
     }
+    // Set and trigger related change events.
+    self.nameLabel.hidden = shouldHideNameLabel;
+    self.avatarImageView.hidden = shouldHideAvatarImageView;
+    // Keep the rest of the view updated.
     [self update];
 }
 
