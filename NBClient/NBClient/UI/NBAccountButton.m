@@ -70,11 +70,10 @@ static void *observationContext = &observationContext;
 
 - (void)setUp
 {
-    self.buttonType = NBAccountButtonTypeDefault;
     self.shouldUseCircleAvatarFrame = NO;
-    self.dataSource = nil;
     [self setUpSubviews];
     [self updateSubviews];
+    self.buttonType = NBAccountButtonTypeDefault;
 }
 
 #pragma mark - UIControl
@@ -138,8 +137,6 @@ static void *observationContext = &observationContext;
 
 - (void)setButtonType:(NBAccountButtonType)buttonType
 {
-    // Guard.
-    if (buttonType == _buttonType) { return; }
     // Set.
     _buttonType = buttonType;
     // Did.
