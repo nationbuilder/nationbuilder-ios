@@ -110,9 +110,8 @@ static void *observationContext = &observationContext;
         } else if (object == self.nameLabel) {
             CGRect frame = self.nameLabel.frame;
             if (self.nameLabel.isHidden) {
-                self.originalNameLabelWidth = frame.size.width;
                 frame.size.width = 0.0f;
-            } else if (self.originalNameLabelWidth) {
+            } else {
                 frame.size.width = self.originalNameLabelWidth;
             }
             self.nameLabel.frame = frame;
@@ -215,6 +214,8 @@ static void *observationContext = &observationContext;
             self.nameLabel.text = @"label.sign-in".nb_localizedString;
         }
     }
+    [self.nameLabel sizeToFit];
+    self.originalNameLabelWidth = self.nameLabel.frame.size.width;
 }
 
 - (void)updateButtonType
