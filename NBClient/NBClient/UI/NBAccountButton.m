@@ -36,9 +36,11 @@ static void *observationContext = &observationContext;
 
 - (void)setUpSubviews;
 - (void)tearDownSubviews;
-- (void)updateSubviews;
 
+- (void)update;
+- (void)updateAppearance;
 - (void)updateNameLabel;
+
 - (void)updateButtonType;
 
 @end
@@ -72,7 +74,7 @@ static void *observationContext = &observationContext;
 {
     self.shouldUseCircleAvatarFrame = NO;
     [self setUpSubviews];
-    [self updateSubviews];
+    [self update];
     self.buttonType = NBAccountButtonTypeDefault;
 }
 
@@ -92,7 +94,7 @@ static void *observationContext = &observationContext;
 - (void)tintColorDidChange
 {
     [super tintColorDidChange];
-    [self updateSubviews];
+    [self updateAppearance];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -131,7 +133,7 @@ static void *observationContext = &observationContext;
         self.avatarImageView.image = [UIImage imageWithData:dataSource.avatarImageData];
     }
     [self updateButtonType];
-    [self updateSubviews];
+    [self update];
 }
 
 - (void)setButtonType:(NBAccountButtonType)buttonType
@@ -181,9 +183,16 @@ static void *observationContext = &observationContext;
     [self.avatarImageView removeObserver:self forKeyPath:HiddenKeyPath context:&observationContext];
     [self.nameLabel removeObserver:self forKeyPath:HiddenKeyPath context:&observationContext];
 }
-- (void)updateSubviews
+
+- (void)update
 {
+    [self updateAppearance];
     [self updateNameLabel];
+    [self sizeToFit];
+}
+
+- (void)updateAppearance
+{
     // Tint colors.
     self.avatarImageView.layer.borderColor = self.tintColor.CGColor;
     self.nameLabel.textColor = self.tintColor;
@@ -251,7 +260,7 @@ static void *observationContext = &observationContext;
             break;
         case NBAccountButtonTypeDefault: break;
     }
-    [self updateSubviews];
+    [self update];
 }
 
 @end
