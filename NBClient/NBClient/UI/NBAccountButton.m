@@ -94,6 +94,27 @@ static void *observationContext = &observationContext;
 
 #pragma mark - UIView
 
+- (CGSize)sizeThatFits:(CGSize)size
+{
+    CGSize newSize = [super sizeThatFits:size];
+    // Guard.
+    if (!self.barButtonItem) {
+        return newSize;
+    }
+    // Non-AutoLayout adjustments.
+    CGFloat width = 0.0f;
+    if (!self.nameLabel.isHidden) {
+        width += self.originalNameLabelWidth;
+    }
+    if (!(self.avatarImageView.isHidden || self.nameLabel.isHidden)) {
+        width += self.originalAvatarImageWidth + self.originalAvatarImageMarginRight;
+    }
+    if (width) {
+        newSize.width = width;
+    }
+    return newSize;
+}
+
 - (void)tintColorDidChange
 {
     [super tintColorDidChange];
@@ -148,6 +169,15 @@ static void *observationContext = &observationContext;
     self.avatarImageView.layer.cornerRadius = (shouldUseCircleAvatarFrame
                                                ? self.avatarImageView.frame.size.width / 2.0f
                                                : self.cornerRadius.floatValue);
+}
+
+- (UIBarButtonItem *)barButtonItem
+{
+    if (_barButtonItem) {
+        return _barButtonItem;
+    }
+    self.barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self];
+    return _barButtonItem;
 }
 
 - (void)setContextHasMultipleActiveAccounts:(BOOL)contextHasMultipleActiveAccounts
