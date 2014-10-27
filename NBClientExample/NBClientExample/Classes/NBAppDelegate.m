@@ -169,14 +169,12 @@
         return _rootViewController;
     }
     self.rootViewController = [[UINavigationController alloc] initWithRootViewController:self.peopleViewController];
-    self.rootViewController.view.backgroundColor = [UIColor whiteColor];
     return _rootViewController;
 }
 
 - (void)presentAccountsViewController:(id)sender
 {
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:self.accountsViewController];
-    navigationController.view.backgroundColor = [UIColor whiteColor];
     [self.rootViewController presentViewController:navigationController animated:YES completion:nil];
 }
 
