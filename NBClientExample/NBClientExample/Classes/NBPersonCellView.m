@@ -13,9 +13,6 @@
 static NSString *LabelViewKey = @"view";
 static NSString *LabelOriginalColorKey = @"originalColor";
 
-static NSString *NeedsDeleteKeyPath;
-static void *observationContext = &observationContext;
-
 @interface NBPersonCellView ()
 
 @property (nonatomic, weak, readwrite) IBOutlet UIView *bottomBorderView;
@@ -23,13 +20,6 @@ static void *observationContext = &observationContext;
 @property (nonatomic, weak) IBOutlet UILabel *tagsLabel;
 @property (nonatomic, strong) NSArray *borderViews;
 @property (nonatomic, strong) NSArray *labeledViews;
-
-@property (nonatomic, weak) IBOutlet UISwitch *deleteSwitch;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *deleteSwitchWidthConstraint;
-@property (nonatomic, readwrite, getter = isDeleteSwitchVisible) BOOL deleteSwitchVisible;
-@property (nonatomic) CGFloat originalDeleteSwitchWidth;
-
-- (IBAction)toggleNeedsDelete:(id)sender;
 
 @end
 
@@ -39,15 +29,8 @@ static void *observationContext = &observationContext;
 
 - (void)awakeFromNib
 {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        NeedsDeleteKeyPath = NSStringFromSelector(@selector(needsDelete));
-    });
     [super awakeFromNib];
     self.bottomBorderView.backgroundColor = self.borderColor;
-    self.deleteSwitch.alpha = self.deleteSwitchDimmedAlpha.floatValue;
-    self.deleteSwitch.tintColor = self.borderColor;
-    self.originalDeleteSwitchWidth = self.deleteSwitch.frame.size.width;
     if (!self.selectedBackgroundColor) {
         self.selectedBackgroundColor = self.tintColor;
     }
@@ -91,9 +74,6 @@ static void *observationContext = &observationContext;
         UIColor *color = selected ? self.selectedForegroundColor : view[LabelOriginalColorKey];
         [view[LabelViewKey] setTextColor:color];
     }
-    // Additional.
-    self.deleteSwitch.hidden = selected;
-    // END: Additional.
     [self.delegate collectionViewCell:self didSetSelected:selected];
 }
 
@@ -102,53 +82,25 @@ static void *observationContext = &observationContext;
 - (void)refreshWithData:(NSDictionary *)data
 {
     if (data) {
-        self.deleteSwitch.hidden = NO;
         self.nameLabel.text = data[@"full_name"];
         self.tagsLabel.text = [data[@"tags"] componentsJoinedByString:
                                [NSString stringWithFormat:@" %@ ", self.tagDelimiterString]];
     } else {
         self.nameLabel.text =
         self.tagsLabel.text = nil;
-        self.deleteSwitch.hidden = YES;
     }
 }
 
 - (void)setDataSource:(id<NBDataSource>)dataSource
 {
-    // Tear down.
-    if (self.dataSource) {
-        self.deleteSwitch.alpha = self.deleteSwitchDimmedAlpha.floatValue;
-        [(id)self.dataSource removeObserver:self forKeyPath:NeedsDeleteKeyPath context:&observationContext];
-    }
-    // Set.
     _dataSource = dataSource;
     // Set up.
     if (self.dataSource) {
         NSAssert([self.dataSource isKindOfClass:[NBPersonDataSource class]], @"Data source must be of certain type.");
         NBPersonDataSource *dataSource = self.dataSource;
-        self.deleteSwitch.on = dataSource.needsDelete;
-        self.deleteSwitch.alpha = self.deleteSwitch.isOn ?  1.0f : self.deleteSwitchDimmedAlpha.floatValue;
         [self refreshWithData:dataSource.person];
-        [dataSource addObserver:self forKeyPath:NeedsDeleteKeyPath options:0 context:&observationContext];
     } else {
         [self refreshWithData:nil];
-    }
-}
-
-#pragma mark - NSKeyValueObserving
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if (context != &observationContext) {
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-        return;
-    }
-    if (object == self.dataSource && [keyPath isEqual:NeedsDeleteKeyPath]) {
-        NBPersonDataSource *dataSource = self.dataSource;
-        [self.deleteSwitch setOn:dataSource.needsDelete animated:YES];
-        [UIView animateWithDuration:0.3f animations:^{
-            self.deleteSwitch.alpha = self.deleteSwitch.isOn ?  1.0f : self.deleteSwitchDimmedAlpha.floatValue;
-        }];
     }
 }
 
@@ -177,22 +129,6 @@ static void *observationContext = &observationContext;
     }
 }
 
-- (void)setDeleteSwitchVisible:(BOOL)deleteSwitchVisible animated:(BOOL)animated
-{
-    self.deleteSwitchVisible = deleteSwitchVisible;
-    self.deleteSwitchWidthConstraint.constant = self.deleteSwitchVisible ? self.originalDeleteSwitchWidth : 0.0f;
-    [self setNeedsUpdateConstraints];
-    void (^changes)(void) = ^{
-        [self layoutIfNeeded];
-        self.deleteSwitch.alpha = self.deleteSwitchVisible ? 1.0f : 0.0f;
-    };
-    if (animated) {
-        [UIView animateWithDuration:0.3f animations:changes];
-    } else {
-        changes();
-    }
-}
-
 #pragma mark - Private
 
 - (NSArray *)borderViews
@@ -216,23 +152,6 @@ static void *observationContext = &observationContext;
     }
     self.labeledViews = views;
     return _labeledViews;
-}
-
-#pragma mark Delete
-
-- (IBAction)toggleNeedsDelete:(id)sender
-{
-    if (sender == self.deleteSwitch) {
-        NBPersonDataSource *dataSource = self.dataSource;
-        BOOL needsDelete = self.deleteSwitch.on;
-        dataSource.needsDelete = needsDelete;
-        [self.delegate collectionViewCell:self didSetNeedsDelete:needsDelete];
-        // Update appearance.
-        self.highlighted = YES;
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            self.highlighted = NO;
-        });
-    }
 }
 
 @end

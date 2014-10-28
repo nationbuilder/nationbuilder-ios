@@ -27,15 +27,19 @@
             </userDefinedRuntimeAttributes>
             <connections>
                 <outlet property="accountView" destination="O26-cx-3cy" id="JnS-Wq-n50"/>
-                <outlet property="accountViewBottomMargin" destination="gnO-hT-2zr" id="wR1-RV-ocy"/>
+                <outlet property="accountViewBottomMargin" destination="RFm-al-XaK" id="RUp-o1-imw"/>
                 <outlet property="accountViewHeight" destination="jGK-tt-Kof" id="B3g-Ta-eag"/>
+                <outlet property="accountsPicker" destination="C0M-yb-dEE" id="kjB-cY-Cpg"/>
+                <outlet property="accountsPickerBottomMargin" destination="rHq-Fe-iAO" id="2NM-du-ViU"/>
+                <outlet property="accountsPickerContainer" destination="MOw-Vc-VOQ" id="eq1-mw-ek1"/>
+                <outlet property="accountsPickerHeight" destination="XIq-DT-Mns" id="bMj-Oc-Ssz"/>
                 <outlet property="addAccountButton" destination="HKK-nf-xyi" id="Zks-gr-o1X"/>
                 <outlet property="avatarImageView" destination="bli-Yd-Mg8" id="beq-BT-8x0"/>
                 <outlet property="nameLabel" destination="SRk-W4-610" id="dch-of-dR4"/>
                 <outlet property="nationLabel" destination="iiD-vH-WHK" id="YWc-pS-FOn"/>
                 <outlet property="signOutButton" destination="xDP-tc-YIH" id="cal-db-ZEb"/>
-                <outlet property="signOutButtonBottomMargin" destination="7dj-fu-rSX" id="vjr-3T-ZaX"/>
                 <outlet property="signOutButtonHeight" destination="wA3-KC-XDQ" id="RqH-gv-XWM"/>
+                <outlet property="signOutButtonTopMargin" destination="SeP-Qe-sJk" id="T6e-D7-Xze"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -45,7 +49,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xDP-tc-YIH">
-                    <rect key="frame" x="20" y="122" width="280" height="48"/>
+                    <rect key="frame" x="20" y="367" width="280" height="48"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="48" id="wA3-KC-XDQ"/>
@@ -59,7 +63,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HKK-nf-xyi">
-                    <rect key="frame" x="20" y="185" width="280" height="48"/>
+                    <rect key="frame" x="20" y="304" width="280" height="48"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="48" id="1su-bR-X5j"/>
@@ -72,7 +76,7 @@
                         <action selector="signIn:" destination="-1" eventType="touchUpInside" id="zdC-t8-93w"/>
                     </connections>
                 </button>
-                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O26-cx-3cy">
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O26-cx-3cy" userLabel="Account View">
                     <rect key="frame" x="20" y="20" width="280" height="82"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
@@ -111,18 +115,45 @@
                         <constraint firstAttribute="trailing" secondItem="iiD-vH-WHK" secondAttribute="trailing" constant="10" id="uhi-Hk-qpf"/>
                     </constraints>
                 </view>
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MOw-Vc-VOQ" userLabel="Accounts Picker Container View">
+                    <rect key="frame" x="20" y="122" width="280" height="162"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C0M-yb-dEE">
+                            <rect key="frame" x="0.0" y="0.0" width="280" height="162"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="162" id="KJg-4k-4q6"/>
+                            </constraints>
+                            <connections>
+                                <outlet property="dataSource" destination="-1" id="3Er-fk-rVv"/>
+                                <outlet property="delegate" destination="-1" id="giM-Na-GpP"/>
+                            </connections>
+                        </pickerView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="162" id="XIq-DT-Mns"/>
+                        <constraint firstItem="C0M-yb-dEE" firstAttribute="leading" secondItem="MOw-Vc-VOQ" secondAttribute="leading" id="YBT-SF-POa"/>
+                        <constraint firstItem="C0M-yb-dEE" firstAttribute="top" secondItem="MOw-Vc-VOQ" secondAttribute="top" id="ZCc-hC-Rc9"/>
+                        <constraint firstAttribute="trailing" secondItem="C0M-yb-dEE" secondAttribute="trailing" id="mgz-hB-Abp"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="xDP-tc-YIH" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="2xG-Od-Td0"/>
-                <constraint firstItem="HKK-nf-xyi" firstAttribute="top" secondItem="xDP-tc-YIH" secondAttribute="bottom" constant="15" id="7dj-fu-rSX"/>
                 <constraint firstItem="HKK-nf-xyi" firstAttribute="width" secondItem="xDP-tc-YIH" secondAttribute="width" id="E2o-vS-gto"/>
                 <constraint firstAttribute="trailing" secondItem="O26-cx-3cy" secondAttribute="trailing" constant="20" id="Fcc-lG-6x6"/>
+                <constraint firstAttribute="trailing" secondItem="MOw-Vc-VOQ" secondAttribute="trailing" constant="20" id="La2-av-o59"/>
                 <constraint firstAttribute="centerX" secondItem="xDP-tc-YIH" secondAttribute="centerX" id="NvD-Gq-pbK"/>
+                <constraint firstItem="O26-cx-3cy" firstAttribute="bottom" secondItem="MOw-Vc-VOQ" secondAttribute="top" constant="-20" id="RFm-al-XaK"/>
+                <constraint firstItem="xDP-tc-YIH" firstAttribute="top" secondItem="HKK-nf-xyi" secondAttribute="bottom" constant="15" id="SeP-Qe-sJk"/>
                 <constraint firstAttribute="trailing" secondItem="xDP-tc-YIH" secondAttribute="trailing" constant="20" id="c0o-yC-Rwb"/>
                 <constraint firstItem="HKK-nf-xyi" firstAttribute="leading" secondItem="xDP-tc-YIH" secondAttribute="leading" id="gQJ-5J-ZDV"/>
-                <constraint firstItem="xDP-tc-YIH" firstAttribute="top" secondItem="O26-cx-3cy" secondAttribute="bottom" constant="20" id="gnO-hT-2zr"/>
                 <constraint firstItem="O26-cx-3cy" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="j2k-IY-FxJ"/>
+                <constraint firstItem="MOw-Vc-VOQ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="mFV-5U-2Te"/>
+                <constraint firstItem="MOw-Vc-VOQ" firstAttribute="bottom" secondItem="HKK-nf-xyi" secondAttribute="top" constant="-20" id="rHq-Fe-iAO"/>
                 <constraint firstItem="O26-cx-3cy" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="zdx-F4-nFT"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>

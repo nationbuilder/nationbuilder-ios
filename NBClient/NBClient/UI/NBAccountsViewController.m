@@ -18,7 +18,7 @@ static NSString *IsSignedInKeyPath;
 static NSString *SelectedAccountKeyPath;
 static void *observationContext = &observationContext;
 
-@interface NBAccountsViewController () <UIAlertViewDelegate>
+@interface NBAccountsViewController () <UIAlertViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
 
 @property (nonatomic, weak, readwrite) IBOutlet UIImageView *avatarImageView;
 @property (nonatomic, weak, readwrite) IBOutlet UILabel *nameLabel;
@@ -28,6 +28,8 @@ static void *observationContext = &observationContext;
 @property (nonatomic, weak, readwrite) IBOutlet UIButton *signOutButton;
 @property (nonatomic, weak, readwrite) IBOutlet UIButton *addAccountButton;
 
+@property (nonatomic, weak, readwrite) IBOutlet UIPickerView *accountsPicker;
+
 // For account view hiding.
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *accountViewHeight;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *accountViewBottomMargin;
@@ -36,14 +38,25 @@ static void *observationContext = &observationContext;
 
 // For sign-out button hiding.
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *signOutButtonHeight;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *signOutButtonBottomMargin;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *signOutButtonTopMargin;
 @property (nonatomic) CGFloat originalSignOutButtonHeight;
-@property (nonatomic) CGFloat originalSignOutButtonBottomMargin;
+@property (nonatomic) CGFloat originalSignOutButtonTopMargin;
+
+// For account picker hiding.
+@property (nonatomic, weak) IBOutlet UIView *accountsPickerContainer;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *accountsPickerHeight;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *accountsPickerBottomMargin;
+@property (nonatomic) CGFloat originalAccountsPickerHeight;
+@property (nonatomic) CGFloat originalAccountsPickerBottomMargin;
 
 @property (nonatomic, strong) UIBarButtonItem *closeButtonItem;
 @property (nonatomic, strong) UIButton *closeIconButton;
 
 @property (nonatomic, strong) UIAlertView *nationSlugPromptView;
+@property (nonatomic, strong) UIAlertView *nationSlugErrorView;
+
+@property (nonatomic, readonly) NSUInteger selectedIndex;
+@property (nonatomic, getter = isSelectingAccount) BOOL selectingAccount;
 
 - (IBAction)dismiss:(id)sender;
 
@@ -53,6 +66,7 @@ static void *observationContext = &observationContext;
 - (void)didSignOutOfLastAccount;
 
 - (void)updateVisibilityForSubview:(UIView *)subview
+                           visible:(BOOL)visible
                           animated:(BOOL)animated
              withCompletionHandler:(void (^)(void))completionHandler;
 
@@ -69,6 +83,13 @@ static void *observationContext = &observationContext;
                 withCompletionHandler:(void (^)(void))completionHandler;
 - (void)updateActionButtonsAnimated:(BOOL)animated
               withCompletionHandler:(void (^)(void))completionHandler;
+
+- (void)setUpAccountsPicker;
+- (void)toggleAccountsPickerVisibility:(BOOL)visible
+                              animated:(BOOL)animated
+                 withCompletionHandler:(void (^)(void))completionHandler;
+- (void)updateAccountsPickerAnimated:(BOOL)animated
+               withCompletionHandler:(void (^)(void))completionHandler;
 
 @end
 
@@ -98,6 +119,7 @@ static void *observationContext = &observationContext;
     self.edgesForExtendedLayout = UIRectEdgeNone;
     [self setUpAccountView];
     [self setUpActionButtons];
+    [self setUpAccountsPicker];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -106,6 +128,7 @@ static void *observationContext = &observationContext;
     NSAssert(self.dataSource, @"Data source must be set before appearance.");
     [self updateAccountViewAnimated:NO withCompletionHandler:nil];
     [self updateActionButtonsAnimated:NO withCompletionHandler:nil];
+    [self updateAccountsPickerAnimated:NO withCompletionHandler:nil];
     // Customize title view.
     self.navigationController.navigationBar.titleTextAttributes =
     @{ NSFontAttributeName: [UIFont preferredFontForTextStyle:UIFontTextStyleBody] };
@@ -119,30 +142,23 @@ static void *observationContext = &observationContext;
     }
 }
 
-#pragma mark - NBAccounts
-
 #pragma mark - UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
-    if (alertView == self.nationSlugPromptView) {
-        NSString *submitText = @"label.submit".nb_localizedString;
-        if ([buttonTitle isEqualToString:submitText]) {
-            __block NSError *error;
-            NSString *nationSlug = [alertView textFieldAtIndex:0].text;
-            BOOL didAdd = [self.dataSource addAccountWithNationSlug:nationSlug error:&error];
-            if (!didAdd) {
-                // Work around the fact automatic alert dismissal can't be prevented.
-                UIAlertView *errorAlertView = [UIAlertView nb_genericAlertViewWithError:error];
-                [errorAlertView show];
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [errorAlertView dismissWithClickedButtonIndex:0 animated:YES];
-                    [self promptForNationSlug];
-                });
-            }
+    if (alertView == self.nationSlugPromptView && buttonIndex != alertView.cancelButtonIndex) {
+        __block NSError *error;
+        NSString *nationSlug = [alertView textFieldAtIndex:0].text;
+        BOOL didAdd = [self.dataSource addAccountWithNationSlug:nationSlug error:&error];
+        if (!didAdd) {
+            // Work around the fact automatic alert dismissal can't be prevented.
+            self.nationSlugErrorView = [UIAlertView nb_genericAlertViewWithError:error];
+            self.nationSlugErrorView.delegate = self;
+            [self.nationSlugErrorView show];
         }
-    } else {
+    } else if (alertView == self.nationSlugErrorView) {
+        [self promptForNationSlug];
+    } else if (buttonIndex != alertView.cancelButtonIndex){
         NSLog(@"WARNING: Unhandled case.");
     }
 }
@@ -184,14 +200,71 @@ static void *observationContext = &observationContext;
     if (object == self.dataSource) {
         if ([keyPath isEqual:IsSignedInKeyPath]) {
             [self updateAccountViewAnimated:YES withCompletionHandler:^{
-                [self updateActionButtonsAnimated:YES withCompletionHandler:nil];
+                [self updateActionButtonsAnimated:YES withCompletionHandler:^{
+                    [self updateAccountsPickerAnimated:YES withCompletionHandler:nil];
+                }];
             }];
         } else if ([keyPath isEqual:SelectedAccountKeyPath]) {
-            
+            [self updateAccountViewAnimated:YES withCompletionHandler:^{
+                [self updateAccountsPickerAnimated:YES withCompletionHandler:nil];
+            }];
         }
     }
 }
 
+#pragma mark - UIPickerViewDataSource
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return self.dataSource.accounts.count;
+}
+
+#pragma mark - UIPickerViewDelegate
+
+- (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component
+{
+    return self.originalSignOutButtonHeight;
+}
+
+- (NSAttributedString *)pickerView:(UIPickerView *)pickerView attributedTitleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    static NSString *emSpace = @" ";
+    id<NBAccountViewDataSource> account = self.dataSource.accounts[row];
+    NSString *title = [NSString stringWithFormat:@"%@%@%@", account.name, emSpace, account.nationSlug];
+    NSMutableAttributedString *attributedTitle = [[NSMutableAttributedString alloc] initWithString:title];
+    [attributedTitle addAttributes:@{ NSFontAttributeName: self.nationLabel.font,
+                                      NSForegroundColorAttributeName: self.nationLabel.textColor }
+                             range:[title rangeOfString:account.nationSlug]];
+    return [[NSAttributedString alloc] initWithAttributedString:attributedTitle];
+}
+
+- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
+{
+    UILabel *label = (UILabel *)view;
+    if (!label) {
+        label = [[UILabel alloc] initWithFrame:CGRectZero];
+        label.font = self.nameLabel.font;
+        label.textAlignment = NSTextAlignmentCenter;
+    }
+    label.attributedText = [self pickerView:pickerView attributedTitleForRow:row forComponent:component];
+    return label;
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    // NOTE: Only called on user-interaction-driven selection, so there's no
+    // infinite loop.
+    // Raise our flag before having the view interaction update state, so as to
+    // distinguish from state being updated by our data source.
+    self.selectingAccount = YES;
+    id<NBAccountViewDataSource> account = self.dataSource.accounts[row];
+    self.dataSource.selectedAccount = account;
+}
 
 #pragma mark - Public
 
@@ -236,15 +309,27 @@ static void *observationContext = &observationContext;
 }
 
 - (void)updateVisibilityForSubview:(UIView *)subview
+                           visible:(BOOL)visible
                           animated:(BOOL)animated
              withCompletionHandler:(void (^)(void))completionHandler
 {
     if (animated) {
         [self.view setNeedsUpdateConstraints];
-        [UIView animateWithDuration:self.appearanceDuration.floatValue delay:0.0f
-                            options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseInOut
-                         animations:^{ [self.view layoutIfNeeded]; }
-                         completion:^(BOOL finished) { if (completionHandler) { completionHandler(); } }];
+        if (visible) {
+            subview.hidden = NO;
+        }
+        [UIView
+         animateWithDuration:self.appearanceDuration.floatValue delay:0.0f
+         options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseInOut
+         animations:^{ [self.view layoutIfNeeded]; }
+         completion:^(BOOL finished) {
+             if (!visible) {
+                 subview.hidden = YES;
+             }
+             if (completionHandler) {
+                 completionHandler();
+             }
+         }];
     } else {
         [subview layoutIfNeeded];
         if (completionHandler) { completionHandler(); }
@@ -270,7 +355,7 @@ static void *observationContext = &observationContext;
     }
     static NSString *closeIcon = @"\ue680";
     self.closeIconButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    self.closeIconButton.titleLabel.font = [UIFont fontWithName:NBIconFontFamilyName size:48.0f];
+    self.closeIconButton.titleLabel.font = [UIFont fontWithName:NBIconFontFamilyName size:44.0f];
     [self.closeIconButton setTitle:closeIcon forState:UIControlStateNormal];
     [self.closeIconButton addTarget:self action:@selector(dismiss:) forControlEvents:UIControlEventTouchUpInside];
     [self.closeIconButton sizeToFit];
@@ -292,6 +377,14 @@ static void *observationContext = &observationContext;
     return _nationSlugPromptView;
 }
 
+- (NSUInteger)selectedIndex
+{
+    if (!self.dataSource || !self.dataSource.selectedAccount) {
+        return NSNotFound;
+    }
+    return [self.dataSource.accounts indexOfObject:self.dataSource.selectedAccount];
+}
+
 #pragma mark Account View
 
 - (void)setUpAccountView
@@ -305,19 +398,19 @@ static void *observationContext = &observationContext;
     self.avatarImageView.layer.borderWidth = 1.0f;
     self.avatarImageView.layer.borderColor = self.imageBorderColor.CGColor;
     self.avatarImageView.layer.cornerRadius = self.imageCornerRadius.floatValue;
-    self.signOutButton.backgroundColor = self.buttonBackgroundColor;
-    self.signOutButton.layer.cornerRadius = self.cornerRadius.floatValue;
-    self.addAccountButton.backgroundColor = self.buttonBackgroundColor;
-    self.addAccountButton.layer.cornerRadius = self.cornerRadius.floatValue;
 }
 
 - (void)toggleAccountViewVisibility:(BOOL)visible
                            animated:(BOOL)animated
               withCompletionHandler:(void (^)(void))completionHandler
 {
-    self.accountViewHeight.constant = visible ? self.originalAccountViewHeight : 0.0f;
+    CGFloat newHeight = visible ? self.originalAccountViewHeight : 0.0f;
+    if (animated) {
+        animated = newHeight != self.accountViewHeight.constant;
+    }
+    self.accountViewHeight.constant = newHeight;
     self.accountViewBottomMargin.constant  = visible ? self.originalAccountViewBottomMargin : 0.0f;
-    [self updateVisibilityForSubview:self.accountView animated:animated withCompletionHandler:completionHandler];
+    [self updateVisibilityForSubview:self.accountView visible:visible animated:animated withCompletionHandler:completionHandler];
 }
 
 - (void)updateAccountViewAnimated:(BOOL)animated
@@ -337,16 +430,25 @@ static void *observationContext = &observationContext;
 - (void)setUpActionButtons
 {
     self.originalSignOutButtonHeight = self.signOutButtonHeight.constant;
-    self.originalSignOutButtonBottomMargin = self.signOutButtonBottomMargin.constant;
+    self.originalSignOutButtonTopMargin = self.signOutButtonTopMargin.constant;
+    // Style appearance.
+    self.signOutButton.backgroundColor = self.buttonBackgroundColor;
+    self.signOutButton.layer.cornerRadius = self.cornerRadius.floatValue;
+    self.addAccountButton.backgroundColor = self.buttonBackgroundColor;
+    self.addAccountButton.layer.cornerRadius = self.cornerRadius.floatValue;
 }
 
 - (void)toggleSignOutButtonVisibility:(BOOL)visible
                              animated:(BOOL)animated
                 withCompletionHandler:(void (^)(void))completionHandler
 {
-    self.signOutButtonHeight.constant = visible ? self.originalSignOutButtonHeight : 0.0f;
-    self.signOutButtonBottomMargin.constant = visible ? self.originalSignOutButtonBottomMargin : 0.0f;
-    [self updateVisibilityForSubview:self.signOutButton animated:animated withCompletionHandler:completionHandler];
+    CGFloat newHeight = visible ? self.originalSignOutButtonHeight : 0.0f;
+    if (animated) {
+        animated = newHeight != self.signOutButtonHeight.constant;
+    }
+    self.signOutButtonHeight.constant = newHeight;
+    self.signOutButtonTopMargin.constant = visible ? self.originalSignOutButtonTopMargin : 0.0f;
+    [self updateVisibilityForSubview:self.signOutButton visible:visible animated:animated withCompletionHandler:completionHandler];
 }
 
 - (void)updateActionButtonsAnimated:(BOOL)animated
@@ -355,6 +457,51 @@ static void *observationContext = &observationContext;
     [self toggleSignOutButtonVisibility:self.dataSource.isSignedIn animated:animated withCompletionHandler:completionHandler];
     [self.addAccountButton setTitle:(self.dataSource.isSignedIn ? @"label.sign-into-another" : @"label.sign-in").nb_localizedString
                            forState:UIControlStateNormal];
+}
+
+#pragma mark Account Picker
+
+- (void)setUpAccountsPicker
+{
+    self.originalAccountsPickerHeight = self.accountsPickerHeight.constant;
+    self.originalAccountsPickerBottomMargin = self.accountsPickerBottomMargin.constant;
+    // Style appearance.
+    self.accountsPicker.layer.borderWidth = 1.0f;
+    self.accountsPicker.layer.borderColor = self.borderColor.CGColor;
+    self.accountsPicker.layer.cornerRadius = self.cornerRadius.floatValue;
+}
+
+- (void)toggleAccountsPickerVisibility:(BOOL)visible
+                              animated:(BOOL)animated
+                 withCompletionHandler:(void (^)(void))completionHandler
+{
+    CGFloat newHeight = visible ? self.originalAccountsPickerHeight : 0.0f;
+    if (animated) {
+        animated = newHeight != self.accountsPickerHeight.constant;
+    }
+    self.accountsPickerHeight.constant = newHeight;
+    self.accountsPickerBottomMargin.constant = visible ? self.originalAccountsPickerBottomMargin : 0.0f;
+    [self updateVisibilityForSubview:self.accountsPickerContainer visible:visible animated:animated withCompletionHandler:completionHandler];
+}
+
+- (void)updateAccountsPickerAnimated:(BOOL)animated
+               withCompletionHandler:(void (^)(void))completionHandler
+{
+    [self.accountsPicker reloadAllComponents];
+    [self toggleAccountsPickerVisibility:(self.dataSource.accounts.count > 1) animated:animated withCompletionHandler:^{
+        // Update selected row.
+        if (!self.isSelectingAccount && self.dataSource.selectedAccount) {
+            // Only update the picker if it did not trigger the account selection.
+            NSUInteger selectedIndex = [self selectedIndex];
+            if (selectedIndex == NSNotFound) {
+                NSLog(@"ERROR: Invalid selected account index. Aborting row selection.");
+            }
+            [self.accountsPicker selectRow:selectedIndex inComponent:0 animated:YES];
+        } else {
+            // Otherwise restore our flag.
+            self.selectingAccount = NO;
+        }
+    }];
 }
 
 @end

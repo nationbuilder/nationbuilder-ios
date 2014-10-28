@@ -10,7 +10,6 @@
 		AA3B62A819E8B86700798C49 /* UIKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3B62A719E8B86700798C49 /* UIKitAdditions.m */; };
 		AA3B62A919E8BCCE00798C49 /* UIKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA3B62A619E8B86700798C49 /* UIKitAdditions.h */; };
 		AA3B62AA19E8BCDA00798C49 /* NBAccountsViewDefines.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AAEFEAF019E6EADC00777BC1 /* NBAccountsViewDefines.h */; };
-		AA3B62AB19E8BCE100798C49 /* NBAccountsPickerView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AAEFEAF419E6EC7F00777BC1 /* NBAccountsPickerView.h */; };
 		AA3B62AC19E8BCE700798C49 /* NBAccountsManager.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AAEFEAF719E6EE8B00777BC1 /* NBAccountsManager.h */; };
 		AA3B62AD19E8BCF200798C49 /* NBAccountsViewController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AAEFEAEC19E6E73800777BC1 /* NBAccountsViewController.h */; };
 		AA668DC619705FC800A952B0 /* NBTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = AA668DC519705FC800A952B0 /* NBTestCase.m */; };
@@ -55,7 +54,6 @@
 		AAAEFC3F196CD13D00222A48 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AAAEFC3D196CD13D00222A48 /* InfoPlist.strings */; };
 		AAAEFC41196CD13D00222A48 /* NBClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAEFC40196CD13D00222A48 /* NBClientTests.m */; };
 		AAEFEAEF19E6E73800777BC1 /* NBAccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEFEAED19E6E73800777BC1 /* NBAccountsViewController.m */; };
-		AAEFEAF619E6EC7F00777BC1 /* NBAccountsPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEFEAF519E6EC7F00777BC1 /* NBAccountsPickerView.m */; };
 		AAEFEAF919E6EE8B00777BC1 /* NBAccountsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEFEAF819E6EE8B00777BC1 /* NBAccountsManager.m */; };
 		AAEFEAFF19E7131E00777BC1 /* NBAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEFEAFE19E7131E00777BC1 /* NBAccount.m */; };
 		AAEFEB0019E716CE00777BC1 /* NBAccount.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AAEFEAFD19E7131E00777BC1 /* NBAccount.h */; };
@@ -80,7 +78,6 @@
 			files = (
 				AA3B62AD19E8BCF200798C49 /* NBAccountsViewController.h in CopyFiles */,
 				AA3B62AC19E8BCE700798C49 /* NBAccountsManager.h in CopyFiles */,
-				AA3B62AB19E8BCE100798C49 /* NBAccountsPickerView.h in CopyFiles */,
 				AA3B62AA19E8BCDA00798C49 /* NBAccountsViewDefines.h in CopyFiles */,
 				AA674F0219E60A54009C6D4B /* UI.h in CopyFiles */,
 				AA3B62A919E8BCCE00798C49 /* UIKitAdditions.h in CopyFiles */,
@@ -153,8 +150,6 @@
 		AAEFEAED19E6E73800777BC1 /* NBAccountsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAccountsViewController.m; sourceTree = "<group>"; };
 		AAEFEAEE19E6E73800777BC1 /* NBAccountsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NBAccountsViewController.xib; sourceTree = "<group>"; };
 		AAEFEAF019E6EADC00777BC1 /* NBAccountsViewDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBAccountsViewDefines.h; sourceTree = "<group>"; };
-		AAEFEAF419E6EC7F00777BC1 /* NBAccountsPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBAccountsPickerView.h; sourceTree = "<group>"; };
-		AAEFEAF519E6EC7F00777BC1 /* NBAccountsPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAccountsPickerView.m; sourceTree = "<group>"; };
 		AAEFEAF719E6EE8B00777BC1 /* NBAccountsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBAccountsManager.h; sourceTree = "<group>"; };
 		AAEFEAF819E6EE8B00777BC1 /* NBAccountsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAccountsManager.m; sourceTree = "<group>"; };
 		AAEFEAFD19E7131E00777BC1 /* NBAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBAccount.h; sourceTree = "<group>"; };
@@ -194,8 +189,6 @@
 				AA674F0419E60CFD009C6D4B /* NBAccountButton.h */,
 				AA674F0519E60CFD009C6D4B /* NBAccountButton.m */,
 				AA674F0619E60CFD009C6D4B /* NBAccountButton.xib */,
-				AAEFEAF419E6EC7F00777BC1 /* NBAccountsPickerView.h */,
-				AAEFEAF519E6EC7F00777BC1 /* NBAccountsPickerView.m */,
 				AAEFEAEC19E6E73800777BC1 /* NBAccountsViewController.h */,
 				AAEFEAED19E6E73800777BC1 /* NBAccountsViewController.m */,
 				AAEFEAEE19E6E73800777BC1 /* NBAccountsViewController.xib */,
@@ -461,7 +454,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AAEFEAF619E6EC7F00777BC1 /* NBAccountsPickerView.m in Sources */,
 				AA6FF3BE197D95220049B747 /* NBPaginationInfo.m in Sources */,
 				AA6FF3C4197DF2E00049B747 /* NBClient+People.m in Sources */,
 				AA674F0719E60CFD009C6D4B /* NBAccountButton.m in Sources */,

@@ -14,17 +14,23 @@
 #import "NBAccount.h"
 
 NSString * const NBAccountInfosDefaultsKey = @"NBAccountInfos";
-NSString * const NBAccountInfoNationSlugKey = @"Nation Slug";
+NSString * const NBAccountInfoIdentifierKey = @"User ID";
 NSString * const NBAccountInfoNameKey = @"User Name";
+NSString * const NBAccountInfoNationSlugKey = @"Nation Slug";
 
 @interface NBAccountsManager ()
 
+@property (nonatomic, weak, readwrite) id<NBAccountsManagerDelegate> delegate;
+
+// NBAccountsViewDataSource
 @property (nonatomic, readwrite) BOOL signedIn;
 
 @property (nonatomic, strong) NSDictionary *clientInfo;
 @property (nonatomic, strong) NSMutableArray *mutableAccounts;
 
-@property (nonatomic, strong) id applicationWillTerminateObserver;
+@property (nonatomic) BOOL shouldPersistAccounts;
+@property (nonatomic, strong) id applicationDidEnterBackgroundNotifier;
+@property (nonatomic, strong) NSString *persistedAccountsIdentifier;
 
 - (void)activateAccount:(NBAccount *)account;
 - (void)deactivateAccount:(NBAccount *)account;
@@ -32,6 +38,7 @@ NSString * const NBAccountInfoNameKey = @"User Name";
 
 - (void)setUpAccountPersistence;
 - (void)tearDownAccountPersistence;
+- (void)loadPersistedAccounts;
 - (void)persistAccounts;
 
 @end
@@ -39,13 +46,16 @@ NSString * const NBAccountInfoNameKey = @"User Name";
 @implementation NBAccountsManager
 
 - (instancetype)initWithClientInfo:(NSDictionary *)clientInfoOrNil
+                          delegate:(id<NBAccountsManagerDelegate>)delegate
 {
     self = [super init];
     if (self) {
-        self.shouldPersistAccounts = YES;
+        NSAssert(delegate, @"A delegate is required.");
+        self.delegate = delegate;
         self.clientInfo = clientInfoOrNil;
         self.mutableAccounts = [NSMutableArray array];
         [self setUpAccountPersistence];
+        [self loadPersistedAccounts];
     }
     return self;
 }
@@ -127,6 +137,7 @@ NSString * const NBAccountInfoNameKey = @"User Name";
         [self deactivateAccount:self.selectedAccount];
         didSignOut = YES;
     }
+    self.selectedAccount = self.accounts.firstObject;
     return didSignOut;
 }
 
@@ -134,9 +145,32 @@ NSString * const NBAccountInfoNameKey = @"User Name";
 
 - (void)activateAccount:(NBAccount *)account
 {
-    [account requestActiveWithCompletionHandler:^(NSError *error) {
+    BOOL needsPriorSignout = self.selectedAccount && [self.selectedAccount.nationSlug isEqualToString:account.nationSlug];
+    [account requestActiveWithPriorSignout:needsPriorSignout completionHandler:^(NSError *error) {
+        BOOL shouldBail = NO;
         if (error) {
+            [self.mutableAccounts removeObject:account];
             [self.delegate accountsManager:self failedToSwitchToAccount:account withError:error];
+            shouldBail = YES;
+        } else {
+            for (NBAccount *existingAccount in self.accounts) {
+                if (existingAccount != account && existingAccount.identifier == account.identifier) {
+                    shouldBail = YES;
+                    break;
+                }
+            }
+            if (shouldBail) {
+                [self.mutableAccounts removeObject:account];
+                NSLog(@"INFO: User attempted to activate duplicate account with identifier %lu",
+                      account.identifier);
+            }
+        }
+        if (shouldBail) {
+            if (!self.selectedAccount && self.mutableAccounts.count) {
+                // Try again with another account if needed and possible.
+                [self activateAccount:self.mutableAccounts.firstObject];
+            }
+            return;
         }
         self.selectedAccount = account;
         if (!self.isSignedIn) {
@@ -165,24 +199,23 @@ NSString * const NBAccountInfoNameKey = @"User Name";
 
 - (void)setUpAccountPersistence
 {
-    if (!self.shouldPersistAccounts) { return; }
-    NSArray *accountInfos = [[NSUserDefaults standardUserDefaults] arrayForKey:NBAccountInfosDefaultsKey];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:NBAccountInfosDefaultsKey];
-    if (accountInfos) {
-        for (NSDictionary *accountInfo in accountInfos) {
-            NBAccount *account = [[NBAccount alloc] initWithClientInfo:
-                                  [self clientInfoForAccountWithNationSlug:accountInfo[NBAccountInfoNationSlugKey]]];
-            account.name = accountInfo[NBAccountInfoNameKey];
-            [self.mutableAccounts addObject:account];
-            if (!self.selectedAccount) {
-                [self activateAccount:account];
-            }
-        }
+    // Guard.
+    self.shouldPersistAccounts = YES;
+    if ([self.delegate respondsToSelector:@selector(accountsManagerShouldPersistAccounts:)]) {
+        self.shouldPersistAccounts = [self.delegate accountsManagerShouldPersistAccounts:self];
     }
+    if (!self.shouldPersistAccounts) { return; }
+    // Continue.
+    if ([self.delegate respondsToSelector:@selector(persistedAccountsIdentifierForAccountsManager:)]) {
+        self.persistedAccountsIdentifier = [self.delegate persistedAccountsIdentifierForAccountsManager:self];
+    }
+    self.persistedAccountsIdentifier = (self.persistedAccountsIdentifier
+                                        ?: [NSString stringWithFormat:@"%@-%@",
+                                            NBAccountInfosDefaultsKey, NSStringFromClass(self.delegate.class)]);
     __weak __typeof(self)weakSelf = self;
-    self.applicationWillTerminateObserver =
+    self.applicationDidEnterBackgroundNotifier =
     [[NSNotificationCenter defaultCenter]
-     addObserverForName:UIApplicationWillTerminateNotification
+     addObserverForName:UIApplicationDidEnterBackgroundNotification
      object:[UIApplication sharedApplication] queue:[NSOperationQueue mainQueue]
      usingBlock:^(NSNotification *note) {
          NSAssert(weakSelf, @"Account manager dereferenced before application received termination signal.");
@@ -193,7 +226,25 @@ NSString * const NBAccountInfoNameKey = @"User Name";
 - (void)tearDownAccountPersistence
 {
     if (!self.shouldPersistAccounts) { return; }
-    [[NSNotificationCenter defaultCenter] removeObserver:self.applicationWillTerminateObserver];
+    [[NSNotificationCenter defaultCenter] removeObserver:self.applicationDidEnterBackgroundNotifier];
+}
+
+- (void)loadPersistedAccounts
+{
+    if (!self.shouldPersistAccounts) { return; }
+    NSArray *accountInfos = [[NSUserDefaults standardUserDefaults] arrayForKey:self.persistedAccountsIdentifier];
+    if (accountInfos) {
+        for (NSDictionary *accountInfo in accountInfos) {
+            NBAccount *account = [[NBAccount alloc] initWithClientInfo:
+                                  [self clientInfoForAccountWithNationSlug:accountInfo[NBAccountInfoNationSlugKey]]];
+            account.name = accountInfo[NBAccountInfoNameKey];
+            account.identifier = [accountInfo[NBAccountInfoIdentifierKey] unsignedIntegerValue];
+            [self.mutableAccounts addObject:account];
+        }
+        [self activateAccount:self.accounts.firstObject];
+        NSLog(@"INFO: Loaded %lu persisted account(s) for identifier \"%@\"",
+              accountInfos.count, self.persistedAccountsIdentifier);
+    }
 }
 
 - (void)persistAccounts
@@ -201,10 +252,14 @@ NSString * const NBAccountInfoNameKey = @"User Name";
     if (!self.shouldPersistAccounts) { return; }
     NSMutableArray *accountInfos = [NSMutableArray array];
     for (NBAccount *account in self.accounts) {
-        [accountInfos addObject:@{ NBAccountInfoNameKey: account.name,
+        if (!account.name) { continue; }
+        [accountInfos addObject:@{ NBAccountInfoIdentifierKey: @(account.identifier),
+                                   NBAccountInfoNameKey: account.name,
                                    NBAccountInfoNationSlugKey: account.nationSlug }];
     }
-    [[NSUserDefaults standardUserDefaults] setObject:accountInfos forKey:NBAccountInfosDefaultsKey];
+    [[NSUserDefaults standardUserDefaults] setObject:accountInfos forKey:self.persistedAccountsIdentifier];
+    NSLog(@"INFO: Persisted %lu persisted account(s) for identifier \"%@\"",
+          accountInfos.count, self.persistedAccountsIdentifier);
 }
 
 @end

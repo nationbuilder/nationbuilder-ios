@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-#import "NBAccountsPickerView.h"
 #import "NBAccountsViewDefines.h"
 
 @interface NBAccountsViewController : UIViewController
@@ -24,6 +23,8 @@
 @property (nonatomic, weak, readonly) UIButton *signOutButton;
 @property (nonatomic, weak, readonly) UIButton *addAccountButton;
 
+@property (nonatomic, weak, readonly) UIPickerView *accountsPicker;
+
 @property (nonatomic, strong) UIColor *borderColor UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) NSNumber *cornerRadius UI_APPEARANCE_SELECTOR;
 
@@ -33,8 +34,6 @@
 @property (nonatomic, strong) NSNumber *imageCornerRadius UI_APPEARANCE_SELECTOR;
 
 @property (nonatomic, strong) NSNumber *appearanceDuration UI_APPEARANCE_SELECTOR;
-
-@property (nonatomic, strong, readonly) NBAccountsPickerView *pickerView;
 
 @property (nonatomic) BOOL shouldAutoPromptForNationSlug;
 

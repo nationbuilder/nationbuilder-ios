@@ -49,8 +49,7 @@
     self.customClientInfo = [NSDictionary dictionaryWithContentsOfFile:
                              [[NSBundle mainBundle] pathForResource:[NBInfoFileName stringByAppendingString:@"-Local"] ofType:@"plist"]];
 #endif
-    self.accountsManager = [[NBAccountsManager alloc] initWithClientInfo:self.customClientInfo];
-    self.accountsManager.delegate = self;
+    self.accountsManager = [[NBAccountsManager alloc] initWithClientInfo:self.customClientInfo delegate:self];
     // Boilerplate.
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.rootViewController = self.rootViewController;
@@ -92,15 +91,19 @@
     // Update the account button.
     self.accountButton.dataSource = account;
     self.accountButton.contextHasMultipleActiveAccounts = self.accountsManager.accounts.count > 1;
-    // If the accounts view was shown to sign in initially, the user probably just wants to start using the app.
-    if (account && !self.peopleViewController.ready) {
-        // Dismiss the accounts view if needed.
-        if (self.rootViewController.visibleViewController == self.accountsViewController) {
-            [self.rootViewController dismissViewControllerAnimated:YES completion:nil];
-        }
+    // If we have a new / different account.
+    if (account) {
+        // Clear out our data.
         self.peopleViewController.dataSource = [[NBPeopleDataSource alloc] initWithClient:account.client];
-        // Set our view controller to ready.
-        self.peopleViewController.ready = YES;
+        // If the accounts view was shown to sign in initially, the user probably just wants to start using the app.
+        if (!self.peopleViewController.ready) {
+            // Dismiss the accounts view if needed.
+            if (self.rootViewController.visibleViewController == self.accountsViewController) {
+                [self.rootViewController dismissViewControllerAnimated:YES completion:nil];
+            }
+            // Set our view controller to ready.
+            self.peopleViewController.ready = YES;
+        }
     // If we're no longer signed in, update our app.
     } else if (!account && !accountsManager.isSignedIn && self.peopleViewController.ready) {
         self.peopleViewController.ready = NO;
@@ -154,9 +157,6 @@
     }
     self.peopleViewController = [[NBPeopleViewController alloc] initWithNibNames :nil bundle:nil];
     self.peopleViewController.title = NSLocalizedString(@"people.navigation-title", nil);
-    if (!self.accountsManager.isSignedIn) {
-        self.peopleViewController.notReadyLabel.text = NSLocalizedString(@"message.sign-in", nil);
-    }
     // Pass our account button to the view controller that will show it for
     // further configuration. Please refer to the method for configuration options;
     [self.peopleViewController showAccountButton:self.accountButton];

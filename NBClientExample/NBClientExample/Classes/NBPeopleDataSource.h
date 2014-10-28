@@ -16,6 +16,5 @@
 @property (nonatomic, strong, readonly) NSDictionary *personDataSources;
 
 - (void)fetchAll;
-- (void)deleteAll;
 
 @end

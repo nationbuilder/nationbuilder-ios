@@ -29,6 +29,7 @@
 @property (nonatomic, readonly) CGSize intrinsicContentSize;
 @property (nonatomic, readonly) CGFloat visibleCollectionViewHeight;
 
+@property (nonatomic) BOOL shouldShowRefresh;
 @property (nonatomic) BOOL shouldShowLoadMore;
 
 - (UICollectionViewCell *)previousVerticalCellForCell:(UICollectionViewCell *)cell;

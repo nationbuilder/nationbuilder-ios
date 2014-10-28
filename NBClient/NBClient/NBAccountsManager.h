@@ -14,10 +14,9 @@
 
 @interface NBAccountsManager : NSObject <NBAccountsViewDataSource>
 
-@property (nonatomic, weak) id<NBAccountsManagerDelegate> delegate;
+@property (nonatomic, weak, readonly) id<NBAccountsManagerDelegate> delegate;
 
-@property (nonatomic) BOOL shouldPersistAccounts;
-
-- (instancetype)initWithClientInfo:(NSDictionary *)clientInfoOrNil;
+- (instancetype)initWithClientInfo:(NSDictionary *)clientInfoOrNil
+                          delegate:(id<NBAccountsManagerDelegate>)delegate;
 
 @end

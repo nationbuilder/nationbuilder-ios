@@ -13,11 +13,13 @@
 @interface NBPersonDataSource : NSObject <NBDataSource>
 
 @property (nonatomic, strong) NSDictionary *person;
-@property (nonatomic) BOOL needsDelete;
 
 @property (nonatomic, strong) UIImage *profileImage;
 
 - (BOOL)save;
 - (void)cancelSave;
+
+- (BOOL)nb_delete;
+- (void)cancelDelete;
 
 @end

@@ -13,10 +13,7 @@
 
 #import "NBPersonDataSource.h"
 
-static NSString *PersonKeyPath;
-static void *observationContext = &observationContext;
-
-@interface NBPeopleDataSource ()
+@interface NBPeopleDataSource () <NBDataSourceDelegate>
 
 @property (nonatomic, weak, readwrite) NBClient *client;
 
@@ -35,20 +32,12 @@ static void *observationContext = &observationContext;
 
 - (instancetype)initWithClient:(NBClient *)client
 {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        PersonKeyPath = NSStringFromSelector(@selector(person));
-    });
     self = [super init];
     if (self) {
         self.client = client;
+        self.paginationInfo = [[NBPaginationInfo alloc] init];
     }
     return self;
-}
-
-- (void)dealloc
-{
-    self.mutablePersonDataSources = nil;
 }
 
 #pragma mark - Public
@@ -84,27 +73,14 @@ static void *observationContext = &observationContext;
     }];
 }
 
-- (void)deleteAll
-{
-    [self.mutablePersonDataSources enumerateKeysAndObjectsUsingBlock:^(NSNumber *identifier, NBPersonDataSource *dataSource, BOOL *stop) {
-        if (dataSource.needsDelete) {
-            [self.client
-             deletePersonByIdentifier:identifier.unsignedIntegerValue
-             withCompletionHandler:^(NSDictionary *item, NSError *error) {
-                 dataSource.person = nil;
-             }];
-        }
-    }];
-}
-
 #pragma mark - NBCollectionDataSource
 
 // Create child data sources.
 - (id<NBDataSource>)dataSourceForItem:(NSDictionary *)item
 {
     NBPersonDataSource *dataSource = [[NBPersonDataSource alloc] initWithClient:self.client];
+    dataSource.delegate = self;
     dataSource.person = item;
-    dataSource.parentDataSource = self;
     if (item && item[@"id"]) {
         self.mutablePersonDataSources[item[@"id"]] = dataSource;
     }
@@ -124,50 +100,15 @@ static void *observationContext = &observationContext;
     return dataSource;
 }
 
-#pragma mark - NBDataSource
+#pragma mark - NBDataSourceDelegate
 
-- (NBPaginationInfo *)paginationInfo
+- (void)dataSource:(id<NBDataSource>)dataSource didChangeValueForKeyPath:(NSString *)keyPath
 {
-    if (_paginationInfo) {
-        return _paginationInfo;
-    }
-    self.paginationInfo = [[NBPaginationInfo alloc] init];
-    return _paginationInfo;
-}
-
-- (void)cleanUp:(NSError *__autoreleasing *)error
-{
-    if (self.paginationInfo) {
-        self.paginationInfo.currentPageNumber = 1;
-    }
-    self.people = [NSArray array];
-    self.mutablePersonDataSources = nil;
-}
-
-+ (NSError *)parseClientError:(NSError *)error
-{
-    return [NBPersonDataSource parseClientError:error];
-}
-
-+ (id)parseClientResults:(id)results
-{
-    NSAssert([results isKindOfClass:[NSArray class]], @"Results should be an array.");
-    NSMutableArray *items = [NSMutableArray array];
-    for (NSDictionary *item in results) {
-        [items addObject:[NBPersonDataSource parseClientResults:item]];
-    }
-    return [NSArray arrayWithArray:items];
-}
-
-#pragma mark - NSKeyValueObserving
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if (context == NULL && [keyPath isEqual:PersonKeyPath]) {
-        NBPersonDataSource *dataSource = object;
+    if ([dataSource isKindOfClass:[NBPersonDataSource class]] && [keyPath isEqualToString:NSStringFromSelector(@selector(person))]) {
+        NBPersonDataSource *personDataSource = dataSource;
         NSMutableArray *people = self.people.mutableCopy;
-        NSDictionary *person = dataSource.person;
-        if (dataSource.person) {
+        NSDictionary *person = personDataSource.person;
+        if (person) {
             // Keep `people` synced with `mutablePersonDataSources`.
             NSUInteger index = [self.people indexOfObjectPassingTest:^BOOL(NSDictionary *aPerson, NSUInteger idx, BOOL *stop) {
                 return [aPerson[@"id"] isEqual:person[@"id"]];
@@ -194,9 +135,31 @@ static void *observationContext = &observationContext;
             }
             self.people = [NSArray arrayWithArray:people];
         }
-    } else if (context != &observationContext) {
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
+}
+
+#pragma mark - NBDataSource
+
+- (void)cleanUp:(NSError *__autoreleasing *)error
+{
+    self.paginationInfo = nil;
+    self.people = nil;
+    self.mutablePersonDataSources = nil;
+}
+
++ (NSError *)parseClientError:(NSError *)error
+{
+    return [NBPersonDataSource parseClientError:error];
+}
+
++ (id)parseClientResults:(id)results
+{
+    NSAssert([results isKindOfClass:[NSArray class]], @"Results should be an array.");
+    NSMutableArray *items = [NSMutableArray array];
+    for (NSDictionary *item in results) {
+        [items addObject:[NBPersonDataSource parseClientResults:item]];
+    }
+    return [NSArray arrayWithArray:items];
 }
 
 #pragma mark - Private
