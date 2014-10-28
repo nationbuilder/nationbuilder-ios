@@ -37,6 +37,7 @@
 
 @property (nonatomic) BOOL shouldAutoPromptForNationSlug;
 
+// You can call this manually if you decide to turn off auto-prompting.
 - (void)promptForNationSlug;
 
 @end

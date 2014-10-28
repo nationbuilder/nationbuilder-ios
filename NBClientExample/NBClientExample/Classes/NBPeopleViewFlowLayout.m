@@ -161,7 +161,7 @@
 
 - (BOOL)hasMultipleColumns
 {
-    return UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
+    return [UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad;
 }
 
 - (CGSize)intrinsicContentSize

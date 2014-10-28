@@ -344,7 +344,6 @@ static void *observationContext = &observationContext;
         return _closeButtonItem;
     }
     self.closeButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.closeIconButton];
-    [self.closeButtonItem setTitlePositionAdjustment:UIOffsetMake(10.0f, 0.0f) forBarMetrics:UIBarMetricsDefault];
     return _closeButtonItem;
 }
 
