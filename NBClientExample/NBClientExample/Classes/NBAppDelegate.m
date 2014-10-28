@@ -19,6 +19,7 @@
 @interface NBAppDelegate () <NBAccountsManagerDelegate, NBAccountsViewDelegate>
 
 @property (nonatomic, strong, readonly) NBAccount *account;
+
 @property (nonatomic, strong) NBAccountButton *accountButton;
 @property (nonatomic, strong) NBAccountsManager *accountsManager;
 @property (nonatomic, strong) NBAccountsViewController *accountsViewController;
@@ -99,9 +100,9 @@
         // If the accounts view was shown to sign in initially, the user probably just wants to start using the app.
         if (!self.peopleViewController.ready) {
             // Dismiss the accounts view if needed.
-            if (self.rootViewController.visibleViewController == self.accountsViewController) {
-                [self.rootViewController dismissViewControllerAnimated:YES completion:nil];
-            }
+            // NOTE: The accounts view has a custom dismissal that works with
+            // -showWithAccountButton:presentingViewController.
+            [self.accountsViewController dismissViewControllerAnimated:YES completion:nil];
             // Set our view controller to ready.
             self.peopleViewController.ready = YES;
         }
@@ -163,10 +164,10 @@
     return _rootViewController;
 }
 
-- (void)presentAccountsViewController:(id)sender
+- (IBAction)presentAccountsViewController:(id)sender
 {
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:self.accountsViewController];
-    [self.rootViewController presentViewController:navigationController animated:YES completion:nil];
+    [self.accountsViewController showWithAccountButton:self.accountButton
+                              presentingViewController:self.rootViewController];
 }
 
 @end

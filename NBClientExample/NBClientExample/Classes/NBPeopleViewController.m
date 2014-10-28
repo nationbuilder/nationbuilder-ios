@@ -187,6 +187,10 @@ static void *observationContext = &observationContext;
         [(id)self.dataSource addObserver:self forKeyPath:PeopleKeyPath options:0 context:&observationContext];
         [(id)self.dataSource addObserver:self forKeyPath:NBDataSourceErrorKeyPath options:0 context:&observationContext];
     }
+    // Update.
+    if (self.isReady && !self.isBusy) {
+        [self fetchIfNeeded];
+    }
 }
 
 #pragma mark Busy
@@ -421,22 +425,24 @@ static void *observationContext = &observationContext;
 
 - (void)showAccountButton:(NBAccountButton *)accountButton
 {
-    // In situations where there isn't a lot of space:
-    
-    // 1. You can just show icons that update depending on the data source.
-    
-    accountButton.buttonType = NBAccountButtonTypeIconOnly;
-    
-    // 2. You can just show the name text, which will fall back to sign-in text.
-    /*
-    accountButton.buttonType = NBAccountButtonTypeNameOnly;
-    */
-    // 3. You can only show the avatar, which will fall back to icons. Hip
-    //    circular icons are supported too.
-    /*
-    accountButton.buttonType = NBAccountButtonTypeAvatarOnly;
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+        // In situations where there isn't a lot of space:
+        
+        // 1. You can just show icons that update depending on the data source.
+        /*
+        accountButton.buttonType = NBAccountButtonTypeIconOnly;
+        */
+        // 2. You can just show the name text, which will fall back to sign-in text.
+        /*
+        accountButton.buttonType = NBAccountButtonTypeNameOnly;
+        */
+        // 3. You can only show the avatar, which will fall back to icons.
+        ///*
+        accountButton.buttonType = NBAccountButtonTypeAvatarOnly;
+        //*/
+    }
+    // Hip circular icons are supported too.
     accountButton.shouldUseCircleAvatarFrame = YES;
-    */
     
     [self.navigationItem setLeftBarButtonItem:accountButton.barButtonItem animated:YES];
 }
