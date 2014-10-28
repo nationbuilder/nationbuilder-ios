@@ -138,6 +138,13 @@ static void *observationContext = &observationContext;
 
 #pragma mark - Public
 
++ (NBAccountButton *)accountButtonFromNibWithTarget:(id)target action:(SEL)action
+{
+    NBAccountButton *accountButton = [[NSBundle mainBundle] loadNibNamed:@"NBAccountButton" owner:self options:nil].firstObject;
+    [accountButton addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    return accountButton;
+}
+
 #pragma mark Accessors
 
 - (void)setDataSource:(id<NBAccountViewDataSource>)dataSource

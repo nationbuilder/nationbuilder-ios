@@ -49,6 +49,7 @@
     self.customClientInfo = [NSDictionary dictionaryWithContentsOfFile:
                              [[NSBundle mainBundle] pathForResource:[NBInfoFileName stringByAppendingString:@"-Local"] ofType:@"plist"]];
 #endif
+    self.accountButton = [NBAccountButton accountButtonFromNibWithTarget:self action:@selector(presentAccountsViewController:)];
     self.accountsManager = [[NBAccountsManager alloc] initWithClientInfo:self.customClientInfo delegate:self];
     // Boilerplate.
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -127,16 +128,6 @@
      your view controller.
      */
     return (NBAccount *)self.accountsManager.selectedAccount;
-}
-
-- (NBAccountButton *)accountButton
-{
-    if (_accountButton) {
-        return _accountButton;
-    }
-    self.accountButton = [[NSBundle mainBundle] loadNibNamed:@"NBAccountButton" owner:self options:nil].firstObject;
-    [self.accountButton addTarget:self action:@selector(presentAccountsViewController:) forControlEvents:UIControlEventTouchUpInside];
-    return _accountButton;
 }
 
 - (NBAccountsViewController *)accountsViewController

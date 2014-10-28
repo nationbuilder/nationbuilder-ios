@@ -37,4 +37,7 @@ typedef NS_ENUM(NSUInteger, NBAccountButtonType) {
 
 @property (nonatomic) BOOL contextHasMultipleActiveAccounts;
 
+// This is a convenience factory method.
++ (NBAccountButton *)accountButtonFromNibWithTarget:(id)target action:(SEL)action;
+
 @end
