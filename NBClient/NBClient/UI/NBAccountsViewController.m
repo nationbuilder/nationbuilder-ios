@@ -12,12 +12,17 @@
 
 #import "FoundationAdditions.h"
 #import "NBAccountButton.h"
-#import "NBDefines.h"
 #import "UIKitAdditions.h"
 
 static NSString *IsSignedInKeyPath;
 static NSString *SelectedAccountKeyPath;
 static void *observationContext = &observationContext;
+
+#if DEBUG
+static NBLogLevel LogLevel = NBLogLevelDebug;
+#else
+static NBLogLevel LogLevel = NBLogLevelWarning;
+#endif
 
 @interface NBAccountsViewController () <UIAlertViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
 
@@ -120,6 +125,15 @@ static void *observationContext = &observationContext;
     self.containingPopoverController = nil;
 }
 
+#pragma mark - NBLogging
+
++ (void)updateLoggingToLevel:(NBLogLevel)logLevel
+{
+    LogLevel = logLevel;
+}
+
+#pragma mark - UIViewController
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -192,7 +206,7 @@ static void *observationContext = &observationContext;
     } else if (alertView == self.nationSlugErrorView) {
         [self promptForNationSlug];
     } else if (buttonIndex != alertView.cancelButtonIndex){
-        NBLog(@"WARNING: Unhandled case.");
+        NBLogWarning(@"Unhandled case.");
     }
 }
 
@@ -203,7 +217,7 @@ static void *observationContext = &observationContext;
     if (sender == self.closeIconButton || !sender) {
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     } else {
-        NBLog(@"WARNING: Unhandled sender %@", sender);
+        NBLogWarning(@"Unhandled sender %@", sender);
     }
 }
 
@@ -559,7 +573,7 @@ static void *observationContext = &observationContext;
             // Only update the picker if it did not trigger the account selection.
             NSUInteger selectedIndex = [self selectedIndex];
             if (selectedIndex == NSNotFound) {
-                NBLog(@"ERROR: Invalid selected account index. Aborting row selection.");
+                NBLogError(@"Invalid selected account index. Aborting row selection.");
             }
             [self.accountsPicker selectRow:selectedIndex inComponent:0 animated:YES];
         } else {

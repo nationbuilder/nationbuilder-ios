@@ -14,7 +14,7 @@
 @class NBClient;
 @class NBAuthenticator;
 
-@interface NBAccount : NSObject <NBAccountViewDataSource>
+@interface NBAccount : NSObject <NBAccountViewDataSource, NBLogging>
 
 @property (nonatomic, strong, readonly) NBClient *client;
 @property (nonatomic, strong, readonly) NBAuthenticator *authenticator;

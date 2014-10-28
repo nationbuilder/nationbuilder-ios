@@ -9,10 +9,11 @@
 #import <UIKit/UIKit.h>
 
 #import "NBAccountsViewDefines.h"
+#import "NBDefines.h"
 
 @class NBAccountButton;
 
-@interface NBAccountsViewController : UIViewController
+@interface NBAccountsViewController : UIViewController <NBLogging>
 
 @property (nonatomic, weak) id<NBAccountsViewDataSource> dataSource;
 

@@ -18,6 +18,12 @@ NSString * const NBAccountInfoIdentifierKey = @"User ID";
 NSString * const NBAccountInfoNameKey = @"User Name";
 NSString * const NBAccountInfoNationSlugKey = @"Nation Slug";
 
+#if DEBUG
+static NBLogLevel LogLevel = NBLogLevelDebug;
+#else
+static NBLogLevel LogLevel = NBLogLevelWarning;
+#endif
+
 @interface NBAccountsManager ()
 
 @property (nonatomic, weak, readwrite) id<NBAccountsManagerDelegate> delegate;
@@ -58,6 +64,14 @@ NSString * const NBAccountInfoNationSlugKey = @"Nation Slug";
         [self loadPersistedAccounts];
     }
     return self;
+}
+
+#pragma mark - NBLogging
+
++ (void)updateLoggingToLevel:(NBLogLevel)logLevel
+{
+    LogLevel = logLevel;
+    [NBAccount updateLoggingToLevel:logLevel];
 }
 
 #pragma mark - NBAccountsDataSource
@@ -161,8 +175,8 @@ NSString * const NBAccountInfoNationSlugKey = @"Nation Slug";
             }
             if (shouldBail) {
                 [self.mutableAccounts removeObject:account];
-                NBLog(@"INFO: User attempted to activate duplicate account with identifier %lu",
-                      account.identifier);
+                NBLogWarning(@"User attempted to activate duplicate account with identifier %lu",
+                             account.identifier);
             }
         }
         if (shouldBail) {
@@ -242,8 +256,8 @@ NSString * const NBAccountInfoNationSlugKey = @"Nation Slug";
             [self.mutableAccounts addObject:account];
         }
         [self activateAccount:self.accounts.firstObject];
-        NBLog(@"INFO: Loaded %lu persisted account(s) for identifier \"%@\"",
-              accountInfos.count, self.persistedAccountsIdentifier);
+        NBLogInfo(@"Loaded %lu persisted account(s) for identifier \"%@\"",
+                  accountInfos.count, self.persistedAccountsIdentifier);
     }
 }
 
@@ -258,8 +272,8 @@ NSString * const NBAccountInfoNationSlugKey = @"Nation Slug";
                                    NBAccountInfoNationSlugKey: account.nationSlug }];
     }
     [[NSUserDefaults standardUserDefaults] setObject:accountInfos forKey:self.persistedAccountsIdentifier];
-    NBLog(@"INFO: Persisted %lu persisted account(s) for identifier \"%@\"",
-          accountInfos.count, self.persistedAccountsIdentifier);
+    NBLogInfo(@"Persisted %lu persisted account(s) for identifier \"%@\"",
+              accountInfos.count, self.persistedAccountsIdentifier);
 }
 
 @end
