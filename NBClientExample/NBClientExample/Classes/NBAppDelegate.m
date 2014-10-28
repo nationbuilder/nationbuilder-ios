@@ -16,16 +16,16 @@
 #import "NBPeopleDataSource.h"
 #import "NBPeopleViewController.h"
 
-@interface NBAppDelegate () <NBAccountsManagerDelegate, NBAccountsViewDelegate>
+@interface NBAppDelegate () <NBAccountsManagerDelegate>
 
 @property (nonatomic, strong, readonly) NBAccount *account;
+
 @property (nonatomic, strong) NBAccountButton *accountButton;
 @property (nonatomic, strong) NBAccountsManager *accountsManager;
 @property (nonatomic, strong) NBAccountsViewController *accountsViewController;
 
 @property (nonatomic, strong) NSDictionary *customClientInfo;
 @property (nonatomic, strong) NBPeopleViewController *peopleViewController;
-@property (nonatomic, strong) UINavigationController *rootViewController;
 
 - (IBAction)presentAccountsViewController:(id)sender;
 
@@ -49,13 +49,19 @@
     self.customClientInfo = [NSDictionary dictionaryWithContentsOfFile:
                              [[NSBundle mainBundle] pathForResource:[NBInfoFileName stringByAppendingString:@"-Local"] ofType:@"plist"]];
 #endif
+    // Setup accounts aspect.
     self.accountButton = [NBAccountButton accountButtonFromNibWithTarget:self action:@selector(presentAccountsViewController:)];
     self.accountsManager = [[NBAccountsManager alloc] initWithClientInfo:self.customClientInfo delegate:self];
+    self.accountsViewController = [[NBAccountsViewController alloc] initWithNibName:nil bundle:nil];
+    self.accountsViewController.dataSource = self.accountsManager;
+    // Pass our account button to the view controller that will show it for
+    // further configuration. Please refer to the method for configuration options;
+    [self.peopleViewController showAccountButton:self.accountButton];
     // Boilerplate.
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.rootViewController = self.rootViewController;
+    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:self.peopleViewController];
+    self.window.rootViewController.view.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
-    // END: Boilerplate.
     return YES;
 }
 
@@ -78,6 +84,7 @@
 
 - (void)accountsManager:(NBAccountsManager *)accountsManager failedToSwitchToAccount:(NBAccount *)account withError:(NSError *)error
 {
+    [[UIAlertView nb_genericAlertViewWithError:error] show];
 }
 
 - (void)accountsManager:(NBAccountsManager *)accountsManager willAddAccount:(NBAccount *)account
@@ -99,9 +106,9 @@
         // If the accounts view was shown to sign in initially, the user probably just wants to start using the app.
         if (!self.peopleViewController.ready) {
             // Dismiss the accounts view if needed.
-            if (self.rootViewController.visibleViewController == self.accountsViewController) {
-                [self.rootViewController dismissViewControllerAnimated:YES completion:nil];
-            }
+            // NOTE: The accounts view has a custom dismissal that works with
+            // -showWithAccountButton:presentingViewController.
+            [self.accountsViewController dismissViewControllerAnimated:YES completion:nil];
             // Set our view controller to ready.
             self.peopleViewController.ready = YES;
         }
@@ -109,6 +116,14 @@
     } else if (!account && !accountsManager.isSignedIn && self.peopleViewController.ready) {
         self.peopleViewController.ready = NO;
     }
+}
+
+#pragma mark - Actions
+
+- (IBAction)presentAccountsViewController:(id)sender
+{
+    [self.accountsViewController showWithAccountButton:self.accountButton
+                              presentingViewController:self.window.rootViewController];
 }
 
 #pragma mark - Private
@@ -130,17 +145,6 @@
     return (NBAccount *)self.accountsManager.selectedAccount;
 }
 
-- (NBAccountsViewController *)accountsViewController
-{
-    if (_accountsViewController) {
-        return _accountsViewController;
-    }
-    self.accountsViewController = [[NBAccountsViewController alloc] initWithNibName:nil bundle:nil];
-    self.accountsViewController.dataSource = self.accountsManager;
-    self.accountsViewController.delegate = self;
-    return _accountsViewController;
-}
-
 - (NBPeopleViewController *)peopleViewController
 {
     if (_peopleViewController) {
@@ -148,25 +152,7 @@
     }
     self.peopleViewController = [[NBPeopleViewController alloc] initWithNibNames :nil bundle:nil];
     self.peopleViewController.title = NSLocalizedString(@"people.navigation-title", nil);
-    // Pass our account button to the view controller that will show it for
-    // further configuration. Please refer to the method for configuration options;
-    [self.peopleViewController showAccountButton:self.accountButton];
     return _peopleViewController;
-}
-
-- (UIViewController *)rootViewController
-{
-    if (_rootViewController) {
-        return _rootViewController;
-    }
-    self.rootViewController = [[UINavigationController alloc] initWithRootViewController:self.peopleViewController];
-    return _rootViewController;
-}
-
-- (void)presentAccountsViewController:(id)sender
-{
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:self.accountsViewController];
-    [self.rootViewController presentViewController:navigationController animated:YES completion:nil];
 }
 
 @end

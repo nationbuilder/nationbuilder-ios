@@ -11,6 +11,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 #import "FoundationAdditions.h"
+#import "NBAccountButton.h"
 #import "NBDefines.h"
 #import "UIKitAdditions.h"
 
@@ -54,6 +55,9 @@ static void *observationContext = &observationContext;
 
 @property (nonatomic, strong) UIAlertView *nationSlugPromptView;
 @property (nonatomic, strong) UIAlertView *nationSlugErrorView;
+
+@property (nonatomic, strong) UIPopoverController *containingPopoverController;
+@property (nonatomic, weak) UIViewController *customPresentingViewController;
 
 @property (nonatomic, readonly) NSUInteger selectedIndex;
 @property (nonatomic, getter = isSelectingAccount) BOOL selectingAccount;
@@ -111,11 +115,18 @@ static void *observationContext = &observationContext;
     return self;
 }
 
+- (void)dealloc
+{
+    self.containingPopoverController = nil;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.navigationItem.leftBarButtonItem = self.closeButtonItem;
+    if (!self.isPresentedInPopover) {
+        self.navigationItem.leftBarButtonItem = self.closeButtonItem;
+    }
     self.edgesForExtendedLayout = UIRectEdgeNone;
     [self setUpAccountView];
     [self setUpActionButtons];
@@ -148,6 +159,19 @@ static void *observationContext = &observationContext;
     if (self.nationSlugPromptView.isVisible) {
         [self.nationSlugPromptView dismissWithClickedButtonIndex:self.nationSlugPromptView.cancelButtonIndex
                                                         animated:animated];
+    }
+}
+
+- (void)dismissViewControllerAnimated:(BOOL)flag completion:(void (^)(void))completion
+{
+    if (self.isPresentedInPopover) {
+        [self.containingPopoverController dismissPopoverAnimated:YES];
+    } else if (self.presentingViewController &&
+               [self.presentingViewController isKindOfClass:[UINavigationController class]] &&
+               [(id)self.presentingViewController visibleViewController] == self) {
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        [super dismissViewControllerAnimated:flag completion:completion];
     }
 }
 
@@ -284,6 +308,29 @@ static void *observationContext = &observationContext;
     [self.nationSlugPromptView show];
 }
 
+- (void)showWithAccountButton:(NBAccountButton *)accountButton
+     presentingViewController:(UIViewController *)presentingViewController
+{
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+        self.presentedInPopover = YES;
+        // NOTE: Popover controllers need to be retained.
+        if (accountButton.barButtonItem) {
+            [self.containingPopoverController presentPopoverFromBarButtonItem:accountButton.barButtonItem
+                                                     permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        } else {
+            [self.containingPopoverController presentPopoverFromRect:accountButton.frame inView:accountButton
+                                            permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        }
+    } else {
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:self];
+        [presentingViewController presentViewController:navigationController animated:YES completion:nil];
+        // Avoid black background beneath translucent navigation bar.
+        navigationController.view.backgroundColor = presentingViewController.view.backgroundColor;
+    }
+    // Save for dismissal.
+    self.customPresentingViewController = presentingViewController;
+}
+
 #pragma Accessors
 
 - (void)setDataSource:(id<NBAccountsViewDataSource>)dataSource
@@ -383,6 +430,16 @@ static void *observationContext = &observationContext;
                      otherButtonTitles:@"label.submit".nb_localizedString, nil];
     self.nationSlugPromptView.alertViewStyle = UIAlertViewStylePlainTextInput;
     return _nationSlugPromptView;
+}
+
+- (UIPopoverController *)containingPopoverController
+{
+    if (_containingPopoverController) {
+        return _containingPopoverController;
+    }
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:self];
+    self.containingPopoverController = [[UIPopoverController alloc] initWithContentViewController:navigationController];
+    return _containingPopoverController;
 }
 
 - (NSUInteger)selectedIndex
