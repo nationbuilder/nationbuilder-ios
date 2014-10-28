@@ -112,6 +112,14 @@
     }
 }
 
+#pragma mark - Actions
+
+- (IBAction)presentAccountsViewController:(id)sender
+{
+    [self.accountsViewController showWithAccountButton:self.accountButton
+                              presentingViewController:self.window.rootViewController];
+}
+
 #pragma mark - Private
 
 - (NBAccount *)account
@@ -161,12 +169,6 @@
     }
     self.rootViewController = [[UINavigationController alloc] initWithRootViewController:self.peopleViewController];
     return _rootViewController;
-}
-
-- (IBAction)presentAccountsViewController:(id)sender
-{
-    [self.accountsViewController showWithAccountButton:self.accountButton
-                              presentingViewController:self.rootViewController];
 }
 
 @end
