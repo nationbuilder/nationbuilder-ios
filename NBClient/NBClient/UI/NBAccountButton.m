@@ -36,10 +36,15 @@ static void *observationContext = &observationContext;
 
 - (void)setUpSubviews;
 - (void)tearDownSubviews;
-- (void)updateSubviews;
 
+- (void)update;
+- (void)updateAppearance;
 - (void)updateNameLabel;
+
 - (void)updateButtonType;
+
+- (void)toggleAvatarImageViewHidden;
+- (void)toggleNameLabelHidden;
 
 @end
 
@@ -70,11 +75,10 @@ static void *observationContext = &observationContext;
 
 - (void)setUp
 {
-    self.buttonType = NBAccountButtonTypeDefault;
     self.shouldUseCircleAvatarFrame = NO;
-    self.dataSource = nil;
     [self setUpSubviews];
-    [self updateSubviews];
+    [self update];
+    self.buttonType = NBAccountButtonTypeDefault;
 }
 
 #pragma mark - UIControl
@@ -90,10 +94,31 @@ static void *observationContext = &observationContext;
 
 #pragma mark - UIView
 
+- (CGSize)sizeThatFits:(CGSize)size
+{
+    CGSize newSize = [super sizeThatFits:size];
+    // Guard.
+    if (!self.barButtonItem) {
+        return newSize;
+    }
+    // Non-AutoLayout adjustments.
+    CGFloat width = 0.0f;
+    if (!self.nameLabel.isHidden) {
+        width += self.originalNameLabelWidth;
+    }
+    if (!(self.avatarImageView.isHidden || self.nameLabel.isHidden)) {
+        width += self.originalAvatarImageWidth + self.originalAvatarImageMarginRight;
+    }
+    if (width) {
+        newSize.width = width;
+    }
+    return newSize;
+}
+
 - (void)tintColorDidChange
 {
     [super tintColorDidChange];
-    [self updateSubviews];
+    [self updateAppearance];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -104,24 +129,21 @@ static void *observationContext = &observationContext;
     }
     if ([keyPath isEqual:HiddenKeyPath]) {
         if (object == self.avatarImageView) {
-            // Toggle avatar hiding.
-            self.avatarImageWidth.constant = self.avatarImageView.isHidden ? 0.0f : self.originalAvatarImageWidth;
-            self.avatarImageMarginRight.constant = self.avatarImageView.isHidden ? 0.0f : self.originalAvatarImageMarginRight;
-            [self setNeedsUpdateConstraints];
+            [self toggleAvatarImageViewHidden];
         } else if (object == self.nameLabel) {
-            CGRect frame = self.nameLabel.frame;
-            if (self.nameLabel.isHidden) {
-                self.originalNameLabelWidth = frame.size.width;
-                frame.size.width = 0.0f;
-            } else if (self.originalNameLabelWidth) {
-                frame.size.width = self.originalNameLabelWidth;
-            }
-            self.nameLabel.frame = frame;
+            [self toggleNameLabelHidden];
         }
     }
 }
 
 #pragma mark - Public
+
++ (NBAccountButton *)accountButtonFromNibWithTarget:(id)target action:(SEL)action
+{
+    NBAccountButton *accountButton = [[NSBundle mainBundle] loadNibNamed:@"NBAccountButton" owner:self options:nil].firstObject;
+    [accountButton addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    return accountButton;
+}
 
 #pragma mark Accessors
 
@@ -133,13 +155,11 @@ static void *observationContext = &observationContext;
         self.avatarImageView.image = [UIImage imageWithData:dataSource.avatarImageData];
     }
     [self updateButtonType];
-    [self updateSubviews];
+    [self update];
 }
 
 - (void)setButtonType:(NBAccountButtonType)buttonType
 {
-    // Guard.
-    if (buttonType == _buttonType) { return; }
     // Set.
     _buttonType = buttonType;
     // Did.
@@ -156,6 +176,15 @@ static void *observationContext = &observationContext;
     self.avatarImageView.layer.cornerRadius = (shouldUseCircleAvatarFrame
                                                ? self.avatarImageView.frame.size.width / 2.0f
                                                : self.cornerRadius.floatValue);
+}
+
+- (UIBarButtonItem *)barButtonItem
+{
+    if (_barButtonItem) {
+        return _barButtonItem;
+    }
+    self.barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self];
+    return _barButtonItem;
 }
 
 - (void)setContextHasMultipleActiveAccounts:(BOOL)contextHasMultipleActiveAccounts
@@ -185,9 +214,16 @@ static void *observationContext = &observationContext;
     [self.avatarImageView removeObserver:self forKeyPath:HiddenKeyPath context:&observationContext];
     [self.nameLabel removeObserver:self forKeyPath:HiddenKeyPath context:&observationContext];
 }
-- (void)updateSubviews
+
+- (void)update
 {
+    [self updateAppearance];
     [self updateNameLabel];
+    [self sizeToFit];
+}
+
+- (void)updateAppearance
+{
     // Tint colors.
     self.avatarImageView.layer.borderColor = self.tintColor.CGColor;
     self.nameLabel.textColor = self.tintColor;
@@ -218,6 +254,8 @@ static void *observationContext = &observationContext;
             self.nameLabel.text = @"label.sign-in".nb_localizedString;
         }
     }
+    [self.nameLabel sizeToFit];
+    self.originalNameLabelWidth = self.nameLabel.frame.size.width;
 }
 
 - (void)updateButtonType
@@ -233,27 +271,50 @@ static void *observationContext = &observationContext;
     self.actualButtonType = actualButtonType;
 }
 
+- (void)toggleAvatarImageViewHidden
+{
+    self.avatarImageWidth.constant = self.avatarImageView.isHidden ? 0.0f : self.originalAvatarImageWidth;
+    self.avatarImageMarginRight.constant = (self.avatarImageView.isHidden || self.nameLabel.isHidden
+                                            ? 0.0f : self.originalAvatarImageMarginRight);
+    [self setNeedsUpdateConstraints];
+}
+
+- (void)toggleNameLabelHidden
+{
+    CGRect frame = self.nameLabel.frame;
+    if (self.nameLabel.isHidden) {
+        frame.size.width = 0.0f;
+    } else {
+        frame.size.width = self.originalNameLabelWidth;
+    }
+    self.nameLabel.frame = frame;
+}
+
 #pragma mark Accessors
 
 - (void)setActualButtonType:(NBAccountButtonType)actualButtonType
 {
     _actualButtonType = actualButtonType;
     // Did.
-    self.nameLabel.hidden = NO;
-    self.avatarImageView.hidden = NO;
+    BOOL shouldHideNameLabel = NO;
+    BOOL shouldHideAvatarImageView = NO;
     switch (actualButtonType) {
         case NBAccountButtonTypeIconOnly:
-            self.avatarImageView.hidden = YES;
+            shouldHideAvatarImageView = YES;
             break;
         case NBAccountButtonTypeAvatarOnly:
-            self.nameLabel.hidden = YES;
+            shouldHideNameLabel = YES;
             break;
         case NBAccountButtonTypeNameOnly:
-            self.avatarImageView.hidden = YES;
+            shouldHideAvatarImageView = YES;
             break;
         case NBAccountButtonTypeDefault: break;
     }
-    [self updateSubviews];
+    // Set and trigger related change events.
+    self.nameLabel.hidden = shouldHideNameLabel;
+    self.avatarImageView.hidden = shouldHideAvatarImageView;
+    // Keep the rest of the view updated.
+    [self update];
 }
 
 @end

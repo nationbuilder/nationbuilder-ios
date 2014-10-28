@@ -438,8 +438,7 @@ static void *observationContext = &observationContext;
     accountButton.shouldUseCircleAvatarFrame = YES;
     */
     
-    UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:accountButton];
-    [self.navigationItem setLeftBarButtonItem:buttonItem animated:YES];
+    [self.navigationItem setLeftBarButtonItem:accountButton.barButtonItem animated:YES];
 }
 
 #pragma mark - Private
