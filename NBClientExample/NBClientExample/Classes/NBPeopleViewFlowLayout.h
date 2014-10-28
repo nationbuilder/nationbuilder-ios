@@ -10,7 +10,7 @@
 
 #import "NBUIDefines.h"
 
-@interface NBPeopleViewFlowLayout : UICollectionViewFlowLayout
+@interface NBPeopleViewFlowLayout : UICollectionViewFlowLayout <NBLogging>
 
 @property (nonatomic, strong) NSNumber *contentInsetAnimationDuration;
 

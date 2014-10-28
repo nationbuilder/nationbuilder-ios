@@ -13,6 +13,12 @@
 static NSString *PersonKeyPath;
 static NSString *TagDelimiter = @", ";
 
+#if DEBUG
+static NBLogLevel LogLevel = NBLogLevelDebug;
+#else
+static NBLogLevel LogLevel = NBLogLevelWarning;
+#endif
+
 @interface NBPersonDataSource ()
 
 @property (nonatomic, weak) NBClient *client;
@@ -52,7 +58,7 @@ static NSString *TagDelimiter = @", ";
     // Guard.
     NSDictionary *realChanges = [self realChanges];
     if (!realChanges.count) {
-        NBLog(@"INFO: No changes detected. Aborting save.");
+        NBLogInfo(@"No changes detected. Aborting save.");
         return willSave;
     }
     // Save.
@@ -137,6 +143,11 @@ static NSString *TagDelimiter = @", ";
 }
 
 #pragma mark - NBDataSource
+
++ (void)updateLoggingToLevel:(NBLogLevel)logLevel
+{
+    LogLevel = logLevel;
+}
 
 - (void)cleanUp:(NSError *__autoreleasing *)error
 {

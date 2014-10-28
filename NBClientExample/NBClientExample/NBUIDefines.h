@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import <NBClient/NBDefines.h>
+
 extern NSString * const NBNibNameViewKey;
 extern NSString * const NBNibNameCellViewKey;
 extern NSString * const NBNibNameDecorationViewKey;
@@ -29,7 +31,7 @@ typedef NS_ENUM(NSUInteger, NBScrollViewPullActionState) {
 
 @protocol NBDataSource;
 
-@protocol NBViewController <NSObject>
+@protocol NBViewController <NBLogging>
 
 @property (nonatomic, strong, readonly) NSDictionary *nibNames;
 
@@ -48,7 +50,7 @@ typedef NS_ENUM(NSUInteger, NBScrollViewPullActionState) {
 
 @end
 
-@protocol NBViewCell <NSObject>
+@protocol NBViewCell <NBLogging>
 
 - (void)refreshWithData:(NSDictionary *)data;
 
@@ -76,7 +78,7 @@ typedef NS_ENUM(NSUInteger, NBScrollViewPullActionState) {
 @class NBClient;
 @class NBPaginationInfo;
 
-@protocol NBDataSource <NSObject>
+@protocol NBDataSource <NBLogging>
 
 @property (nonatomic, strong) NSError *error;
 

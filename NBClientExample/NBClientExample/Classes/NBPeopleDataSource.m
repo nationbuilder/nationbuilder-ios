@@ -13,6 +13,12 @@
 
 #import "NBPersonDataSource.h"
 
+#if DEBUG
+static NBLogLevel LogLevel = NBLogLevelDebug;
+#else
+static NBLogLevel LogLevel = NBLogLevelWarning;
+#endif
+
 @interface NBPeopleDataSource () <NBDataSourceDelegate>
 
 @property (nonatomic, weak, readwrite) NBClient *client;
@@ -139,6 +145,11 @@
 }
 
 #pragma mark - NBDataSource
+
++ (void)updateLoggingToLevel:(NBLogLevel)logLevel
+{
+    LogLevel = logLevel;
+}
 
 - (void)cleanUp:(NSError *__autoreleasing *)error
 {

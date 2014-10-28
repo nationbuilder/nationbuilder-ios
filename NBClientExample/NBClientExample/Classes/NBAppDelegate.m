@@ -16,6 +16,8 @@
 #import "NBPeopleDataSource.h"
 #import "NBPeopleViewController.h"
 
+#import "NBPeopleViewFlowLayout.h"
+
 @interface NBAppDelegate () <NBAccountsManagerDelegate>
 
 @property (nonatomic, strong, readonly) NBAccount *account;
@@ -38,7 +40,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [Crashlytics startWithAPIKey:@"40c37689b7be7476400be06f7b2784cc8697c931"];
-#if defined(DEBUG) && TARGET_IPHONE_SIMULATOR
     // Configure log levels. Default is 'Debug' for debug configurations and
     // 'Warning' for release configurations. For example, by setting client
     // logging to warning level during development parts of the sample app
@@ -48,6 +49,9 @@
     [NBAuthenticator updateLoggingToLevel:NBLogLevelWarning];
     */
     [NBClient updateLoggingToLevel:NBLogLevelWarning];
+    // You can also implement NBLogging in your own classes and use the NBLog macros.
+    [NBPeopleViewFlowLayout updateLoggingToLevel:NBLogLevelInfo];
+#if defined(DEBUG) && TARGET_IPHONE_SIMULATOR
     // NOTE: This configuration file is meant for internal use only, unless
     // you have a development-specific set of NationBuilder configuration.
     self.customClientInfo = [NSDictionary dictionaryWithContentsOfFile:

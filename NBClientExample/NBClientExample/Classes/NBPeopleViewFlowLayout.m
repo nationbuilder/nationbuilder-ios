@@ -8,6 +8,12 @@
 
 #import "NBPeopleViewFlowLayout.h"
 
+#if DEBUG
+static NBLogLevel LogLevel = NBLogLevelDebug;
+#else
+static NBLogLevel LogLevel = NBLogLevelWarning;
+#endif
+
 @interface NBPeopleViewFlowLayout ()
 
 @property (nonatomic, getter = isLandscape) BOOL landscape;
@@ -54,7 +60,7 @@
 
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
 {
-    //NBLog(@"%@", NSStringFromCGRect(newBounds));
+    NBLogDebug(@"Changed bounds: %@", NSStringFromCGRect(newBounds));
     CGRect oldBounds = self.collectionView.bounds;
     if (newBounds.size.width != oldBounds.size.width) {
         self.landscape = newBounds.size.width > oldBounds.size.width;
@@ -126,9 +132,16 @@
     if (alpha > 0.0f && alpha <= 1.0f) {
         attributes.alpha = alpha;
     }
-    //NBLog(@"INFO: Attributes %@", attributes);
+    NBLogDebug(@"Decoration attributes: %@", attributes);
     attributes.center = center;
     return attributes;
+}
+
+#pragma mark - NBLogging
+
++ (void)updateLoggingToLevel:(NBLogLevel)logLevel
+{
+    LogLevel = logLevel;
 }
 
 #pragma mark - Public

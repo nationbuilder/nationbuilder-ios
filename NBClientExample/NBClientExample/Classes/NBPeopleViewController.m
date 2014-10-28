@@ -34,6 +34,12 @@ static NSString *PeopleKeyPath;
 static NSString *ContentOffsetKeyPath;
 static void *observationContext = &observationContext;
 
+#if DEBUG
+static NBLogLevel LogLevel = NBLogLevelDebug;
+#else
+static NBLogLevel LogLevel = NBLogLevelWarning;
+#endif
+
 @interface NBPeopleViewController ()
 
 <UICollectionViewDelegateFlowLayout, UINavigationControllerDelegate, NBCollectionViewCellDelegate>
@@ -171,6 +177,12 @@ static void *observationContext = &observationContext;
 }
 
 #pragma mark - NBViewController
+
++ (void)updateLoggingToLevel:(NBLogLevel)logLevel
+{
+    LogLevel = logLevel;
+    [NBPersonCellView updateLoggingToLevel:logLevel];
+}
 
 - (void)setDataSource:(id<NBDataSource>)dataSource
 {
