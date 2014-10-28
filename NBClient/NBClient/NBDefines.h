@@ -47,6 +47,13 @@ typedef NS_ENUM(NSUInteger, NBLogLevel) {
 
 @end
 
+// This library the NBLog preprocessor macro for improved logging during development.
+#if DEBUG
+#   define NBLog(fmt, ...) NSLog((@"%s [%@:%d]\n> " fmt @"\n\n"), __PRETTY_FUNCTION__, @(__FILE__).lastPathComponent, __LINE__, ##__VA_ARGS__)
+#else
+#   define NBLog(fmt, ...) NSLog(fmt, ##__VA_ARGS__)
+#endif
+
 @protocol NBDictionarySerializing <NSObject>
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;
