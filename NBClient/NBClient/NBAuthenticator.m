@@ -329,17 +329,12 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
      completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
          NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
          if (data) {
-             NBLogInfo(@"RESPONSE: %@\n"
-                       @"BODY: %@",
-                       httpResponse,
-                       [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+             NBLogInfo(@"RESPONSE: %@\nBODY: %@", httpResponse, [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
          }
          // Handle data task error.
          if (error) {
              NBLogError(@"%@", error);
-             if (completionHandler) {
-                 completionHandler(nil, error);
-             }
+             if (completionHandler) { completionHandler(nil, error); }
              return;
          }
          // Handle HTTP error.
@@ -353,9 +348,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                           NSLocalizedFailureReasonErrorKey: @"message.invalid-status-code".nb_localizedString,
                           NSLocalizedRecoverySuggestionErrorKey: @"message.unknown-error-solution".nb_localizedString }];
              NBLogError(@"%@", error);
-             if (completionHandler) {
-                 completionHandler(nil, error);
-             }
+             if (completionHandler) { completionHandler(nil, error); }
              return;
          }
          NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:data
@@ -364,11 +357,10 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
          // Handle JSON error.
          if (error) {
              NBLogError(@"%@", error);
-             if (completionHandler) {
-                 completionHandler(nil, error);
-             }
+             if (completionHandler) { completionHandler(nil, error); }
              return;
          }
+         // Handle Non-HTTP error.
          if (jsonObject[@"error"]) {
              error =
              [NSError
@@ -384,6 +376,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
              self.credential = [[NBAuthenticationCredential alloc] initWithAccessToken:jsonObject[@"access_token"]
                                                                              tokenType:jsonObject[@"token_type"]];
          }
+         // Completed. Successful if error is nil.
          if (completionHandler) {
              completionHandler(self.credential, error);
          }
