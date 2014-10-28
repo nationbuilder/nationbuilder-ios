@@ -190,9 +190,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                                               charactersToLeaveUnescaped:nil];
     }
     NSURLRequest *request = [self baseFetchRequestWithURL:components.URL];
-    if (LogLevel >= NBLogLevelInfo) {
-        NBLog(@"REQUEST: %@", request.nb_debugDescription);
-    }
+    NBLogInfo(@"REQUEST: %@", request.nb_debugDescription);
     NSURLSessionDataTask *task =
     [self.urlSession
      dataTaskWithRequest:request
@@ -210,9 +208,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                                        completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
     NSURLRequest *request = [self baseFetchRequestWithURL:components.URL];
-    if (LogLevel >= NBLogLevelInfo) {
-        NBLog(@"REQUEST: %@", request.nb_debugDescription);
-    }
+    NBLogInfo(@"REQUEST: %@", request.nb_debugDescription);
     NSURLSessionDataTask *task =
     [self.urlSession
      dataTaskWithRequest:request
@@ -242,9 +238,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                                           resultsKey:(NSString *)resultsKey
                                    completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
-    if (LogLevel >= NBLogLevelInfo) {
-        NBLog(@"REQUEST: %@", request.nb_debugDescription);
-    }
+    NBLogInfo(@"REQUEST: %@", request.nb_debugDescription);
     NSURLSessionDataTask *task =
     [self.urlSession
      dataTaskWithRequest:request
@@ -270,9 +264,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                               completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
     NSURLRequest *request = [self baseDeleteRequestWithURL:url];
-    if (LogLevel >= NBLogLevelInfo) {
-        NBLog(@"REQUEST: %@", request.nb_debugDescription);
-    }
+    NBLogInfo(@"REQUEST: %@", request.nb_debugDescription);
     NSURLSessionDataTask *task =
     [self.urlSession
      dataTaskWithRequest:request
@@ -302,6 +294,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         }
         // Handle data task error.
         if (error) {
+            NBLogError(@"%@", error);
             if (completionHandler) {
                 completionHandler(nil, nil, error);
             }
@@ -325,9 +318,11 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                 completionHandler(nil, nil, error);
             }
             return;
+            NBLogError(@"%@", error);
         }
         // Handle JSON error.
         if (error) {
+            NBLogError(@"%@", error);
             if (completionHandler) {
                 completionHandler(nil, nil, error);
             }
@@ -341,6 +336,10 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         // Handle invalid response.
         if (!results) {
             error = [self errorForJsonData:jsonObject resultsKey:resultsKey];
+        }
+        // Completed. Successful if error is nil.
+        if (error) {
+            NBLogError(@"%@", error);
         }
         if (completionHandler) {
             completionHandler(results, jsonObject, error);
@@ -388,12 +387,10 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 - (void)logResponse:(NSHTTPURLResponse *)response
                data:(NSData *)data
 {
-    if (LogLevel >= NBLogLevelInfo) {
-        NBLog(@"RESPONSE: %@\n"
+    NBLogInfo(@"RESPONSE: %@\n"
               @"BODY: %@",
               response,
               [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
-    }
 }
 
 @end

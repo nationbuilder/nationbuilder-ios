@@ -143,6 +143,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                         priorSignout:(BOOL)needsPriorSignout
                    completionHandler:(NBAuthenticationCompletionHandler)completionHandler
 {
+    NSAssert(completionHandler, @"Completion handler is required.");
     if (!self.class.authorizationRedirectApplicationURLScheme) {
         NSError *error =
         [NSError
@@ -155,6 +156,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                      NSLocalizedRecoverySuggestionErrorKey: [NSString localizedStringWithFormat:
                                                              @"message.invalid-redirect-url-scheme.suggestion".nb_localizedString,
                                                              NBAuthenticationRedirectURLIdentifier] }];
+        NBLogError(@"%@", error);
         completionHandler(nil, error);
         return;
     }
@@ -224,6 +226,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                       userInfo:@{ NSLocalizedDescriptionKey: @"message.nb-redirect-error".nb_localizedString,
                                   NSLocalizedFailureReasonErrorKey: @"message.nb-redirect-error.no-access-token".nb_localizedString,
                                   NSLocalizedRecoverySuggestionErrorKey: @"message.unknown-error-solution".nb_localizedString }];
+            NBLogError(@"%@", *error);
         }
     }
     return didOpen;
@@ -281,9 +284,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     NSError *error;
     if ([application canOpenURL:url]) {
         self.currentInBrowserAuthenticationCompletionHandler = completionHandler;
-        if (LogLevel >= NBLogLevelInfo) {
-            NBLog(@"INFO: Opening authentication URL in Safari: %@", url);
-        }
+        NBLogInfo(@"Opening authentication URL in Safari: %@", url);
         dispatch_async(dispatch_get_main_queue(), ^{
             [application openURL:url];
         });
@@ -327,14 +328,15 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
      dataTaskWithRequest:mutableRequest
      completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
          NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-         if (data && LogLevel >= NBLogLevelInfo) {
-             NBLog(@"RESPONSE: %@\n"
-                   @"BODY: %@",
-                   httpResponse,
-                   [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+         if (data) {
+             NBLogInfo(@"RESPONSE: %@\n"
+                       @"BODY: %@",
+                       httpResponse,
+                       [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
          }
          // Handle data task error.
          if (error) {
+             NBLogError(@"%@", error);
              if (completionHandler) {
                  completionHandler(nil, error);
              }
@@ -350,6 +352,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                                                       httpResponse.statusCode],
                           NSLocalizedFailureReasonErrorKey: @"message.invalid-status-code".nb_localizedString,
                           NSLocalizedRecoverySuggestionErrorKey: @"message.unknown-error-solution".nb_localizedString }];
+             NBLogError(@"%@", error);
              if (completionHandler) {
                  completionHandler(nil, error);
              }
@@ -360,6 +363,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                                                                       error:&error];
          // Handle JSON error.
          if (error) {
+             NBLogError(@"%@", error);
              if (completionHandler) {
                  completionHandler(nil, error);
              }
@@ -375,6 +379,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                           NSLocalizedFailureReasonErrorKey: (jsonObject[@"error_description"] ?
                                                              jsonObject[@"error_description"] : @"message.unknown-error-reason".nb_localizedString),
                           NSLocalizedRecoverySuggestionErrorKey: @"message.unknown-error-solution".nb_localizedString }];
+             NBLogError(@"%@", error);
          } else {
              self.credential = [[NBAuthenticationCredential alloc] initWithAccessToken:jsonObject[@"access_token"]
                                                                              tokenType:jsonObject[@"token_type"]];
@@ -448,9 +453,9 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         status = SecItemAdd((__bridge CFDictionaryRef)query, NULL);
     }
     // Handle error.
-    if (status != errSecSuccess && LogLevel >= NBLogLevelError) {
-        NBLog(@"Unable to %@ credential in keychain with identifier \"%@\" (Error %li)",
-              alreadyExists ? @"update" : @"create", identifier, (long int)status);
+    if (status != errSecSuccess) {
+        NBLogInfo(@"Unable to %@ credential in keychain with identifier \"%@\" (Error %li)",
+                  alreadyExists ? @"update" : @"create", identifier, (long int)status);
     } else {
         didSave = YES;
     }
@@ -462,9 +467,9 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     BOOL didDelete = NO;
     NSMutableDictionary *query = [self baseKeychainQueryDictionaryWithIdentifier:identifier];
     OSStatus status = SecItemDelete((__bridge CFDictionaryRef)query);
-    if (status != errSecSuccess && LogLevel >= NBLogLevelError) {
-        NBLog(@"Unable to delete from keychain credential with identifier \"%@\" (Error %li)",
-              identifier, (long int)status);
+    if (status != errSecSuccess) {
+        NBLogInfo(@"Unable to delete from keychain credential with identifier \"%@\" (Error %li)",
+                  identifier, (long int)status);
     } else {
         didDelete = YES;
     }
@@ -479,17 +484,15 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     CFDataRef result = nil;
     OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)query, (CFTypeRef *)&result);
     // Handle errors.
-    if (status != errSecSuccess && LogLevel >= NBLogLevelError) {
-        NBLog(@"Unable to fetch from keychain credential with identifier \"%@\" (Error %li)",
-              identifier, (long int)status);
+    if (status != errSecSuccess) {
+        NBLogInfo(@"Unable to fetch from keychain credential with identifier \"%@\" (Error %li)",
+                  identifier, (long int)status);
         return nil;
     }
     // Convert.
     NSData *data = (__bridge_transfer NSData *)result;
     NBAuthenticationCredential *credential = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-    if (LogLevel >= NBLogLevelInfo) {
-        NBLog(@"Fetched keychain credential with identifier \"%@\"", identifier);
-    }
+    NBLogInfo(@"Fetched keychain credential with identifier \"%@\"", identifier);
     return credential;
 }
 
