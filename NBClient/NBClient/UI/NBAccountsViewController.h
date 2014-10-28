@@ -15,7 +15,6 @@
 @interface NBAccountsViewController : UIViewController
 
 @property (nonatomic, weak) id<NBAccountsViewDataSource> dataSource;
-@property (nonatomic, weak) id<NBAccountsViewDelegate> delegate;
 
 @property (nonatomic, weak, readonly) UIImageView *avatarImageView;
 @property (nonatomic, weak, readonly) UILabel *nameLabel;

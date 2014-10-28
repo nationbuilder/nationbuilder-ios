@@ -16,7 +16,7 @@
 #import "NBPeopleDataSource.h"
 #import "NBPeopleViewController.h"
 
-@interface NBAppDelegate () <NBAccountsManagerDelegate, NBAccountsViewDelegate>
+@interface NBAppDelegate () <NBAccountsManagerDelegate>
 
 @property (nonatomic, strong, readonly) NBAccount *account;
 
@@ -138,7 +138,6 @@
     }
     self.accountsViewController = [[NBAccountsViewController alloc] initWithNibName:nil bundle:nil];
     self.accountsViewController.dataSource = self.accountsManager;
-    self.accountsViewController.delegate = self;
     return _accountsViewController;
 }
 

@@ -51,7 +51,3 @@
 @property (nonatomic, strong) NSData *avatarImageData; // Set to nil to clear memory.
 
 @end
-
-@protocol NBAccountsViewDelegate <NSObject>
-
-@end
