@@ -93,6 +93,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         account = (NBAccount *)selectedAccount;
     }
     if (account && !account.isActive) {
+        // Activate if needed.
         [self activateAccount:account];
         return; // Defer.
     }
@@ -143,12 +144,12 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 - (BOOL)signOutWithError:(NSError *__autoreleasing *)error
 {
     BOOL didSignOut = NO;
-    NBAccount *account = self.selectedAccount;
+    NBAccount *account = (id)self.selectedAccount;
     NSAssert(account, @"No active account found.");
     if (!account) { return didSignOut; }
     BOOL didCleanUp = [account requestCleanUpWithError:error];
     if (didCleanUp) {
-        [self deactivateAccount:self.selectedAccount];
+        [self deactivateAccount:account];
         didSignOut = YES;
     }
     self.selectedAccount = self.accounts.firstObject;
