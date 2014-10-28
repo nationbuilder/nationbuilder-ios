@@ -51,6 +51,6 @@
 
 - (NSError *)errorForResponse:(NSHTTPURLResponse *)response jsonData:(NSDictionary *)data;
 - (NSError *)errorForJsonData:(NSDictionary *)data resultsKey:(NSString *)resultsKey;
-- (void)logResponse:(NSHTTPURLResponse *)response data:(NSData *)data;
+- (void)logResponse:(NSHTTPURLResponse *)response data:(id)data;
 
 @end

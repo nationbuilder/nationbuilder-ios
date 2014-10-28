@@ -289,23 +289,16 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 {
     return ^(NSData *data, NSURLResponse *response, NSError *error) {
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-        if (data) {
-            [self logResponse:httpResponse data:data];
-        }
         // Handle data task error.
         if (error) {
             NBLogError(@"%@", error);
-            if (completionHandler) {
-                completionHandler(nil, nil, error);
-            }
-            return;
+            if (completionHandler) { completionHandler(nil, nil, error); }
+            return [self logResponse:httpResponse data:data]; // Combined to a one-liner; returns void.
         }
         // Handle empty bodies.
         if ([[NSIndexSet nb_indexSetOfSuccessfulEmptyResponseHTTPStatusCodes] containsIndex:httpResponse.statusCode]) {
-            if (completionHandler) {
-                completionHandler(nil, nil, error);
-            }
-            return;
+            if (completionHandler) { completionHandler(nil, nil, error); }
+            return [self logResponse:httpResponse data:data];
         }
         NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:data
                                                                    options:NSJSONReadingAllowFragments
@@ -314,33 +307,29 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         // TODO: Have authenticator recover from stale token errors.
         if (![[NSIndexSet nb_indexSetOfSuccessfulHTTPStatusCodes] containsIndex:httpResponse.statusCode]) {
             error = [self errorForResponse:httpResponse jsonData:jsonObject];
-            if (completionHandler) {
-                completionHandler(nil, nil, error);
-            }
-            return;
             NBLogError(@"%@", error);
+            if (completionHandler) { completionHandler(nil, nil, error); }
+            return [self logResponse:httpResponse data:data];
         }
         // Handle JSON error.
         if (error) {
             NBLogError(@"%@", error);
-            if (completionHandler) {
-                completionHandler(nil, nil, error);
-            }
-            return;
+            if (completionHandler) { completionHandler(nil, nil, error); }
+            return [self logResponse:httpResponse data:data];
         }
-        // Handle Non-HTTP error.
+        // Handle Non-HTTP error or invalid response.
         if (jsonObject[@"code"]) {
             error = [self errorForResponse:httpResponse jsonData:jsonObject];
         }
         id results = jsonObject[resultsKey];
-        // Handle invalid response.
         if (!results) {
             error = [self errorForJsonData:jsonObject resultsKey:resultsKey];
         }
-        // Completed. Successful if error is nil.
         if (error) {
             NBLogError(@"%@", error);
         }
+        // Completed. Successful if error is nil.
+        [self logResponse:httpResponse data:jsonObject];
         if (completionHandler) {
             completionHandler(results, jsonObject, error);
         }
@@ -385,12 +374,14 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 }
 
 - (void)logResponse:(NSHTTPURLResponse *)response
-               data:(NSData *)data
+               data:(id)data
 {
+    id body = ([data isKindOfClass:[NSData class]]
+               ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]
+               : data);
     NBLogInfo(@"RESPONSE: %@\n"
               @"BODY: %@",
-              response,
-              [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+              response, body);
 }
 
 @end
