@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#pragma mark - Constants
+
 extern NSString * const NBErrorDomain;
 extern NSUInteger const NBErrorCodeInvalidArgument;
 
@@ -30,6 +32,8 @@ extern NSString * const NBIconFontFamilyName;
 // Completion handlers are always called.
 typedef void (^NBGenericCompletionHandler)(NSError *error);
 
+#pragma mark - Logging
+
 // Class(file)-based log levels give you more control over what library log messages
 // show up.
 typedef NS_ENUM(NSUInteger, NBLogLevel) {
@@ -47,7 +51,6 @@ typedef NS_ENUM(NSUInteger, NBLogLevel) {
 + (void)updateLoggingToLevel:(NBLogLevel)logLevel;
 
 @end
-
 // This library uses the NBLog preprocessor macro for improved logging during development.
 #if DEBUG
 #   define NBLog(fmt, ...) NSLog((@"%s [%@:%d]\n> " fmt @"\n\n"), __PRETTY_FUNCTION__, @(__FILE__).lastPathComponent, __LINE__, ##__VA_ARGS__)
@@ -59,6 +62,8 @@ typedef NS_ENUM(NSUInteger, NBLogLevel) {
 #define NBLogWarning(fmt, ...)  if (LogLevel >= NBLogLevelWarning)  NBLog(@"WARNING: " fmt, ##__VA_ARGS__)
 #define NBLogInfo(fmt, ...)     if (LogLevel >= NBLogLevelInfo)     NBLog(@"INFO: " fmt, ##__VA_ARGS__)
 #define NBLogDebug(fmt, ...)    if (LogLevel >= NBLogLevelDebug)    NBLog(@"DEBUG: " fmt, ##__VA_ARGS__)
+
+#pragma mark - Protocols
 
 @protocol NBDictionarySerializing <NSObject>
 
