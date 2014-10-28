@@ -142,6 +142,15 @@ static void *observationContext = &observationContext;
     }
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    if (self.nationSlugPromptView.isVisible) {
+        [self.nationSlugPromptView dismissWithClickedButtonIndex:self.nationSlugPromptView.cancelButtonIndex
+                                                        animated:animated];
+    }
+}
+
 #pragma mark - UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
