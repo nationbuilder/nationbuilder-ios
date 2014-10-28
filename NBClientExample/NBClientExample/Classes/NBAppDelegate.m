@@ -26,7 +26,6 @@
 
 @property (nonatomic, strong) NSDictionary *customClientInfo;
 @property (nonatomic, strong) NBPeopleViewController *peopleViewController;
-@property (nonatomic, strong) UINavigationController *rootViewController;
 
 - (IBAction)presentAccountsViewController:(id)sender;
 
@@ -50,13 +49,19 @@
     self.customClientInfo = [NSDictionary dictionaryWithContentsOfFile:
                              [[NSBundle mainBundle] pathForResource:[NBInfoFileName stringByAppendingString:@"-Local"] ofType:@"plist"]];
 #endif
+    // Setup accounts aspect.
     self.accountButton = [NBAccountButton accountButtonFromNibWithTarget:self action:@selector(presentAccountsViewController:)];
     self.accountsManager = [[NBAccountsManager alloc] initWithClientInfo:self.customClientInfo delegate:self];
+    self.accountsViewController = [[NBAccountsViewController alloc] initWithNibName:nil bundle:nil];
+    self.accountsViewController.dataSource = self.accountsManager;
+    // Pass our account button to the view controller that will show it for
+    // further configuration. Please refer to the method for configuration options;
+    [self.peopleViewController showAccountButton:self.accountButton];
     // Boilerplate.
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.rootViewController = self.rootViewController;
+    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:self.peopleViewController];
+    self.window.rootViewController.view.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
-    // END: Boilerplate.
     return YES;
 }
 
@@ -79,6 +84,7 @@
 
 - (void)accountsManager:(NBAccountsManager *)accountsManager failedToSwitchToAccount:(NBAccount *)account withError:(NSError *)error
 {
+    [[UIAlertView nb_genericAlertViewWithError:error] show];
 }
 
 - (void)accountsManager:(NBAccountsManager *)accountsManager willAddAccount:(NBAccount *)account
@@ -139,16 +145,6 @@
     return (NBAccount *)self.accountsManager.selectedAccount;
 }
 
-- (NBAccountsViewController *)accountsViewController
-{
-    if (_accountsViewController) {
-        return _accountsViewController;
-    }
-    self.accountsViewController = [[NBAccountsViewController alloc] initWithNibName:nil bundle:nil];
-    self.accountsViewController.dataSource = self.accountsManager;
-    return _accountsViewController;
-}
-
 - (NBPeopleViewController *)peopleViewController
 {
     if (_peopleViewController) {
@@ -156,19 +152,7 @@
     }
     self.peopleViewController = [[NBPeopleViewController alloc] initWithNibNames :nil bundle:nil];
     self.peopleViewController.title = NSLocalizedString(@"people.navigation-title", nil);
-    // Pass our account button to the view controller that will show it for
-    // further configuration. Please refer to the method for configuration options;
-    [self.peopleViewController showAccountButton:self.accountButton];
     return _peopleViewController;
-}
-
-- (UIViewController *)rootViewController
-{
-    if (_rootViewController) {
-        return _rootViewController;
-    }
-    self.rootViewController = [[UINavigationController alloc] initWithRootViewController:self.peopleViewController];
-    return _rootViewController;
 }
 
 @end
