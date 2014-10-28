@@ -182,17 +182,17 @@
      priorSignout:needsPriorSignout
      completionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
          if (error) {
-             NSLog(@"ERROR: %@", error);
+             NBLog(@"ERROR: %@", error);
          } else if (credential) {
              // Success.
-             NSLog(@"INFO: Activating account for nation %@", self.clientInfo[NBInfoNationNameKey]);
+             NBLog(@"INFO: Activating account for nation %@", self.clientInfo[NBInfoNationNameKey]);
              self.client.apiKey = credential.accessToken;
              self.active = YES;
              // TODO: This will be more robust with an NSOperationQueue.
              [self fetchPersonWithCompletionHandler:completionHandler];
              return;
          } else {
-             NSLog(@"WARNING: Unhandled case.");
+             NBLog(@"WARNING: Unhandled case.");
          }
          if (completionHandler) {
              completionHandler(error);
@@ -221,7 +221,7 @@
 {
     [self.client fetchPersonForClientUserWithCompletionHandler:^(NSDictionary *item, NSError *error) {
         if (error) {
-            NSLog(@"ERROR: %@", error);
+            NBLog(@"ERROR: %@", error);
         } else if (item) {
             // Success.
             self.person = item;
@@ -232,7 +232,7 @@
             [self fetchAvatarWithCompletionHandler:completionHandler];
             return;
         } else {
-            NSLog(@"WARNING: Unhandled case.");
+            NBLog(@"WARNING: Unhandled case.");
         }
         if (completionHandler) {
             completionHandler(error);
@@ -246,7 +246,7 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         self.avatarImageData = [NSData dataWithContentsOfURL:avatarURL];
         if (!self.avatarImageData) {
-            NSLog(@"WARNING: Invalid avatar URL %@", avatarURL.absoluteString);
+            NBLog(@"WARNING: Invalid avatar URL %@", avatarURL.absoluteString);
         }
         if (completionHandler) {
             dispatch_async(dispatch_get_main_queue(), ^{

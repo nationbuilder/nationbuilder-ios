@@ -192,7 +192,7 @@ static void *observationContext = &observationContext;
     } else if (alertView == self.nationSlugErrorView) {
         [self promptForNationSlug];
     } else if (buttonIndex != alertView.cancelButtonIndex){
-        NSLog(@"WARNING: Unhandled case.");
+        NBLog(@"WARNING: Unhandled case.");
     }
 }
 
@@ -203,7 +203,7 @@ static void *observationContext = &observationContext;
     if (sender == self.closeIconButton || !sender) {
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     } else {
-        NSLog(@"WARNING: Unhandled sender %@", sender);
+        NBLog(@"WARNING: Unhandled sender %@", sender);
     }
 }
 
@@ -559,7 +559,7 @@ static void *observationContext = &observationContext;
             // Only update the picker if it did not trigger the account selection.
             NSUInteger selectedIndex = [self selectedIndex];
             if (selectedIndex == NSNotFound) {
-                NSLog(@"ERROR: Invalid selected account index. Aborting row selection.");
+                NBLog(@"ERROR: Invalid selected account index. Aborting row selection.");
             }
             [self.accountsPicker selectRow:selectedIndex inComponent:0 animated:YES];
         } else {

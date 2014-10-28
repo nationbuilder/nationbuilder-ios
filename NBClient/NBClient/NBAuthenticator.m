@@ -31,7 +31,7 @@ NSString * const NBAuthenticationRedirectTokenKey = @"access_token";
 static NSString *CredentialServiceName = @"NBAuthenticationCredentialService";
 static NSString *RedirectURLScheme;
 
-#ifdef DEBUG
+#if DEBUG
 static NBLogLevel LogLevel = NBLogLevelDebug;
 #else
 static NBLogLevel LogLevel = NBLogLevelWarning;
@@ -282,7 +282,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     if ([application canOpenURL:url]) {
         self.currentInBrowserAuthenticationCompletionHandler = completionHandler;
         if (LogLevel >= NBLogLevelInfo) {
-            NSLog(@"INFO: Opening authentication URL in Safari: %@", url);
+            NBLog(@"INFO: Opening authentication URL in Safari: %@", url);
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             [application openURL:url];
@@ -328,7 +328,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
      completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
          NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
          if (data && LogLevel >= NBLogLevelInfo) {
-             NSLog(@"RESPONSE: %@\n"
+             NBLog(@"RESPONSE: %@\n"
                    @"BODY: %@",
                    httpResponse,
                    [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
@@ -449,7 +449,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     }
     // Handle error.
     if (status != errSecSuccess && LogLevel >= NBLogLevelError) {
-        NSLog(@"Unable to %@ credential in keychain with identifier \"%@\" (Error %li)",
+        NBLog(@"Unable to %@ credential in keychain with identifier \"%@\" (Error %li)",
               alreadyExists ? @"update" : @"create", identifier, (long int)status);
     } else {
         didSave = YES;
@@ -463,7 +463,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     NSMutableDictionary *query = [self baseKeychainQueryDictionaryWithIdentifier:identifier];
     OSStatus status = SecItemDelete((__bridge CFDictionaryRef)query);
     if (status != errSecSuccess && LogLevel >= NBLogLevelError) {
-        NSLog(@"Unable to delete from keychain credential with identifier \"%@\" (Error %li)",
+        NBLog(@"Unable to delete from keychain credential with identifier \"%@\" (Error %li)",
               identifier, (long int)status);
     } else {
         didDelete = YES;
@@ -480,7 +480,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)query, (CFTypeRef *)&result);
     // Handle errors.
     if (status != errSecSuccess && LogLevel >= NBLogLevelError) {
-        NSLog(@"Unable to fetch from keychain credential with identifier \"%@\" (Error %li)",
+        NBLog(@"Unable to fetch from keychain credential with identifier \"%@\" (Error %li)",
               identifier, (long int)status);
         return nil;
     }
@@ -488,7 +488,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     NSData *data = (__bridge_transfer NSData *)result;
     NBAuthenticationCredential *credential = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     if (LogLevel >= NBLogLevelInfo) {
-        NSLog(@"Fetched keychain credential with identifier \"%@\"", identifier);
+        NBLog(@"Fetched keychain credential with identifier \"%@\"", identifier);
     }
     return credential;
 }

@@ -161,7 +161,7 @@ NSString * const NBAccountInfoNationSlugKey = @"Nation Slug";
             }
             if (shouldBail) {
                 [self.mutableAccounts removeObject:account];
-                NSLog(@"INFO: User attempted to activate duplicate account with identifier %lu",
+                NBLog(@"INFO: User attempted to activate duplicate account with identifier %lu",
                       account.identifier);
             }
         }
@@ -242,7 +242,7 @@ NSString * const NBAccountInfoNationSlugKey = @"Nation Slug";
             [self.mutableAccounts addObject:account];
         }
         [self activateAccount:self.accounts.firstObject];
-        NSLog(@"INFO: Loaded %lu persisted account(s) for identifier \"%@\"",
+        NBLog(@"INFO: Loaded %lu persisted account(s) for identifier \"%@\"",
               accountInfos.count, self.persistedAccountsIdentifier);
     }
 }
@@ -258,7 +258,7 @@ NSString * const NBAccountInfoNationSlugKey = @"Nation Slug";
                                    NBAccountInfoNationSlugKey: account.nationSlug }];
     }
     [[NSUserDefaults standardUserDefaults] setObject:accountInfos forKey:self.persistedAccountsIdentifier];
-    NSLog(@"INFO: Persisted %lu persisted account(s) for identifier \"%@\"",
+    NBLog(@"INFO: Persisted %lu persisted account(s) for identifier \"%@\"",
           accountInfos.count, self.persistedAccountsIdentifier);
 }
 

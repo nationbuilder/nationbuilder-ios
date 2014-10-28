@@ -52,7 +52,7 @@ static NSString *TagDelimiter = @", ";
     // Guard.
     NSDictionary *realChanges = [self realChanges];
     if (!realChanges.count) {
-        NSLog(@"INFO: No changes detected. Aborting save.");
+        NBLog(@"INFO: No changes detected. Aborting save.");
         return willSave;
     }
     // Save.

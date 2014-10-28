@@ -62,7 +62,7 @@ static NSString *QueryPairJoiner = @"=";
             [value isKindOfClass:[NSDictionary class]] ||
             [value isKindOfClass:[NSSet class]]
             ) {
-            NSLog(@"WARNING: Unable to serialize key %@ with value %@", key, value);
+            NBLog(@"WARNING: Unable to serialize key %@ with value %@", key, value);
             continue;
         }
         NSString *valueString = [NSString stringWithFormat:@"%@", value];
@@ -130,7 +130,7 @@ static NSString *QueryPairJoiner = @"=";
     // NOTE: Cocoapods suggests using a dedicated bundle
     NSString *localizedString = NSLocalizedStringFromTable(self, @"NationBuilder", nil);
     if ([localizedString isEqualToString:self]) {
-        NSLog(@"WARNING: No localized string found for %@", self);
+        NBLog(@"WARNING: No localized string found for %@", self);
     }
     return localizedString;
 }

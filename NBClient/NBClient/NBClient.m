@@ -22,7 +22,7 @@ NSString * const NBClientErrorInnerErrorKey = @"inner_error";
 NSString * const NBClientDefaultAPIVersion = @"v1";
 NSString * const NBClientDefaultBaseURLFormat = @"https://%@.nationbuilder.com";
 
-#ifdef DEBUG
+#if DEBUG
 static NBLogLevel LogLevel = NBLogLevelDebug;
 #else
 static NBLogLevel LogLevel = NBLogLevelWarning;
@@ -191,7 +191,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     }
     NSURLRequest *request = [self baseFetchRequestWithURL:components.URL];
     if (LogLevel >= NBLogLevelInfo) {
-        NSLog(@"REQUEST: %@", request.nb_debugDescription);
+        NBLog(@"REQUEST: %@", request.nb_debugDescription);
     }
     NSURLSessionDataTask *task =
     [self.urlSession
@@ -211,7 +211,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 {
     NSURLRequest *request = [self baseFetchRequestWithURL:components.URL];
     if (LogLevel >= NBLogLevelInfo) {
-        NSLog(@"REQUEST: %@", request.nb_debugDescription);
+        NBLog(@"REQUEST: %@", request.nb_debugDescription);
     }
     NSURLSessionDataTask *task =
     [self.urlSession
@@ -243,7 +243,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                                    completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
     if (LogLevel >= NBLogLevelInfo) {
-        NSLog(@"REQUEST: %@", request.nb_debugDescription);
+        NBLog(@"REQUEST: %@", request.nb_debugDescription);
     }
     NSURLSessionDataTask *task =
     [self.urlSession
@@ -271,7 +271,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 {
     NSURLRequest *request = [self baseDeleteRequestWithURL:url];
     if (LogLevel >= NBLogLevelInfo) {
-        NSLog(@"REQUEST: %@", request.nb_debugDescription);
+        NBLog(@"REQUEST: %@", request.nb_debugDescription);
     }
     NSURLSessionDataTask *task =
     [self.urlSession
@@ -389,7 +389,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                data:(NSData *)data
 {
     if (LogLevel >= NBLogLevelInfo) {
-        NSLog(@"RESPONSE: %@\n"
+        NBLog(@"RESPONSE: %@\n"
               @"BODY: %@",
               response,
               [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);

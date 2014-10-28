@@ -73,7 +73,7 @@
 - (void)testAsyncAuthenticatedInitialization
 {
     if (self.shouldOnlyUseTestToken) {
-        NSLog(@"SKIPPING");
+        NBLog(@"SKIPPING");
         return;
     }
     [self setUpAsync];
@@ -91,7 +91,7 @@
          if (error) {
              XCTFail(@"Authentication service returned error %@", error);
          }
-         NSLog(@"CREDENTIAL: %@", credential);
+         NBLog(@"CREDENTIAL: %@", credential);
          [self assertCredential:credential];
          client.apiKey = credential.accessToken;
          // Test credential persistence across initializations.
@@ -121,7 +121,7 @@
 - (void)testConfiguringAPIVersion
 {
     if (self.shouldUseHTTPStubbing) {
-        NSLog(@"SKIPPING");
+        NBLog(@"SKIPPING");
         return;
     }
     NBClient *client = self.baseClientWithTestToken;

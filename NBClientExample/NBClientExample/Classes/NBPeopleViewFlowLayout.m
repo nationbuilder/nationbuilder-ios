@@ -54,7 +54,7 @@
 
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
 {
-    //NSLog(@"%@", NSStringFromCGRect(newBounds));
+    //NBLog(@"%@", NSStringFromCGRect(newBounds));
     CGRect oldBounds = self.collectionView.bounds;
     if (newBounds.size.width != oldBounds.size.width) {
         self.landscape = newBounds.size.width > oldBounds.size.width;
@@ -126,7 +126,7 @@
     if (alpha > 0.0f && alpha <= 1.0f) {
         attributes.alpha = alpha;
     }
-    //NSLog(@"INFO: Attributes %@", attributes);
+    //NBLog(@"INFO: Attributes %@", attributes);
     attributes.center = center;
     return attributes;
 }
