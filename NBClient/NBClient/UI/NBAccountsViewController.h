@@ -27,6 +27,8 @@
 
 @property (nonatomic, weak, readonly) UIPickerView *accountsPicker;
 
+@property (nonatomic, weak, readonly) IBOutlet UIImageView *logoImageView;
+
 @property (nonatomic, strong) UIColor *borderColor UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) NSNumber *cornerRadius UI_APPEARANCE_SELECTOR;
 

@@ -36,6 +36,7 @@
                 <outlet property="accountsPickerHeight" destination="XIq-DT-Mns" id="bMj-Oc-Ssz"/>
                 <outlet property="addAccountButton" destination="HKK-nf-xyi" id="Zks-gr-o1X"/>
                 <outlet property="avatarImageView" destination="bli-Yd-Mg8" id="beq-BT-8x0"/>
+                <outlet property="logoImageView" destination="gLa-oV-esy" id="ao0-0S-Mu5"/>
                 <outlet property="nameLabel" destination="SRk-W4-610" id="dch-of-dR4"/>
                 <outlet property="nationLabel" destination="iiD-vH-WHK" id="YWc-pS-FOn"/>
                 <outlet property="signOutButton" destination="xDP-tc-YIH" id="cal-db-ZEb"/>
@@ -153,6 +154,9 @@
         </view>
         <navigationItem title="Title" id="28M-R6-Z5h"/>
     </objects>
+    <resources>
+        <image name="NBMark" width="144" height="144"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

@@ -125,6 +125,7 @@
 		AA78ED75199C563C0043B7C0 /* people_match_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_match_get.txt; sourceTree = "<group>"; };
 		AA78ED76199C563C0043B7C0 /* people_post.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_post.txt; sourceTree = "<group>"; };
 		AA78ED77199C563C0043B7C0 /* people_search_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_search_get.txt; sourceTree = "<group>"; };
+		AA811B8A1A0074C300F80EDF /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		AA84F04419EC7C9200DAA6B8 /* NationBuilder-Info-Local.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "NationBuilder-Info-Local.plist"; sourceTree = "<group>"; };
 		AA84F04619EC888A00DAA6B8 /* NationBuilder-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "NationBuilder-Info.plist"; sourceTree = "<group>"; };
 		AA84F04819EC94A700DAA6B8 /* people_me_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_me_get.txt; sourceTree = "<group>"; };
@@ -315,6 +316,7 @@
 			isa = PBXGroup;
 			children = (
 				AAC01B9219F95B1C0093EEA7 /* pe-icon-7-stroke.ttf */,
+				AA811B8A1A0074C300F80EDF /* Media.xcassets */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";

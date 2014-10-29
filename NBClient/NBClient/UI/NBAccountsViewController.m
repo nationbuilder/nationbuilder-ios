@@ -36,6 +36,8 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 @property (nonatomic, weak, readwrite) IBOutlet UIPickerView *accountsPicker;
 
+@property (nonatomic, weak, readwrite) IBOutlet UIImageView *logoImageView;
+
 // For account view hiding.
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *accountViewHeight;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *accountViewBottomMargin;
@@ -142,6 +144,8 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         self.navigationItem.leftBarButtonItem = self.closeButtonItem;
     }
     self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.logoImageView.image = [self.logoImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    self.logoImageView.tintColor = self.buttonBackgroundColor;
     [self setUpAccountView];
     [self setUpActionButtons];
     [self setUpAccountsPicker];
