@@ -26,7 +26,7 @@ extern NSString * const NBClientErrorInnerErrorKey;
 extern NSString * const NBClientDefaultAPIVersion;
 extern NSString * const NBClientDefaultBaseURLFormat;
 
-@interface NBClient : NSObject <NSURLSessionDelegate, NBLogging>
+@interface NBClient : NSObject <NSURLSessionDataDelegate, NBLogging>
 
 @property (nonatomic, strong, readonly) NSString *nationName;
 @property (nonatomic, strong, readonly) NSURLSession *urlSession;
