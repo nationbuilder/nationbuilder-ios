@@ -24,7 +24,7 @@ static NBLogLevel LogLevel = NBLogLevelDebug;
 static NBLogLevel LogLevel = NBLogLevelWarning;
 #endif
 
-@interface NBAccountsViewController () <UIAlertViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
+@interface NBAccountsViewController () <UIScrollViewDelegate, UIAlertViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
 
 @property (nonatomic, weak, readwrite) IBOutlet UIImageView *avatarImageView;
 @property (nonatomic, weak, readwrite) IBOutlet UILabel *nameLabel;
