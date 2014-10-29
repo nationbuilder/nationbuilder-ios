@@ -52,7 +52,7 @@
     static NSArray *keys;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        keys = @[ @"email", @"id", @"first_name", @"last_name", @"support_level" ]; // TODO: Should probably be more comprehensive.
+        keys = @[ @"email", @"id", @"first_name", @"last_name", @"support_level" ];
     });
     for (NSString *key in keys) {
         XCTAssertNotNil(dictionary[key],

@@ -241,7 +241,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         return;
     }
     if ([keyPath isEqual:PeopleKeyPath]) {
-        // TODO: Incremental updates.
+        // NOTE: Incremental updates support not included.
         NBPeopleDataSource *dataSource = (id)self.dataSource;
         if (!dataSource.people.count) {
             return;
