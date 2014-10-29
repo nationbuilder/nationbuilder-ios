@@ -24,6 +24,12 @@ static void *observationContext = &observationContext;
 
 static NSDictionary *DataToFieldKeyPathsMap;
 
+#if DEBUG
+static NBLogLevel LogLevel = NBLogLevelDebug;
+#else
+static NBLogLevel LogLevel = NBLogLevelWarning;
+#endif
+
 @interface NBPersonViewController ()
 
 <UITextFieldDelegate, UITextViewDelegate, UIAlertViewDelegate>
@@ -165,6 +171,11 @@ static NSDictionary *DataToFieldKeyPathsMap;
 }
 
 #pragma mark - NBViewController
+
++ (void)updateLoggingToLevel:(NBLogLevel)logLevel
+{
+    LogLevel = logLevel;
+}
 
 - (void)setDataSource:(id<NBDataSource>)dataSource
 {
@@ -364,7 +375,7 @@ static NSDictionary *DataToFieldKeyPathsMap;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlString]];
             if (!imageData) {
-                NSLog(@"WARNING: Invalid profile image URL %@", urlString);
+                NBLogWarning(@"Invalid profile image URL %@", urlString);
                 return;
             }
             dispatch_async(dispatch_get_main_queue(), ^{

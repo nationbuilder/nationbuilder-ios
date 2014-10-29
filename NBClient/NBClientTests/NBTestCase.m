@@ -90,7 +90,7 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSString *pathName;
-#ifdef DEBUG
+#if DEBUG
         pathName = [NBInfoFileName stringByAppendingString:@"-Local"];
 #endif
         pathName = pathName ?: NBInfoFileName;
@@ -141,7 +141,7 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
                           method.lowercaseString];
     NSData *data = [NSData dataWithContentsOfFile:
                     [[NSBundle bundleForClass:self.class] pathForResource:fileName ofType:@"txt"]];
-    NSLog(@"STUB: %@", components.URL.absoluteString);
+    NBLog(@"STUB: %@", components.URL.absoluteString);
     return stubRequest(method, components.URL.absoluteString).withHeaders(headers).andReturnRawResponse(data);
 }
 

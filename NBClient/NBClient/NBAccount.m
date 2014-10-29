@@ -13,6 +13,12 @@
 #import "NBClient.h"
 #import "NBClient+People.h"
 
+#if DEBUG
+static NBLogLevel LogLevel = NBLogLevelDebug;
+#else
+static NBLogLevel LogLevel = NBLogLevelWarning;
+#endif
+
 @interface NBAccount ()
 
 @property (nonatomic, strong, readwrite) NBClient *client;
@@ -59,6 +65,13 @@
         self.clientInfo = [NSDictionary dictionaryWithDictionary:mutableClientInfo];
     }
     return self;
+}
+
+#pragma mark - NBLogging
+
++ (void)updateLoggingToLevel:(NBLogLevel)logLevel
+{
+    LogLevel = logLevel;
 }
 
 #pragma mark - NBAccountViewDataSource
@@ -182,17 +195,17 @@
      priorSignout:needsPriorSignout
      completionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
          if (error) {
-             NSLog(@"ERROR: %@", error);
+             NBLogError(@"%@", error);
          } else if (credential) {
              // Success.
-             NSLog(@"INFO: Activating account for nation %@", self.clientInfo[NBInfoNationNameKey]);
+             NBLogInfo(@"Activating account for nation %@", self.clientInfo[NBInfoNationNameKey]);
              self.client.apiKey = credential.accessToken;
              self.active = YES;
              // TODO: This will be more robust with an NSOperationQueue.
              [self fetchPersonWithCompletionHandler:completionHandler];
              return;
          } else {
-             NSLog(@"WARNING: Unhandled case.");
+             NBLogWarning(@"Unhandled case.");
          }
          if (completionHandler) {
              completionHandler(error);
@@ -221,7 +234,7 @@
 {
     [self.client fetchPersonForClientUserWithCompletionHandler:^(NSDictionary *item, NSError *error) {
         if (error) {
-            NSLog(@"ERROR: %@", error);
+            NBLogError(@"%@", error);
         } else if (item) {
             // Success.
             self.person = item;
@@ -232,7 +245,7 @@
             [self fetchAvatarWithCompletionHandler:completionHandler];
             return;
         } else {
-            NSLog(@"WARNING: Unhandled case.");
+            NBLogWarning(@"Unhandled case.");
         }
         if (completionHandler) {
             completionHandler(error);
@@ -246,7 +259,7 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         self.avatarImageData = [NSData dataWithContentsOfURL:avatarURL];
         if (!self.avatarImageData) {
-            NSLog(@"WARNING: Invalid avatar URL %@", avatarURL.absoluteString);
+            NBLogWarning(@"Invalid avatar URL %@", avatarURL.absoluteString);
         }
         if (completionHandler) {
             dispatch_async(dispatch_get_main_queue(), ^{

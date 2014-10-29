@@ -13,6 +13,12 @@
 static NSString *LabelViewKey = @"view";
 static NSString *LabelOriginalColorKey = @"originalColor";
 
+#if DEBUG
+static NBLogLevel LogLevel = NBLogLevelDebug;
+#else
+static NBLogLevel LogLevel = NBLogLevelWarning;
+#endif
+
 @interface NBPersonCellView ()
 
 @property (nonatomic, weak, readwrite) IBOutlet UIView *bottomBorderView;
@@ -78,6 +84,11 @@ static NSString *LabelOriginalColorKey = @"originalColor";
 }
 
 #pragma mark - NBViewCell
+
++ (void)updateLoggingToLevel:(NBLogLevel)logLevel
+{
+    LogLevel = logLevel;
+}
 
 - (void)refreshWithData:(NSDictionary *)data
 {
