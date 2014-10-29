@@ -180,6 +180,16 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     }
 }
 
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    // Re-showing an alert after it adjusts for auto-rotation causes it to have layout problems. So reset it instead.
+    [self.nationSlugPromptView dismissWithClickedButtonIndex:self.nationSlugPromptView.cancelButtonIndex animated:NO];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.nationSlugPromptView = nil;
+    });
+}
+
 - (void)dismissViewControllerAnimated:(BOOL)flag completion:(void (^)(void))completion
 {
     if (self.isPresentedInPopover) {
