@@ -14,49 +14,56 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Full Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mbg-Ys-SBl" userLabel="Name Label - Full Name">
-                        <rect key="frame" x="15" y="28" width="290" height="24"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="24" id="UuD-Y2-jBu"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="20"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lO3-2n-xHR" userLabel="Bottom Border View">
                         <rect key="frame" x="15" y="99" width="305" height="1"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="3Cm-kz-Y4p"/>
                         </constraints>
                     </view>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tag · Tag " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Llr-6f-IVD" userLabel="Tags Label">
-                        <rect key="frame" x="15" y="62" width="290" height="18"/>
+                    <view contentMode="scaleToFill" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="HDD-Gx-Le7" userLabel="Group View">
+                        <rect key="frame" x="20" y="28" width="290" height="49"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Full Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mbg-Ys-SBl" userLabel="Name Label - Full Name">
+                                <rect key="frame" x="0.0" y="0.0" width="290" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="24" id="UuD-Y2-jBu"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="20"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tag · Tag " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Llr-6f-IVD" userLabel="Tags Label">
+                                <rect key="frame" x="0.0" y="32" width="290" height="17"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="18" id="4li-5H-gM4"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <constraints>
-                            <constraint firstAttribute="height" constant="18" id="4li-5H-gM4"/>
+                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="50" id="9Hp-pX-a31"/>
+                            <constraint firstAttribute="trailing" secondItem="Llr-6f-IVD" secondAttribute="trailing" id="JgH-PN-igi"/>
+                            <constraint firstItem="Llr-6f-IVD" firstAttribute="top" secondItem="Mbg-Ys-SBl" secondAttribute="bottom" constant="8" id="JtW-Qt-FLD"/>
+                            <constraint firstItem="Mbg-Ys-SBl" firstAttribute="top" secondItem="HDD-Gx-Le7" secondAttribute="top" id="RVB-AA-VwX"/>
+                            <constraint firstItem="Mbg-Ys-SBl" firstAttribute="leading" secondItem="HDD-Gx-Le7" secondAttribute="leading" id="TTS-WM-cz9"/>
+                            <constraint firstItem="Llr-6f-IVD" firstAttribute="bottom" secondItem="HDD-Gx-Le7" secondAttribute="bottom" id="Zih-Xj-EN3"/>
+                            <constraint firstItem="Llr-6f-IVD" firstAttribute="leading" secondItem="HDD-Gx-Le7" secondAttribute="leading" id="hcx-ep-OCr"/>
+                            <constraint firstAttribute="trailing" secondItem="Mbg-Ys-SBl" secondAttribute="trailing" id="wWr-Z3-he6"/>
                         </constraints>
-                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                        <nil key="highlightedColor"/>
-                    </label>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="Llr-6f-IVD" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Mbg-Ys-SBl" secondAttribute="bottom" id="0kF-a9-86N"/>
                 <constraint firstItem="lO3-2n-xHR" firstAttribute="leading" secondItem="Grz-w3-y7q" secondAttribute="leading" constant="15" id="3xi-Ez-Kdr"/>
-                <constraint firstAttribute="trailing" secondItem="Llr-6f-IVD" secondAttribute="trailing" constant="15" id="Ke8-RK-L3w"/>
-                <constraint firstItem="lO3-2n-xHR" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Llr-6f-IVD" secondAttribute="bottom" constant="15" id="L14-CE-Lzp"/>
-                <constraint firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Llr-6f-IVD" secondAttribute="bottom" constant="20" id="O2H-hS-AWp"/>
-                <constraint firstItem="Mbg-Ys-SBl" firstAttribute="leading" secondItem="Grz-w3-y7q" secondAttribute="leading" constant="15" id="PVC-a6-0Ak"/>
-                <constraint firstItem="Llr-6f-IVD" firstAttribute="top" relation="lessThanOrEqual" secondItem="Mbg-Ys-SBl" secondAttribute="bottom" constant="10" id="QBF-jn-Zdq"/>
+                <constraint firstAttribute="centerY" secondItem="HDD-Gx-Le7" secondAttribute="centerY" constant="-3" id="469-id-hMg"/>
                 <constraint firstAttribute="trailing" secondItem="lO3-2n-xHR" secondAttribute="trailing" id="QDZ-Tk-ETy"/>
+                <constraint firstAttribute="trailing" secondItem="HDD-Gx-Le7" secondAttribute="trailing" constant="10" id="ZAl-E0-ejF"/>
+                <constraint firstItem="HDD-Gx-Le7" firstAttribute="leading" secondItem="Grz-w3-y7q" secondAttribute="leading" constant="20" id="aZK-jC-RyA"/>
                 <constraint firstAttribute="bottom" secondItem="lO3-2n-xHR" secondAttribute="bottom" id="b1B-ve-wGb"/>
-                <constraint firstAttribute="trailing" secondItem="Mbg-Ys-SBl" secondAttribute="trailing" constant="15" id="eZj-J4-1yD"/>
-                <constraint firstItem="Llr-6f-IVD" firstAttribute="trailing" secondItem="Mbg-Ys-SBl" secondAttribute="trailing" id="g1U-3w-U8B"/>
-                <constraint firstItem="Mbg-Ys-SBl" firstAttribute="top" relation="lessThanOrEqual" secondItem="Grz-w3-y7q" secondAttribute="top" constant="28" id="nS6-V3-p0o"/>
-                <constraint firstItem="Mbg-Ys-SBl" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Grz-w3-y7q" secondAttribute="top" constant="20" id="ue0-cZ-FhQ"/>
-                <constraint firstItem="Llr-6f-IVD" firstAttribute="leading" secondItem="lO3-2n-xHR" secondAttribute="leading" id="ygd-B2-krm"/>
             </constraints>
             <attributedString key="userComments">
                 <fragment>
