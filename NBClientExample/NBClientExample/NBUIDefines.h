@@ -10,6 +10,11 @@
 
 #import <NBClient/NBDefines.h>
 
+@class NBClient;
+@class NBPaginationInfo;
+
+@protocol NBDataSource;
+
 extern NSString * const NBNibNameViewKey;
 extern NSString * const NBNibNameCellViewKey;
 extern NSString * const NBNibNameDecorationViewKey;
@@ -29,7 +34,8 @@ typedef NS_ENUM(NSUInteger, NBScrollViewPullActionState) {
 
 #pragma mark - UIKit Protocols
 
-@protocol NBDataSource;
+// NOTE: These are not official protocols. They are just meant to be used by the
+// sample app and clearly outline the MVC pattern used.
 
 @protocol NBViewController <NBLogging>
 
@@ -74,9 +80,6 @@ typedef NS_ENUM(NSUInteger, NBScrollViewPullActionState) {
 @end
 
 #pragma mark - Data Source Protocols
-
-@class NBClient;
-@class NBPaginationInfo;
 
 @protocol NBDataSource <NBLogging>
 
