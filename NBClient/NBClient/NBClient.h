@@ -13,6 +13,8 @@
 @class NBAuthenticator;
 @class NBPaginationInfo;
 
+@protocol NBClientDelegate;
+
 typedef void (^NBClientResourceListCompletionHandler)(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error);
 typedef void (^NBClientResourceItemCompletionHandler)(NSDictionary *item, NSError *error);
 
@@ -28,6 +30,8 @@ extern NSString * const NBClientDefaultAPIVersion;
 extern NSString * const NBClientDefaultBaseURLFormat;
 
 @interface NBClient : NSObject <NSURLSessionDataDelegate, NBLogging>
+
+@property (nonatomic, weak) id<NBClientDelegate> delegate;
 
 @property (nonatomic, strong, readonly) NSString *nationName;
 @property (nonatomic, strong, readonly) NSURLSession *urlSession;
@@ -48,5 +52,29 @@ extern NSString * const NBClientDefaultBaseURLFormat;
                      customBaseURL:(NSURL *)baseURL
                   customURLSession:(NSURLSession *)urlSession
      customURLSessionConfiguration:(NSURLSessionConfiguration *)sessionConfiguration;
+
+@end
+
+@protocol NBClientDelegate <NSObject>
+
+@optional
+
+// Default should return YES.
+- (BOOL)client:(NBClient *)client shouldHandleResponse:(NSHTTPURLResponse *)response
+                                            forRequest:(NSURLRequest *)request;
+// Default should return YES.
+- (BOOL)client:(NBClient *)client shouldHandleResponse:(NSHTTPURLResponse *)response
+                                            forRequest:(NSURLRequest *)request
+                                     withDataTaskError:(NSError *)error;
+// Default should return YES. HTTP errors sometimes have additional values for the
+// NBClientError* keys defined above.
+- (BOOL)client:(NBClient *)client shouldHandleResponse:(NSHTTPURLResponse *)response
+                                            forRequest:(NSURLRequest *)request
+                                         withHTTPError:(NSError *)error;
+// Default should return YES. Service errors have additional values for the
+// NBClientError* keys defined above.
+- (BOOL)client:(NBClient *)client shouldHandleResponse:(NSHTTPURLResponse *)response
+                                            forRequest:(NSURLRequest *)request
+                                      withServiceError:(NSError *)error;
 
 @end
