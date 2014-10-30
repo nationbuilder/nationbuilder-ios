@@ -332,6 +332,8 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 - (void)promptForNationSlug
 {
     UITextField *textField = [self.nationSlugPromptView textFieldAtIndex:0];
+    // NOTE: The alignment bug in iOS 7 is framework-level and fixed in 8.
+    textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     if (self.dataSource.selectedAccount) {
         textField.text = nil;
     } else {
