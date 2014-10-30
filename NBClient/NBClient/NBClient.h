@@ -19,6 +19,7 @@ typedef void (^NBClientResourceItemCompletionHandler)(NSDictionary *item, NSErro
 // Use these constants when working with the client's errors.
 extern NSUInteger const NBClientErrorCodeService;
 extern NSString * const NBClientErrorCodeKey;
+extern NSString * const NBClientErrorHTTPStatusCodeKey;
 extern NSString * const NBClientErrorMessageKey;
 extern NSString * const NBClientErrorValidationErrorsKey;
 extern NSString * const NBClientErrorInnerErrorKey;

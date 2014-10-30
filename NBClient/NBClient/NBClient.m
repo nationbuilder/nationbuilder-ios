@@ -15,6 +15,7 @@
 
 NSUInteger const NBClientErrorCodeService = 10;
 NSString * const NBClientErrorCodeKey = @"code";
+NSString * const NBClientErrorHTTPStatusCodeKey = @"NBClientErrorHTTPStatusCode";
 NSString * const NBClientErrorMessageKey = @"message";
 NSString * const NBClientErrorValidationErrorsKey = @"validation_errors";
 NSString * const NBClientErrorInnerErrorKey = @"inner_error";
@@ -355,6 +356,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                         NSLocalizedFailureReasonErrorKey: (data[@"message"] ? data[@"message"] : @"message.unknown-error-reason".nb_localizedString),
                         NSLocalizedRecoverySuggestionErrorKey: self.defaultErrorRecoverySuggestion,
                         NBClientErrorCodeKey: (data[NBClientErrorCodeKey] ? data[NBClientErrorCodeKey] : @""),
+                        NBClientErrorHTTPStatusCodeKey: @(response.statusCode),
                         NBClientErrorMessageKey: (data[NBClientErrorMessageKey] ? data[NBClientErrorMessageKey] : @""),
                         NBClientErrorValidationErrorsKey: (data[NBClientErrorValidationErrorsKey] ? data[NBClientErrorValidationErrorsKey] : @[]),
                         NBClientErrorInnerErrorKey: (data[NBClientErrorInnerErrorKey] ? data[NBClientErrorInnerErrorKey] : @{}) }];
