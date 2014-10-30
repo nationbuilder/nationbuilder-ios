@@ -102,6 +102,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                                              authenticator:self.authenticator
                                           customURLSession:nil customURLSessionConfiguration:nil];
     }
+    self.client.delegate = self;
     return _client;
 }
 

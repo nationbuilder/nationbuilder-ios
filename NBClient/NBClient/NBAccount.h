@@ -11,10 +11,11 @@
 #import "NBDefines.h"
 #import "NBAccountsViewDefines.h"
 
-@class NBClient;
+#import "NBClient.h"
+
 @class NBAuthenticator;
 
-@interface NBAccount : NSObject <NBAccountViewDataSource, NBLogging>
+@interface NBAccount : NSObject <NBAccountViewDataSource, NBClientDelegate, NBLogging>
 
 @property (nonatomic, strong, readonly) NBClient *client;
 @property (nonatomic, strong, readonly) NBAuthenticator *authenticator;
