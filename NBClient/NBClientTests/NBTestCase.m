@@ -114,7 +114,7 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
     return !self.userPassword;
 }
 
-- (LSStubResponseDSL *)stubRequestWithMethod:(NSString *)method
+- (LSStubRequestDSL *)stubRequestWithMethod:(NSString *)method
                                        path:(NSString *)path
                                  identifier:(NSUInteger)identifier
                                  parameters:(NSDictionary *)parameters
@@ -135,14 +135,25 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
     if ([method isEqual:@"POST"] || [method isEqual:@"PUT"]) {
         headers[@"Content-Type"] = @"application/json";
     }
+    NBLog(@"STUB: %@", components.URL.absoluteString);
+    return stubRequest(method, components.URL.absoluteString).withHeaders(headers);
+}
+
+- (LSStubResponseDSL *)stubRequestUsingFileDataWithMethod:(NSString *)method
+                                                     path:(NSString *)path
+                                               identifier:(NSUInteger)identifier
+                                               parameters:(NSDictionary *)parameters
+{
+    BOOL hasIdentifier = identifier != NSNotFound;
+    // Get file name that's conventionally composed from path, identifier existence, and method.
     NSString *fileName = [NSString stringWithFormat:@"%@%@_%@",
                           [path stringByReplacingOccurrencesOfString:@"/" withString:@"_"],
                           (hasIdentifier ? @"_id" : @""),
                           method.lowercaseString];
     NSData *data = [NSData dataWithContentsOfFile:
                     [[NSBundle bundleForClass:self.class] pathForResource:fileName ofType:@"txt"]];
-    NBLog(@"STUB: %@", components.URL.absoluteString);
-    return stubRequest(method, components.URL.absoluteString).withHeaders(headers).andReturnRawResponse(data);
+    return ([self stubRequestWithMethod:method path:path identifier:identifier parameters:parameters]
+            .andReturnRawResponse(data));
 }
 
 - (void)setUpSharedClient

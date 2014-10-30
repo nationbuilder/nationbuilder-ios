@@ -36,6 +36,10 @@
                                        path:(NSString *)path
                                  identifier:(NSUInteger)identifier
                                  parameters:(NSDictionary *)parameters;
+- (LSStubResponseDSL *)stubRequestUsingFileDataWithMethod:(NSString *)method
+                                                     path:(NSString *)path
+                                               identifier:(NSUInteger)identifier
+                                               parameters:(NSDictionary *)parameters;
 
 - (void)assertPaginationInfo:(NBPaginationInfo *)paginationInfo
     withPaginationParameters:(NSDictionary *)paginationParameters;
