@@ -18,6 +18,12 @@
 
 @implementation NBAuthenticatorTests
 
++ (void)setUp
+{
+    [super setUp];
+    [NBAuthenticator updateLoggingToLevel:NBLogLevelWarning];
+}
+
 - (void)setUp
 {
     [super setUp];
