@@ -160,6 +160,8 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 - (void)account:(NBAccount *)account didBecomeInvalidFromHTTPError:(NSError *)error
 {
+    [self deactivateAccount:account];
+    [self.delegate accountsManager:self didSignOutOfInvalidAccount:account fromHTTPError:error];
 }
 
 #pragma mark - Private

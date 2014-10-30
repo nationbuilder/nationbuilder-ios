@@ -87,6 +87,26 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     return self.clientInfo[NBInfoNationNameKey];
 }
 
+#pragma mark - NBClientDelegate
+
+- (BOOL)client:(NBClient *)client shouldHandleResponse:(NSHTTPURLResponse *)response
+                                            forRequest:(NSURLRequest *)request
+                                         withHTTPError:(NSError *)error
+{
+    if (response.statusCode == 401 && client.apiKey) {
+        NBLogInfo(@"Account reported as unauthorized, access token: %@", client.apiKey);
+        NSError *cleanUpError;
+        BOOL didCleanUp = [self requestCleanUpWithError:&cleanUpError];
+        if (!didCleanUp) {
+            NBLogError(@"Account cleanup failed with error: %@", cleanUpError);
+            return YES;
+        }
+        [self.delegate account:self didBecomeInvalidFromHTTPError:error];
+        return NO;
+    }
+    return YES;
+}
+
 #pragma mark - Public
 
 #pragma mark Accessors
