@@ -21,6 +21,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 @interface NBAccount ()
 
+@property (nonatomic, weak, readwrite) id<NBAccountDelegate> delegate;
 @property (nonatomic, strong, readwrite) NBClient *client;
 @property (nonatomic, strong, readwrite) NSDictionary *clientInfo;
 @property (nonatomic, strong, readwrite) NSDictionary *defaultClientInfo;
@@ -40,10 +41,13 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 @implementation NBAccount
 
-- (instancetype)initWithClientInfo:(NSDictionary *)clientInfoOrNil;
+- (instancetype)initWithClientInfo:(NSDictionary *)clientInfoOrNil
+                          delegate:(id<NBAccountDelegate>)delegate;
 {
     self = [super init];
     if (self) {
+        NSAssert(delegate, @"A delegate is required.");
+        self.delegate = delegate;
         // Set defaults.
         self.shouldUseTestToken = NO;
         _identifier = NSNotFound;

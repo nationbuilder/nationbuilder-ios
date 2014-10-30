@@ -125,8 +125,8 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                                 userInfo:@{ NSLocalizedDescriptionKey: @"message.invalid-nation-slug".nb_localizedString,
                                             NSLocalizedFailureReasonErrorKey: failureReason }];
     } else {
-        NBAccount *account = [[NBAccount alloc] initWithClientInfo:
-                              [self clientInfoForAccountWithNationSlug:nationSlug]];
+        NBAccount *account = [[NBAccount alloc] initWithClientInfo:[self clientInfoForAccountWithNationSlug:nationSlug]
+                                                          delegate:self];
         if (!self.clientInfo) {
             NSMutableDictionary *mutableClientInfo = account.clientInfo.mutableCopy;
             [mutableClientInfo removeObjectForKey:NBInfoNationNameKey];
@@ -154,6 +154,12 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     }
     self.selectedAccount = self.accounts.firstObject;
     return didSignOut;
+}
+
+#pragma mark - NBAccountDelegate
+
+- (void)account:(NBAccount *)account didBecomeInvalidFromHTTPError:(NSError *)error
+{
 }
 
 #pragma mark - Private
@@ -250,8 +256,9 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     NSArray *accountInfos = [[NSUserDefaults standardUserDefaults] arrayForKey:self.persistedAccountsIdentifier];
     if (accountInfos) {
         for (NSDictionary *accountInfo in accountInfos) {
-            NBAccount *account = [[NBAccount alloc] initWithClientInfo:
-                                  [self clientInfoForAccountWithNationSlug:accountInfo[NBAccountInfoNationSlugKey]]];
+            NBAccount *account =
+            [[NBAccount alloc] initWithClientInfo:[self clientInfoForAccountWithNationSlug:accountInfo[NBAccountInfoNationSlugKey]]
+                                         delegate:self];
             account.name = accountInfo[NBAccountInfoNameKey];
             account.identifier = [accountInfo[NBAccountInfoIdentifierKey] unsignedIntegerValue];
             [self.mutableAccounts addObject:account];

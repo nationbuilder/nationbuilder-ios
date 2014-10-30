@@ -11,9 +11,9 @@
 #import "NBAccountsViewDefines.h"
 #import "NBDefines.h"
 
-@class NBAccount;
+#import "NBAccount.h"
 
-@interface NBAccountsManager : NSObject <NBAccountsViewDataSource, NBLogging>
+@interface NBAccountsManager : NSObject <NBAccountsViewDataSource, NBAccountDelegate, NBLogging>
 
 @property (nonatomic, weak, readonly) id<NBAccountsManagerDelegate> delegate;
 
