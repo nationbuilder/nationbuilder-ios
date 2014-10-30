@@ -9,6 +9,7 @@
 #import <XCTest/XCTest.h>
 
 #import <Nocilla/Nocilla.h>
+#import <OCMock/OCMock.h>
 
 @class NBClient;
 @class NBPaginationInfo;
