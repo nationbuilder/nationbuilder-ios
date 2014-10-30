@@ -152,7 +152,6 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         [self deactivateAccount:account];
         didSignOut = YES;
     }
-    self.selectedAccount = self.accounts.firstObject;
     return didSignOut;
 }
 
@@ -200,7 +199,8 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     if (!self.accounts.count && self.isSignedIn) {
         self.signedIn = NO;
     }
-    self.selectedAccount = nil;
+    // Switch to first available account, if any.
+    self.selectedAccount = self.accounts.firstObject;
 }
 
 - (NSDictionary *)clientInfoForAccountWithNationSlug:(NSString *)nationSlug
