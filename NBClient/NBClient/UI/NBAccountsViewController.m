@@ -332,7 +332,11 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 - (void)promptForNationSlug
 {
     UITextField *textField = [self.nationSlugPromptView textFieldAtIndex:0];
-    textField.text = nil;
+    if (self.dataSource.selectedAccount) {
+        textField.text = nil;
+    } else {
+        textField.text = self.dataSource.previousAccountNationSlug;
+    }
     [self.nationSlugPromptView show];
 }
 

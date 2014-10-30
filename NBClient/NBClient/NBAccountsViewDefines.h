@@ -35,6 +35,7 @@
 @protocol NBAccountsViewDataSource <NSObject>
 
 @property (nonatomic, strong, readonly) NSArray *accounts;
+@property (nonatomic, strong, readonly) NSString *previousAccountNationSlug;
 @property (nonatomic, strong) id<NBAccountViewDataSource> selectedAccount;
 
 @property (nonatomic, readonly, getter = isSignedIn) BOOL signedIn;
