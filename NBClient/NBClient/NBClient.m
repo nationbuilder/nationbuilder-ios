@@ -282,6 +282,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 #pragma mark Handlers
 
 - (void (^)(NSData *, NSURLResponse *, NSError *))dataTaskCompletionHandlerForFetchResultsKey:(NSString *)resultsKey
+                                                                              originalRequest:(NSURLRequest *)request
                                                                             completionHandler:(void (^)(id, NSDictionary *, NSError *))completionHandler
 {
     return ^(NSData *data, NSURLResponse *response, NSError *error) {

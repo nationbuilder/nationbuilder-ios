@@ -47,6 +47,7 @@
 - (NSURLSessionDataTask *)startTask:(NSURLSessionDataTask *)task;
 
 - (void (^)(NSData *, NSURLResponse *, NSError *))dataTaskCompletionHandlerForFetchResultsKey:(NSString *)resultsKey
+                                                                              originalRequest:(NSURLRequest *)request
                                                                             completionHandler:(void (^)(id results, NSDictionary *jsonObject, NSError *error))completionHandler;
 
 - (NSError *)errorForResponse:(NSHTTPURLResponse *)response jsonData:(NSDictionary *)data;
