@@ -15,7 +15,7 @@
 
 @protocol NBAccountsManagerDelegate <NSObject>
 
-- (void)accountsManager:(NBAccountsManager *)accountsManager failedToSwitchToAccount:(NBAccount *)account withError:(NSError *)error;
+- (void)accountsManager:(NBAccountsManager *)accountsManager didFailToSwitchToAccount:(NBAccount *)account withError:(NSError *)error;
 
 @optional
 

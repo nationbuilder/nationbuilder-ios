@@ -165,7 +165,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         BOOL shouldBail = NO;
         if (error) {
             [self.mutableAccounts removeObject:account];
-            [self.delegate accountsManager:self failedToSwitchToAccount:account withError:error];
+            [self.delegate accountsManager:self didFailToSwitchToAccount:account withError:error];
             shouldBail = YES;
         } else {
             for (NBAccount *existingAccount in self.accounts) {
