@@ -21,6 +21,18 @@
 
 @implementation NBClientTests
 
++ (void)setUp
+{
+    [super setUp];
+    [[LSNocilla sharedInstance] start];
+}
+
++ (void)tearDown
+{
+    [super tearDown];
+    [[LSNocilla sharedInstance] stop];
+}
+
 - (void)setUp
 {
     [super setUp];
@@ -39,14 +51,16 @@
                                                              clientIdentifier:self.clientIdentifier];
     return [[NBClient alloc] initWithNationName:self.nationName
                                   authenticator:authenticator
-                               customURLSession:nil customURLSessionConfiguration:nil];
+                               customURLSession:[NSURLSession sharedSession]
+                  customURLSessionConfiguration:nil];
 }
 - (NBClient *)baseClientWithTestToken
 {
     return [[NBClient alloc] initWithNationName:self.nationName
                                          apiKey:self.testToken
                                   customBaseURL:self.baseURL
-                               customURLSession:nil customURLSessionConfiguration:nil];
+                               customURLSession:[NSURLSession sharedSession]
+                  customURLSessionConfiguration:nil];
 }
 
 - (void)assertCredential:(NBAuthenticationCredential *)credential
