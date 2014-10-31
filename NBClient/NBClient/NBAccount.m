@@ -21,6 +21,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 @interface NBAccount ()
 
+@property (nonatomic, weak, readwrite) id<NBAccountDelegate> delegate;
 @property (nonatomic, strong, readwrite) NBClient *client;
 @property (nonatomic, strong, readwrite) NSDictionary *clientInfo;
 @property (nonatomic, strong, readwrite) NSDictionary *defaultClientInfo;
@@ -40,10 +41,13 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 @implementation NBAccount
 
-- (instancetype)initWithClientInfo:(NSDictionary *)clientInfoOrNil;
+- (instancetype)initWithClientInfo:(NSDictionary *)clientInfoOrNil
+                          delegate:(id<NBAccountDelegate>)delegate;
 {
     self = [super init];
     if (self) {
+        NSAssert(delegate, @"A delegate is required.");
+        self.delegate = delegate;
         // Set defaults.
         self.shouldUseTestToken = NO;
         _identifier = NSNotFound;
@@ -83,6 +87,26 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     return self.clientInfo[NBInfoNationNameKey];
 }
 
+#pragma mark - NBClientDelegate
+
+- (BOOL)client:(NBClient *)client shouldHandleResponse:(NSHTTPURLResponse *)response
+                                            forRequest:(NSURLRequest *)request
+                                         withHTTPError:(NSError *)error
+{
+    if (response.statusCode == 401 && client.apiKey) {
+        NBLogInfo(@"Account reported as unauthorized, access token: %@", client.apiKey);
+        NSError *cleanUpError;
+        BOOL didCleanUp = [self requestCleanUpWithError:&cleanUpError];
+        if (!didCleanUp) {
+            NBLogError(@"Account cleanup failed with error: %@", cleanUpError);
+            return YES;
+        }
+        [self.delegate account:self didBecomeInvalidFromHTTPError:error];
+        return NO;
+    }
+    return YES;
+}
+
 #pragma mark - Public
 
 #pragma mark Accessors
@@ -102,6 +126,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                                              authenticator:self.authenticator
                                           customURLSession:nil customURLSessionConfiguration:nil];
     }
+    self.client.delegate = self;
     return _client;
 }
 

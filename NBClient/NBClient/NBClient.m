@@ -192,15 +192,14 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     }
     NSURLRequest *request = [self baseFetchRequestWithURL:components.URL];
     NBLogInfo(@"REQUEST: %@", request.nb_debugDescription);
-    NSURLSessionDataTask *task =
-    [self.urlSession
-     dataTaskWithRequest:request
-     completionHandler:[self dataTaskCompletionHandlerForFetchResultsKey:resultsKey completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
+    void (^taskCompletionHandler)(NSData *, NSURLResponse *, NSError *) =
+    [self dataTaskCompletionHandlerForFetchResultsKey:resultsKey originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
         NBPaginationInfo *paginationInfo = [[NBPaginationInfo alloc] initWithDictionary:jsonObject];
         if (completionHandler) {
             completionHandler(results, paginationInfo, error);
         }
-    }]];
+    }];
+    NSURLSessionDataTask *task = [self.urlSession dataTaskWithRequest:request completionHandler: taskCompletionHandler];
     return [self startTask:task];
 }
 
@@ -210,14 +209,13 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 {
     NSURLRequest *request = [self baseFetchRequestWithURL:components.URL];
     NBLogInfo(@"REQUEST: %@", request.nb_debugDescription);
-    NSURLSessionDataTask *task =
-    [self.urlSession
-     dataTaskWithRequest:request
-     completionHandler:[self dataTaskCompletionHandlerForFetchResultsKey:resultsKey completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
+    void (^taskCompletionHandler)(NSData *, NSURLResponse *, NSError *) =
+    [self dataTaskCompletionHandlerForFetchResultsKey:resultsKey originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
         if (completionHandler) {
             completionHandler(results, error);
         }
-    }]];
+    }];
+    NSURLSessionDataTask *task = [self.urlSession dataTaskWithRequest:request completionHandler:taskCompletionHandler];
     return [self startTask:task];
 }
 
@@ -240,14 +238,13 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                                    completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
     NBLogInfo(@"REQUEST: %@", request.nb_debugDescription);
-    NSURLSessionDataTask *task =
-    [self.urlSession
-     dataTaskWithRequest:request
-     completionHandler:[self dataTaskCompletionHandlerForFetchResultsKey:resultsKey completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
+    void (^taskCompletionHandler)(NSData *, NSURLResponse *, NSError *) =
+    [self dataTaskCompletionHandlerForFetchResultsKey:resultsKey originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
         if (completionHandler) {
             completionHandler(results, error);
         }
-    }]];
+    }];
+    NSURLSessionDataTask *task = [self.urlSession dataTaskWithRequest:request completionHandler:taskCompletionHandler];
     return [self startTask:task];
 }
 
@@ -266,14 +263,13 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 {
     NSURLRequest *request = [self baseDeleteRequestWithURL:url];
     NBLogInfo(@"REQUEST: %@", request.nb_debugDescription);
-    NSURLSessionDataTask *task =
-    [self.urlSession
-     dataTaskWithRequest:request
-     completionHandler:[self dataTaskCompletionHandlerForFetchResultsKey:nil completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
+    void (^taskCompletionHandler)(NSData *, NSURLResponse *, NSError *) =
+    [self dataTaskCompletionHandlerForFetchResultsKey:nil originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
         if (completionHandler) {
             completionHandler(results, error);
         }
-    }]];
+    }];
+    NSURLSessionDataTask *task = [self.urlSession dataTaskWithRequest:request completionHandler:taskCompletionHandler];
     return [self startTask:task];
 }
 
@@ -286,15 +282,27 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 #pragma mark Handlers
 
 - (void (^)(NSData *, NSURLResponse *, NSError *))dataTaskCompletionHandlerForFetchResultsKey:(NSString *)resultsKey
+                                                                              originalRequest:(NSURLRequest *)request
                                                                             completionHandler:(void (^)(id, NSDictionary *, NSError *))completionHandler
 {
     return ^(NSData *data, NSURLResponse *response, NSError *error) {
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+        // Bail if delegate wants to handle the whole thing.
+        if (self.delegate && [self.delegate respondsToSelector:@selector(client:shouldHandleResponse:forRequest:)]) {
+            if (![self.delegate client:self shouldHandleResponse:httpResponse forRequest:request]) {
+                return [self logResponse:httpResponse data:data]; // Combined to a one-liner; returns void.
+            }
+        }
         // Handle data task error.
         if (error) {
             NBLogError(@"%@", error);
+            if (self.delegate && [self.delegate respondsToSelector:@selector(client:shouldHandleResponse:forRequest:withDataTaskError:)]) {
+                if (![self.delegate client:self shouldHandleResponse:httpResponse forRequest:request withDataTaskError:error]) {
+                    return [self logResponse:httpResponse data:data];
+                }
+            }
             if (completionHandler) { completionHandler(nil, nil, error); }
-            return [self logResponse:httpResponse data:data]; // Combined to a one-liner; returns void.
+            return [self logResponse:httpResponse data:data];
         }
         // Handle empty bodies.
         if ([[NSIndexSet nb_indexSetOfSuccessfulEmptyResponseHTTPStatusCodes] containsIndex:httpResponse.statusCode]) {
@@ -308,6 +316,11 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         // TODO: Have authenticator recover from stale token errors.
         if (![[NSIndexSet nb_indexSetOfSuccessfulHTTPStatusCodes] containsIndex:httpResponse.statusCode]) {
             error = [self errorForResponse:httpResponse jsonData:jsonObject];
+            if (self.delegate && [self.delegate respondsToSelector:@selector(client:shouldHandleResponse:forRequest:withHTTPError:)]) {
+                if (![self.delegate client:self shouldHandleResponse:httpResponse forRequest:request withHTTPError:error]) {
+                    return [self logResponse:httpResponse data:data];
+                }
+            }
             NBLogError(@"%@", error);
             if (completionHandler) { completionHandler(nil, nil, error); }
             return [self logResponse:httpResponse data:data];
@@ -321,6 +334,11 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         // Handle Non-HTTP error or invalid response.
         if (jsonObject[@"code"]) {
             error = [self errorForResponse:httpResponse jsonData:jsonObject];
+            if (self.delegate && [self.delegate respondsToSelector:@selector(client:shouldHandleResponse:forRequest:withServiceError:)]) {
+                if (![self.delegate client:self shouldHandleResponse:httpResponse forRequest:request withServiceError:error]) {
+                    return [self logResponse:httpResponse data:data];
+                }
+            }
         }
         id results = jsonObject[resultsKey];
         if (!results) {

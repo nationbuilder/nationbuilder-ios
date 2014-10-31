@@ -92,7 +92,15 @@
 
 - (void)accountsManager:(NBAccountsManager *)accountsManager didFailToSwitchToAccount:(NBAccount *)account withError:(NSError *)error
 {
+    // Show an alert for generic errors
     [[UIAlertView nb_genericAlertViewWithError:error] show];
+}
+
+- (void)accountsManager:(NBAccountsManager *)accountsManager didSignOutOfInvalidAccount:(NBAccount *)account fromHTTPError:(NSError *)error
+{
+    NBLog(@"INFO: Setting app to not ready and presenting accounts view for re-authenticating");
+    [self presentAccountsViewController:nil];
+    self.peopleViewController.busy = NO;
 }
 
 - (void)accountsManager:(NBAccountsManager *)accountsManager willAddAccount:(NBAccount *)account
