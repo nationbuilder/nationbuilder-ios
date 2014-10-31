@@ -118,15 +118,17 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
                                        path:(NSString *)path
                                  identifier:(NSUInteger)identifier
                                  parameters:(NSDictionary *)parameters
+                                     client:(NBClient *)client
 {
+    client = client ?: self.client;
     NSURLComponents *components = [NSURLComponents componentsWithURL:self.baseURL resolvingAgainstBaseURL:NO];
-    components.path = [NSString stringWithFormat:@"/api/%@/%@", self.client.apiVersion, path];
+    components.path = [NSString stringWithFormat:@"/api/%@/%@", client.apiVersion, path];
     BOOL hasIdentifier = identifier != NSNotFound;
     if (hasIdentifier) {
         components.path = [components.path stringByAppendingString:[NSString stringWithFormat:@"/%lu", identifier]];
     }
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
-    mutableParameters[@"access_token"] = self.client.apiKey;
+    mutableParameters[@"access_token"] = client.apiKey;
     components.query = [mutableParameters nb_queryStringWithEncoding:NSASCIIStringEncoding
                                          skipPercentEncodingPairKeys:[NSSet setWithObject:@"email"]
                                           charactersToLeaveUnescaped:nil];
@@ -152,7 +154,7 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
                           method.lowercaseString];
     NSData *data = [NSData dataWithContentsOfFile:
                     [[NSBundle bundleForClass:self.class] pathForResource:fileName ofType:@"txt"]];
-    return ([self stubRequestWithMethod:method path:path identifier:identifier parameters:parameters]
+    return ([self stubRequestWithMethod:method path:path identifier:identifier parameters:parameters client:nil]
             .andReturnRawResponse(data));
 }
 

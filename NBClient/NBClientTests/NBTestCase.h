@@ -35,7 +35,8 @@
 - (LSStubRequestDSL *)stubRequestWithMethod:(NSString *)method
                                        path:(NSString *)path
                                  identifier:(NSUInteger)identifier
-                                 parameters:(NSDictionary *)parameters;
+                                 parameters:(NSDictionary *)parameters
+                                     client:(NBClient *)client;
 - (LSStubResponseDSL *)stubRequestUsingFileDataWithMethod:(NSString *)method
                                                      path:(NSString *)path
                                                identifier:(NSUInteger)identifier
