@@ -43,7 +43,9 @@
     [super tearDown];
 }
 
-#pragma mark - Helpers
+#pragma mark - Initialization
+
+#pragma mark Helpers
 
 - (NBClient *)baseClientWithAuthenticator
 {
@@ -71,11 +73,11 @@
                     @"Credential should have token type.");
 }
 
-#pragma mark - Tests
+#pragma mark Tests
 
 - (void)testDefaultInitialization
 {
-    NBClient *client = self.baseClientWithTestToken;
+    NBClient *client = [self baseClientWithTestToken];
     XCTAssertNotNil(client.urlSession,
                     @"Client should have default session.");
     XCTAssertNotNil(client.sessionConfiguration,
@@ -91,7 +93,7 @@
         return;
     }
     [self setUpAsync];
-    NBClient *client = self.baseClientWithAuthenticator;
+    NBClient *client = [self baseClientWithAuthenticator];
     XCTAssertNotNil(client.authenticator,
                     @"Client should have authenticator.");
     NSString *credentialIdentifier = client.authenticator.credentialIdentifier;
