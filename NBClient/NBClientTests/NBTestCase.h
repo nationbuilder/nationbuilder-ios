@@ -8,8 +8,9 @@
 
 #import <XCTest/XCTest.h>
 
-#import <Nocilla/Nocilla.h>
 #import <OCMock/OCMock.h>
+#undef andReturn
+#import <Nocilla/Nocilla.h>
 
 @class NBClient;
 @class NBPaginationInfo;
