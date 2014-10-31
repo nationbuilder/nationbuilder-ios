@@ -264,4 +264,51 @@
     [self tearDownAsync];
 }
 
+- (void)testDelegateWillCreateDataTaskForRequest
+{
+    [self setUpAsync];
+    NBClient *client = [self baseClientWithTestTokenAndMockDelegate];
+    // Mock delegate and stub method.
+    [self stubDelegateShouldHandleResponseForRequestWithClient:client untilTaskError:NO untilHTTPError:NO untilServiceError:NO];
+    OCMStub([client.delegate client:client willCreateDataTaskForRequest:[OCMArg checkWithBlock:^BOOL(id obj) {
+        return [obj isKindOfClass:[NSMutableURLRequest class]];
+    }]]);
+    [self stubFetchPersonForClientUserRequestWithClient:client].andReturn(200);
+    // Stub and make request.
+    [client fetchPersonForClientUserWithCompletionHandler:^(NSDictionary *item, NSError *error) {
+        OCMVerify([client.delegate client:client willCreateDataTaskForRequest:OCMOCK_ANY]);
+        [self completeAsync];
+    }];
+    [self tearDownAsync];
+}
+
+- (void)testDelegateShouldAutomaticallyStartDataTask
+{
+    NBClient *client = [self baseClientWithTestToken];
+    client.delegate = OCMProtocolMock(@protocol(NBClientDelegate));
+    [OCMStub([client.delegate client:client shouldAutomaticallyStartDataTask:OCMOCK_ANY]) andReturnValue:@NO];
+    NSURLSessionDataTask *task = [client fetchPersonForClientUserWithCompletionHandler:nil];
+    XCTAssertNotNil(task, @"The task should be returned.");
+    XCTAssertTrue(task.state == NSURLSessionTaskStateSuspended, @"The task should not have been automatically started.");
+}
+
+- (void)testDelegateDidParseJSONFromResponseForRequest
+{
+    [self setUpAsync];
+    NBClient *client = [self baseClientWithTestTokenAndMockDelegate];
+    // Mock delegate and stub method.
+    [self stubDelegateShouldHandleResponseForRequestWithClient:client untilTaskError:NO untilHTTPError:NO untilServiceError:NO];
+    OCMStub([client.delegate client:client didParseJSON:[OCMArg checkWithBlock:^BOOL(id obj) {
+        return [@{ @"person": @{} } nb_containsDictionary:obj];
+    }] fromResponse:OCMOCK_ANY forRequest:OCMOCK_ANY]);
+    [self stubFetchPersonForClientUserRequestWithClient:client].andReturn(200)
+    .withBody(@"{ \"person\": {} }");
+    // Stub and make request.
+    [client fetchPersonForClientUserWithCompletionHandler:^(NSDictionary *item, NSError *error) {
+        OCMVerify([client.delegate client:client didParseJSON:OCMOCK_ANY fromResponse:OCMOCK_ANY forRequest:OCMOCK_ANY]);
+        [self completeAsync];
+    }];
+    [self tearDownAsync];
+}
+
 @end
