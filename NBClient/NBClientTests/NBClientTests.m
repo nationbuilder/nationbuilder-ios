@@ -189,6 +189,23 @@
     return [self stubRequestWithMethod:@"GET" path:@"people/me" identifier:NSNotFound parameters:nil client:client];
 }
 
+// OCMProtocolMock allows the object to respond to all protocol method selectors,
+// even the optional ones. This means there is additional boilerplate to explicitly
+// stub as many methods as needed to reach the one we're testing.
+- (void)stubDelegateShouldHandleResponseForRequestWithClient:(NBClient *)client
+                                              untilTaskError:(BOOL)untilTaskError
+                                              untilHTTPError:(BOOL)untilHTTPError
+                                           untilServiceError:(BOOL)untilServiceError
+{
+    [OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY]) andReturnValue:@YES];
+    if (untilTaskError) { return; }
+    [OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY withDataTaskError:OCMOCK_ANY]) andReturnValue:@YES];
+    if (untilHTTPError) { return; }
+    [OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY withHTTPError:OCMOCK_ANY]) andReturnValue:@YES];
+    if (untilServiceError) { return; }
+    [OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY withServiceError:OCMOCK_ANY]) andReturnValue:@YES];
+}
+
 #pragma mark Tests
 
 - (void)testDelegateShouldHandleResponseForRequest
@@ -204,16 +221,12 @@
     [self tearDownAsync];
 }
 
-// OCMProtocolMock allows the object to respond to all protocol method selectors,
-// even the optional ones. This means there is additional boilerplate to explicitly
-// stub as many methods as needed to reach the one we're testing.
-
 - (void)testDelegateShouldHandleResponseForRequestWithDataTaskError
 {
     [self setUpAsync];
     NBClient *client = [self baseClientWithTestTokenAndMockDelegate];
     // Mock delegate and stub method.
-    [OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY]) andReturnValue:@YES];
+    [self stubDelegateShouldHandleResponseForRequestWithClient:client untilTaskError:YES untilHTTPError:NO untilServiceError:NO];
     OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY withDataTaskError:OCMOCK_ANY])
     .andDo([self delegateShouldHandleResponseForRequestPassBlock]);
     // Stub and make request.
@@ -227,8 +240,7 @@
     [self setUpAsync];
     NBClient *client = [self baseClientWithTestTokenAndMockDelegate];
     // Mock delegate and stub method.
-    [OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY]) andReturnValue:@YES];
-    [OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY withDataTaskError:OCMOCK_ANY]) andReturnValue:@YES];
+    [self stubDelegateShouldHandleResponseForRequestWithClient:client untilTaskError:NO untilHTTPError:YES untilServiceError:NO];
     OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY withHTTPError:OCMOCK_ANY])
     .andDo([self delegateShouldHandleResponseForRequestPassBlock]);
     // Stub and make request.
@@ -242,9 +254,7 @@
     [self setUpAsync];
     NBClient *client = [self baseClientWithTestTokenAndMockDelegate];
     // Mock delegate and stub method.
-    [OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY]) andReturnValue:@YES];
-    [OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY withDataTaskError:OCMOCK_ANY]) andReturnValue:@YES];
-    [OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY withHTTPError:OCMOCK_ANY]) andReturnValue:@YES];
+    [self stubDelegateShouldHandleResponseForRequestWithClient:client untilTaskError:NO untilHTTPError:NO untilServiceError:YES];
     OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY withServiceError:OCMOCK_ANY])
     .andDo([self delegateShouldHandleResponseForRequestPassBlock]);
     // Stub and make request.
