@@ -21,7 +21,7 @@
 @property (nonatomic, weak, readonly) NBClientResourceItemCompletionHandler delegateShouldHandleResponseForRequestFailBlock;
 @property (nonatomic, weak, readonly) void (^delegateShouldHandleResponseForRequestPassBlock)(NSInvocation *);
 
-- (LSStubRequestDSL *)stubSomeRequestWithClient:(NBClient *)client;
+- (LSStubRequestDSL *)stubFetchPersonForClientUserRequestWithClient:(NBClient *)client;
 
 @end
 
@@ -184,7 +184,7 @@
     };
 }
 
-- (LSStubRequestDSL *)stubSomeRequestWithClient:(NBClient *)client
+- (LSStubRequestDSL *)stubFetchPersonForClientUserRequestWithClient:(NBClient *)client
 {
     return [self stubRequestWithMethod:@"GET" path:@"people/me" identifier:NSNotFound parameters:nil client:client];
 }
@@ -199,7 +199,7 @@
     OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY])
     .andDo([self delegateShouldHandleResponseForRequestPassBlock]);
     // Stub and make request.
-    [self stubSomeRequestWithClient:client].andReturn(200);
+    [self stubFetchPersonForClientUserRequestWithClient:client].andReturn(200);
     [client fetchPersonForClientUserWithCompletionHandler:[self delegateShouldHandleResponseForRequestFailBlock]];
     [self tearDownAsync];
 }
@@ -217,7 +217,7 @@
     OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY withDataTaskError:OCMOCK_ANY])
     .andDo([self delegateShouldHandleResponseForRequestPassBlock]);
     // Stub and make request.
-    [self stubSomeRequestWithClient:client].andFailWithError([NSError errorWithDomain:NBErrorDomain code:0 userInfo:nil]);
+    [self stubFetchPersonForClientUserRequestWithClient:client].andFailWithError([NSError errorWithDomain:NBErrorDomain code:0 userInfo:nil]);
     [client fetchPersonForClientUserWithCompletionHandler:[self delegateShouldHandleResponseForRequestFailBlock]];
     [self tearDownAsync];
 }
@@ -232,7 +232,7 @@
     OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY withHTTPError:OCMOCK_ANY])
     .andDo([self delegateShouldHandleResponseForRequestPassBlock]);
     // Stub and make request.
-    [self stubSomeRequestWithClient:client].andReturn(404);
+    [self stubFetchPersonForClientUserRequestWithClient:client].andReturn(404);
     [client fetchPersonForClientUserWithCompletionHandler:[self delegateShouldHandleResponseForRequestFailBlock]];
     [self tearDownAsync];
 }
@@ -248,7 +248,7 @@
     OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY withServiceError:OCMOCK_ANY])
     .andDo([self delegateShouldHandleResponseForRequestPassBlock]);
     // Stub and make request.
-    [self stubSomeRequestWithClient:client].andReturn(200)
+    [self stubFetchPersonForClientUserRequestWithClient:client].andReturn(200)
     .withBody([NSString stringWithFormat:@"{ \"%@\": \"unknown\" }", NBClientErrorCodeKey]);
     [client fetchPersonForClientUserWithCompletionHandler:[self delegateShouldHandleResponseForRequestFailBlock]];
     [self tearDownAsync];
