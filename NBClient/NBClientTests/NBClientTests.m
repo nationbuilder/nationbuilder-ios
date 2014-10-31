@@ -163,6 +163,7 @@
 {
     NBClient *client = [self baseClientWithTestToken];
     client.delegate = OCMProtocolMock(@protocol(NBClientDelegate));
+    [OCMStub([client.delegate client:client shouldAutomaticallyStartDataTask:OCMOCK_ANY]) andReturnValue:@YES];
     return client;
 }
 
