@@ -39,14 +39,18 @@ extern NSString * const NBClientDefaultBaseURLFormat;
 
 @property (nonatomic, strong, readonly) NBAuthenticator *authenticator;
 
-@property (nonatomic, strong) NSString *apiKey;
-@property (nonatomic, strong) NSString *apiVersion;
+@property (nonatomic, strong) NSString *apiKey; // Set this upon successful authentication.
+@property (nonatomic, strong) NSString *apiVersion; // Optional. For future use.
 
+// The main initializer.
 - (instancetype)initWithNationName:(NSString *)nationName
                      authenticator:(NBAuthenticator *)authenticator
                   customURLSession:(NSURLSession *)urlSession
      customURLSessionConfiguration:(NSURLSessionConfiguration *)sessionConfiguration;
 
+// The alternate initializer for developing using pre-generated API tokens.
+// Using this approach is discouraged unless you're confident about how securely
+// you are storing the token.
 - (instancetype)initWithNationName:(NSString *)nationName
                             apiKey:(NSString *)apiKey
                      customBaseURL:(NSURL *)baseURL
