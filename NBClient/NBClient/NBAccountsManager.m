@@ -30,6 +30,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 // NBAccountsViewDataSource
 @property (nonatomic, readwrite) BOOL signedIn;
+@property (nonatomic, strong, readwrite) NSString *previousAccountNationSlug;
 
 @property (nonatomic, strong) NSDictionary *clientInfo;
 @property (nonatomic, strong) NSMutableArray *mutableAccounts;
@@ -91,6 +92,8 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     NBAccount *account;
     if (selectedAccount) {
         account = (NBAccount *)selectedAccount;
+    } else if (self.selectedAccount) {
+        self.previousAccountNationSlug = self.selectedAccount.nationSlug;
     }
     if (account && !account.isActive) {
         // Activate if needed.
@@ -152,7 +155,6 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         [self deactivateAccount:account];
         didSignOut = YES;
     }
-    self.selectedAccount = self.accounts.firstObject;
     return didSignOut;
 }
 
@@ -208,7 +210,8 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     if (!self.accounts.count && self.isSignedIn) {
         self.signedIn = NO;
     }
-    self.selectedAccount = nil;
+    // Switch to first available account, if any.
+    self.selectedAccount = self.accounts.firstObject;
 }
 
 - (NSDictionary *)clientInfoForAccountWithNationSlug:(NSString *)nationSlug
