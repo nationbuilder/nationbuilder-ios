@@ -8,6 +8,8 @@
 
 #import <XCTest/XCTest.h>
 
+#import <OCMock/OCMock.h>
+#undef andReturn
 #import <Nocilla/Nocilla.h>
 
 @class NBClient;
@@ -35,7 +37,12 @@
 - (LSStubRequestDSL *)stubRequestWithMethod:(NSString *)method
                                        path:(NSString *)path
                                  identifier:(NSUInteger)identifier
-                                 parameters:(NSDictionary *)parameters;
+                                 parameters:(NSDictionary *)parameters
+                                     client:(NBClient *)client;
+- (LSStubResponseDSL *)stubRequestUsingFileDataWithMethod:(NSString *)method
+                                                     path:(NSString *)path
+                                               identifier:(NSUInteger)identifier
+                                               parameters:(NSDictionary *)parameters;
 
 - (void)assertPaginationInfo:(NBPaginationInfo *)paginationInfo
     withPaginationParameters:(NSDictionary *)paginationParameters;

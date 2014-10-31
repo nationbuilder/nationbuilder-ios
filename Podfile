@@ -7,5 +7,6 @@ xcodeproj 'NBClient/NBClient.xcodeproj'
 target :NBClientTests, :exclusive => true do
 
   pod 'Nocilla', '~> 0.8.1'
+  pod 'OCMock', '~> 3.1.1'
 
 end

@@ -21,6 +21,18 @@
 
 @implementation NBClientTests
 
++ (void)setUp
+{
+    [super setUp];
+    [[LSNocilla sharedInstance] start];
+}
+
++ (void)tearDown
+{
+    [super tearDown];
+    [[LSNocilla sharedInstance] stop];
+}
+
 - (void)setUp
 {
     [super setUp];
@@ -31,7 +43,9 @@
     [super tearDown];
 }
 
-#pragma mark - Helpers
+#pragma mark - Initialization
+
+#pragma mark Helpers
 
 - (NBClient *)baseClientWithAuthenticator
 {
@@ -39,14 +53,16 @@
                                                              clientIdentifier:self.clientIdentifier];
     return [[NBClient alloc] initWithNationName:self.nationName
                                   authenticator:authenticator
-                               customURLSession:nil customURLSessionConfiguration:nil];
+                               customURLSession:[NSURLSession sharedSession]
+                  customURLSessionConfiguration:nil];
 }
 - (NBClient *)baseClientWithTestToken
 {
     return [[NBClient alloc] initWithNationName:self.nationName
                                          apiKey:self.testToken
                                   customBaseURL:self.baseURL
-                               customURLSession:nil customURLSessionConfiguration:nil];
+                               customURLSession:[NSURLSession sharedSession]
+                  customURLSessionConfiguration:nil];
 }
 
 - (void)assertCredential:(NBAuthenticationCredential *)credential
@@ -57,11 +73,11 @@
                     @"Credential should have token type.");
 }
 
-#pragma mark - Tests
+#pragma mark Tests
 
 - (void)testDefaultInitialization
 {
-    NBClient *client = self.baseClientWithTestToken;
+    NBClient *client = [self baseClientWithTestToken];
     XCTAssertNotNil(client.urlSession,
                     @"Client should have default session.");
     XCTAssertNotNil(client.sessionConfiguration,
@@ -77,7 +93,7 @@
         return;
     }
     [self setUpAsync];
-    NBClient *client = self.baseClientWithAuthenticator;
+    NBClient *client = [self baseClientWithAuthenticator];
     XCTAssertNotNil(client.authenticator,
                     @"Client should have authenticator.");
     NSString *credentialIdentifier = client.authenticator.credentialIdentifier;
