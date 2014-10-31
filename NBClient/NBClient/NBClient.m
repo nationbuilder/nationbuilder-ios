@@ -174,6 +174,9 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                                                            cachePolicy:NSURLRequestReloadRevalidatingCacheData
                                                        timeoutInterval:10.0f];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(client:willCreateDataTaskForRequest:)]) {
+        [self.delegate client:self willCreateDataTaskForRequest:request];
+    }
     return request;
 }
 
@@ -190,7 +193,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                                              skipPercentEncodingPairKeys:[NSSet setWithObject:@"email"]
                                               charactersToLeaveUnescaped:nil];
     }
-    NSURLRequest *request = [self baseFetchRequestWithURL:components.URL];
+    NSMutableURLRequest *request = [self baseFetchRequestWithURL:components.URL];
     NBLogInfo(@"REQUEST: %@", request.nb_debugDescription);
     void (^taskCompletionHandler)(NSData *, NSURLResponse *, NSError *) =
     [self dataTaskCompletionHandlerForFetchResultsKey:resultsKey originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
@@ -207,7 +210,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                                               resultsKey:(NSString *)resultsKey
                                        completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
-    NSURLRequest *request = [self baseFetchRequestWithURL:components.URL];
+    NSMutableURLRequest *request = [self baseFetchRequestWithURL:components.URL];
     NBLogInfo(@"REQUEST: %@", request.nb_debugDescription);
     void (^taskCompletionHandler)(NSData *, NSURLResponse *, NSError *) =
     [self dataTaskCompletionHandlerForFetchResultsKey:resultsKey originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
@@ -230,6 +233,9 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     request.HTTPMethod = @"PUT"; // Overwrite as needed.
     [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:parameters options:0 error:error]];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(client:willCreateDataTaskForRequest:)]) {
+        [self.delegate client:self willCreateDataTaskForRequest:request];
+    }
     return request;
 }
 
@@ -255,6 +261,9 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                                                        timeoutInterval:10.0f];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     request.HTTPMethod = @"DELETE";
+    if (self.delegate && [self.delegate respondsToSelector:@selector(client:willCreateDataTaskForRequest:)]) {
+        [self.delegate client:self willCreateDataTaskForRequest:request];
+    }
     return request;
 }
 
@@ -275,7 +284,13 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 - (NSURLSessionDataTask *)startTask:(NSURLSessionDataTask *)task
 {
-    [task resume];
+    BOOL shouldStart = YES;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(client:shouldAutomaticallyStartDataTask:)]) {
+        shouldStart = [self.delegate client:self shouldAutomaticallyStartDataTask:task];
+    }
+    if (shouldStart) {
+        [task resume];
+    }
     return task;
 }
 
@@ -313,7 +328,6 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                                                                    options:NSJSONReadingAllowFragments
                                                                      error:&error];
         // Handle HTTP error.
-        // TODO: Have authenticator recover from stale token errors.
         if (![[NSIndexSet nb_indexSetOfSuccessfulHTTPStatusCodes] containsIndex:httpResponse.statusCode]) {
             error = [self errorForResponse:httpResponse jsonData:jsonObject];
             if (self.delegate && [self.delegate respondsToSelector:@selector(client:shouldHandleResponse:forRequest:withHTTPError:)]) {
@@ -339,6 +353,10 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                     return [self logResponse:httpResponse data:data];
                 }
             }
+        }
+        // Get and check for results.
+        if (self.delegate && [self.delegate respondsToSelector:@selector(client:didParseJSON:fromResponse:forRequest:)]) {
+            [self.delegate client:self didParseJSON:jsonObject fromResponse:httpResponse forRequest:request];
         }
         id results = jsonObject[resultsKey];
         if (!results) {
