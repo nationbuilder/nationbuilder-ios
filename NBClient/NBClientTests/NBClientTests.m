@@ -21,7 +21,7 @@
 @property (nonatomic, weak, readonly) NBClientResourceItemCompletionHandler delegateShouldHandleResponseForRequestFailBlock;
 @property (nonatomic, weak, readonly) void (^delegateShouldHandleResponseForRequestPassBlock)(NSInvocation *);
 
-- (LSStubRequestDSL *)stubSomeRequestWithClient:(NBClient *)client;
+- (LSStubRequestDSL *)stubFetchPersonForClientUserRequestWithClient:(NBClient *)client;
 
 @end
 
@@ -163,6 +163,7 @@
 {
     NBClient *client = [self baseClientWithTestToken];
     client.delegate = OCMProtocolMock(@protocol(NBClientDelegate));
+    [OCMStub([client.delegate client:client shouldAutomaticallyStartDataTask:OCMOCK_ANY]) andReturnValue:@YES];
     return client;
 }
 
@@ -183,9 +184,26 @@
     };
 }
 
-- (LSStubRequestDSL *)stubSomeRequestWithClient:(NBClient *)client
+- (LSStubRequestDSL *)stubFetchPersonForClientUserRequestWithClient:(NBClient *)client
 {
     return [self stubRequestWithMethod:@"GET" path:@"people/me" identifier:NSNotFound parameters:nil client:client];
+}
+
+// OCMProtocolMock allows the object to respond to all protocol method selectors,
+// even the optional ones. This means there is additional boilerplate to explicitly
+// stub as many methods as needed to reach the one we're testing.
+- (void)stubDelegateShouldHandleResponseForRequestWithClient:(NBClient *)client
+                                              untilTaskError:(BOOL)untilTaskError
+                                              untilHTTPError:(BOOL)untilHTTPError
+                                           untilServiceError:(BOOL)untilServiceError
+{
+    [OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY]) andReturnValue:@YES];
+    if (untilTaskError) { return; }
+    [OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY withDataTaskError:OCMOCK_ANY]) andReturnValue:@YES];
+    if (untilHTTPError) { return; }
+    [OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY withHTTPError:OCMOCK_ANY]) andReturnValue:@YES];
+    if (untilServiceError) { return; }
+    [OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY withServiceError:OCMOCK_ANY]) andReturnValue:@YES];
 }
 
 #pragma mark Tests
@@ -198,25 +216,21 @@
     OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY])
     .andDo([self delegateShouldHandleResponseForRequestPassBlock]);
     // Stub and make request.
-    [self stubSomeRequestWithClient:client].andReturn(200);
+    [self stubFetchPersonForClientUserRequestWithClient:client].andReturn(200);
     [client fetchPersonForClientUserWithCompletionHandler:[self delegateShouldHandleResponseForRequestFailBlock]];
     [self tearDownAsync];
 }
-
-// OCMProtocolMock allows the object to respond to all protocol method selectors,
-// even the optional ones. This means there is additional boilerplate to explicitly
-// stub as many methods as needed to reach the one we're testing.
 
 - (void)testDelegateShouldHandleResponseForRequestWithDataTaskError
 {
     [self setUpAsync];
     NBClient *client = [self baseClientWithTestTokenAndMockDelegate];
     // Mock delegate and stub method.
-    [OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY]) andReturnValue:@YES];
+    [self stubDelegateShouldHandleResponseForRequestWithClient:client untilTaskError:YES untilHTTPError:NO untilServiceError:NO];
     OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY withDataTaskError:OCMOCK_ANY])
     .andDo([self delegateShouldHandleResponseForRequestPassBlock]);
     // Stub and make request.
-    [self stubSomeRequestWithClient:client].andFailWithError([NSError errorWithDomain:NBErrorDomain code:0 userInfo:nil]);
+    [self stubFetchPersonForClientUserRequestWithClient:client].andFailWithError([NSError errorWithDomain:NBErrorDomain code:0 userInfo:nil]);
     [client fetchPersonForClientUserWithCompletionHandler:[self delegateShouldHandleResponseForRequestFailBlock]];
     [self tearDownAsync];
 }
@@ -226,12 +240,11 @@
     [self setUpAsync];
     NBClient *client = [self baseClientWithTestTokenAndMockDelegate];
     // Mock delegate and stub method.
-    [OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY]) andReturnValue:@YES];
-    [OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY withDataTaskError:OCMOCK_ANY]) andReturnValue:@YES];
+    [self stubDelegateShouldHandleResponseForRequestWithClient:client untilTaskError:NO untilHTTPError:YES untilServiceError:NO];
     OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY withHTTPError:OCMOCK_ANY])
     .andDo([self delegateShouldHandleResponseForRequestPassBlock]);
     // Stub and make request.
-    [self stubSomeRequestWithClient:client].andReturn(404);
+    [self stubFetchPersonForClientUserRequestWithClient:client].andReturn(404);
     [client fetchPersonForClientUserWithCompletionHandler:[self delegateShouldHandleResponseForRequestFailBlock]];
     [self tearDownAsync];
 }
@@ -241,15 +254,60 @@
     [self setUpAsync];
     NBClient *client = [self baseClientWithTestTokenAndMockDelegate];
     // Mock delegate and stub method.
-    [OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY]) andReturnValue:@YES];
-    [OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY withDataTaskError:OCMOCK_ANY]) andReturnValue:@YES];
-    [OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY withHTTPError:OCMOCK_ANY]) andReturnValue:@YES];
+    [self stubDelegateShouldHandleResponseForRequestWithClient:client untilTaskError:NO untilHTTPError:NO untilServiceError:YES];
     OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY withServiceError:OCMOCK_ANY])
     .andDo([self delegateShouldHandleResponseForRequestPassBlock]);
     // Stub and make request.
-    [self stubSomeRequestWithClient:client].andReturn(200)
+    [self stubFetchPersonForClientUserRequestWithClient:client].andReturn(200)
     .withBody([NSString stringWithFormat:@"{ \"%@\": \"unknown\" }", NBClientErrorCodeKey]);
     [client fetchPersonForClientUserWithCompletionHandler:[self delegateShouldHandleResponseForRequestFailBlock]];
+    [self tearDownAsync];
+}
+
+- (void)testDelegateWillCreateDataTaskForRequest
+{
+    [self setUpAsync];
+    NBClient *client = [self baseClientWithTestTokenAndMockDelegate];
+    // Mock delegate and stub method.
+    [self stubDelegateShouldHandleResponseForRequestWithClient:client untilTaskError:NO untilHTTPError:NO untilServiceError:NO];
+    OCMStub([client.delegate client:client willCreateDataTaskForRequest:[OCMArg checkWithBlock:^BOOL(id obj) {
+        return [obj isKindOfClass:[NSMutableURLRequest class]];
+    }]]);
+    [self stubFetchPersonForClientUserRequestWithClient:client].andReturn(200);
+    // Stub and make request.
+    [client fetchPersonForClientUserWithCompletionHandler:^(NSDictionary *item, NSError *error) {
+        OCMVerify([client.delegate client:client willCreateDataTaskForRequest:OCMOCK_ANY]);
+        [self completeAsync];
+    }];
+    [self tearDownAsync];
+}
+
+- (void)testDelegateShouldAutomaticallyStartDataTask
+{
+    NBClient *client = [self baseClientWithTestToken];
+    client.delegate = OCMProtocolMock(@protocol(NBClientDelegate));
+    [OCMStub([client.delegate client:client shouldAutomaticallyStartDataTask:OCMOCK_ANY]) andReturnValue:@NO];
+    NSURLSessionDataTask *task = [client fetchPersonForClientUserWithCompletionHandler:nil];
+    XCTAssertNotNil(task, @"The task should be returned.");
+    XCTAssertTrue(task.state == NSURLSessionTaskStateSuspended, @"The task should not have been automatically started.");
+}
+
+- (void)testDelegateDidParseJSONFromResponseForRequest
+{
+    [self setUpAsync];
+    NBClient *client = [self baseClientWithTestTokenAndMockDelegate];
+    // Mock delegate and stub method.
+    [self stubDelegateShouldHandleResponseForRequestWithClient:client untilTaskError:NO untilHTTPError:NO untilServiceError:NO];
+    OCMStub([client.delegate client:client didParseJSON:[OCMArg checkWithBlock:^BOOL(id obj) {
+        return [@{ @"person": @{} } nb_containsDictionary:obj];
+    }] fromResponse:OCMOCK_ANY forRequest:OCMOCK_ANY]);
+    [self stubFetchPersonForClientUserRequestWithClient:client].andReturn(200)
+    .withBody(@"{ \"person\": {} }");
+    // Stub and make request.
+    [client fetchPersonForClientUserWithCompletionHandler:^(NSDictionary *item, NSError *error) {
+        OCMVerify([client.delegate client:client didParseJSON:OCMOCK_ANY fromResponse:OCMOCK_ANY forRequest:OCMOCK_ANY]);
+        [self completeAsync];
+    }];
     [self tearDownAsync];
 }
 
