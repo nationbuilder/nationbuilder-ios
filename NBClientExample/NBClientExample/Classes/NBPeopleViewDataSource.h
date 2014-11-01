@@ -1,5 +1,5 @@
 //
-//  NBPeopleDataSource.h
+//  NBPeopleViewDataSource.h
 //  NBClientExample
 //
 //  Copyright (c) 2014 NationBuilder. All rights reserved.
@@ -9,7 +9,7 @@
 
 #import "NBUIDefines.h"
 
-@interface NBPeopleDataSource : NSObject <NBCollectionDataSource>
+@interface NBPeopleViewDataSource : NSObject <NBCollectionViewDataSource>
 
 @property (nonatomic, strong, readonly) NSArray *people;
 @property (nonatomic, strong, readonly) NSDictionary *personDataSources;

@@ -12,7 +12,7 @@
 #import <NBClient/Main.h>
 #import <NBClient/UI.h>
 
-#import "NBPeopleDataSource.h"
+#import "NBPeopleViewDataSource.h"
 #import "NBPeopleViewController.h"
 
 #import "NBPeopleViewFlowLayout.h"
@@ -117,7 +117,7 @@
     // If we have a new / different account.
     if (account) {
         // Clear out our data.
-        self.peopleViewController.dataSource = [[NBPeopleDataSource alloc] initWithClient:account.client];
+        self.peopleViewController.dataSource = [[NBPeopleViewDataSource alloc] initWithClient:account.client];
         // If the accounts view was shown to sign in initially, the user probably just wants to start using the app.
         if (!self.peopleViewController.ready) {
             // Dismiss the accounts view if needed.

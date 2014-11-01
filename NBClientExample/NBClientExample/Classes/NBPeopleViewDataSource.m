@@ -1,16 +1,16 @@
 //
-//  NBPeopleDataSource.m
+//  NBPeopleViewDataSource.m
 //  NBClientExample
 //
 //  Copyright (c) 2014 NationBuilder. All rights reserved.
 //
 
-#import "NBPeopleDataSource.h"
+#import "NBPeopleViewDataSource.h"
 
 #import <NBClient/NBClient+People.h>
 #import <NBClient/NBPaginationInfo.h>
 
-#import "NBPersonDataSource.h"
+#import "NBPersonViewDataSource.h"
 
 #if DEBUG
 static NBLogLevel LogLevel = NBLogLevelDebug;
@@ -18,7 +18,7 @@ static NBLogLevel LogLevel = NBLogLevelDebug;
 static NBLogLevel LogLevel = NBLogLevelWarning;
 #endif
 
-@interface NBPeopleDataSource () <NBDataSourceDelegate>
+@interface NBPeopleViewDataSource () <NBViewDataSourceDelegate>
 
 @property (nonatomic, weak, readwrite) NBClient *client;
 
@@ -27,7 +27,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 @end
 
-@implementation NBPeopleDataSource
+@implementation NBPeopleViewDataSource
 
 @synthesize error = _error;
 @synthesize paginationInfo = _paginationInfo;
@@ -78,12 +78,12 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     }];
 }
 
-#pragma mark - NBCollectionDataSource
+#pragma mark - NBCollectionViewDataSource
 
 // Create child data sources.
-- (id<NBDataSource>)dataSourceForItem:(NSDictionary *)item
+- (id<NBViewDataSource>)dataSourceForItem:(NSDictionary *)item
 {
-    NBPersonDataSource *dataSource = [[NBPersonDataSource alloc] initWithClient:self.client];
+    NBPersonViewDataSource *dataSource = [[NBPersonViewDataSource alloc] initWithClient:self.client];
     dataSource.delegate = self;
     dataSource.person = item;
     if (item && item[@"id"]) {
@@ -91,9 +91,9 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     }
     return dataSource;
 }
-- (id<NBDataSource>)dataSourceForItemAtIndex:(NSUInteger)index
+- (id<NBViewDataSource>)dataSourceForItemAtIndex:(NSUInteger)index
 {
-    NBPersonDataSource *dataSource;
+    NBPersonViewDataSource *dataSource;
     if (index >= self.people.count) {
         return nil;
     }
@@ -105,12 +105,12 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     return dataSource;
 }
 
-#pragma mark - NBDataSourceDelegate
+#pragma mark - NBViewDataSourceDelegate
 
-- (void)dataSource:(id<NBDataSource>)dataSource didChangeValueForKeyPath:(NSString *)keyPath
+- (void)dataSource:(id<NBViewDataSource>)dataSource didChangeValueForKeyPath:(NSString *)keyPath
 {
-    if ([dataSource isKindOfClass:[NBPersonDataSource class]] && [keyPath isEqualToString:NSStringFromSelector(@selector(person))]) {
-        NBPersonDataSource *personDataSource = dataSource;
+    if ([dataSource isKindOfClass:[NBPersonViewDataSource class]] && [keyPath isEqualToString:NSStringFromSelector(@selector(person))]) {
+        NBPersonViewDataSource *personDataSource = dataSource;
         NSMutableArray *people = self.people.mutableCopy;
         NSDictionary *person = personDataSource.person;
         if (person) {
@@ -128,7 +128,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
             self.people = [NSArray arrayWithArray:people];
         } else {
             // Handle deletes.
-            NSString *identifier = [self.personDataSources keysOfEntriesPassingTest:^BOOL(NSString *identifier, NBPersonDataSource *aDataSource, BOOL *stop) {
+            NSString *identifier = [self.personDataSources keysOfEntriesPassingTest:^BOOL(NSString *identifier, NBPersonViewDataSource *aDataSource, BOOL *stop) {
                 return aDataSource == dataSource;
             }].allObjects.firstObject;
             // Remove data source and item.
@@ -143,7 +143,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     }
 }
 
-#pragma mark - NBDataSource
+#pragma mark - NBViewDataSource
 
 + (void)updateLoggingToLevel:(NBLogLevel)logLevel
 {
@@ -159,7 +159,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 + (NSError *)parseClientError:(NSError *)error
 {
-    return [NBPersonDataSource parseClientError:error];
+    return [NBPersonViewDataSource parseClientError:error];
 }
 
 + (id)parseClientResults:(id)results
@@ -167,7 +167,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     NSAssert([results isKindOfClass:[NSArray class]], @"Results should be an array.");
     NSMutableArray *items = [NSMutableArray array];
     for (NSDictionary *item in results) {
-        [items addObject:[NBPersonDataSource parseClientResults:item]];
+        [items addObject:[NBPersonViewDataSource parseClientResults:item]];
     }
     return [NSArray arrayWithArray:items];
 }

@@ -7,7 +7,7 @@
 
 #import "NBPersonCellView.h"
 
-#import "NBPersonDataSource.h"
+#import "NBPersonViewDataSource.h"
 
 static NSString *LabelViewKey = @"view";
 static NSString *LabelOriginalColorKey = @"originalColor";
@@ -101,13 +101,13 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     }
 }
 
-- (void)setDataSource:(id<NBDataSource>)dataSource
+- (void)setDataSource:(id<NBViewDataSource>)dataSource
 {
     _dataSource = dataSource;
     // Set up.
     if (self.dataSource) {
-        NSAssert([self.dataSource isKindOfClass:[NBPersonDataSource class]], @"Data source must be of certain type.");
-        NBPersonDataSource *dataSource = self.dataSource;
+        NSAssert([self.dataSource isKindOfClass:[NBPersonViewDataSource class]], @"Data source must be of certain type.");
+        NBPersonViewDataSource *dataSource = self.dataSource;
         [self refreshWithData:dataSource.person];
     } else {
         [self refreshWithData:nil];

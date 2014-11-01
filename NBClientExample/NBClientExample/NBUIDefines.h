@@ -12,7 +12,7 @@
 @class NBClient;
 @class NBPaginationInfo;
 
-@protocol NBDataSource;
+@protocol NBViewDataSource;
 
 extern NSString * const NBNibNameViewKey;
 extern NSString * const NBNibNameCellViewKey;
@@ -23,7 +23,7 @@ extern NSString * const NBNibNameSectionFooterViewKey;
 extern NSString * const NBUIErrorTitleKey;
 extern NSString * const NBUIErrorMessageKey;
 
-extern NSString * const NBDataSourceErrorKeyPath;
+extern NSString * const NBViewDataSourceErrorKeyPath;
 
 typedef NS_ENUM(NSUInteger, NBScrollViewPullActionState) {
     NBScrollViewPullActionStateStopped,
@@ -45,7 +45,7 @@ typedef NS_ENUM(NSUInteger, NBScrollViewPullActionState) {
 
 @optional
 
-@property (nonatomic, strong) id<NBDataSource> dataSource;
+@property (nonatomic, strong) id<NBViewDataSource> dataSource;
 
 @property (nonatomic, getter = isBusy) BOOL busy;
 @property (nonatomic, strong) UIActivityIndicatorView *busyIndicator;
@@ -61,7 +61,7 @@ typedef NS_ENUM(NSUInteger, NBScrollViewPullActionState) {
 
 @optional
 
-@property (nonatomic, strong) id<NBDataSource> dataSource;
+@property (nonatomic, strong) id<NBViewDataSource> dataSource;
 
 @end
 
@@ -80,7 +80,7 @@ typedef NS_ENUM(NSUInteger, NBScrollViewPullActionState) {
 
 #pragma mark - Data Source Protocols
 
-@protocol NBDataSource <NBLogging>
+@protocol NBViewDataSource <NBLogging>
 
 @property (nonatomic, strong) NSError *error;
 
@@ -104,17 +104,17 @@ typedef NS_ENUM(NSUInteger, NBScrollViewPullActionState) {
 
 @end
 
-@protocol NBDataSourceDelegate <NSObject>
+@protocol NBViewDataSourceDelegate <NSObject>
 
-- (void)dataSource:(id<NBDataSource>)dataSource didChangeValueForKeyPath:(NSString *)keyPath;
+- (void)dataSource:(id<NBViewDataSource>)dataSource didChangeValueForKeyPath:(NSString *)keyPath;
 
 @end
 
-@protocol NBCollectionDataSource <NBDataSource>
+@protocol NBCollectionViewDataSource <NBViewDataSource>
 
 @property (nonatomic, strong) NBPaginationInfo *paginationInfo;
 
-- (id<NBDataSource>)dataSourceForItem:(NSDictionary *)item;
-- (id<NBDataSource>)dataSourceForItemAtIndex:(NSUInteger)index;
+- (id<NBViewDataSource>)dataSourceForItem:(NSDictionary *)item;
+- (id<NBViewDataSource>)dataSourceForItemAtIndex:(NSUInteger)index;
 
 @end

@@ -1,11 +1,11 @@
 //
-//  NBPersonDataSource.m
+//  NBPersonViewDataSource.m
 //  NBClientExample
 //
 //  Copyright (c) 2014 NationBuilder. All rights reserved.
 //
 
-#import "NBPersonDataSource.h"
+#import "NBPersonViewDataSource.h"
 
 #import <NBClient/NBClient+People.h>
 
@@ -18,7 +18,7 @@ static NBLogLevel LogLevel = NBLogLevelDebug;
 static NBLogLevel LogLevel = NBLogLevelWarning;
 #endif
 
-@interface NBPersonDataSource ()
+@interface NBPersonViewDataSource ()
 
 @property (nonatomic, weak) NBClient *client;
 
@@ -29,7 +29,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 @end
 
-@implementation NBPersonDataSource
+@implementation NBPersonViewDataSource
 
 @synthesize error = _error;
 @synthesize delegate = _delegate;
@@ -141,7 +141,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     return realChanges;
 }
 
-#pragma mark - NBDataSource
+#pragma mark - NBViewDataSource
 
 + (void)updateLoggingToLevel:(NBLogLevel)logLevel
 {

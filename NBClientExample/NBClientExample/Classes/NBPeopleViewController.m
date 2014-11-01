@@ -12,10 +12,10 @@
 #import <NBClient/UI/NBAccountButton.h>
 #import <NBClient/UI/UIKitAdditions.h>
 
-#import "NBPeopleDataSource.h"
+#import "NBPeopleViewDataSource.h"
 #import "NBPeopleViewFlowLayout.h"
 #import "NBPersonCellView.h"
-#import "NBPersonDataSource.h"
+#import "NBPersonViewDataSource.h"
 #import "NBPersonViewController.h"
 
 static NSString *CellReuseIdentifier = @"PersonCell";
@@ -183,20 +183,20 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     [NBPersonCellView updateLoggingToLevel:logLevel];
 }
 
-- (void)setDataSource:(id<NBDataSource>)dataSource
+- (void)setDataSource:(id<NBViewDataSource>)dataSource
 {
     // Tear down.
     if (self.dataSource) {
         [(id)self.dataSource removeObserver:self forKeyPath:PeopleKeyPath context:&observationContext];
-        [(id)self.dataSource removeObserver:self forKeyPath:NBDataSourceErrorKeyPath context:&observationContext];
+        [(id)self.dataSource removeObserver:self forKeyPath:NBViewDataSourceErrorKeyPath context:&observationContext];
     }
     // Set.
     _dataSource = dataSource;
     // Set up.
     if (self.dataSource) {
-        NSAssert([self.dataSource isKindOfClass:[NBPeopleDataSource class]], @"Data source must be of certain type.");
+        NSAssert([self.dataSource isKindOfClass:[NBPeopleViewDataSource class]], @"Data source must be of certain type.");
         [(id)self.dataSource addObserver:self forKeyPath:PeopleKeyPath options:0 context:&observationContext];
-        [(id)self.dataSource addObserver:self forKeyPath:NBDataSourceErrorKeyPath options:0 context:&observationContext];
+        [(id)self.dataSource addObserver:self forKeyPath:NBViewDataSourceErrorKeyPath options:0 context:&observationContext];
     }
     // Update.
     if (self.isReady && !self.isBusy) {
@@ -241,7 +241,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     }
     if ([keyPath isEqual:PeopleKeyPath]) {
         // NOTE: Incremental updates support not included.
-        NBPeopleDataSource *dataSource = (id)self.dataSource;
+        NBPeopleViewDataSource *dataSource = (id)self.dataSource;
         if (!dataSource.people.count) {
             return;
         }
@@ -256,7 +256,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
             }
         }
         [self.collectionView reloadData];
-    } else if ([keyPath isEqual:NBDataSourceErrorKeyPath] && self.dataSource.error) {
+    } else if ([keyPath isEqual:NBViewDataSourceErrorKeyPath] && self.dataSource.error) {
         if (self.isBusy) { // If we were busy refreshing data, now we're not.
             self.busy = NO;
         }
@@ -271,14 +271,14 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    NBPeopleDataSource *dataSource = (id)self.dataSource;
+    NBPeopleViewDataSource *dataSource = (id)self.dataSource;
     NSInteger number = dataSource.paginationInfo ? dataSource.paginationInfo.currentPageNumber : 0;
     return number;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    NBPeopleDataSource *dataSource = (id)self.dataSource;
+    NBPeopleViewDataSource *dataSource = (id)self.dataSource;
     NSInteger number = dataSource.paginationInfo ? [dataSource.paginationInfo numberOfItemsAtPage:(section + 1)] : 0;
     return number;
 }
@@ -286,7 +286,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NBPersonCellView *cell = (id)[collectionView dequeueReusableCellWithReuseIdentifier:CellReuseIdentifier forIndexPath:indexPath];
-    NBPeopleDataSource *dataSource = (id)self.dataSource;
+    NBPeopleViewDataSource *dataSource = (id)self.dataSource;
     NSUInteger index = [dataSource.paginationInfo indexOfFirstItemAtPage:(indexPath.section + 1)] + indexPath.item;
     cell.dataSource = [(id)self.dataSource dataSourceForItemAtIndex:index];
     cell.delegate = self;
@@ -298,7 +298,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     UICollectionReusableView *view;
     if (kind == UICollectionElementKindSectionHeader) {
         view = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:SectionHeaderReuseIdentifier forIndexPath:indexPath];
-        NBPaginationInfo *paginationInfo = ((NBPeopleDataSource *)self.dataSource).paginationInfo;
+        NBPaginationInfo *paginationInfo = ((NBPeopleViewDataSource *)self.dataSource).paginationInfo;
         for (UIView *subview in view.subviews) {
             if (subview.tag == SectionHeaderPaginationPageLabelTag) {
                 UILabel *pageLabel = (id)subview;
@@ -353,7 +353,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     CGFloat offsetOverflow;
     CGFloat requiredOffsetOverflow = layout.requiredContentOffsetOverflow.floatValue;
     BOOL didPassThresold;
-    NBPaginationInfo *paginationInfo = ((NBPeopleDataSource *)self.dataSource).paginationInfo;
+    NBPaginationInfo *paginationInfo = ((NBPeopleViewDataSource *)self.dataSource).paginationInfo;
     BOOL canLoadMore = paginationInfo.currentPageNumber < paginationInfo.numberOfTotalPages;
     layout.shouldShowLoadMore = canLoadMore;
     if (canLoadMore && self.loadMoreState != NBScrollViewPullActionStateInProgress) {
@@ -472,7 +472,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     _refreshState = refreshState;
     // Did.
     UIScrollView *scrollView = self.collectionView;
-    NBPeopleDataSource *dataSource = (id)self.dataSource;
+    NBPeopleViewDataSource *dataSource = (id)self.dataSource;
     NBPeopleViewFlowLayout *layout = (id)self.collectionViewLayout;
     UIEdgeInsets contentInset = scrollView.contentInset;
     switch (self.refreshState) {
@@ -505,7 +505,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 - (void)fetchIfNeeded
 {
-    NBPeopleDataSource *dataSource = (id)self.dataSource;
+    NBPeopleViewDataSource *dataSource = (id)self.dataSource;
     if (!dataSource.people.count) {
         self.busy = YES;
         [(id)self.dataSource fetchAll];
@@ -525,7 +525,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     } else {
         // We're editing.
         viewController.mode = NBPersonViewControllerModeViewAndEdit;
-        NBPaginationInfo *paginationInfo = ((NBPeopleDataSource *)self.dataSource).paginationInfo;
+        NBPaginationInfo *paginationInfo = ((NBPeopleViewDataSource *)self.dataSource).paginationInfo;
         NSUInteger startItemIndex = [paginationInfo indexOfFirstItemAtPage:(self.selectedIndexPath.section + 1)];
         viewController.dataSource = [(id)self.dataSource dataSourceForItemAtIndex:startItemIndex + self.selectedIndexPath.item];
     }
@@ -581,7 +581,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     _loadMoreState = loadMoreState;
     // Did.
     UIScrollView *scrollView = self.collectionView;
-    NBPeopleDataSource *dataSource = (id)self.dataSource;
+    NBPeopleViewDataSource *dataSource = (id)self.dataSource;
     NBPaginationInfo *paginationInfo = dataSource.paginationInfo;
     NBPeopleViewFlowLayout *layout = (id)self.collectionViewLayout;
     UIEdgeInsets contentInset = scrollView.contentInset;
@@ -633,7 +633,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 - (void)setUpPagination
 {
     [self.collectionView addObserver:self forKeyPath:ContentOffsetKeyPath options:0 context:&observationContext];
-    NBPeopleDataSource *dataSource = (id)self.dataSource;
+    NBPeopleViewDataSource *dataSource = (id)self.dataSource;
     NBPeopleViewFlowLayout *layout = (id)self.collectionViewLayout;
     CGFloat numberOfItemsPerPage = 10;
     dataSource.paginationInfo.numberOfItemsPerPage = (layout.hasMultipleColumns

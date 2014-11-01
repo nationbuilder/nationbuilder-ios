@@ -9,7 +9,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-#import "NBPersonDataSource.h"
+#import "NBPersonViewDataSource.h"
 
 typedef NS_ENUM(NSUInteger, NBTextViewGroupIndex) {
     NBTextViewGroupIndexView = 0,
@@ -176,20 +176,20 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     LogLevel = logLevel;
 }
 
-- (void)setDataSource:(id<NBDataSource>)dataSource
+- (void)setDataSource:(id<NBViewDataSource>)dataSource
 {
     // Teardown.
     if (self.dataSource) {
         [(id)self.dataSource removeObserver:self forKeyPath:PersonKeyPath context:&observationContext];
-        [(id)self.dataSource removeObserver:self forKeyPath:NBDataSourceErrorKeyPath context:&observationContext];
+        [(id)self.dataSource removeObserver:self forKeyPath:NBViewDataSourceErrorKeyPath context:&observationContext];
     }
     // Set.
     _dataSource = dataSource;
     // Set up.
     if (self.dataSource) {
-        NSAssert([self.dataSource isKindOfClass:[NBPersonDataSource class]], @"Data source must be of certain type.");
+        NSAssert([self.dataSource isKindOfClass:[NBPersonViewDataSource class]], @"Data source must be of certain type.");
         [(id)self.dataSource addObserver:self forKeyPath:PersonKeyPath options:0 context:&observationContext];
-        [(id)self.dataSource addObserver:self forKeyPath:NBDataSourceErrorKeyPath options:0 context:&observationContext];
+        [(id)self.dataSource addObserver:self forKeyPath:NBViewDataSourceErrorKeyPath options:0 context:&observationContext];
         if (self.isViewLoaded) {
             [self reloadData];
         }
@@ -253,7 +253,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
         return;
     }
-    NBPersonDataSource *dataSource = self.dataSource;
+    NBPersonViewDataSource *dataSource = self.dataSource;
     // Update when our data source changes.
     if ([keyPath isEqual:PersonKeyPath]) {
         if (self.isBusy) { // If we were busy refreshing data, now we're not.
@@ -271,7 +271,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                 [self reloadData];
             }
         }
-    } else if ([keyPath isEqual:NBDataSourceErrorKeyPath] && self.dataSource.error) {
+    } else if ([keyPath isEqual:NBViewDataSourceErrorKeyPath] && self.dataSource.error) {
         if (self.isBusy) { // If we were busy refreshing data, now we're not.
             self.busy = NO;
         }
@@ -363,7 +363,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 - (void)reloadData
 {
-    NBPersonDataSource *dataSource = self.dataSource;
+    NBPersonViewDataSource *dataSource = self.dataSource;
     NSDictionary *data = dataSource.person;
     self.title = data[@"first_name"];
     // Profile image, without blocking the UI.
@@ -396,7 +396,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 - (void)saveData
 {
-    NBPersonDataSource *dataSource = self.dataSource;
+    NBPersonViewDataSource *dataSource = self.dataSource;
     NSMutableDictionary *changes = dataSource.changes;
     // Dynamically update changes.
     [DataToFieldKeyPathsMap enumerateKeysAndObjectsUsingBlock:^(NSString *dataKeyPath, NSString *fieldKeyPath, BOOL *stop) {
@@ -567,7 +567,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     if (_deleteConfirmationView) {
         return _deleteConfirmationView;
     }
-    NBPersonDataSource *dataSource = self.dataSource;
+    NBPersonViewDataSource *dataSource = self.dataSource;
     self.deleteConfirmationView = [[UIAlertView alloc]
                                    initWithTitle:NSLocalizedString(@"person.confirm-delete.title", nil)
                                    message:[NSString localizedStringWithFormat:

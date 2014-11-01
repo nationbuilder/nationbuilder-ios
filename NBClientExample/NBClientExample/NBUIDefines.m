@@ -16,4 +16,4 @@ NSString * const NBNibNameSectionFooterViewKey = @"NBNibNameSectionFooterView";
 NSString * const NBUIErrorTitleKey = @"NBUIErrorTitle";
 NSString * const NBUIErrorMessageKey = @"NBUIErrorMessage";
 
-NSString * const NBDataSourceErrorKeyPath = @"error";
+NSString * const NBViewDataSourceErrorKeyPath = @"error";
