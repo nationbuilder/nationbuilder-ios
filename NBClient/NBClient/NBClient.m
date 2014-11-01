@@ -32,20 +32,20 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 #pragma mark - Initializers
 
-- (instancetype)initWithNationName:(NSString *)nationName
+- (instancetype)initWithNationSlug:(NSString *)nationSlug
                      authenticator:(NBAuthenticator *)authenticator
                   customURLSession:(NSURLSession *)urlSession
      customURLSessionConfiguration:(NSURLSessionConfiguration *)sessionConfiguration
 {
     self = [super init];
     if (self) {
-        [self commonInitWithNationName:nationName customURLSession:urlSession customURLSessionConfiguration:sessionConfiguration];
+        [self commonInitWithNationSlug:nationSlug customURLSession:urlSession customURLSessionConfiguration:sessionConfiguration];
         self.authenticator = authenticator;
     }
     return self;
 }
 
-- (instancetype)initWithNationName:(NSString *)nationName
+- (instancetype)initWithNationSlug:(NSString *)nationSlug
                             apiKey:(NSString *)apiKey
                      customBaseURL:(NSURL *)baseURL
                   customURLSession:(NSURLSession *)urlSession
@@ -53,18 +53,18 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 {
     self = [super init];
     if (self) {
-        [self commonInitWithNationName:nationName customURLSession:urlSession customURLSessionConfiguration:sessionConfiguration];
+        [self commonInitWithNationSlug:nationSlug customURLSession:urlSession customURLSessionConfiguration:sessionConfiguration];
         self.apiKey = apiKey;
         self.baseURL = baseURL;
     }
     return self;
 }
 
-- (void)commonInitWithNationName:(NSString *)nationName
+- (void)commonInitWithNationSlug:(NSString *)nationSlug
                 customURLSession:(NSURLSession *)urlSession
    customURLSessionConfiguration:(NSURLSessionConfiguration *)sessionConfiguration
 {
-    self.nationName = nationName;
+    self.nationSlug = nationSlug;
     self.urlSession = urlSession;
     self.sessionConfiguration = sessionConfiguration;
     
@@ -149,7 +149,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     if (_baseURL) {
         return _baseURL;
     }
-    self.baseURL = [NSURL URLWithString:[NSString stringWithFormat:NBClientDefaultBaseURLFormat, self.nationName]];
+    self.baseURL = [NSURL URLWithString:[NSString stringWithFormat:NBClientDefaultBaseURLFormat, self.nationSlug]];
     return _baseURL;
 }
 

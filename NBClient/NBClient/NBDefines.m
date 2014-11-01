@@ -13,7 +13,7 @@ NSUInteger const NBErrorCodeInvalidArgument = 1;
 NSString * const NBInfoFileName = @"NationBuilder-Info";
 NSString * const NBInfoBaseURLFormatKey = @"Base URL Format";
 NSString * const NBInfoClientIdentifierKey = @"Client ID";
-NSString * const NBInfoNationNameKey = @"Nation Name";
+NSString * const NBInfoNationSlugKey = @"Nation Slug";
 NSString * const NBInfoRedirectPathKey = @"Redirect Path";
 NSString * const NBInfoTestTokenKey = @"Test Token";
 

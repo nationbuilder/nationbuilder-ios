@@ -9,7 +9,7 @@
 
 @interface NBClient ()
 
-@property (nonatomic, strong, readwrite) NSString *nationName;
+@property (nonatomic, strong, readwrite) NSString *nationSlug;
 @property (nonatomic, strong, readwrite) NSURLSession *urlSession;
 @property (nonatomic, strong, readwrite) NSURLSessionConfiguration *sessionConfiguration;
 
@@ -19,7 +19,7 @@
 @property (nonatomic, strong) NSURLComponents *baseURLComponents;
 @property (nonatomic, strong) NSString *defaultErrorRecoverySuggestion;
 
-- (void)commonInitWithNationName:(NSString *)nationName
+- (void)commonInitWithNationSlug:(NSString *)nationSlug
                 customURLSession:(NSURLSession *)urlSession
    customURLSessionConfiguration:(NSURLSessionConfiguration *)sessionConfiguration;
 

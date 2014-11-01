@@ -17,7 +17,7 @@ extern NSUInteger const NBErrorCodeInvalidArgument;
 extern NSString * const NBInfoFileName;
 extern NSString * const NBInfoBaseURLFormatKey;
 extern NSString * const NBInfoClientIdentifierKey;
-extern NSString * const NBInfoNationNameKey;
+extern NSString * const NBInfoNationSlugKey;
 extern NSString * const NBInfoRedirectPathKey;
 extern NSString * const NBInfoTestTokenKey;
 

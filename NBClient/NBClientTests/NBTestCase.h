@@ -16,7 +16,7 @@
 
 @interface NBTestCase : XCTestCase
 
-@property (nonatomic, strong, readonly) NSString *nationName;
+@property (nonatomic, strong, readonly) NSString *nationSlug;
 @property (nonatomic, strong, readonly) NSURL *baseURL;
 @property (nonatomic, strong, readonly) NSString *baseURLString;
 

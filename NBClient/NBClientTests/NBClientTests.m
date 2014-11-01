@@ -34,14 +34,14 @@
 {
     NBAuthenticator *authenticator = [[NBAuthenticator alloc] initWithBaseURL:self.baseURL
                                                              clientIdentifier:self.clientIdentifier];
-    return [[NBClient alloc] initWithNationName:self.nationName
+    return [[NBClient alloc] initWithNationSlug:self.nationSlug
                                   authenticator:authenticator
                                customURLSession:[NSURLSession sharedSession]
                   customURLSessionConfiguration:nil];
 }
 - (NBClient *)baseClientWithTestToken
 {
-    return [[NBClient alloc] initWithNationName:self.nationName
+    return [[NBClient alloc] initWithNationSlug:self.nationSlug
                                          apiKey:self.testToken
                                   customBaseURL:self.baseURL
                                customURLSession:[NSURLSession sharedSession]

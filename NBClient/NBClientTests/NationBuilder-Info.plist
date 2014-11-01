@@ -6,7 +6,7 @@
 	<string>https://%@.nationbuilder.com</string>
 	<key>Client ID</key>
 	<string>d69aa7b7ad57efd69c3ef688c15e4318d501612d0c258d7ac92f3f1bb3a539aa</string>
-	<key>Nation Name</key>
+	<key>Nation Slug</key>
 	<string>pengtest1</string>
 	<key>Should Use HTTP Stubbing</key>
 	<true/>

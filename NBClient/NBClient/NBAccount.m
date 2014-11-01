@@ -57,7 +57,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         // Fill in OAuth client ID if needed.
         mutableClientInfo[NBInfoClientIdentifierKey] = mutableClientInfo[NBInfoClientIdentifierKey] ?: self.defaultClientInfo[NBInfoClientIdentifierKey];
         // Check for developer.
-        NSAssert(mutableClientInfo[NBInfoNationNameKey] && mutableClientInfo[NBInfoClientIdentifierKey],
+        NSAssert(mutableClientInfo[NBInfoNationSlugKey] && mutableClientInfo[NBInfoClientIdentifierKey],
                  @"Invalid client info: nation slug and OAuth client ID required.");
         // Fill in client base URL if needed.
         mutableClientInfo[NBInfoBaseURLFormatKey] = mutableClientInfo[NBInfoBaseURLFormatKey] ?: self.defaultClientInfo[NBInfoBaseURLFormatKey];
@@ -83,7 +83,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 - (NSString *)nationSlug
 {
-    return self.clientInfo[NBInfoNationNameKey];
+    return self.clientInfo[NBInfoNationSlugKey];
 }
 
 #pragma mark - NBClientDelegate
@@ -116,12 +116,12 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         return _client;
     }
     if (self.shouldUseTestToken) {
-        self.client = [[NBClient alloc] initWithNationName:self.clientInfo[NBInfoNationNameKey]
+        self.client = [[NBClient alloc] initWithNationSlug:self.clientInfo[NBInfoNationSlugKey]
                                                     apiKey:self.clientInfo[NBInfoTestTokenKey]
                                              customBaseURL:[self baseURL]
                                           customURLSession:nil customURLSessionConfiguration:nil];
     } else {
-        self.client = [[NBClient alloc] initWithNationName:self.clientInfo[NBInfoNationNameKey]
+        self.client = [[NBClient alloc] initWithNationSlug:self.clientInfo[NBInfoNationSlugKey]
                                              authenticator:self.authenticator
                                           customURLSession:nil customURLSessionConfiguration:nil];
     }
@@ -166,7 +166,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 - (NSURL *)baseURL
 {
     return [NSURL URLWithString:
-            [NSString stringWithFormat:self.clientInfo[NBInfoBaseURLFormatKey], self.clientInfo[NBInfoNationNameKey]]];
+            [NSString stringWithFormat:self.clientInfo[NBInfoBaseURLFormatKey], self.clientInfo[NBInfoNationSlugKey]]];
 }
 
 #pragma mark Presentation Helpers
@@ -222,7 +222,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
              NBLogError(@"%@", error);
          } else if (credential) {
              // Success.
-             NBLogInfo(@"Activating account for nation %@", self.clientInfo[NBInfoNationNameKey]);
+             NBLogInfo(@"Activating account for nation %@", self.clientInfo[NBInfoNationSlugKey]);
              self.client.apiKey = credential.accessToken;
              self.active = YES;
              // TODO: This will be more robust with an NSOperationQueue.

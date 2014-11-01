@@ -22,7 +22,7 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
 
 @property (nonatomic) BOOL didCallBack;
 
-@property (nonatomic, strong, readwrite) NSString *nationName;
+@property (nonatomic, strong, readwrite) NSString *nationSlug;
 @property (nonatomic, strong, readwrite) NSURL *baseURL;
 @property (nonatomic, strong, readwrite) NSString *baseURLString;
 
@@ -64,9 +64,9 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
     [super setUp];
     // Provide default config for test cases.
     NSDictionary *info = self.class.dictionaryWithContentsOfInfoFile;
-    self.nationName = info[NBInfoNationNameKey];
-    NSAssert(self.nationName, @"Missing environment arguments for tests.");
-    self.baseURLString = [NSString stringWithFormat:info[NBInfoBaseURLFormatKey], self.nationName];
+    self.nationSlug = info[NBInfoNationSlugKey];
+    NSAssert(self.nationSlug, @"Missing environment arguments for tests.");
+    self.baseURLString = [NSString stringWithFormat:info[NBInfoBaseURLFormatKey], self.nationSlug];
     self.baseURL = [NSURL URLWithString:self.baseURLString];
     self.testToken = info[NBInfoTestTokenKey];
     self.clientIdentifier = info[NBInfoClientIdentifierKey];
@@ -176,7 +176,7 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
     } else {
         apiKey = self.testToken;
     }
-    self.client = [[NBClient alloc] initWithNationName:self.nationName
+    self.client = [[NBClient alloc] initWithNationSlug:self.nationSlug
                                                 apiKey:apiKey
                                          customBaseURL:self.baseURL
                                       customURLSession:[NSURLSession sharedSession]

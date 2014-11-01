@@ -32,7 +32,7 @@ extern NSString * const NBClientDefaultBaseURLFormat;
 
 @property (nonatomic, weak) id<NBClientDelegate> delegate;
 
-@property (nonatomic, strong, readonly) NSString *nationName;
+@property (nonatomic, strong, readonly) NSString *nationSlug;
 @property (nonatomic, strong, readonly) NSURLSession *urlSession;
 @property (nonatomic, strong, readonly) NSURLSessionConfiguration *sessionConfiguration;
 
@@ -42,7 +42,7 @@ extern NSString * const NBClientDefaultBaseURLFormat;
 @property (nonatomic, strong) NSString *apiVersion; // Optional. For future use.
 
 // The main initializer.
-- (instancetype)initWithNationName:(NSString *)nationName
+- (instancetype)initWithNationSlug:(NSString *)nationSlug
                      authenticator:(NBAuthenticator *)authenticator
                   customURLSession:(NSURLSession *)urlSession
      customURLSessionConfiguration:(NSURLSessionConfiguration *)sessionConfiguration;
@@ -50,7 +50,7 @@ extern NSString * const NBClientDefaultBaseURLFormat;
 // The alternate initializer for developing using pre-generated API tokens.
 // Using this approach is discouraged unless you're confident about how securely
 // you are storing the token.
-- (instancetype)initWithNationName:(NSString *)nationName
+- (instancetype)initWithNationSlug:(NSString *)nationSlug
                             apiKey:(NSString *)apiKey
                      customBaseURL:(NSURL *)baseURL
                   customURLSession:(NSURLSession *)urlSession

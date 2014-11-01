@@ -131,7 +131,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                                                           delegate:self];
         if (!self.clientInfo) {
             NSMutableDictionary *mutableClientInfo = account.clientInfo.mutableCopy;
-            [mutableClientInfo removeObjectForKey:NBInfoNationNameKey];
+            [mutableClientInfo removeObjectForKey:NBInfoNationSlugKey];
             self.clientInfo = [NSDictionary dictionaryWithDictionary:mutableClientInfo];
         }
         if ([self.delegate respondsToSelector:@selector(accountsManager:willAddAccount:)]) {
@@ -216,7 +216,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 - (NSDictionary *)clientInfoForAccountWithNationSlug:(NSString *)nationSlug
 {
     NSMutableDictionary *mutableClientInfo = self.clientInfo ? self.clientInfo.mutableCopy : [NSMutableDictionary dictionary];
-    mutableClientInfo[NBInfoNationNameKey] = nationSlug;
+    mutableClientInfo[NBInfoNationSlugKey] = nationSlug;
     return [NSDictionary dictionaryWithDictionary:mutableClientInfo];
 }
 

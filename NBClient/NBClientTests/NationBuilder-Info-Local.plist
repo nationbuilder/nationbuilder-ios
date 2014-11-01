@@ -8,7 +8,7 @@
 	<string>65b707456300f8d29123cdad3b43eddb53f0ba2f8f31f082dbd9971c2a0c4eec</string>
 	<key>Client Secret</key>
 	<string>78624b2ff862c76047a298cd14d3834b696339f629a8e480fd217b808de2a6b8</string>
-	<key>Nation Name</key>
+	<key>Nation Slug</key>
 	<string>abeforprez</string>
 	<key>Test Token</key>
 	<string>9540edf37beb7f12fa9f6d2eda7f315c7ffe0af4cffc60fd8d6ac31df7e3d578</string>
