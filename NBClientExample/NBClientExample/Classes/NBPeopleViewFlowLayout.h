@@ -2,7 +2,6 @@
 //  NBPeopleViewFlowLayout.h
 //  NBClientExample
 //
-//  Created by Peng Wang on 8/5/14.
 //  Copyright (c) 2014 NationBuilder. All rights reserved.
 //
 
