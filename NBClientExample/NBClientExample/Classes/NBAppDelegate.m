@@ -63,7 +63,7 @@
     self.accountsViewController = [[NBAccountsViewController alloc] initWithNibName:nil bundle:nil];
     self.accountsViewController.dataSource = self.accountsManager;
     // Pass our account button to the view controller that will show it for
-    // further configuration. Please refer to the method for configuration options;
+    // further configuration. Please refer to the method for configuration options.
     [self.peopleViewController showAccountButton:self.accountButton];
     // Boilerplate.
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
