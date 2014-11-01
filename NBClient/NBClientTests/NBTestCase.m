@@ -216,6 +216,9 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
 {
     self.asyncTimeoutInterval = 10.0f;
     self.didCallBack = NO;
+    if (self.shouldUseHTTPStubbingOnce) {
+        [[LSNocilla sharedInstance] start];
+    }
 }
 
 - (void)tearDownAsync
@@ -227,7 +230,10 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
     if (!self.didCallBack) {
         XCTFail(@"Async test timed out.");
     }
-    if (self.shouldUseHTTPStubbing) {
+    if (self.shouldUseHTTPStubbingOnce) {
+        self.shouldUseHTTPStubbingOnce = NO;
+        [[LSNocilla sharedInstance] stop];
+    } else if (self.shouldUseHTTPStubbing) {
         [[LSNocilla sharedInstance] clearStubs];
     }
 }

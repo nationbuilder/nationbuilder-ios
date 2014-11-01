@@ -26,28 +26,6 @@
 
 @implementation NBClientTests
 
-+ (void)setUp
-{
-    [super setUp];
-    [[LSNocilla sharedInstance] start];
-}
-
-+ (void)tearDown
-{
-    [super tearDown];
-    [[LSNocilla sharedInstance] stop];
-}
-
-- (void)setUp
-{
-    [super setUp];
-}
-
-- (void)tearDown
-{
-    [super tearDown];
-}
-
 #pragma mark - Initialization
 
 #pragma mark Helpers
@@ -209,6 +187,7 @@
 
 - (void)testDelegateShouldHandleResponseForRequest
 {
+    self.shouldUseHTTPStubbingOnce = YES;
     [self setUpAsync];
     NBClient *client = [self baseClientWithTestTokenAndMockDelegate];
     // Mock delegate and stub method.
@@ -222,6 +201,7 @@
 
 - (void)testDelegateShouldHandleResponseForRequestWithDataTaskError
 {
+    self.shouldUseHTTPStubbingOnce = YES;
     [self setUpAsync];
     NBClient *client = [self baseClientWithTestTokenAndMockDelegate];
     // Mock delegate and stub method.
@@ -236,6 +216,7 @@
 
 - (void)testDelegateShouldHandleResponseForRequestWithHTTPError
 {
+    self.shouldUseHTTPStubbingOnce = YES;
     [self setUpAsync];
     NBClient *client = [self baseClientWithTestTokenAndMockDelegate];
     // Mock delegate and stub method.
@@ -250,6 +231,7 @@
 
 - (void)testDelegateShouldHandleResponseForRequestWithServiceError
 {
+    self.shouldUseHTTPStubbingOnce = YES;
     [self setUpAsync];
     NBClient *client = [self baseClientWithTestTokenAndMockDelegate];
     // Mock delegate and stub method.
@@ -265,6 +247,7 @@
 
 - (void)testDelegateWillCreateDataTaskForRequest
 {
+    self.shouldUseHTTPStubbingOnce = YES;
     [self setUpAsync];
     NBClient *client = [self baseClientWithTestTokenAndMockDelegate];
     // Mock delegate and stub method.
@@ -293,6 +276,7 @@
 
 - (void)testDelegateDidParseJSONFromResponseForRequest
 {
+    self.shouldUseHTTPStubbingOnce = YES;
     [self setUpAsync];
     NBClient *client = [self baseClientWithTestTokenAndMockDelegate];
     // Mock delegate and stub method.

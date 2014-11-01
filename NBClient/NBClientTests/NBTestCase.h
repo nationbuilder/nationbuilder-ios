@@ -31,6 +31,7 @@
 
 @property (nonatomic, readonly) BOOL shouldUseHTTPStubbing;
 @property (nonatomic, readonly) BOOL shouldOnlyUseTestToken; // This may be temporary.
+@property (nonatomic) BOOL shouldUseHTTPStubbingOnce;
 
 - (void)setUpSharedClient;
 - (LSStubRequestDSL *)stubRequestWithMethod:(NSString *)method
