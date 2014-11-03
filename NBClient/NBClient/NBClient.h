@@ -50,6 +50,8 @@ extern NSString * const NBClientDefaultBaseURLFormat;
 // The alternate initializer for developing using pre-generated API tokens.
 // Using this approach is discouraged unless you're confident about how securely
 // you are storing the token.
+// Note the main initializer doesn't accept a custom base-URL because it should
+// be already set on the authenticator.
 - (instancetype)initWithNationSlug:(NSString *)nationSlug
                             apiKey:(NSString *)apiKey
                      customBaseURL:(NSURL *)baseURL
