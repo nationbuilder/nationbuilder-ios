@@ -174,6 +174,7 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
                                       }];
         NSAssert(!task, @"Test case requires saved authentication credential. Re-authenticating should not happen.");
     } else {
+        // NOTE: When using HTTP-stubbing, the authenticity of test token is not tested and does not matter.
         apiKey = self.testToken;
     }
     self.client = [[NBClient alloc] initWithNationSlug:self.nationSlug
