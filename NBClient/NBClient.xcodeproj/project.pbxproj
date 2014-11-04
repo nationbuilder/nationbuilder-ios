@@ -24,6 +24,7 @@
 		AA6FF3C1197DADEA0049B747 /* NBPaginationInfoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FF3C0197DADEA0049B747 /* NBPaginationInfoTests.m */; };
 		AA6FF3C4197DF2E00049B747 /* NBClient+People.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6FF3C3197DF2E00049B747 /* NBClient+People.m */; };
 		AA6FF3C8197EDEE60049B747 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA6FF3C7197EDEE60049B747 /* Security.framework */; };
+		AA71A9741A085668005E9231 /* NBAuthenticator_Internal.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA71A9731A0855E0005E9231 /* NBAuthenticator_Internal.h */; };
 		AA78ED61199AC2F60043B7C0 /* libPods-NBClientTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA78ED60199AC2F60043B7C0 /* libPods-NBClientTests.a */; };
 		AA78ED79199C563C0043B7C0 /* people_get.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA78ED71199C563C0043B7C0 /* people_get.txt */; };
 		AA78ED7A199C563C0043B7C0 /* people_id_delete.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA78ED72199C563C0043B7C0 /* people_id_delete.txt */; };
@@ -76,6 +77,7 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				AA71A9741A085668005E9231 /* NBAuthenticator_Internal.h in CopyFiles */,
 				AA3B62AD19E8BCF200798C49 /* NBAccountsViewController.h in CopyFiles */,
 				AA3B62AC19E8BCE700798C49 /* NBAccountsManager.h in CopyFiles */,
 				AA3B62AA19E8BCDA00798C49 /* NBAccountsViewDefines.h in CopyFiles */,
@@ -117,6 +119,7 @@
 		AA6FF3C3197DF2E00049B747 /* NBClient+People.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NBClient+People.m"; sourceTree = "<group>"; };
 		AA6FF3C6197DF5B10049B747 /* NBClient_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBClient_Internal.h; sourceTree = "<group>"; };
 		AA6FF3C7197EDEE60049B747 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		AA71A9731A0855E0005E9231 /* NBAuthenticator_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBAuthenticator_Internal.h; sourceTree = "<group>"; };
 		AA78ED60199AC2F60043B7C0 /* libPods-NBClientTests.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-NBClientTests.a"; path = "../Pods/build/Debug-iphoneos/libPods-NBClientTests.a"; sourceTree = "<group>"; };
 		AA78ED71199C563C0043B7C0 /* people_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_get.txt; sourceTree = "<group>"; };
 		AA78ED72199C563C0043B7C0 /* people_id_delete.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_id_delete.txt; sourceTree = "<group>"; };
@@ -261,6 +264,7 @@
 				AAEFEAF719E6EE8B00777BC1 /* NBAccountsManager.h */,
 				AAEFEAF819E6EE8B00777BC1 /* NBAccountsManager.m */,
 				AA86284F196F1651005060C9 /* NBAuthenticator.h */,
+				AA71A9731A0855E0005E9231 /* NBAuthenticator_Internal.h */,
 				AA862850196F1651005060C9 /* NBAuthenticator.m */,
 				AAAEFC29196CD13D00222A48 /* NBClient.h */,
 				AA6FF3C6197DF5B10049B747 /* NBClient_Internal.h */,

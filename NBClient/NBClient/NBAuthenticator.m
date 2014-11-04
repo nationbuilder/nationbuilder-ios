@@ -6,6 +6,7 @@
 //
 
 #import "NBAuthenticator.h"
+#import "NBAuthenticator_Internal.h"
 
 #import <UIKit/UIApplication.h>
 
@@ -35,37 +36,6 @@ static NBLogLevel LogLevel = NBLogLevelDebug;
 #else
 static NBLogLevel LogLevel = NBLogLevelWarning;
 #endif
-
-@interface NBAuthenticator ()
-
-@property (nonatomic, strong, readwrite) NSURL *baseURL;
-@property (nonatomic, strong, readwrite) NSString *clientIdentifier;
-@property (nonatomic, strong, readwrite) NBAuthenticationCredential *credential;
-
-@property (nonatomic, strong) NBAuthenticationCompletionHandler currentInBrowserAuthenticationCompletionHandler;
-@property (nonatomic) BOOL currentlyNeedsPriorSignout;
-
-- (NSURLSessionDataTask *)authenticateWithSubPath:(NSString *)subPath
-                                       parameters:(NSDictionary *)parameters
-                                completionHandler:(NBAuthenticationCompletionHandler)completionHandler;
-
-- (void)authenticateInWebBrowserWithURL:(NSURL *)url
-                      completionHandler:(NBAuthenticationCompletionHandler)completionHandler;
-- (void)finishAuthenticatingInWebBrowserWithNotification:(NSNotification *)notification;
-
-- (NSURLSessionDataTask *)authenticationDataTaskWithURL:(NSURL *)url
-                                      completionHandler:(NBAuthenticationCompletionHandler)completionHandler;
-
-@end
-
-@interface NBAuthenticationCredential ()
-
-@property (nonatomic, strong, readwrite) NSString *accessToken;
-@property (nonatomic, strong, readwrite) NSString *tokenType;
-
-+ (NSMutableDictionary *)baseKeychainQueryDictionaryWithIdentifier:(NSString *)identifier;
-
-@end
 
 // The implementations are heavily inspired by AFOAuth2Client.
 
