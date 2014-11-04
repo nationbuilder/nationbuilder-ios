@@ -180,7 +180,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 + (BOOL)finishAuthenticatingInWebBrowserWithURL:(NSURL *)url error:(NSError *__autoreleasing *)error
 {
     BOOL didOpen = NO;
-    NSURLComponents *components = [[NSURLComponents alloc] initWithURL:url resolvingAgainstBaseURL:NO];
+    NSURLComponents *components = [[NSURLComponents alloc] initWithURL:url resolvingAgainstBaseURL:YES];
     if ([components.scheme isEqualToString:self.authorizationRedirectApplicationURLScheme]) {
         NSDictionary *parameters = [components.fragment nb_queryStringParametersWithEncoding:NSUTF8StringEncoding];
         NSString *accessToken = parameters[NBAuthenticationRedirectTokenKey];
@@ -254,9 +254,13 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     if ([application canOpenURL:url]) {
         self.currentInBrowserAuthenticationCompletionHandler = completionHandler;
         NBLogInfo(@"Opening authentication URL in Safari: %@", url);
-        dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.isTesting) {
             [application openURL:url];
-        });
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [application openURL:url];
+            });
+        }
     } else {
         error = [NSError
                  errorWithDomain:NBErrorDomain
