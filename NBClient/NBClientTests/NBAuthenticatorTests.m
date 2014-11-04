@@ -82,15 +82,14 @@
     id applicationMock = OCMClassMock([UIApplication class]);
     [OCMStub([applicationMock sharedApplication]) andReturn:applicationMock];
     [OCMStub([applicationMock canOpenURL:OCMOCK_ANY]) andReturnValue:@YES];
-    // Given: partial mocks for authenticator.
+    // Given: partial mocks for authenticator that doesn't affect global state.
     id authenticatorMock = OCMPartialMock([[NBAuthenticator alloc] initWithBaseURL:self.baseURL
                                                                   clientIdentifier:self.clientIdentifier]);
+    [authenticatorMock setShouldPersistCredential:NO];
     // Given: mock for properly registered application url scheme.
     [OCMStub([authenticatorMock authorizationRedirectApplicationURLScheme]) andReturn:urlScheme];
     // Ensure running only logic not using dispatch_async or anything else that conflicts with the async testing setup.
     [authenticatorMock setTesting:YES];
-    // Ensure we're using the specified token, not a persisted one.
-    [NBAuthenticationCredential deleteCredentialWithIdentifier:[authenticatorMock credentialIdentifier]];
     // Given: mock user authorization and subsequent opening of redirect URI in app.
     [OCMStub([applicationMock openURL:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
         // Then: verify authorization url.

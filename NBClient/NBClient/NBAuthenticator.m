@@ -48,7 +48,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     if (self) {
         self.baseURL = baseURL;
         self.clientIdentifier = clientIdentifier;
-        self.shouldAutomaticallySaveCredential = YES;
+        self.shouldPersistCredential = YES;
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(finishAuthenticatingInWebBrowserWithNotification:)
                                                      name:NBAuthenticationRedirectNotification object:nil];
@@ -87,7 +87,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 {
     _credential = credential;
     // Did.
-    if (credential && self.shouldAutomaticallySaveCredential) {
+    if (credential && self.shouldPersistCredential) {
         [NBAuthenticationCredential saveCredential:credential withIdentifier:self.credentialIdentifier];
     }
 }
@@ -209,7 +209,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 {
     NSAssert(completionHandler, @"Completion handler is required.");
     // Return saved credential if possible.
-    if (self.credential) {
+    if (self.credential && self.shouldPersistCredential) {
         completionHandler(self.credential, nil);
         return nil;
     }

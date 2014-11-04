@@ -136,7 +136,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     }
     self.authenticator = [[NBAuthenticator alloc] initWithBaseURL:[self baseURL]
                                                  clientIdentifier:self.clientInfo[NBInfoClientIdentifierKey]];
-    self.authenticator.shouldAutomaticallySaveCredential = NO;
+    self.authenticator.shouldPersistCredential = NO;
     return _authenticator;
 }
 
