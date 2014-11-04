@@ -200,9 +200,7 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
     if (!error || error.domain != NBErrorDomain) {
         return;
     }
-    if (error.code == NBClientErrorCodeService) {
-        XCTFail(@"People service returned error %@", error);
-    }
+    XCTFail(@"NationBuilder service returned error %@", error);
 }
 
 - (void)assertSessionDataTask:(NSURLSessionDataTask *)task

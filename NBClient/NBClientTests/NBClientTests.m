@@ -83,6 +83,7 @@
     NBClient *client = [self baseClientWithAuthenticator];
     XCTAssertNotNil(client.authenticator,
                     @"Client should have authenticator.");
+    // Test authentication.
     NSString *credentialIdentifier = client.authenticator.credentialIdentifier;
     [NBAuthenticationCredential deleteCredentialWithIdentifier:credentialIdentifier];
     NSURLSessionDataTask *task =
@@ -91,15 +92,10 @@
      password:self.userPassword
      clientSecret:self.clientSecret
      completionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
-         if (error) {
-             XCTFail(@"Authentication service returned error %@", error);
-         }
-         NBLog(@"CREDENTIAL: %@", credential);
+         [self assertServiceError:error];
          [self assertCredential:credential];
          client.apiKey = credential.accessToken;
          // Test credential persistence across initializations.
-         XCTAssertTrue(client.authenticator.shouldAutomaticallySaveCredential,
-                       @"Authenticator should have automatically saved credential to keychain.");
          NBClient *client = self.baseClientWithAuthenticator;
          NSURLSessionDataTask *task =
          [client.authenticator
@@ -107,17 +103,14 @@
           password:self.userPassword
           clientSecret:self.clientSecret
           completionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
-              if (error) {
-                  XCTFail(@"Authentication service returned error %@", error);
-              }
+              [self assertServiceError:error];
               [self assertCredential:credential];
           }];
          XCTAssertNil(task,
                       @"Saved credential should have been fetched to obviate authenticating against service.");
          [self completeAsync];
      }];
-    XCTAssertTrue(task && task.state == NSURLSessionTaskStateRunning,
-                  @"Authenticator should have created and ran task.");
+    [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
 
