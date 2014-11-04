@@ -194,8 +194,8 @@
     [self setUpAsyncWithHTTPStubbing:YES];
     NBClient *client = [self baseClientWithTestTokenAndMockDelegate];
     // Mock delegate and stub method.
-    OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY])
-    .andDo([self delegateShouldHandleResponseForRequestPassBlock]);
+    [OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY])
+     andDo:[self delegateShouldHandleResponseForRequestPassBlock]];
     // Stub and make request.
     [self stubFetchPersonForClientUserRequestWithClient:client].andReturn(200);
     [client fetchPersonForClientUserWithCompletionHandler:[self delegateShouldHandleResponseForRequestFailBlock]];
@@ -208,8 +208,8 @@
     NBClient *client = [self baseClientWithTestTokenAndMockDelegate];
     // Mock delegate and stub method.
     [self stubDelegateShouldHandleResponseForRequestWithClient:client untilTaskError:YES untilHTTPError:NO untilServiceError:NO];
-    OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY withDataTaskError:OCMOCK_ANY])
-    .andDo([self delegateShouldHandleResponseForRequestPassBlock]);
+    [OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY withDataTaskError:OCMOCK_ANY])
+     andDo:[self delegateShouldHandleResponseForRequestPassBlock]];
     // Stub and make request.
     [self stubFetchPersonForClientUserRequestWithClient:client].andFailWithError([NSError errorWithDomain:NBErrorDomain code:0 userInfo:nil]);
     [client fetchPersonForClientUserWithCompletionHandler:[self delegateShouldHandleResponseForRequestFailBlock]];
@@ -222,8 +222,8 @@
     NBClient *client = [self baseClientWithTestTokenAndMockDelegate];
     // Mock delegate and stub method.
     [self stubDelegateShouldHandleResponseForRequestWithClient:client untilTaskError:NO untilHTTPError:YES untilServiceError:NO];
-    OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY withHTTPError:OCMOCK_ANY])
-    .andDo([self delegateShouldHandleResponseForRequestPassBlock]);
+    [OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY withHTTPError:OCMOCK_ANY])
+     andDo:([self delegateShouldHandleResponseForRequestPassBlock])];
     // Stub and make request.
     [self stubFetchPersonForClientUserRequestWithClient:client].andReturn(404);
     [client fetchPersonForClientUserWithCompletionHandler:[self delegateShouldHandleResponseForRequestFailBlock]];
@@ -236,8 +236,8 @@
     NBClient *client = [self baseClientWithTestTokenAndMockDelegate];
     // Mock delegate and stub method.
     [self stubDelegateShouldHandleResponseForRequestWithClient:client untilTaskError:NO untilHTTPError:NO untilServiceError:YES];
-    OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY withServiceError:OCMOCK_ANY])
-    .andDo([self delegateShouldHandleResponseForRequestPassBlock]);
+    [OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY withServiceError:OCMOCK_ANY])
+     andDo:[self delegateShouldHandleResponseForRequestPassBlock]];
     // Stub and make request.
     [self stubFetchPersonForClientUserRequestWithClient:client].andReturn(200)
     .withBody([NSString stringWithFormat:@"{ \"%@\": \"unknown\" }", NBClientErrorCodeKey]);
