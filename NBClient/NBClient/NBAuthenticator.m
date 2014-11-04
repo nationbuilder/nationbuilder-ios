@@ -254,13 +254,9 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     if ([application canOpenURL:url]) {
         self.currentInBrowserAuthenticationCompletionHandler = completionHandler;
         NBLogInfo(@"Opening authentication URL in Safari: %@", url);
-        if (self.isTesting) {
+        dispatch_async(dispatch_get_main_queue(), ^{
             [application openURL:url];
-        } else {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [application openURL:url];
-            });
-        }
+        });
     } else {
         error = [NSError
                  errorWithDomain:NBErrorDomain

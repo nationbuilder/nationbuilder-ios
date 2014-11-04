@@ -18,8 +18,6 @@
 @property (nonatomic, strong) NBAuthenticationCompletionHandler currentInBrowserAuthenticationCompletionHandler;
 @property (nonatomic) BOOL currentlyNeedsPriorSignout;
 
-@property (nonatomic, getter = isTesting) BOOL testing;
-
 - (NSURLSessionDataTask *)authenticateWithSubPath:(NSString *)subPath
                                        parameters:(NSDictionary *)parameters
                                 completionHandler:(NBAuthenticationCompletionHandler)completionHandler;

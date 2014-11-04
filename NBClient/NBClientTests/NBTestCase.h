@@ -49,12 +49,16 @@
 - (void)assertServiceError:(NSError *)error;
 - (void)assertSessionDataTask:(NSURLSessionDataTask *)task;
 
-// NOTE: This async test API should be removed whenever we start running tests on iOS 8.
+// Async test helpers on top of XCTestExpectation.
 
 @property (nonatomic) NSTimeInterval asyncTimeoutInterval;
+@property (nonatomic, weak, readonly) XCTestExpectation *mainExpectation;
 
 - (void)setUpAsync;
+- (void)setUpAsyncWithHTTPStubbing:(BOOL)shouldUseHTTPStubbing;
+
 - (void)tearDownAsync;
+
 - (void)completeAsync;
 
 @end

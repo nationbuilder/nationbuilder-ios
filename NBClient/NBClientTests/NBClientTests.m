@@ -191,8 +191,7 @@
 
 - (void)testDelegateShouldHandleResponseForRequest
 {
-    self.shouldUseHTTPStubbingOnce = YES;
-    [self setUpAsync];
+    [self setUpAsyncWithHTTPStubbing:YES];
     NBClient *client = [self baseClientWithTestTokenAndMockDelegate];
     // Mock delegate and stub method.
     OCMStub([client.delegate client:client shouldHandleResponse:OCMOCK_ANY forRequest:OCMOCK_ANY])
@@ -205,8 +204,7 @@
 
 - (void)testDelegateShouldHandleResponseForRequestWithDataTaskError
 {
-    self.shouldUseHTTPStubbingOnce = YES;
-    [self setUpAsync];
+    [self setUpAsyncWithHTTPStubbing:YES];
     NBClient *client = [self baseClientWithTestTokenAndMockDelegate];
     // Mock delegate and stub method.
     [self stubDelegateShouldHandleResponseForRequestWithClient:client untilTaskError:YES untilHTTPError:NO untilServiceError:NO];
@@ -220,8 +218,7 @@
 
 - (void)testDelegateShouldHandleResponseForRequestWithHTTPError
 {
-    self.shouldUseHTTPStubbingOnce = YES;
-    [self setUpAsync];
+    [self setUpAsyncWithHTTPStubbing:YES];
     NBClient *client = [self baseClientWithTestTokenAndMockDelegate];
     // Mock delegate and stub method.
     [self stubDelegateShouldHandleResponseForRequestWithClient:client untilTaskError:NO untilHTTPError:YES untilServiceError:NO];
@@ -235,8 +232,7 @@
 
 - (void)testDelegateShouldHandleResponseForRequestWithServiceError
 {
-    self.shouldUseHTTPStubbingOnce = YES;
-    [self setUpAsync];
+    [self setUpAsyncWithHTTPStubbing:YES];
     NBClient *client = [self baseClientWithTestTokenAndMockDelegate];
     // Mock delegate and stub method.
     [self stubDelegateShouldHandleResponseForRequestWithClient:client untilTaskError:NO untilHTTPError:NO untilServiceError:YES];
@@ -251,8 +247,7 @@
 
 - (void)testDelegateWillCreateDataTaskForRequest
 {
-    self.shouldUseHTTPStubbingOnce = YES;
-    [self setUpAsync];
+    [self setUpAsyncWithHTTPStubbing:YES];
     NBClient *client = [self baseClientWithTestTokenAndMockDelegate];
     // Mock delegate and stub method.
     [self stubDelegateShouldHandleResponseForRequestWithClient:client untilTaskError:NO untilHTTPError:NO untilServiceError:NO];
@@ -280,8 +275,7 @@
 
 - (void)testDelegateDidParseJSONFromResponseForRequest
 {
-    self.shouldUseHTTPStubbingOnce = YES;
-    [self setUpAsync];
+    [self setUpAsyncWithHTTPStubbing:YES];
     NBClient *client = [self baseClientWithTestTokenAndMockDelegate];
     // Mock delegate and stub method.
     [self stubDelegateShouldHandleResponseForRequestWithClient:client untilTaskError:NO untilHTTPError:NO untilServiceError:NO];

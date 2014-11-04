@@ -20,8 +20,6 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
 
 @interface NBTestCase ()
 
-@property (nonatomic) BOOL didCallBack;
-
 @property (nonatomic, strong, readwrite) NSString *nationSlug;
 @property (nonatomic, strong, readwrite) NSURL *baseURL;
 @property (nonatomic, strong, readwrite) NSString *baseURLString;
@@ -34,6 +32,8 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
 @property (nonatomic, strong, readwrite) NSString *userPassword;
 
 @property (nonatomic, strong, readwrite) NBClient *client;
+
+@property (nonatomic, weak, readwrite) XCTestExpectation *mainExpectation;
 
 + (NSDictionary *)dictionaryWithContentsOfInfoFile;
 
@@ -211,37 +211,39 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
                   @"Client should have created and ran task.");
 }
 
-#pragma mark - Async API
+#pragma mark - Async Test Helpers
 
 - (void)setUpAsync
 {
+    [self setUpAsyncWithHTTPStubbing:NO];
+}
+
+- (void)setUpAsyncWithHTTPStubbing:(BOOL)shouldUseHTTPStubbing
+{
+    // NOTE: Override after this function call for the test if desired.
     self.asyncTimeoutInterval = 10.0f;
-    self.didCallBack = NO;
+    self.shouldUseHTTPStubbingOnce = shouldUseHTTPStubbing;
     if (self.shouldUseHTTPStubbingOnce) {
         [[LSNocilla sharedInstance] start];
     }
+    self.mainExpectation = [self expectationWithDescription:@"main"];
 }
 
 - (void)tearDownAsync
 {
-    NSDate *timeoutDate = [NSDate dateWithTimeIntervalSinceNow:self.asyncTimeoutInterval];
-    while (!self.didCallBack && timeoutDate.timeIntervalSinceNow > 0.0f) {
-        [[NSRunLoop currentRunLoop] runMode:NSRunLoopCommonModes beforeDate:timeoutDate];
-    }
-    if (!self.didCallBack) {
-        XCTFail(@"Async test timed out.");
-    }
-    if (self.shouldUseHTTPStubbingOnce) {
-        self.shouldUseHTTPStubbingOnce = NO;
-        [[LSNocilla sharedInstance] stop];
-    } else if (self.shouldUseHTTPStubbing) {
-        [[LSNocilla sharedInstance] clearStubs];
-    }
+    [self waitForExpectationsWithTimeout:self.asyncTimeoutInterval handler:^(NSError *error) {
+        if (self.shouldUseHTTPStubbingOnce) {
+            self.shouldUseHTTPStubbingOnce = NO;
+            [[LSNocilla sharedInstance] stop];
+        } else if (self.shouldUseHTTPStubbing) {
+            [[LSNocilla sharedInstance] clearStubs];
+        }
+    }];
 }
 
 - (void)completeAsync
 {
-    self.didCallBack = YES;
+    [self.mainExpectation fulfill];
 }
 
 @end

@@ -88,8 +88,6 @@
     [authenticatorMock setShouldPersistCredential:NO];
     // Given: mock for properly registered application url scheme.
     [OCMStub([authenticatorMock authorizationRedirectApplicationURLScheme]) andReturn:urlScheme];
-    // Ensure running only logic not using dispatch_async or anything else that conflicts with the async testing setup.
-    [authenticatorMock setTesting:YES];
     // Given: mock user authorization and subsequent opening of redirect URI in app.
     [OCMStub([applicationMock openURL:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
         // Then: verify authorization url.
