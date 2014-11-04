@@ -9,7 +9,7 @@
 
 #import "NBTestCase.h"
 
-#import "Main.h"
+#import "FoundationAdditions.h"
 
 @interface FoundationAdditionsTests : NBTestCase @end
 

@@ -7,7 +7,11 @@
 
 #import "NBTestCase.h"
 
-#import "Main.h"
+#import "FoundationAdditions.h"
+
+#import "NBClient.h"
+#import "NBClient+People.h"
+#import "NBPaginationInfo.h"
 
 @interface NBClientPeopleTests : NBTestCase
 
