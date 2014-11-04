@@ -16,6 +16,9 @@
 
 @protocol NBAccountDelegate;
 
+// The account model builds upon the client and authenticator objects. It provides
+// a simpler interface than manually managing a client and an authenticator. It can
+// become the data source for views including the account button.
 @interface NBAccount : NSObject <NBAccountViewDataSource, NBClientDelegate, NBLogging>
 
 @property (nonatomic, weak, readonly) id<NBAccountDelegate> delegate;

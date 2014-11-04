@@ -13,7 +13,8 @@ extern NSString * const NBErrorDomain;
 extern NSUInteger const NBErrorCodeInvalidArgument;
 
 // Names for a dedicated NationBuilder Info.plist file, which is the suggested
-// method for storing relevant configuration.
+// method for storing relevant configuration. Refer to the implementation file
+// for actual values for these keys when creating your Info.plist file.
 extern NSString * const NBInfoFileName;
 extern NSString * const NBInfoBaseURLFormatKey;
 extern NSString * const NBInfoClientIdentifierKey;

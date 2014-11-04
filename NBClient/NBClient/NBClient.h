@@ -25,9 +25,17 @@ extern NSString * const NBClientErrorMessageKey;
 extern NSString * const NBClientErrorValidationErrorsKey;
 extern NSString * const NBClientErrorInnerErrorKey;
 
+// You can also get the default values for some properties.
 extern NSString * const NBClientDefaultAPIVersion;
 extern NSString * const NBClientDefaultBaseURLFormat;
 
+// The client works with the NationBuilder API. It is an API client. For
+// authentication, it relies on its authenticator or test token. Conventionally,
+// its methods directly match the API endpoints, but are named according to its
+// own, more native-based conventions. Each method takes a completion handler
+// which handles both success and error case. The type is conventionally defined to
+// be either `NBClientResourceListCompletionHandler` or
+// `NBClientResourceItemCompletionHandler`.
 @interface NBClient : NSObject <NSURLSessionDataDelegate, NBLogging>
 
 @property (nonatomic, weak) id<NBClientDelegate> delegate;
@@ -60,6 +68,10 @@ extern NSString * const NBClientDefaultBaseURLFormat;
 
 @end
 
+// Implement this protocol to customize the general response and request
+// handling for a client, ie. do something before each request gets sent or
+// after each response gets received. Refer to the individual methods for more
+// details.
 @protocol NBClientDelegate <NSObject>
 
 @optional

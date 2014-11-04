@@ -20,11 +20,17 @@ extern NSUInteger const NBAuthenticationErrorCodeKeychain;
 
 extern NSString * const NBAuthenticationDefaultRedirectPath;
 
+// The authenticator encapsulates the basic features of an OAuth 2 client. The
+// OAuth flows currently provided are the token and password flows. The token flow
+// is the suggested approach and is implemented by methods and properties with the
+// `#token-flow` tag comment. The password-grant-type flow is discouraged and
+// only intended if your app is to be used by only your own nation.
 @interface NBAuthenticator : NSObject <NBLogging>
 
 @property (nonatomic, strong, readonly) NSURL *baseURL;
 @property (nonatomic, strong, readonly) NSString *clientIdentifier;
 @property (nonatomic, strong, readonly) NBAuthenticationCredential *credential;
+// #token-flow
 @property (nonatomic, readonly, getter = isAuthenticatingInWebBrowser) BOOL authenticatingInWebBrowser;
 
 @property (nonatomic, strong) NSString *credentialIdentifier;
@@ -34,12 +40,9 @@ extern NSString * const NBAuthenticationDefaultRedirectPath;
 - (instancetype)initWithBaseURL:(NSURL *)baseURL
                clientIdentifier:(NSString *)clientIdentifier;
 
-/**
- Authentication API
- 
- @note Completion handlers may be dispatched synchronously. Async should not be assumed.
- */
+// NOTE: Completion handlers may be dispatched synchronously. Async should not be assumed.
 
+// #token-flow
 - (void)authenticateWithRedirectPath:(NSString *)redirectPath
                         priorSignout:(BOOL)needsPriorSignout
                    completionHandler:(NBAuthenticationCompletionHandler)completionHandler;
@@ -51,11 +54,14 @@ extern NSString * const NBAuthenticationDefaultRedirectPath;
 
 - (BOOL)discardCredential;
 
+// #token-flow
 + (NSString *)authorizationRedirectApplicationURLScheme;
 + (BOOL)finishAuthenticatingInWebBrowserWithURL:(NSURL *)url error:(NSError **)error;
 
 @end
 
+// The authentication credential objectifies the access token and provides
+// static methods for securely managing the credential on the user's keychain.
 @interface NBAuthenticationCredential : NSObject <NSCoding>
 
 @property (nonatomic, strong, readonly) NSString *accessToken;
