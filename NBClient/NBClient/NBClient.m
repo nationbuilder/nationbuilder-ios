@@ -377,12 +377,13 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 - (NSError *)errorForResponse:(NSHTTPURLResponse *)response
                      jsonData:(NSDictionary *)data
 {
+    NSString *code = data[@"code"] ? data[@"code"] : @"unknown";
     NSString *description;
     if ([[NSIndexSet nb_indexSetOfSuccessfulHTTPStatusCodes] containsIndex:response.statusCode]) {
-        description = [NSString localizedStringWithFormat:@"message.nb-error.format".nb_localizedString, data[@"code"]];
+        description = [NSString localizedStringWithFormat:@"message.nb-error.format".nb_localizedString, code];
     } else {
         description = [NSString localizedStringWithFormat:@"message.nb-http-error.format".nb_localizedString,
-                       response.statusCode, data[@"code"]];
+                       response.statusCode, code];
     }
     return [NSError
             errorWithDomain:NBErrorDomain
