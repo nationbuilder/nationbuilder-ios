@@ -6,6 +6,7 @@
 //
 
 #import "NBAccount.h"
+#import "NBAccount_Internal.h"
 
 #import "FoundationAdditions.h"
 #import "NBAuthenticator.h"
@@ -17,26 +18,6 @@ static NBLogLevel LogLevel = NBLogLevelDebug;
 #else
 static NBLogLevel LogLevel = NBLogLevelWarning;
 #endif
-
-@interface NBAccount ()
-
-@property (nonatomic, weak, readwrite) id<NBAccountDelegate> delegate;
-@property (nonatomic, strong, readwrite) NBClient *client;
-@property (nonatomic, strong, readwrite) NSDictionary *clientInfo;
-@property (nonatomic, strong, readwrite) NSDictionary *defaultClientInfo;
-
-@property (nonatomic, strong) NBAuthenticator *authenticator;
-
-@property (nonatomic, strong) NSDictionary *person;
-
-- (NSURL *)baseURL;
-
-- (void)fetchPersonWithCompletionHandler:(NBGenericCompletionHandler)completionHandler;
-- (void)fetchAvatarWithCompletionHandler:(NBGenericCompletionHandler)completionHandler;
-
-- (void)updateCredentialIdentifier;
-
-@end
 
 @implementation NBAccount
 

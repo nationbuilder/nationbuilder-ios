@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA2490561A09C7AE006F0D24 /* NBAccount_Internal.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA2490551A09C72B006F0D24 /* NBAccount_Internal.h */; };
 		AA3B62A819E8B86700798C49 /* UIKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3B62A719E8B86700798C49 /* UIKitAdditions.m */; };
 		AA3B62A919E8BCCE00798C49 /* UIKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA3B62A619E8B86700798C49 /* UIKitAdditions.h */; };
 		AA3B62AA19E8BCDA00798C49 /* NBAccountsViewDefines.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AAEFEAF019E6EADC00777BC1 /* NBAccountsViewDefines.h */; };
@@ -77,6 +78,7 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				AA2490561A09C7AE006F0D24 /* NBAccount_Internal.h in CopyFiles */,
 				AA71A9741A085668005E9231 /* NBAuthenticator_Internal.h in CopyFiles */,
 				AA3B62AD19E8BCF200798C49 /* NBAccountsViewController.h in CopyFiles */,
 				AA3B62AC19E8BCE700798C49 /* NBAccountsManager.h in CopyFiles */,
@@ -99,6 +101,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		AA2490551A09C72B006F0D24 /* NBAccount_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBAccount_Internal.h; sourceTree = "<group>"; };
 		AA3B62A619E8B86700798C49 /* UIKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIKitAdditions.h; sourceTree = "<group>"; };
 		AA3B62A719E8B86700798C49 /* UIKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIKitAdditions.m; sourceTree = "<group>"; };
 		AA668DC419705FC800A952B0 /* NBTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBTestCase.h; sourceTree = "<group>"; };
@@ -259,6 +262,7 @@
 				AA668DCF1970B81800A952B0 /* FoundationAdditions.h */,
 				AA668DD01970B81800A952B0 /* FoundationAdditions.m */,
 				AAEFEAFD19E7131E00777BC1 /* NBAccount.h */,
+				AA2490551A09C72B006F0D24 /* NBAccount_Internal.h */,
 				AAEFEAFE19E7131E00777BC1 /* NBAccount.m */,
 				AAEFEAF019E6EADC00777BC1 /* NBAccountsViewDefines.h */,
 				AAEFEAF719E6EE8B00777BC1 /* NBAccountsManager.h */,
