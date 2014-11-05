@@ -46,6 +46,8 @@ extern NSString * const NBClientDefaultBaseURLFormat;
 
 @property (nonatomic, strong, readonly) NBAuthenticator *authenticator;
 
+@property (nonatomic, strong, readonly) NSURL *baseURL;
+
 @property (nonatomic, strong) NSString *apiKey; // Set this upon successful authentication.
 @property (nonatomic, strong) NSString *apiVersion; // Optional. For future use.
 

@@ -15,7 +15,7 @@
 
 @property (nonatomic, strong, readwrite) NBAuthenticator *authenticator;
 
-@property (nonatomic, strong) NSURL *baseURL;
+@property (nonatomic, strong, readwrite) NSURL *baseURL;
 @property (nonatomic, strong) NSURLComponents *baseURLComponents;
 @property (nonatomic, strong) NSString *defaultErrorRecoverySuggestion;
 

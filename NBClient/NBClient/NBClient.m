@@ -142,8 +142,6 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     }
 }
 
-#pragma mark Requests & Tasks
-
 - (NSURL *)baseURL
 {
     if (_baseURL) {
@@ -152,6 +150,8 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     self.baseURL = [NSURL URLWithString:[NSString stringWithFormat:NBClientDefaultBaseURLFormat, self.nationSlug]];
     return _baseURL;
 }
+
+#pragma mark Requests & Tasks
 
 - (NSURLComponents *)baseURLComponents
 {
