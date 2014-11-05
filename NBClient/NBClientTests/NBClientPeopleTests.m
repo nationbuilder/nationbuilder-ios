@@ -22,12 +22,6 @@
 
 @implementation NBClientPeopleTests
 
-+ (void)setUp
-{
-    [super setUp];
-    [NBClient updateLoggingToLevel:NBLogLevelWarning];
-}
-
 - (void)setUp
 {
     [super setUp];

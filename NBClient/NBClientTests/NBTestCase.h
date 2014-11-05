@@ -42,7 +42,12 @@
 - (LSStubResponseDSL *)stubRequestUsingFileDataWithMethod:(NSString *)method
                                                      path:(NSString *)path
                                                identifier:(NSUInteger)identifier
-                                               parameters:(NSDictionary *)parameters;
+                                               parameters:(NSDictionary *)parameters; // Convenience.
+- (LSStubResponseDSL *)stubRequestUsingFileDataWithMethod:(NSString *)method
+                                                     path:(NSString *)path
+                                               identifier:(NSUInteger)identifier
+                                               parameters:(NSDictionary *)parameters
+                                                   client:(NBClient *)client;
 
 - (void)assertPaginationInfo:(NBPaginationInfo *)paginationInfo
     withPaginationParameters:(NSDictionary *)paginationParameters;
