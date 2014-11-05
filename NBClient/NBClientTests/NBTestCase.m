@@ -114,6 +114,18 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
     return !self.userPassword;
 }
 
+- (void)stubInfoFileBundleResourcePathForOperations:(void (^)(void))operationsBlock
+{
+    id bundleMock = OCMClassMock([NSBundle class]);
+    [OCMStub([bundleMock mainBundle]) andReturn:bundleMock];
+    [OCMStub([bundleMock pathForResource:NBInfoFileName ofType:@"plist"])
+     andReturn:[[NSBundle bundleForClass:self.class] pathForResource:NBInfoFileName ofType:@"plist"]];
+    
+    operationsBlock();
+    
+    [bundleMock stopMocking];
+}
+
 - (LSStubRequestDSL *)stubRequestWithMethod:(NSString *)method
                                        path:(NSString *)path
                                  identifier:(NSUInteger)identifier
