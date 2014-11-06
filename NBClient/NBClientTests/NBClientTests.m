@@ -25,6 +25,10 @@
 @property (nonatomic, weak, readonly) void (^delegateShouldHandleResponseForRequestPassBlock)(NSInvocation *);
 
 - (LSStubRequestDSL *)stubFetchPersonForClientUserRequestWithClient:(NBClient *)client;
+- (void)stubDelegateShouldHandleResponseForRequestWithClient:(NBClient *)client
+                                              untilTaskError:(BOOL)untilTaskError
+                                              untilHTTPError:(BOOL)untilHTTPError
+                                           untilServiceError:(BOOL)untilServiceError;
 
 @end
 

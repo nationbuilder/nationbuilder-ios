@@ -75,7 +75,7 @@
                   @"Credential identifier should contain new account name and identifier.");
 }
 
-- (void)testActivationAndFetchingPerson
+- (void)testActivationAndPersonFetching
 {
     [self setUpAsyncWithHTTPStubbing:YES];
     // Given: an authenticator that authenticates properly using the token flow.
