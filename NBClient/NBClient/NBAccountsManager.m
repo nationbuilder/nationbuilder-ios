@@ -31,10 +31,11 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 @property (nonatomic, readwrite) BOOL signedIn;
 @property (nonatomic, strong, readwrite) NSString *previousAccountNationSlug;
 
+@property (nonatomic, readwrite) BOOL shouldPersistAccounts;
+
 @property (nonatomic, strong) NSDictionary *clientInfo;
 @property (nonatomic, strong) NSMutableArray *mutableAccounts;
 
-@property (nonatomic) BOOL shouldPersistAccounts;
 @property (nonatomic, strong) id applicationDidEnterBackgroundNotifier;
 @property (nonatomic, strong) NSString *persistedAccountsIdentifier;
 
