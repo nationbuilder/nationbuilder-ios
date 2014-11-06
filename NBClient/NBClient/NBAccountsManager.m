@@ -6,6 +6,7 @@
 //
 
 #import "NBAccountsManager.h"
+#import "NBAccountsManager_Internal.h"
 
 #import <UIKit/UIKit.h>
 
@@ -22,33 +23,6 @@ static NBLogLevel LogLevel = NBLogLevelDebug;
 #else
 static NBLogLevel LogLevel = NBLogLevelWarning;
 #endif
-
-@interface NBAccountsManager ()
-
-@property (nonatomic, weak, readwrite) id<NBAccountsManagerDelegate> delegate;
-
-// NBAccountsViewDataSource
-@property (nonatomic, readwrite) BOOL signedIn;
-@property (nonatomic, strong, readwrite) NSString *previousAccountNationSlug;
-
-@property (nonatomic, readwrite) BOOL shouldPersistAccounts;
-
-@property (nonatomic, strong) NSDictionary *clientInfo;
-@property (nonatomic, strong) NSMutableArray *mutableAccounts;
-
-@property (nonatomic, strong) id applicationDidEnterBackgroundNotifier;
-@property (nonatomic, strong) NSString *persistedAccountsIdentifier;
-
-- (void)activateAccount:(NBAccount *)account;
-- (void)deactivateAccount:(NBAccount *)account;
-- (NSDictionary *)clientInfoForAccountWithNationSlug:(NSString *)nationSlug;
-
-- (void)setUpAccountPersistence;
-- (void)tearDownAccountPersistence;
-- (void)loadPersistedAccounts;
-- (void)persistAccounts;
-
-@end
 
 @implementation NBAccountsManager
 
