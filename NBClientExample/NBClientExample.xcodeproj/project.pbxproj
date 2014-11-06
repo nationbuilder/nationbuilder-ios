@@ -18,7 +18,6 @@
 		AA15FABC1983317400A2E84B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA15FAA11983317400A2E84B /* Foundation.framework */; };
 		AA15FABD1983317400A2E84B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA15FAA51983317400A2E84B /* UIKit.framework */; };
 		AA15FAC51983317400A2E84B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AA15FAC31983317400A2E84B /* InfoPlist.strings */; };
-		AA15FAC71983317400A2E84B /* NBClientExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA15FAC61983317400A2E84B /* NBClientExampleTests.m */; };
 		AA15FAD31983339800A2E84B /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA15FAD21983339800A2E84B /* Crashlytics.framework */; };
 		AA602C2E198C3966001A7DB2 /* NBPeoplePageHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA602C2D198C3966001A7DB2 /* NBPeoplePageHeaderView.xib */; };
 		AA602C2F198C3966001A7DB2 /* NBPeoplePageHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA602C2D198C3966001A7DB2 /* NBPeoplePageHeaderView.xib */; };
@@ -82,7 +81,6 @@
 		AA15FABA1983317400A2E84B /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		AA15FAC21983317400A2E84B /* NBClientExampleTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "NBClientExampleTests-Info.plist"; sourceTree = "<group>"; };
 		AA15FAC41983317400A2E84B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		AA15FAC61983317400A2E84B /* NBClientExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NBClientExampleTests.m; sourceTree = "<group>"; };
 		AA15FAD21983339800A2E84B /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		AA602C2D198C3966001A7DB2 /* NBPeoplePageHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NBPeoplePageHeaderView.xib; path = Nibs/NBPeoplePageHeaderView.xib; sourceTree = "<group>"; };
 		AA602C30199157B7001A7DB2 /* NBPeopleViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPeopleViewFlowLayout.h; path = Classes/NBPeopleViewFlowLayout.h; sourceTree = "<group>"; };
@@ -217,7 +215,6 @@
 		AA15FAC01983317400A2E84B /* NBClientExampleTests */ = {
 			isa = PBXGroup;
 			children = (
-				AA15FAC61983317400A2E84B /* NBClientExampleTests.m */,
 				AA15FAC11983317400A2E84B /* Supporting Files */,
 			);
 			path = NBClientExampleTests;
@@ -383,7 +380,6 @@
 				AA90914519833C22009BE1E9 /* NBPersonViewDataSource.m in Sources */,
 				AA90914D19833D01009BE1E9 /* NBPeopleViewController.m in Sources */,
 				AA90914319833C22009BE1E9 /* NBPeopleViewDataSource.m in Sources */,
-				AA15FAC71983317400A2E84B /* NBClientExampleTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
