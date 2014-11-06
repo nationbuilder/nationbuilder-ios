@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA2490521A099312006F0D24 /* NBAccountTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2490511A099312006F0D24 /* NBAccountTests.m */; };
 		AA2490561A09C7AE006F0D24 /* NBAccount_Internal.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA2490551A09C72B006F0D24 /* NBAccount_Internal.h */; };
 		AA3B62A819E8B86700798C49 /* UIKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3B62A719E8B86700798C49 /* UIKitAdditions.m */; };
 		AA3B62A919E8BCCE00798C49 /* UIKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA3B62A619E8B86700798C49 /* UIKitAdditions.h */; };
@@ -101,6 +102,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		AA2490511A099312006F0D24 /* NBAccountTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAccountTests.m; sourceTree = "<group>"; };
 		AA2490551A09C72B006F0D24 /* NBAccount_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBAccount_Internal.h; sourceTree = "<group>"; };
 		AA3B62A619E8B86700798C49 /* UIKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIKitAdditions.h; sourceTree = "<group>"; };
 		AA3B62A719E8B86700798C49 /* UIKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIKitAdditions.m; sourceTree = "<group>"; };
@@ -297,6 +299,7 @@
 			isa = PBXGroup;
 			children = (
 				AA668DD51978418F00A952B0 /* FoundationAdditionsTests.m */,
+				AA2490511A099312006F0D24 /* NBAccountTests.m */,
 				AA8B6821196F5539009DDA91 /* NBAuthenticatorTests.m */,
 				AA668DD31976EA1600A952B0 /* NBClientPeopleTests.m */,
 				AAAEFC40196CD13D00222A48 /* NBClientTests.m */,
@@ -483,6 +486,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA668DD61978418F00A952B0 /* FoundationAdditionsTests.m in Sources */,
+				AA2490521A099312006F0D24 /* NBAccountTests.m in Sources */,
 				AA8B6822196F5539009DDA91 /* NBAuthenticatorTests.m in Sources */,
 				AA668DD41976EA1600A952B0 /* NBClientPeopleTests.m in Sources */,
 				AAAEFC41196CD13D00222A48 /* NBClientTests.m in Sources */,
