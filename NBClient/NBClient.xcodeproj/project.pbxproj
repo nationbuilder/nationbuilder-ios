@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AA2490521A099312006F0D24 /* NBAccountTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2490511A099312006F0D24 /* NBAccountTests.m */; };
+		AA2490541A099321006F0D24 /* NBAccountsManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2490531A099321006F0D24 /* NBAccountsManagerTests.m */; };
 		AA2490561A09C7AE006F0D24 /* NBAccount_Internal.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA2490551A09C72B006F0D24 /* NBAccount_Internal.h */; };
 		AA3B62A819E8B86700798C49 /* UIKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3B62A719E8B86700798C49 /* UIKitAdditions.m */; };
 		AA3B62A919E8BCCE00798C49 /* UIKitAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA3B62A619E8B86700798C49 /* UIKitAdditions.h */; };
@@ -56,6 +57,7 @@
 		AAAEFC39196CD13D00222A48 /* libNBClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AAAEFC21196CD13D00222A48 /* libNBClient.a */; };
 		AAAEFC3F196CD13D00222A48 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AAAEFC3D196CD13D00222A48 /* InfoPlist.strings */; };
 		AAAEFC41196CD13D00222A48 /* NBClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAEFC40196CD13D00222A48 /* NBClientTests.m */; };
+		AAD2806B1A0BDFF200E6DF39 /* NBAccountsManager_Internal.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AAD2806A1A0BDF3900E6DF39 /* NBAccountsManager_Internal.h */; };
 		AAEFEAEF19E6E73800777BC1 /* NBAccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEFEAED19E6E73800777BC1 /* NBAccountsViewController.m */; };
 		AAEFEAF919E6EE8B00777BC1 /* NBAccountsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEFEAF819E6EE8B00777BC1 /* NBAccountsManager.m */; };
 		AAEFEAFF19E7131E00777BC1 /* NBAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEFEAFE19E7131E00777BC1 /* NBAccount.m */; };
@@ -79,6 +81,7 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				AAD2806B1A0BDFF200E6DF39 /* NBAccountsManager_Internal.h in CopyFiles */,
 				AA2490561A09C7AE006F0D24 /* NBAccount_Internal.h in CopyFiles */,
 				AA71A9741A085668005E9231 /* NBAuthenticator_Internal.h in CopyFiles */,
 				AA3B62AD19E8BCF200798C49 /* NBAccountsViewController.h in CopyFiles */,
@@ -103,6 +106,7 @@
 
 /* Begin PBXFileReference section */
 		AA2490511A099312006F0D24 /* NBAccountTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAccountTests.m; sourceTree = "<group>"; };
+		AA2490531A099321006F0D24 /* NBAccountsManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAccountsManagerTests.m; sourceTree = "<group>"; };
 		AA2490551A09C72B006F0D24 /* NBAccount_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBAccount_Internal.h; sourceTree = "<group>"; };
 		AA3B62A619E8B86700798C49 /* UIKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIKitAdditions.h; sourceTree = "<group>"; };
 		AA3B62A719E8B86700798C49 /* UIKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIKitAdditions.m; sourceTree = "<group>"; };
@@ -155,6 +159,7 @@
 		AAAEFC40196CD13D00222A48 /* NBClientTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NBClientTests.m; sourceTree = "<group>"; };
 		AABD0029196F1FD6003A745F /* Main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Main.h; sourceTree = "<group>"; };
 		AAC01B9219F95B1C0093EEA7 /* pe-icon-7-stroke.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "pe-icon-7-stroke.ttf"; sourceTree = "<group>"; };
+		AAD2806A1A0BDF3900E6DF39 /* NBAccountsManager_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NBAccountsManager_Internal.h; sourceTree = "<group>"; };
 		AAEFEAEC19E6E73800777BC1 /* NBAccountsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBAccountsViewController.h; sourceTree = "<group>"; };
 		AAEFEAED19E6E73800777BC1 /* NBAccountsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAccountsViewController.m; sourceTree = "<group>"; };
 		AAEFEAEE19E6E73800777BC1 /* NBAccountsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NBAccountsViewController.xib; sourceTree = "<group>"; };
@@ -269,6 +274,7 @@
 				AAEFEAF019E6EADC00777BC1 /* NBAccountsViewDefines.h */,
 				AAEFEAF719E6EE8B00777BC1 /* NBAccountsManager.h */,
 				AAEFEAF819E6EE8B00777BC1 /* NBAccountsManager.m */,
+				AAD2806A1A0BDF3900E6DF39 /* NBAccountsManager_Internal.h */,
 				AA86284F196F1651005060C9 /* NBAuthenticator.h */,
 				AA71A9731A0855E0005E9231 /* NBAuthenticator_Internal.h */,
 				AA862850196F1651005060C9 /* NBAuthenticator.m */,
@@ -300,6 +306,7 @@
 			children = (
 				AA668DD51978418F00A952B0 /* FoundationAdditionsTests.m */,
 				AA2490511A099312006F0D24 /* NBAccountTests.m */,
+				AA2490531A099321006F0D24 /* NBAccountsManagerTests.m */,
 				AA8B6821196F5539009DDA91 /* NBAuthenticatorTests.m */,
 				AA668DD31976EA1600A952B0 /* NBClientPeopleTests.m */,
 				AAAEFC40196CD13D00222A48 /* NBClientTests.m */,
@@ -490,6 +497,7 @@
 				AA8B6822196F5539009DDA91 /* NBAuthenticatorTests.m in Sources */,
 				AA668DD41976EA1600A952B0 /* NBClientPeopleTests.m in Sources */,
 				AAAEFC41196CD13D00222A48 /* NBClientTests.m in Sources */,
+				AA2490541A099321006F0D24 /* NBAccountsManagerTests.m in Sources */,
 				AA6FF3C1197DADEA0049B747 /* NBPaginationInfoTests.m in Sources */,
 				AA668DC619705FC800A952B0 /* NBTestCase.m in Sources */,
 			);

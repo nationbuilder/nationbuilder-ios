@@ -6,6 +6,7 @@
 //
 
 #import "NBAccountsManager.h"
+#import "NBAccountsManager_Internal.h"
 
 #import <UIKit/UIKit.h>
 
@@ -22,32 +23,6 @@ static NBLogLevel LogLevel = NBLogLevelDebug;
 #else
 static NBLogLevel LogLevel = NBLogLevelWarning;
 #endif
-
-@interface NBAccountsManager ()
-
-@property (nonatomic, weak, readwrite) id<NBAccountsManagerDelegate> delegate;
-
-// NBAccountsViewDataSource
-@property (nonatomic, readwrite) BOOL signedIn;
-@property (nonatomic, strong, readwrite) NSString *previousAccountNationSlug;
-
-@property (nonatomic, strong) NSDictionary *clientInfo;
-@property (nonatomic, strong) NSMutableArray *mutableAccounts;
-
-@property (nonatomic) BOOL shouldPersistAccounts;
-@property (nonatomic, strong) id applicationDidEnterBackgroundNotifier;
-@property (nonatomic, strong) NSString *persistedAccountsIdentifier;
-
-- (void)activateAccount:(NBAccount *)account;
-- (void)deactivateAccount:(NBAccount *)account;
-- (NSDictionary *)clientInfoForAccountWithNationSlug:(NSString *)nationSlug;
-
-- (void)setUpAccountPersistence;
-- (void)tearDownAccountPersistence;
-- (void)loadPersistedAccounts;
-- (void)persistAccounts;
-
-@end
 
 @implementation NBAccountsManager
 
@@ -127,8 +102,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                                 userInfo:@{ NSLocalizedDescriptionKey: @"message.invalid-nation-slug".nb_localizedString,
                                             NSLocalizedFailureReasonErrorKey: failureReason }];
     } else {
-        NBAccount *account = [[NBAccount alloc] initWithClientInfo:[self clientInfoForAccountWithNationSlug:nationSlug]
-                                                          delegate:self];
+        NBAccount *account = [self createAccountWithNationSlug:nationSlug];
         if (!self.clientInfo) {
             NSMutableDictionary *mutableClientInfo = account.clientInfo.mutableCopy;
             [mutableClientInfo removeObjectForKey:NBInfoNationSlugKey];
@@ -220,10 +194,19 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     return [NSDictionary dictionaryWithDictionary:mutableClientInfo];
 }
 
+- (NBAccount *)createAccountWithNationSlug:(NSString *)nationSlug
+{
+    return [[NBAccount alloc] initWithClientInfo:[self clientInfoForAccountWithNationSlug:nationSlug]
+                                        delegate:self];
+}
+
 #pragma mark Account Persistence
 
 - (void)setUpAccountPersistence
 {
+    if ([self.delegate respondsToSelector:@selector(persistedAccountsIdentifierForAccountsManager:)]) {
+        self.persistedAccountsIdentifier = [self.delegate persistedAccountsIdentifierForAccountsManager:self];
+    }
     // Guard.
     self.shouldPersistAccounts = YES;
     if ([self.delegate respondsToSelector:@selector(accountsManagerShouldPersistAccounts:)]) {
@@ -231,9 +214,6 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     }
     if (!self.shouldPersistAccounts) { return; }
     // Continue.
-    if ([self.delegate respondsToSelector:@selector(persistedAccountsIdentifierForAccountsManager:)]) {
-        self.persistedAccountsIdentifier = [self.delegate persistedAccountsIdentifierForAccountsManager:self];
-    }
     self.persistedAccountsIdentifier = (self.persistedAccountsIdentifier
                                         ?: [NSString stringWithFormat:@"%@-%@",
                                             NBAccountInfosDefaultsKey, NSStringFromClass(self.delegate.class)]);
@@ -260,9 +240,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     NSArray *accountInfos = [[NSUserDefaults standardUserDefaults] arrayForKey:self.persistedAccountsIdentifier];
     if (accountInfos) {
         for (NSDictionary *accountInfo in accountInfos) {
-            NBAccount *account =
-            [[NBAccount alloc] initWithClientInfo:[self clientInfoForAccountWithNationSlug:accountInfo[NBAccountInfoNationSlugKey]]
-                                         delegate:self];
+            NBAccount *account = [self createAccountWithNationSlug:accountInfo[NBAccountInfoNationSlugKey]];
             account.name = accountInfo[NBAccountInfoNameKey];
             account.identifier = [accountInfo[NBAccountInfoIdentifierKey] unsignedIntegerValue];
             [self.mutableAccounts addObject:account];
