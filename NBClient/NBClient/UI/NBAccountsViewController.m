@@ -456,8 +456,8 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         return _nationSlugPromptView;
     }
     self.nationSlugPromptView =
-    [[UIAlertView alloc] initWithTitle:@"title.add-account".nb_localizedString
-                               message:@"message.provide-nation-slug".nb_localizedString
+    [[UIAlertView alloc] initWithTitle:@"title.provide-nation-slug".nb_localizedString
+                               message:@"message.nation-slug-hint".nb_localizedString
                               delegate:self
                      cancelButtonTitle:@"label.cancel".nb_localizedString
                      otherButtonTitles:@"label.submit".nb_localizedString, nil];

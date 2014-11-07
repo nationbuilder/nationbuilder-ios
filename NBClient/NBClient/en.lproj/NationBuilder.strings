@@ -47,10 +47,10 @@
 
 // Accounts View
 
-"message.provide-nation-slug" = "Please provide your nation's slug.";
+"message.nation-slug-hint" = "The slug is part of your nation's URL: <slug>.nationbuilder.com";
 
-"title.add-account" = "Add Account";
-"title.nationbuilder-accounts" = "NationBuilder Accounts";
+"title.provide-nation-slug" = "Provide Nation Slug";
+"title.nationbuilder-accounts" = "Nations";
 "label.sign-in" = "Sign in";
 "label.sign-into-another" = "Sign into another nation";
 "label.sign-out" = "Sign out";
