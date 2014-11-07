@@ -204,6 +204,9 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 - (void)setUpAccountPersistence
 {
+    if ([self.delegate respondsToSelector:@selector(persistedAccountsIdentifierForAccountsManager:)]) {
+        self.persistedAccountsIdentifier = [self.delegate persistedAccountsIdentifierForAccountsManager:self];
+    }
     // Guard.
     self.shouldPersistAccounts = YES;
     if ([self.delegate respondsToSelector:@selector(accountsManagerShouldPersistAccounts:)]) {
@@ -211,9 +214,6 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     }
     if (!self.shouldPersistAccounts) { return; }
     // Continue.
-    if ([self.delegate respondsToSelector:@selector(persistedAccountsIdentifierForAccountsManager:)]) {
-        self.persistedAccountsIdentifier = [self.delegate persistedAccountsIdentifierForAccountsManager:self];
-    }
     self.persistedAccountsIdentifier = (self.persistedAccountsIdentifier
                                         ?: [NSString stringWithFormat:@"%@-%@",
                                             NBAccountInfosDefaultsKey, NSStringFromClass(self.delegate.class)]);
