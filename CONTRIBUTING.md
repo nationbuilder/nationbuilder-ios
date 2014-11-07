@@ -22,7 +22,4 @@ hopefully not too long) series of commits.
 You are also expected to write passing tests for your features. We currently use
 XCTest and OCMock and expect you to not introduce new dependencies.
 
-We may also require you to sign a [CLA][].
-
 [iOS developer forum]: http://nationbuilder.com/developers
-[CLA]: 
