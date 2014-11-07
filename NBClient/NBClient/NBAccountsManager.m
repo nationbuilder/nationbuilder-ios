@@ -102,8 +102,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                                 userInfo:@{ NSLocalizedDescriptionKey: @"message.invalid-nation-slug".nb_localizedString,
                                             NSLocalizedFailureReasonErrorKey: failureReason }];
     } else {
-        NBAccount *account = [[NBAccount alloc] initWithClientInfo:[self clientInfoForAccountWithNationSlug:nationSlug]
-                                                          delegate:self];
+        NBAccount *account = [self createAccountWithNationSlug:nationSlug];
         if (!self.clientInfo) {
             NSMutableDictionary *mutableClientInfo = account.clientInfo.mutableCopy;
             [mutableClientInfo removeObjectForKey:NBInfoNationSlugKey];
@@ -195,6 +194,12 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     return [NSDictionary dictionaryWithDictionary:mutableClientInfo];
 }
 
+- (NBAccount *)createAccountWithNationSlug:(NSString *)nationSlug
+{
+    return [[NBAccount alloc] initWithClientInfo:[self clientInfoForAccountWithNationSlug:nationSlug]
+                                        delegate:self];
+}
+
 #pragma mark Account Persistence
 
 - (void)setUpAccountPersistence
@@ -235,9 +240,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     NSArray *accountInfos = [[NSUserDefaults standardUserDefaults] arrayForKey:self.persistedAccountsIdentifier];
     if (accountInfos) {
         for (NSDictionary *accountInfo in accountInfos) {
-            NBAccount *account =
-            [[NBAccount alloc] initWithClientInfo:[self clientInfoForAccountWithNationSlug:accountInfo[NBAccountInfoNationSlugKey]]
-                                         delegate:self];
+            NBAccount *account = [self createAccountWithNationSlug:accountInfo[NBAccountInfoNationSlugKey]];
             account.name = accountInfo[NBAccountInfoNameKey];
             account.identifier = [accountInfo[NBAccountInfoIdentifierKey] unsignedIntegerValue];
             [self.mutableAccounts addObject:account];
