@@ -202,12 +202,12 @@
 		AA15FAA81983317400A2E84B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				AA7904A419E8A0BA0007FF3E /* NationBuilder-Info.plist */,
-				AA7904A719E8A0D20007FF3E /* NationBuilder-Info-Local.plist */,
-				AA15FAA91983317400A2E84B /* NBClientExample-Info.plist */,
-				AA15FAAA1983317400A2E84B /* InfoPlist.strings */,
 				AA15FAAD1983317400A2E84B /* main.m */,
 				AA15FAAF1983317400A2E84B /* NBClientExample-Prefix.pch */,
+				AA7904A719E8A0D20007FF3E /* NationBuilder-Info-Local.plist */,
+				AA7904A419E8A0BA0007FF3E /* NationBuilder-Info.plist */,
+				AA15FAA91983317400A2E84B /* NBClientExample-Info.plist */,
+				AA15FAAA1983317400A2E84B /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";

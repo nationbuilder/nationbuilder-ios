@@ -20,10 +20,27 @@
 	<string>1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.nationbuilder.oauth</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>sample-app.nationbuilder</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>pe-icon-7-stroke.ttf</string>
+	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>NBAppLaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
@@ -40,21 +57,6 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>com.nationbuilder.oauth</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>sample-app.nationbuilder</string>
-			</array>
-		</dict>
-	</array>
-	<key>UIAppFonts</key>
-	<array>
-		<string>pe-icon-7-stroke.ttf</string>
 	</array>
 </dict>
 </plist>
