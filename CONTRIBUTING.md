@@ -3,7 +3,7 @@
 ## Questions & Feature Requests
 
 If you have questions, feature requests, or any other kind of feedback, please
-seek us out on the NationBuilder [iOS developer forum][]. __Please do not__
+seek us out on the NationBuilder [developer forum][]. __Please do not__
 create issues for them.
 
 ## Bugs & Improvements
@@ -22,4 +22,4 @@ hopefully not too long) series of commits.
 You are also expected to write passing tests for your features. We currently use
 XCTest and OCMock and expect you to not introduce new dependencies.
 
-[iOS developer forum]: http://nationbuilder.com/developers
+[iOS developer forum]: http://nationbuilder.com/api_developer_forum
