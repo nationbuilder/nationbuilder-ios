@@ -183,7 +183,8 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
     // We need to use the shared session because we need to be in an application
     // for an app-specific cache.
     __block NSString *apiKey;
-    if (!self.shouldOnlyUseTestToken) {
+    BOOL shouldUseTestToken = self.shouldOnlyUseTestToken;
+    if (!shouldUseTestToken) {
         NBAuthenticator *authenticator = [[NBAuthenticator alloc] initWithBaseURL:self.baseURL
                                                                  clientIdentifier:self.clientIdentifier];
         NSURLSessionDataTask *task = [authenticator
@@ -193,9 +194,16 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
                                       completionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
                                           apiKey = credential.accessToken;
                                       }];
-        NSAssert(!task, @"Test case requires saved authentication credential. Re-authenticating should not happen.");
-    } else {
-        // NOTE: When using HTTP-stubbing, the authenticity of test token is not tested and does not matter.
+        if (task) {
+            NBLog(@"WARNING: Test case requires saved authentication credential. Re-authenticating should not happen.");
+            // Fallback to using test token.
+            [task cancel];
+            shouldUseTestToken = YES;
+        }
+    }
+    if (shouldUseTestToken) {
+        // NOTE: When using HTTP-stubbing, the authenticity of test token is not
+        // tested and does not matter.
         apiKey = self.testToken;
     }
     self.client = [[NBClient alloc] initWithNationSlug:self.nationSlug
