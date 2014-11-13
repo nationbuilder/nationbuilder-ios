@@ -10,7 +10,7 @@
 #pragma mark - Constants
 
 extern NSString * const NBErrorDomain;
-extern NSUInteger const NBErrorCodeInvalidArgument;
+extern NSInteger const NBErrorCodeInvalidArgument;
 
 // Names for a dedicated NationBuilder Info.plist file, which is the suggested
 // method for storing relevant configuration. Refer to the implementation file

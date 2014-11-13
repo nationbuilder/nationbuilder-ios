@@ -87,7 +87,7 @@ static void *observationContext = &observationContext;
     super.highlighted = highlighted;
     [UIView animateWithDuration:self.highlightAnimationDuration.floatValue delay:0.0f
                         options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowUserInteraction
-                     animations:^{ self.alpha = highlighted ? self.dimmedAlpha.floatValue : 1.0; }
+                     animations:^{ self.alpha = highlighted ? self.dimmedAlpha.floatValue : 1.0f; }
                      completion:nil];
 }
 

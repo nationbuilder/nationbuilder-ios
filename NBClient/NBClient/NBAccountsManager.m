@@ -160,7 +160,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
             if (shouldBail) {
                 [self.mutableAccounts removeObject:account];
                 NBLogWarning(@"User attempted to activate duplicate account with identifier %lu",
-                             account.identifier);
+                             (unsigned long)account.identifier);
             }
         }
         if (shouldBail) {
@@ -247,7 +247,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         }
         [self activateAccount:self.accounts.firstObject];
         NBLogInfo(@"Loaded %lu persisted account(s) for identifier \"%@\"",
-                  accountInfos.count, self.persistedAccountsIdentifier);
+                  (unsigned long)accountInfos.count, self.persistedAccountsIdentifier);
     }
 }
 
@@ -263,7 +263,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     }
     [[NSUserDefaults standardUserDefaults] setObject:accountInfos forKey:self.persistedAccountsIdentifier];
     NBLogInfo(@"Persisted %lu persisted account(s) for identifier \"%@\"",
-              accountInfos.count, self.persistedAccountsIdentifier);
+              (unsigned long)accountInfos.count, self.persistedAccountsIdentifier);
 }
 
 @end

@@ -8,7 +8,7 @@
 #import "NBDefines.h"
 
 NSString * const NBErrorDomain = @"com.nationbuilder";
-NSUInteger const NBErrorCodeInvalidArgument = 1;
+NSInteger const NBErrorCodeInvalidArgument = 1;
 
 NSString * const NBInfoFileName = @"NationBuilder-Info";
 NSString * const NBInfoBaseURLFormatKey = @"Base URL Format";
