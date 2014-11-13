@@ -281,7 +281,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
-    return self.dataSource.accounts.count;
+    return (NSInteger)self.dataSource.accounts.count;
 }
 
 #pragma mark - UIPickerViewDelegate
@@ -294,7 +294,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 - (NSAttributedString *)pickerView:(UIPickerView *)pickerView attributedTitleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
     static NSString *emSpace = @" ";
-    id<NBAccountViewDataSource> account = self.dataSource.accounts[row];
+    id<NBAccountViewDataSource> account = self.dataSource.accounts[(NSUInteger)row];
     NSString *title = [NSString stringWithFormat:@"%@%@%@", account.name, emSpace, account.nationSlug];
     NSMutableAttributedString *attributedTitle = [[NSMutableAttributedString alloc] initWithString:title];
     [attributedTitle addAttributes:@{ NSFontAttributeName: self.nationLabel.font,
@@ -322,7 +322,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     // Raise our flag before having the view interaction update state, so as to
     // distinguish from state being updated by our data source.
     self.selectingAccount = YES;
-    id<NBAccountViewDataSource> account = self.dataSource.accounts[row];
+    id<NBAccountViewDataSource> account = self.dataSource.accounts[(NSUInteger)row];
     self.dataSource.selectedAccount = account;
 }
 
@@ -594,7 +594,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
             if (selectedIndex == NSNotFound) {
                 NBLogError(@"Invalid selected account index. Aborting row selection.");
             }
-            [self.accountsPicker selectRow:selectedIndex inComponent:0 animated:YES];
+            [self.accountsPicker selectRow:(NSInteger)selectedIndex inComponent:0 animated:YES];
         } else {
             // Otherwise restore our flag.
             self.selectingAccount = NO;

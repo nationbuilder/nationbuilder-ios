@@ -13,10 +13,10 @@
 
 typedef void (^NBAuthenticationCompletionHandler)(NBAuthenticationCredential *credential, NSError *error);
 
-extern NSUInteger const NBAuthenticationErrorCodeService;
-extern NSUInteger const NBAuthenticationErrorCodeURLType;
-extern NSUInteger const NBAuthenticationErrorCodeWebBrowser;
-extern NSUInteger const NBAuthenticationErrorCodeKeychain;
+extern NSInteger const NBAuthenticationErrorCodeService;
+extern NSInteger const NBAuthenticationErrorCodeURLType;
+extern NSInteger const NBAuthenticationErrorCodeWebBrowser;
+extern NSInteger const NBAuthenticationErrorCodeKeychain;
 
 extern NSString * const NBAuthenticationDefaultRedirectPath;
 

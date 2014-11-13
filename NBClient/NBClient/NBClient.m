@@ -319,7 +319,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
             return [self logResponse:httpResponse data:data];
         }
         // Handle empty bodies.
-        if ([[NSIndexSet nb_indexSetOfSuccessfulEmptyResponseHTTPStatusCodes] containsIndex:httpResponse.statusCode]) {
+        if ([[NSIndexSet nb_indexSetOfSuccessfulEmptyResponseHTTPStatusCodes] containsIndex:(NSUInteger)httpResponse.statusCode]) {
             if (completionHandler) { completionHandler(nil, nil, error); }
             return [self logResponse:httpResponse data:data];
         }
@@ -327,7 +327,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                                                                    options:NSJSONReadingAllowFragments
                                                                      error:&error];
         // Handle HTTP error.
-        if (![[NSIndexSet nb_indexSetOfSuccessfulHTTPStatusCodes] containsIndex:httpResponse.statusCode]) {
+        if (![[NSIndexSet nb_indexSetOfSuccessfulHTTPStatusCodes] containsIndex:(NSUInteger)httpResponse.statusCode]) {
             error = [self errorForResponse:httpResponse jsonData:jsonObject];
             if (self.delegate && [self.delegate respondsToSelector:@selector(client:shouldHandleResponse:forRequest:withHTTPError:)]) {
                 if (![self.delegate client:self shouldHandleResponse:httpResponse forRequest:request withHTTPError:error]) {
@@ -379,7 +379,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 {
     NSString *code = data[@"code"] ? data[@"code"] : @"unknown";
     NSString *description;
-    if ([[NSIndexSet nb_indexSetOfSuccessfulHTTPStatusCodes] containsIndex:response.statusCode]) {
+    if ([[NSIndexSet nb_indexSetOfSuccessfulHTTPStatusCodes] containsIndex:(NSUInteger)response.statusCode]) {
         description = [NSString localizedStringWithFormat:@"message.nb-error.format".nb_localizedString, code];
     } else {
         description = [NSString localizedStringWithFormat:@"message.nb-http-error.format".nb_localizedString,

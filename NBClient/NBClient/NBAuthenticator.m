@@ -12,10 +12,10 @@
 
 #import "FoundationAdditions.h"
 
-NSUInteger const NBAuthenticationErrorCodeService = 20;
-NSUInteger const NBAuthenticationErrorCodeURLType = 21;
-NSUInteger const NBAuthenticationErrorCodeWebBrowser = 22;
-NSUInteger const NBAuthenticationErrorCodeKeychain = 23;
+NSInteger const NBAuthenticationErrorCodeService = 20;
+NSInteger const NBAuthenticationErrorCodeURLType = 21;
+NSInteger const NBAuthenticationErrorCodeWebBrowser = 22;
+NSInteger const NBAuthenticationErrorCodeKeychain = 23;
 
 NSString * const NBAuthenticationDefaultRedirectPath = @"oauth/callback";
 
@@ -307,7 +307,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
              return;
          }
          // Handle HTTP error.
-         if (![[NSIndexSet nb_indexSetOfSuccessfulHTTPStatusCodes] containsIndex:httpResponse.statusCode]) {
+         if (![[NSIndexSet nb_indexSetOfSuccessfulHTTPStatusCodes] containsIndex:(NSUInteger)httpResponse.statusCode]) {
              error =
              [NSError
               errorWithDomain:NBErrorDomain
