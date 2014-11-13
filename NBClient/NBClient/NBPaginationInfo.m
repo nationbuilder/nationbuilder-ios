@@ -16,7 +16,7 @@ NSString * const NBClientNumberOfTotalItemsKey = @"total";
 
 - (void)setCurrentPageNumber:(NSUInteger)currentPageNumber
 {
-    currentPageNumber = MAX(currentPageNumber, 1);
+    currentPageNumber = MAX(currentPageNumber, (NSUInteger)1);
     _currentPageNumber = currentPageNumber;
 }
 

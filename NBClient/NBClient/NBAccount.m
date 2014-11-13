@@ -279,7 +279,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     if (![self.authenticator.credentialIdentifier isEqualToString:[self baseURL].host]) { return; }
     self.authenticator.credentialIdentifier =
     [self.authenticator.credentialIdentifier stringByAppendingString:
-     ((self.name && self.identifier != NSNotFound) ? [NSString stringWithFormat:@"-%@-%lu", self.name, self.identifier] : @"")];
+     ((self.name && self.identifier != NSNotFound) ? [NSString stringWithFormat:@"-%@-%lu", self.name, (unsigned long)self.identifier] : @"")];
 }
 
 @end

@@ -40,7 +40,7 @@
 {
     NSURLComponents *components = self.baseURLComponents.copy;
     components.path = [components.path stringByAppendingString:
-                       [NSString stringWithFormat:@"/people/%lu", identifier]];
+                       [NSString stringWithFormat:@"/people/%lu", (unsigned long)identifier]];
     return [self baseFetchTaskWithURLComponents:components resultsKey:@"person" completionHandler:completionHandler];
 }
 
@@ -85,7 +85,7 @@
 {
     NSURLComponents *components = self.baseURLComponents.copy;
     components.path = [components.path stringByAppendingString:
-                       [NSString stringWithFormat:@"/people/%lu", identifier]];
+                       [NSString stringWithFormat:@"/people/%lu", (unsigned long)identifier]];
     NSError *error;
     NSMutableURLRequest *request = [self baseSaveRequestWithURL:components.URL parameters:@{ @"person": parameters } error:&error];
     if (error) {
@@ -100,7 +100,7 @@
 {
     NSURLComponents *components = self.baseURLComponents.copy;
     components.path = [components.path stringByAppendingString:
-                       [NSString stringWithFormat:@"/people/%lu", identifier]];
+                       [NSString stringWithFormat:@"/people/%lu", (unsigned long)identifier]];
     return [self baseDeleteTaskWithURL:components.URL completionHandler:completionHandler];
 }
 
