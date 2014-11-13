@@ -364,7 +364,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     self.customPresentingViewController = presentingViewController;
 }
 
-#pragma Accessors
+#pragma mark Accessors
 
 - (void)setDataSource:(id<NBAccountsViewDataSource>)dataSource
 {
