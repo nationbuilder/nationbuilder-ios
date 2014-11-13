@@ -13,7 +13,7 @@ token).
 
 ```objectivec
 #import <NBClient/NBClient.h>
-
+// ...
 NSString *nationSlug = @"abeforprez";
 NSString *testToken = @"somehash";
 NBClient *client = [[NBClient alloc] initWithNationSlug:nationSlug
@@ -38,7 +38,7 @@ pagination info (if relevant), and 3. the error (if any).
          // Handle the error inside the completion block as you see fit.
          return;
      }
-     NSLog(@"The first page of people: %@", items);
+     NBLog(@"The first page of people: %@", items);
 }];
 ```
 
@@ -64,7 +64,7 @@ Like the client, it will also need the nation slug in the form of the base URL.
 ```objectivec
 #import <NBAuthenticator/NBAuthenticator.h>
 #import <NBClient/NBClient.h>
-
+// ...
 NSString *nationSlug = @"abeforprez";
 NSString *clientIdentifier = @"somehash";
 NSURL *baseURL = [NSURL URLWithString:[NSString stringWithFormat:NBClientDefaultBaseURLFormat, nationSlug]];
@@ -209,24 +209,34 @@ add these headers via the delegate protocol's
 
 ## Notes
 
-- (TODO: Overview of pagination info.)
+### Pagination
 
-- NBClient's NSURLSession defaults to using `+defaultSessionConfiguration`, but
+(TODO: Overview of pagination info.)
+
+### NSURLSession
+
+NBClient's NSURLSession defaults to using `+defaultSessionConfiguration`, but
 with a custom NSURLCache with 4mb memory and 20mb disk capacities, stored at the
 `<nationSlug>.nationbuilder.com` application subdirectory. You can override the
 session or the configuration by passing during initialization either a
 `customURLSession` or `customURLSessionConfiguration`, respectively.
 
-- Both NBClient and NBAuthenticator implement `NBLogging` (see `NBDefines.h`),
+### NBLogging
+
+Both NBClient and NBAuthenticator implement `NBLogging` (see `NBDefines.h`),
 which means they support the log levels defined in `NBLogLevel`. For example,
 the default debug-build-configuration log level is `NBLogLevelInfo`, but for
 NBClient you might want to set the class log level to `NBLogLevelWarning`
 (`[NBClient updateLoggingToLevel:NBLogLevelWarning]`), so it doesn't log each
 request and response.
 
-- Both NBClient and NBAuthenticator have their own error codes for many of the
+### NSError
+
+Both NBClient and NBAuthenticator have their own error codes for many of the
 errors passed into their methods' completion handlers. All errors originating
 from SDK code is under the `NBErrorDomain` domain.
+
+### More
 
 For more details on how to integrate with your existing application, check the
 source for the NBClientExample sample application.

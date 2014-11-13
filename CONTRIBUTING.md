@@ -19,7 +19,8 @@ If you have new features you want added to the main repository, please create a
 pull request and neatly describe your changes in an understandable (and
 hopefully not too long) series of commits.
 
-You are also expected to write passing tests for your features. We currently use
-XCTest and OCMock and expect you to not introduce new dependencies.
+You are also expected to use the latest stable version of Xcode to write passing
+tests for your features. We currently use XCTest and OCMock and expect you to
+not introduce new dependencies.
 
-[iOS developer forum]: http://nationbuilder.com/api_developer_forum
+[developer forum]: http://nationbuilder.com/api_developer_forum
