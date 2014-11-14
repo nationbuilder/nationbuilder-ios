@@ -43,13 +43,13 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 <UICollectionViewDelegateFlowLayout, UINavigationControllerDelegate, NBCollectionViewCellDelegate>
 
-@property (nonatomic, strong, readwrite) NSMutableDictionary *nibNames;
+@property (nonatomic, readwrite) NSMutableDictionary *nibNames;
 
-@property (nonatomic, strong, readwrite) UILabel *notReadyLabel;
+@property (nonatomic, readwrite) UILabel *notReadyLabel;
 
-@property (nonatomic, strong) NSIndexPath *selectedIndexPath;
+@property (nonatomic) NSIndexPath *selectedIndexPath;
 
-@property (nonatomic, strong) UIBarButtonItem *createButtonItem;
+@property (nonatomic) UIBarButtonItem *createButtonItem;
 
 @property (nonatomic) NBScrollViewPullActionState refreshState;
 @property (nonatomic) NBScrollViewPullActionState loadMoreState;

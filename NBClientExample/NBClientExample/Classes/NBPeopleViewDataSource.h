@@ -11,8 +11,8 @@
 
 @interface NBPeopleViewDataSource : NSObject <NBCollectionViewDataSource>
 
-@property (nonatomic, strong, readonly) NSArray *people;
-@property (nonatomic, strong, readonly) NSDictionary *personDataSources;
+@property (nonatomic, readonly) NSArray *people;
+@property (nonatomic, readonly) NSDictionary *personDataSources;
 
 - (void)fetchAll;
 

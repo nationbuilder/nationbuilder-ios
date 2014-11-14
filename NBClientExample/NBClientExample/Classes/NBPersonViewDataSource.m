@@ -22,10 +22,10 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 @property (nonatomic, weak) NBClient *client;
 
-@property (nonatomic, strong) NSURLSessionDataTask *saveTask;
-@property (nonatomic, strong) NSURLSessionDataTask *deleteTask;
+@property (nonatomic) NSURLSessionDataTask *saveTask;
+@property (nonatomic) NSURLSessionDataTask *deleteTask;
 
-@property (nonatomic, strong) NSDictionary *realChanges;
+@property (nonatomic) NSDictionary *realChanges;
 
 @end
 

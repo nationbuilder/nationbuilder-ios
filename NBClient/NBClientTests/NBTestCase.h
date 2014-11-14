@@ -16,18 +16,18 @@
 
 @interface NBTestCase : XCTestCase
 
-@property (nonatomic, strong, readonly) NSString *nationSlug;
-@property (nonatomic, strong, readonly) NSURL *baseURL;
-@property (nonatomic, strong, readonly) NSString *baseURLString;
+@property (nonatomic, readonly) NSString *nationSlug;
+@property (nonatomic, readonly) NSURL *baseURL;
+@property (nonatomic, readonly) NSString *baseURLString;
 
-@property (nonatomic, strong, readonly) NSString *testToken;
-@property (nonatomic, strong, readonly) NSString *clientIdentifier;
-@property (nonatomic, strong, readonly) NSString *clientSecret;
-@property (nonatomic, strong, readonly) NSString *userEmailAddress;
+@property (nonatomic, readonly) NSString *testToken;
+@property (nonatomic, readonly) NSString *clientIdentifier;
+@property (nonatomic, readonly) NSString *clientSecret;
+@property (nonatomic, readonly) NSString *userEmailAddress;
 @property (nonatomic, readonly) NSUInteger userIdentifier;
-@property (nonatomic, strong, readonly) NSString *userPassword;
+@property (nonatomic, readonly) NSString *userPassword;
 
-@property (nonatomic, strong, readonly) NBClient *client;
+@property (nonatomic, readonly) NBClient *client;
 
 @property (nonatomic, readonly) BOOL shouldUseHTTPStubbing;
 @property (nonatomic, readonly) BOOL shouldOnlyUseTestToken; // This may be temporary.

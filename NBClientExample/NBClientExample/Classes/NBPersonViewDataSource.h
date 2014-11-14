@@ -11,9 +11,9 @@
 
 @interface NBPersonViewDataSource : NSObject <NBViewDataSource>
 
-@property (nonatomic, strong) NSDictionary *person;
+@property (nonatomic) NSDictionary *person;
 
-@property (nonatomic, strong) UIImage *profileImage;
+@property (nonatomic) UIImage *profileImage;
 
 - (BOOL)save;
 - (void)cancelSave;

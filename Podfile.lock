@@ -1,5 +1,5 @@
 PODS:
-  - Nocilla (0.8.1)
+  - Nocilla (0.8.2)
   - OCMock (3.1.1)
 
 DEPENDENCIES:
@@ -7,7 +7,7 @@ DEPENDENCIES:
   - OCMock (~> 3.1.1)
 
 SPEC CHECKSUMS:
-  Nocilla: e573c2bf9113c8d77782b695a2f9362b7bc44e72
+  Nocilla: e11763419977add781e628157328bcdf8b392e97
   OCMock: f6cb8c162ab9d5620dddf411282c7b2c0ee78854
 
 COCOAPODS: 0.34.1

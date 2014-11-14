@@ -27,13 +27,13 @@ extern NSString * const NBAuthenticationDefaultRedirectPath;
 // only intended if your app is to be used by only your own nation.
 @interface NBAuthenticator : NSObject <NBLogging>
 
-@property (nonatomic, strong, readonly) NSURL *baseURL;
-@property (nonatomic, strong, readonly) NSString *clientIdentifier;
-@property (nonatomic, strong, readonly) NBAuthenticationCredential *credential;
+@property (nonatomic, readonly) NSURL *baseURL;
+@property (nonatomic, readonly) NSString *clientIdentifier;
+@property (nonatomic, readonly) NBAuthenticationCredential *credential;
 // #token-flow
 @property (nonatomic, readonly, getter = isAuthenticatingInWebBrowser) BOOL authenticatingInWebBrowser;
 
-@property (nonatomic, strong) NSString *credentialIdentifier;
+@property (nonatomic) NSString *credentialIdentifier;
 @property (nonatomic) BOOL shouldPersistCredential;
 
 // Designated initializer.
@@ -64,8 +64,8 @@ extern NSString * const NBAuthenticationDefaultRedirectPath;
 // static methods for securely managing the credential on the user's keychain.
 @interface NBAuthenticationCredential : NSObject <NSCoding>
 
-@property (nonatomic, strong, readonly) NSString *accessToken;
-@property (nonatomic, strong, readonly) NSString *tokenType;
+@property (nonatomic, readonly) NSString *accessToken;
+@property (nonatomic, readonly) NSString *tokenType;
 
 // Designated initializer.
 - (instancetype)initWithAccessToken:(NSString *)accessToken

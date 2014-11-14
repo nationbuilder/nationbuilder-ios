@@ -13,7 +13,7 @@
 	<key>Test Token</key>
 	<string>2be2921dcb1abe3ebf2495b6cc514ba3d91900abb7ad45a8a50aed09e46bc691</string>
 	<key>User ID</key>
-	<string>713</string>
+	<integer>713</integer>
 	<key>User Email Address</key>
 	<string>peng+tester@nationbuilder.com</string>
 </dict>

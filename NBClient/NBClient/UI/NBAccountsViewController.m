@@ -56,13 +56,13 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 @property (nonatomic) CGFloat originalAccountsPickerHeight;
 @property (nonatomic) CGFloat originalAccountsPickerBottomMargin;
 
-@property (nonatomic, strong) UIBarButtonItem *closeButtonItem;
-@property (nonatomic, strong) UIButton *closeIconButton;
+@property (nonatomic) UIBarButtonItem *closeButtonItem;
+@property (nonatomic) UIButton *closeIconButton;
 
-@property (nonatomic, strong) UIAlertView *nationSlugPromptView;
-@property (nonatomic, strong) UIAlertView *nationSlugErrorView;
+@property (nonatomic) UIAlertView *nationSlugPromptView;
+@property (nonatomic) UIAlertView *nationSlugErrorView;
 
-@property (nonatomic, strong) UIPopoverController *containingPopoverController;
+@property (nonatomic) UIPopoverController *containingPopoverController;
 @property (nonatomic, weak) UIViewController *customPresentingViewController;
 
 @property (nonatomic, readonly) NSUInteger selectedIndex;

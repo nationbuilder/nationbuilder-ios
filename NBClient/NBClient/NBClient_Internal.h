@@ -9,15 +9,15 @@
 
 @interface NBClient ()
 
-@property (nonatomic, strong, readwrite) NSString *nationSlug;
-@property (nonatomic, strong, readwrite) NSURLSession *urlSession;
-@property (nonatomic, strong, readwrite) NSURLSessionConfiguration *sessionConfiguration;
+@property (nonatomic, readwrite) NSString *nationSlug;
+@property (nonatomic, readwrite) NSURLSession *urlSession;
+@property (nonatomic, readwrite) NSURLSessionConfiguration *sessionConfiguration;
 
-@property (nonatomic, strong, readwrite) NBAuthenticator *authenticator;
+@property (nonatomic, readwrite) NBAuthenticator *authenticator;
 
-@property (nonatomic, strong, readwrite) NSURL *baseURL;
-@property (nonatomic, strong) NSURLComponents *baseURLComponents;
-@property (nonatomic, strong) NSString *defaultErrorRecoverySuggestion;
+@property (nonatomic, readwrite) NSURL *baseURL;
+@property (nonatomic) NSURLComponents *baseURLComponents;
+@property (nonatomic) NSString *defaultErrorRecoverySuggestion;
 
 - (void)commonInitWithNationSlug:(NSString *)nationSlug
                 customURLSession:(NSURLSession *)urlSession

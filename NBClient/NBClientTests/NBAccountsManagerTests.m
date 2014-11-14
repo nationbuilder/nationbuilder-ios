@@ -15,11 +15,11 @@
 
 @interface NBAccountsManagerTests : NBTestCase
 
-@property (nonatomic, strong) NBAccountsManager *accountsManager;
+@property (nonatomic) NBAccountsManager *accountsManager;
 
-@property (nonatomic, strong) id accountMock;
-@property (nonatomic, strong) id accountsManagerMock;
-@property (nonatomic, strong) id delegateMock;
+@property (nonatomic) id accountMock;
+@property (nonatomic) id accountsManagerMock;
+@property (nonatomic) id delegateMock;
 
 - (NBAccount *)createAccount;
 
@@ -121,7 +121,7 @@
                  @"Manager should not have a selected account.");
     XCTAssertFalse(accountsManager.isSignedIn,
                    @"Manager should not be signed in.");
-    XCTAssertEqual(accountsManager.accounts.count, 0,
+    XCTAssertEqual(accountsManager.accounts.count, (NSUInteger)0,
                    @"Manager should have no more accounts.");
 }
 
@@ -325,7 +325,7 @@
                    @"Manager should not be signed in.");
     XCTAssertNil(accountsManager.selectedAccount,
                  @"Manager should not have a selected account.");
-    XCTAssertEqual(accountsManager.accounts.count, 0,
+    XCTAssertEqual(accountsManager.accounts.count, (NSUInteger)0,
                    @"Manager should have no accounts.");
 }
 

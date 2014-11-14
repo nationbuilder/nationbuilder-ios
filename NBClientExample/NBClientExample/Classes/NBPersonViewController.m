@@ -33,7 +33,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 <UITextFieldDelegate, UITextViewDelegate, UIAlertViewDelegate>
 
-@property (nonatomic, strong, readwrite) NSMutableDictionary *nibNames;
+@property (nonatomic, readwrite) NSMutableDictionary *nibNames;
 
 @property (nonatomic, weak) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, weak) IBOutlet UIView *contentView;
@@ -54,19 +54,19 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 @property (nonatomic, weak) IBOutlet UILabel *tagsLabel;
 @property (nonatomic, weak) IBOutlet UITextView *tagsField;
 
-@property (nonatomic, strong) NSArray *fields;
+@property (nonatomic) NSArray *fields;
 
 @property (nonatomic, weak) id keyboardDidShowObserver;
 @property (nonatomic, weak) id keyboardWillHideObserver;
 @property (nonatomic) UIEdgeInsets originalContentInset;
 
-@property (nonatomic, strong) UIView *activeField;
+@property (nonatomic) UIView *activeField;
 
 @property (nonatomic, readonly, getter = isPresentedAsModal) BOOL presentedAsModal;
-@property (nonatomic, strong) UIBarButtonItem *closeButtonItem;
+@property (nonatomic) UIBarButtonItem *closeButtonItem;
 
-@property (nonatomic, strong) UIBarButtonItem *deleteButtonItem;
-@property (nonatomic, strong) UIAlertView *deleteConfirmationView;
+@property (nonatomic) UIBarButtonItem *deleteButtonItem;
+@property (nonatomic) UIAlertView *deleteConfirmationView;
 
 - (void)reloadData;
 - (void)saveData;

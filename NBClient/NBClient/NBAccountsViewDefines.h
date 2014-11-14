@@ -58,12 +58,12 @@
 // (`-addAccountWithNationSlug:error:`) and sign-out (`-signOutWithError:`).
 @protocol NBAccountsViewDataSource <NSObject>
 
-@property (nonatomic, strong, readonly) NSArray *accounts;
-@property (nonatomic, strong, readonly) NSString *previousAccountNationSlug;
+@property (nonatomic, readonly) NSArray *accounts;
+@property (nonatomic, readonly) NSString *previousAccountNationSlug;
 // Setting this triggers the process for switching to the provided account. Do
 // not pass nil to sign out of the selected account. Instead call
 // `-signOutWithError:`.
-@property (nonatomic, strong) id<NBAccountViewDataSource> selectedAccount;
+@property (nonatomic) id<NBAccountViewDataSource> selectedAccount;
 
 @property (nonatomic, readonly, getter = isSignedIn) BOOL signedIn;
 
@@ -84,8 +84,8 @@
 // any account view, ie. the account button.
 @protocol NBAccountViewDataSource <NSObject>
 
-@property (nonatomic, strong, readonly) NSString *name; // `username`, otherwise `full_name`
-@property (nonatomic, strong, readonly) NSString *nationSlug;
-@property (nonatomic, strong) NSData *avatarImageData; // Set to nil to clear memory.
+@property (nonatomic, readonly) NSString *name; // `username`, otherwise `full_name`
+@property (nonatomic, readonly) NSString *nationSlug;
+@property (nonatomic) NSData *avatarImageData; // Set to nil to clear memory.
 
 @end

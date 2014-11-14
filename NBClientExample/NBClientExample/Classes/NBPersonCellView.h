@@ -13,14 +13,14 @@
 
 @property (nonatomic, weak, readonly) UIView *bottomBorderView;
 
-@property (nonatomic, strong) UIColor *borderColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *borderColor UI_APPEARANCE_SELECTOR;
 
-@property (nonatomic, strong) UIColor *highlightedBackgroundColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *highlightedBackgroundColor UI_APPEARANCE_SELECTOR;
 
-@property (nonatomic, strong) UIColor *selectedBackgroundColor UI_APPEARANCE_SELECTOR;
-@property (nonatomic, strong) UIColor *selectedForegroundColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *selectedBackgroundColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *selectedForegroundColor UI_APPEARANCE_SELECTOR;
 
-@property (nonatomic, strong) NSString *tagDelimiterString UI_APPEARANCE_SELECTOR;
+@property (nonatomic) NSString *tagDelimiterString UI_APPEARANCE_SELECTOR;
 
 @property (nonatomic, getter = areBordersDisabled) BOOL bordersDisabled;
 

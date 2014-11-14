@@ -17,8 +17,8 @@
 
 @interface NBAccountTests : NBTestCase
 
-@property (nonatomic, strong) NBAccount *account;
-@property (nonatomic, strong) id delegateMock;
+@property (nonatomic) NBAccount *account;
+@property (nonatomic) id delegateMock;
 
 @end
 
@@ -71,7 +71,7 @@
     XCTAssertFalse([authenticator.credentialIdentifier isEqualToString:originalCredentialIdentifier],
                    @"Credential identifier should be updated.");
     XCTAssertTrue(([authenticator.credentialIdentifier rangeOfString:name].location != NSNotFound &&
-                   [authenticator.credentialIdentifier rangeOfString:[NSString stringWithFormat:@"%lu", identifier]].location != NSNotFound),
+                   [authenticator.credentialIdentifier rangeOfString:[NSString stringWithFormat:@"%lu", (unsigned long)identifier]].location != NSNotFound),
                   @"Credential identifier should contain new account name and identifier.");
 }
 
@@ -93,7 +93,7 @@
      }];
     // Given: a client that properly fetches person data for its account user.
     [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people/me" identifier:NSNotFound parameters:@{ @"access_token": accessToken }
-                                      client:(id)[accountMock client]];
+                                      client:[(NBAccount *)accountMock client]];
     // Given: keychain persistence that works.
     id credentialMock = OCMClassMock([NBAuthenticationCredential class]);
     [OCMStub([credentialMock saveCredential:OCMOCK_ANY withIdentifier:OCMOCK_ANY]) andReturnValue:@YES];
@@ -113,7 +113,7 @@
         XCTAssertTrue([account.client.apiKey isEqualToString:accessToken],
                       @"Account client should be authenticated.");
         XCTAssertTrue(([[authenticatorMock credentialIdentifier] rangeOfString:account.name].location != NSNotFound &&
-                       [[authenticatorMock credentialIdentifier] rangeOfString:[NSString stringWithFormat:@"%lu", account.identifier]].location != NSNotFound),
+                       [[authenticatorMock credentialIdentifier] rangeOfString:[NSString stringWithFormat:@"%lu", (unsigned long)account.identifier]].location != NSNotFound),
                       @"Credential identifier should contain new account name and identifier.");
         [self completeAsync];
     }];
