@@ -67,11 +67,11 @@
     if (self.shouldUseHTTPStubbing) {
         [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people" identifier:NSNotFound parameters:paginationParameters];
     }
-    NBPaginationInfo *paginationInfo =
+    NBPaginationInfo *requestPaginationInfo =
     [[NBPaginationInfo alloc] initWithDictionary:paginationParameters];
     NSURLSessionDataTask *task =
     [self.client
-     fetchPeopleWithPaginationInfo:paginationInfo
+     fetchPeopleWithPaginationInfo:requestPaginationInfo
      completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
          [self assertServiceError:error];
          [self assertPeopleArray:items];
@@ -93,12 +93,12 @@
         [mutableParameters addEntriesFromDictionary:parameters];
         [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people/search" identifier:NSNotFound parameters:mutableParameters];
     }
-    NBPaginationInfo *paginationInfo =
+    NBPaginationInfo *requestPaginationInfo =
     [[NBPaginationInfo alloc] initWithDictionary:paginationParameters];
     NSURLSessionDataTask *task =
     [self.client
      fetchPeopleByParameters: parameters
-     withPaginationInfo:paginationInfo
+     withPaginationInfo:requestPaginationInfo
      completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
          [self assertServiceError:error];
          [self assertPeopleArray:items];
@@ -171,6 +171,10 @@
     if (self.shouldUseHTTPStubbing) {
         [self stubRequestUsingFileDataWithMethod:@"POST" path:@"people" identifier:NSNotFound parameters:nil];
     }
+    void (^undoTestChanges)(NSUInteger) = ^(NSUInteger identifier) {
+        [self.client deletePersonByIdentifier:identifier
+                        withCompletionHandler:^(NSDictionary *item, NSError *error) { [self completeAsync]; }];
+    };
     NSURLSessionDataTask *task =
     [self.client
      createPersonWithParameters:parameters
@@ -182,8 +186,7 @@
          if (self.shouldUseHTTPStubbing) {
              [self completeAsync];
          } else {
-             [self.client deletePersonByIdentifier:[item[@"id"] unsignedIntegerValue]
-                             withCompletionHandler:^(NSDictionary *item, NSError *error) { [self completeAsync]; }];
+             undoTestChanges([item[@"id"] unsignedIntegerValue]);
          }
      }];
     [self assertSessionDataTask:task];
@@ -195,31 +198,29 @@
     [self setUpAsync];
     NSUInteger identifier = self.userIdentifier;
     NSDictionary *parameters = @{ @"demo": @"B" };
-    void (^testSave)(NSDictionary *, NSError *) = ^(NSDictionary *item, NSError *error) {
-        NSURLSessionDataTask *task =
-        [self.client
-         savePersonByIdentifier:identifier
-         withParameters:parameters
-         completionHandler:^(NSDictionary *item, NSError *error) {
-             [self assertServiceError:error];
-             [self assertPersonDictionary:item];
-             XCTAssertTrue([item nb_containsDictionary:parameters],
-                           @"Person dictionary should be populated by parameters.");
-             if (self.shouldUseHTTPStubbing) {
-                 [self completeAsync];
-             } else {
-                 [self.client savePersonByIdentifier:identifier withParameters:@{ @"demo": @"W" }
-                                   completionHandler:^(NSDictionary *item, NSError *error) { [self completeAsync]; }];
-             }
-         }];
-        [self assertSessionDataTask:task];
+    void (^undoTestChanges)(void) = ^{
+        [self.client savePersonByIdentifier:identifier withParameters:@{ @"demo": @"W" }
+                          completionHandler:^(NSDictionary *item, NSError *error) { [self completeAsync]; }];
     };
     if (self.shouldUseHTTPStubbing) {
         [self stubRequestUsingFileDataWithMethod:@"PUT" path:@"people" identifier:identifier parameters:nil];
-        testSave(nil, nil);
-    } else {
-        [self.client fetchPersonByIdentifier:self.userIdentifier withCompletionHandler:testSave];
     }
+    NSURLSessionDataTask *task =
+    [self.client
+     savePersonByIdentifier:identifier
+     withParameters:parameters
+     completionHandler:^(NSDictionary *item, NSError *error) {
+         [self assertServiceError:error];
+         [self assertPersonDictionary:item];
+         XCTAssertTrue([item nb_containsDictionary:parameters],
+                       @"Person dictionary should be populated by parameters.");
+         if (self.shouldUseHTTPStubbing) {
+             [self completeAsync];
+         } else {
+             undoTestChanges();
+         }
+     }];
+    [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
 
@@ -231,9 +232,9 @@
         NSURLSessionDataTask *task =
         [self.client
          deletePersonByIdentifier:(!item ? identifier : [item[@"id"] unsignedIntegerValue])
-         withCompletionHandler:^(NSDictionary *item, NSError *error) {
-             [self assertServiceError:error];
-             XCTAssertNil(item,
+         withCompletionHandler:^(NSDictionary *deletedItem, NSError *deleteError) {
+             [self assertServiceError:deleteError];
+             XCTAssertNil(deletedItem,
                           @"Person dictionary should not exist.");
              [self completeAsync];
          }];

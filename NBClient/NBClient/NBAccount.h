@@ -23,15 +23,15 @@
 
 @property (nonatomic, weak, readonly) id<NBAccountDelegate> delegate;
 
-@property (nonatomic, strong, readonly) NBClient *client;
-@property (nonatomic, strong, readonly) NBAuthenticator *authenticator;
+@property (nonatomic, readonly) NBClient *client;
+@property (nonatomic, readonly) NBAuthenticator *authenticator;
 
-@property (nonatomic, strong, readonly) NSDictionary *clientInfo;
+@property (nonatomic, readonly) NSDictionary *clientInfo;
 // Will load from the conventional plist with name equal to NBInfoFileName. Useful if your app is only for one nation.
-@property (nonatomic, strong, readonly) NSDictionary *defaultClientInfo;
+@property (nonatomic, readonly) NSDictionary *defaultClientInfo;
 
 @property (nonatomic) NSUInteger identifier;
-@property (nonatomic, strong) NSString *name; // Override.
+@property (nonatomic) NSString *name; // Override.
 
 @property (nonatomic, getter = isActive) BOOL active;
 @property (nonatomic) BOOL shouldUseTestToken;

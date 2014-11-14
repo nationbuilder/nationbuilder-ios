@@ -10,13 +10,13 @@
 @interface NBAccount ()
 
 @property (nonatomic, weak, readwrite) id<NBAccountDelegate> delegate;
-@property (nonatomic, strong, readwrite) NBClient *client;
-@property (nonatomic, strong, readwrite) NSDictionary *clientInfo;
-@property (nonatomic, strong, readwrite) NSDictionary *defaultClientInfo;
+@property (nonatomic, readwrite) NBClient *client;
+@property (nonatomic, readwrite) NSDictionary *clientInfo;
+@property (nonatomic, readwrite) NSDictionary *defaultClientInfo;
 
-@property (nonatomic, strong) NBAuthenticator *authenticator;
+@property (nonatomic) NBAuthenticator *authenticator;
 
-@property (nonatomic, strong) NSDictionary *person;
+@property (nonatomic) NSDictionary *person;
 
 - (NSURL *)baseURL;
 

@@ -84,10 +84,25 @@
         return;
     }
     [self setUpAsync];
+    // Test credential persistence across initializations.
+    void (^testCredentialPersistence)(void) = ^{
+        NBClient *otherClient = [self baseClientWithAuthenticator];
+        NSURLSessionDataTask *task =
+        [otherClient.authenticator
+         authenticateWithUserName:self.userEmailAddress
+         password:self.userPassword
+         clientSecret:self.clientSecret
+         completionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
+             [self assertServiceError:error];
+             [self assertCredential:credential];
+         }];
+        XCTAssertNil(task,
+                     @"Saved credential should have been fetched to obviate authenticating against service.");
+    };
+    // Test authentication.
     NBClient *client = [self baseClientWithAuthenticator];
     XCTAssertNotNil(client.authenticator,
                     @"Client should have authenticator.");
-    // Test authentication.
     NSString *credentialIdentifier = client.authenticator.credentialIdentifier;
     [NBAuthenticationCredential deleteCredentialWithIdentifier:credentialIdentifier];
     NSURLSessionDataTask *task =
@@ -99,19 +114,7 @@
          [self assertServiceError:error];
          [self assertCredential:credential];
          client.apiKey = credential.accessToken;
-         // Test credential persistence across initializations.
-         NBClient *client = self.baseClientWithAuthenticator;
-         NSURLSessionDataTask *task =
-         [client.authenticator
-          authenticateWithUserName:self.userEmailAddress
-          password:self.userPassword
-          clientSecret:self.clientSecret
-          completionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
-              [self assertServiceError:error];
-              [self assertCredential:credential];
-          }];
-         XCTAssertNil(task,
-                      @"Saved credential should have been fetched to obviate authenticating against service.");
+         testCredentialPersistence();
          [self completeAsync];
      }];
     [self assertSessionDataTask:task];

@@ -9,9 +9,9 @@
 
 @interface NBAuthenticator ()
 
-@property (nonatomic, strong, readwrite) NSURL *baseURL;
-@property (nonatomic, strong, readwrite) NSString *clientIdentifier;
-@property (nonatomic, strong, readwrite) NBAuthenticationCredential *credential;
+@property (nonatomic, readwrite) NSURL *baseURL;
+@property (nonatomic, readwrite) NSString *clientIdentifier;
+@property (nonatomic, readwrite) NBAuthenticationCredential *credential;
 
 // #token-flow
 @property (nonatomic, strong) NBAuthenticationCompletionHandler currentInBrowserAuthenticationCompletionHandler;
@@ -33,8 +33,8 @@
 
 @interface NBAuthenticationCredential ()
 
-@property (nonatomic, strong, readwrite) NSString *accessToken;
-@property (nonatomic, strong, readwrite) NSString *tokenType;
+@property (nonatomic, readwrite) NSString *accessToken;
+@property (nonatomic, readwrite) NSString *tokenType;
 
 + (NSMutableDictionary *)baseKeychainQueryDictionaryWithIdentifier:(NSString *)identifier;
 

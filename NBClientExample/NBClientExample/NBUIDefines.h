@@ -38,18 +38,18 @@ typedef NS_ENUM(NSUInteger, NBScrollViewPullActionState) {
 
 @protocol NBViewController <NBLogging>
 
-@property (nonatomic, strong, readonly) NSDictionary *nibNames;
+@property (nonatomic, readonly) NSDictionary *nibNames;
 
 // Dedicated initializer.
 - (instancetype)initWithNibNames:(NSDictionary *)nibNamesOrNil bundle:(NSBundle *)nibBundleOrNil;
 
 @optional
 
-@property (nonatomic, strong) id<NBViewDataSource> dataSource;
+@property (nonatomic) id<NBViewDataSource> dataSource;
 
 @property (nonatomic, getter = isBusy) BOOL busy;
-@property (nonatomic, strong) UIActivityIndicatorView *busyIndicator;
-@property (nonatomic, strong) UIBarButtonItem *cancelButtonItem;
+@property (nonatomic) UIActivityIndicatorView *busyIndicator;
+@property (nonatomic) UIBarButtonItem *cancelButtonItem;
 
 - (IBAction)cancelPendingAction:(id)sender;
 
@@ -61,7 +61,7 @@ typedef NS_ENUM(NSUInteger, NBScrollViewPullActionState) {
 
 @optional
 
-@property (nonatomic, strong) id<NBViewDataSource> dataSource;
+@property (nonatomic) id<NBViewDataSource> dataSource;
 
 @end
 
@@ -82,7 +82,7 @@ typedef NS_ENUM(NSUInteger, NBScrollViewPullActionState) {
 
 @protocol NBViewDataSource <NBLogging>
 
-@property (nonatomic, strong) NSError *error;
+@property (nonatomic) NSError *error;
 
 // Dedicated initializer.
 - (instancetype)initWithClient:(NBClient *)client;
@@ -98,7 +98,7 @@ typedef NS_ENUM(NSUInteger, NBScrollViewPullActionState) {
 @property (nonatomic, weak, readonly) NBClient *client;
 
 @property (nonatomic, weak) id delegate;
-@property (nonatomic, strong) id changes;
+@property (nonatomic) id changes;
 
 + (id)parseChanges:(id)changes;
 
@@ -112,7 +112,7 @@ typedef NS_ENUM(NSUInteger, NBScrollViewPullActionState) {
 
 @protocol NBCollectionViewDataSource <NBViewDataSource>
 
-@property (nonatomic, strong) NBPaginationInfo *paginationInfo;
+@property (nonatomic) NBPaginationInfo *paginationInfo;
 
 - (id<NBViewDataSource>)dataSourceForItem:(NSDictionary *)item;
 - (id<NBViewDataSource>)dataSourceForItemAtIndex:(NSUInteger)index;

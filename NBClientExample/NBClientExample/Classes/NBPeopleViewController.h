@@ -14,7 +14,7 @@
 @interface NBPeopleViewController : UICollectionViewController <NBViewController>
 
 @property (nonatomic, getter = isReady) BOOL ready;
-@property (nonatomic, strong, readonly) UILabel *notReadyLabel;
+@property (nonatomic, readonly) UILabel *notReadyLabel;
 
 - (void)showAccountButton:(NBAccountButton *)accountButton;
 

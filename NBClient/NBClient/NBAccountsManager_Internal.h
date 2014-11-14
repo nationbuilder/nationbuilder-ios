@@ -13,15 +13,15 @@
 
 // NBAccountsViewDataSource
 @property (nonatomic, readwrite) BOOL signedIn;
-@property (nonatomic, strong, readwrite) NSString *previousAccountNationSlug;
+@property (nonatomic, readwrite) NSString *previousAccountNationSlug;
 
 @property (nonatomic, readwrite) BOOL shouldPersistAccounts;
 
-@property (nonatomic, strong) NSDictionary *clientInfo;
-@property (nonatomic, strong) NSMutableArray *mutableAccounts;
+@property (nonatomic) NSDictionary *clientInfo;
+@property (nonatomic) NSMutableArray *mutableAccounts;
 
-@property (nonatomic, strong) id applicationDidEnterBackgroundNotifier;
-@property (nonatomic, strong) NSString *persistedAccountsIdentifier;
+@property (nonatomic) id applicationDidEnterBackgroundNotifier;
+@property (nonatomic) NSString *persistedAccountsIdentifier;
 
 - (void)activateAccount:(NBAccount *)account;
 - (void)deactivateAccount:(NBAccount *)account;

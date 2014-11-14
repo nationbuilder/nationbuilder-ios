@@ -23,8 +23,8 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 @property (nonatomic, weak, readwrite) IBOutlet UIView *bottomBorderView;
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *tagsLabel;
-@property (nonatomic, strong) NSArray *borderViews;
-@property (nonatomic, strong) NSArray *labeledViews;
+@property (nonatomic) NSArray *borderViews;
+@property (nonatomic) NSArray *labeledViews;
 
 @end
 

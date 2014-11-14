@@ -20,18 +20,18 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
 
 @interface NBTestCase ()
 
-@property (nonatomic, strong, readwrite) NSString *nationSlug;
-@property (nonatomic, strong, readwrite) NSURL *baseURL;
-@property (nonatomic, strong, readwrite) NSString *baseURLString;
+@property (nonatomic, readwrite) NSString *nationSlug;
+@property (nonatomic, readwrite) NSURL *baseURL;
+@property (nonatomic, readwrite) NSString *baseURLString;
 
-@property (nonatomic, strong, readwrite) NSString *testToken;
-@property (nonatomic, strong, readwrite) NSString *clientIdentifier;
-@property (nonatomic, strong, readwrite) NSString *clientSecret;
-@property (nonatomic, strong, readwrite) NSString *userEmailAddress;
+@property (nonatomic, readwrite) NSString *testToken;
+@property (nonatomic, readwrite) NSString *clientIdentifier;
+@property (nonatomic, readwrite) NSString *clientSecret;
+@property (nonatomic, readwrite) NSString *userEmailAddress;
 @property (nonatomic, readwrite) NSUInteger userIdentifier;
-@property (nonatomic, strong, readwrite) NSString *userPassword;
+@property (nonatomic, readwrite) NSString *userPassword;
 
-@property (nonatomic, strong, readwrite) NBClient *client;
+@property (nonatomic, readwrite) NBClient *client;
 
 @property (nonatomic, weak, readwrite) XCTestExpectation *mainExpectation;
 
@@ -73,7 +73,7 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
     self.clientIdentifier = info[NBInfoClientIdentifierKey];
     self.clientSecret = info[NBInfoClientSecretKey];
     self.userEmailAddress = info[NBInfoUserEmailAddressKey];
-    self.userIdentifier = [info[NBInfoUserIdentifierKey] integerValue];
+    self.userIdentifier = [info[NBInfoUserIdentifierKey] unsignedIntegerValue];
     self.userPassword = info[NBInfoUserPasswordKey];
 }
 
@@ -101,7 +101,7 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
 
 + (BOOL)shouldUseHTTPStubbing
 {
-    return self.dictionaryWithContentsOfInfoFile[NBInfoShouldUseHTTPStubbingKey];
+    return [self.dictionaryWithContentsOfInfoFile[NBInfoShouldUseHTTPStubbingKey] boolValue];
 }
 
 - (BOOL)shouldUseHTTPStubbing
@@ -137,7 +137,7 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
     components.path = [NSString stringWithFormat:@"/api/%@/%@", client.apiVersion, path];
     BOOL hasIdentifier = identifier != NSNotFound;
     if (hasIdentifier) {
-        components.path = [components.path stringByAppendingString:[NSString stringWithFormat:@"/%lu", identifier]];
+        components.path = [components.path stringByAppendingString:[NSString stringWithFormat:@"/%lu", (unsigned long)identifier]];
     }
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
     mutableParameters[@"access_token"] = mutableParameters[@"access_token"] ?: client.apiKey;
