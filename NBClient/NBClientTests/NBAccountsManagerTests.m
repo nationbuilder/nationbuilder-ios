@@ -121,7 +121,7 @@
                  @"Manager should not have a selected account.");
     XCTAssertFalse(accountsManager.isSignedIn,
                    @"Manager should not be signed in.");
-    XCTAssertEqual(accountsManager.accounts.count, 0,
+    XCTAssertEqual(accountsManager.accounts.count, (NSUInteger)0,
                    @"Manager should have no more accounts.");
 }
 
@@ -325,7 +325,7 @@
                    @"Manager should not be signed in.");
     XCTAssertNil(accountsManager.selectedAccount,
                  @"Manager should not have a selected account.");
-    XCTAssertEqual(accountsManager.accounts.count, 0,
+    XCTAssertEqual(accountsManager.accounts.count, (NSUInteger)0,
                    @"Manager should have no accounts.");
 }
 

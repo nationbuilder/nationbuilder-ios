@@ -71,7 +71,7 @@
     XCTAssertFalse([authenticator.credentialIdentifier isEqualToString:originalCredentialIdentifier],
                    @"Credential identifier should be updated.");
     XCTAssertTrue(([authenticator.credentialIdentifier rangeOfString:name].location != NSNotFound &&
-                   [authenticator.credentialIdentifier rangeOfString:[NSString stringWithFormat:@"%lu", identifier]].location != NSNotFound),
+                   [authenticator.credentialIdentifier rangeOfString:[NSString stringWithFormat:@"%lu", (unsigned long)identifier]].location != NSNotFound),
                   @"Credential identifier should contain new account name and identifier.");
 }
 
@@ -113,7 +113,7 @@
         XCTAssertTrue([account.client.apiKey isEqualToString:accessToken],
                       @"Account client should be authenticated.");
         XCTAssertTrue(([[authenticatorMock credentialIdentifier] rangeOfString:account.name].location != NSNotFound &&
-                       [[authenticatorMock credentialIdentifier] rangeOfString:[NSString stringWithFormat:@"%lu", account.identifier]].location != NSNotFound),
+                       [[authenticatorMock credentialIdentifier] rangeOfString:[NSString stringWithFormat:@"%lu", (unsigned long)account.identifier]].location != NSNotFound),
                       @"Credential identifier should contain new account name and identifier.");
         [self completeAsync];
     }];

@@ -63,21 +63,21 @@
 - (void)testCurrentPageNumberConstraints
 {
     self.paginationInfo.currentPageNumber = 0;
-    XCTAssertEqual(self.paginationInfo.currentPageNumber, 1,
+    XCTAssertEqual(self.paginationInfo.currentPageNumber, (NSUInteger)1,
                    @"Current page number should not be less than 1.");
 }
 
 - (void)testIndexOfFirstItemAtPage
 {
-    XCTAssertEqual([self.paginationInfo indexOfFirstItemAtPage:2], 10,
+    XCTAssertEqual([self.paginationInfo indexOfFirstItemAtPage:2], (NSUInteger)10,
                    @"First page item index should be properly calculated.");
 }
 
 - (void)testNumberOfItemsAtPage
 {
-    XCTAssertEqual([self.paginationInfo numberOfItemsAtPage:1], 10,
+    XCTAssertEqual([self.paginationInfo numberOfItemsAtPage:1], (NSUInteger)10,
                    @"Non-last page item count should be properly calculated.");
-    XCTAssertEqual([self.paginationInfo numberOfItemsAtPage:2], 5,
+    XCTAssertEqual([self.paginationInfo numberOfItemsAtPage:2], (NSUInteger)5,
                    @"Last page item count should be properly calculated.");
 }
 
