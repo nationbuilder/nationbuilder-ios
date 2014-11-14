@@ -93,7 +93,7 @@
      }];
     // Given: a client that properly fetches person data for its account user.
     [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people/me" identifier:NSNotFound parameters:@{ @"access_token": accessToken }
-                                      client:(id)[accountMock client]];
+                                      client:[(NBAccount *)accountMock client]];
     // Given: keychain persistence that works.
     id credentialMock = OCMClassMock([NBAuthenticationCredential class]);
     [OCMStub([credentialMock saveCredential:OCMOCK_ANY withIdentifier:OCMOCK_ANY]) andReturnValue:@YES];
