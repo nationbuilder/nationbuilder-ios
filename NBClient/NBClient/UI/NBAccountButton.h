@@ -26,13 +26,13 @@ typedef NS_ENUM(NSUInteger, NBAccountButtonType) {
 @property (nonatomic) NBAccountButtonType buttonType UI_APPEARANCE_SELECTOR;
 @property (nonatomic) BOOL shouldUseCircleAvatarFrame UI_APPEARANCE_SELECTOR;
 
-@property (nonatomic, strong) NSNumber *cornerRadius UI_APPEARANCE_SELECTOR;
-@property (nonatomic, strong) NSNumber *dimmedAlpha UI_APPEARANCE_SELECTOR;
-@property (nonatomic, strong) NSNumber *highlightAnimationDuration UI_APPEARANCE_SELECTOR;
+@property (nonatomic) NSNumber *cornerRadius UI_APPEARANCE_SELECTOR;
+@property (nonatomic) NSNumber *dimmedAlpha UI_APPEARANCE_SELECTOR;
+@property (nonatomic) NSNumber *highlightAnimationDuration UI_APPEARANCE_SELECTOR;
 
 // Access this to get a dedicated button item for your account button. It will
 // also let the button know it's being used as the custom view for a button item.
-@property (nonatomic, strong) UIBarButtonItem *barButtonItem;
+@property (nonatomic) UIBarButtonItem *barButtonItem;
 
 @property (nonatomic) BOOL contextHasMultipleActiveAccounts;
 

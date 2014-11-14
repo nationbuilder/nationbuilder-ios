@@ -15,11 +15,11 @@
 
 @interface NBAccountsManagerTests : NBTestCase
 
-@property (nonatomic, strong) NBAccountsManager *accountsManager;
+@property (nonatomic) NBAccountsManager *accountsManager;
 
-@property (nonatomic, strong) id accountMock;
-@property (nonatomic, strong) id accountsManagerMock;
-@property (nonatomic, strong) id delegateMock;
+@property (nonatomic) id accountMock;
+@property (nonatomic) id accountsManagerMock;
+@property (nonatomic) id delegateMock;
 
 - (NBAccount *)createAccount;
 

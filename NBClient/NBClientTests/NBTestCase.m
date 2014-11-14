@@ -20,18 +20,18 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
 
 @interface NBTestCase ()
 
-@property (nonatomic, strong, readwrite) NSString *nationSlug;
-@property (nonatomic, strong, readwrite) NSURL *baseURL;
-@property (nonatomic, strong, readwrite) NSString *baseURLString;
+@property (nonatomic, readwrite) NSString *nationSlug;
+@property (nonatomic, readwrite) NSURL *baseURL;
+@property (nonatomic, readwrite) NSString *baseURLString;
 
-@property (nonatomic, strong, readwrite) NSString *testToken;
-@property (nonatomic, strong, readwrite) NSString *clientIdentifier;
-@property (nonatomic, strong, readwrite) NSString *clientSecret;
-@property (nonatomic, strong, readwrite) NSString *userEmailAddress;
+@property (nonatomic, readwrite) NSString *testToken;
+@property (nonatomic, readwrite) NSString *clientIdentifier;
+@property (nonatomic, readwrite) NSString *clientSecret;
+@property (nonatomic, readwrite) NSString *userEmailAddress;
 @property (nonatomic, readwrite) NSUInteger userIdentifier;
-@property (nonatomic, strong, readwrite) NSString *userPassword;
+@property (nonatomic, readwrite) NSString *userPassword;
 
-@property (nonatomic, strong, readwrite) NBClient *client;
+@property (nonatomic, readwrite) NBClient *client;
 
 @property (nonatomic, weak, readwrite) XCTestExpectation *mainExpectation;
 

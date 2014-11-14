@@ -28,15 +28,15 @@
 
 @property (nonatomic, weak, readonly) IBOutlet UIImageView *logoImageView;
 
-@property (nonatomic, strong) UIColor *borderColor UI_APPEARANCE_SELECTOR;
-@property (nonatomic, strong) NSNumber *cornerRadius UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *borderColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) NSNumber *cornerRadius UI_APPEARANCE_SELECTOR;
 
-@property (nonatomic, strong) UIColor *buttonBackgroundColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *buttonBackgroundColor UI_APPEARANCE_SELECTOR;
 
-@property (nonatomic, strong) UIColor *imageBorderColor UI_APPEARANCE_SELECTOR;
-@property (nonatomic, strong) NSNumber *imageCornerRadius UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *imageBorderColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) NSNumber *imageCornerRadius UI_APPEARANCE_SELECTOR;
 
-@property (nonatomic, strong) NSNumber *appearanceDuration UI_APPEARANCE_SELECTOR;
+@property (nonatomic) NSNumber *appearanceDuration UI_APPEARANCE_SELECTOR;
 
 @property (nonatomic, getter = isPresentedInPopover) BOOL presentedInPopover;
 @property (nonatomic) BOOL shouldAutoPromptForNationSlug;

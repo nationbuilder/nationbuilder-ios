@@ -22,8 +22,8 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 @property (nonatomic, weak, readwrite) NBClient *client;
 
-@property (nonatomic, strong, readwrite) NSArray *people;
-@property (nonatomic, strong) NSMutableDictionary *mutablePersonDataSources;
+@property (nonatomic, readwrite) NSArray *people;
+@property (nonatomic) NSMutableDictionary *mutablePersonDataSources;
 
 @end
 

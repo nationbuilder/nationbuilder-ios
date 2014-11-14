@@ -11,9 +11,9 @@
 
 @interface NBPeopleViewFlowLayout : UICollectionViewFlowLayout <NBLogging>
 
-@property (nonatomic, strong) NSNumber *contentInsetAnimationDuration;
+@property (nonatomic) NSNumber *contentInsetAnimationDuration;
 
-@property (nonatomic, strong) NSNumber *requiredContentOffsetOverflow;
+@property (nonatomic) NSNumber *requiredContentOffsetOverflow;
 
 @property (nonatomic) UIEdgeInsets originalContentInset;
 
@@ -37,8 +37,8 @@
 
 @interface NBPeopleDecorationLabel : UICollectionReusableView
 
-@property (nonatomic, strong) UIFont *font UI_APPEARANCE_SELECTOR;
-@property (nonatomic, strong) UIColor *textColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIFont *font UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *textColor UI_APPEARANCE_SELECTOR;
 
 @end
 

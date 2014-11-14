@@ -19,14 +19,14 @@
 
 @interface NBAppDelegate () <NBAccountsManagerDelegate>
 
-@property (nonatomic, strong, readonly) NBAccount *account;
+@property (nonatomic, readonly) NBAccount *account;
 
-@property (nonatomic, strong) NBAccountButton *accountButton;
-@property (nonatomic, strong) NBAccountsManager *accountsManager;
-@property (nonatomic, strong) NBAccountsViewController *accountsViewController;
+@property (nonatomic) NBAccountButton *accountButton;
+@property (nonatomic) NBAccountsManager *accountsManager;
+@property (nonatomic) NBAccountsViewController *accountsViewController;
 
-@property (nonatomic, strong) NSDictionary *customClientInfo;
-@property (nonatomic, strong) NBPeopleViewController *peopleViewController;
+@property (nonatomic) NSDictionary *customClientInfo;
+@property (nonatomic) NBPeopleViewController *peopleViewController;
 
 - (IBAction)presentAccountsViewController:(id)sender;
 

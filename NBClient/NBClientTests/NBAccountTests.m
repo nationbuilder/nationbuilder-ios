@@ -17,8 +17,8 @@
 
 @interface NBAccountTests : NBTestCase
 
-@property (nonatomic, strong) NBAccount *account;
-@property (nonatomic, strong) id delegateMock;
+@property (nonatomic) NBAccount *account;
+@property (nonatomic) id delegateMock;
 
 @end
 
