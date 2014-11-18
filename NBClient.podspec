@@ -30,7 +30,7 @@ Pod::Spec.new do |s|
     sp.private_header_files = 'NBClient/NBClient/UI/*_Internal.h'
     sp.resources = [
       'NBClient/NBClient/UI/*.xib', 
-      'NBClient/NBClient/UI/Media.xcassets',
+      'NBClient/NBClient/UI/NBClient_UI.xcassets',
       'NBClient/NBClient/UI/pe-icon-7-stroke.ttf'
     ]
   end
