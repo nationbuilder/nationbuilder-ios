@@ -30,7 +30,6 @@
 		AA7904A919E8A0D20007FF3E /* NationBuilder-Info-Local.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA7904A719E8A0D20007FF3E /* NationBuilder-Info-Local.plist */; };
 		AA7F19B91A117834000A451B /* NBAppLaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA7F19B81A117834000A451B /* NBAppLaunchScreen.xib */; };
 		AA7F19BA1A1179BD000A451B /* NBAppLaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA7F19B81A117834000A451B /* NBAppLaunchScreen.xib */; };
-		AA811B8C1A00775800F80EDF /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA811B8B1A00775800F80EDF /* Media.xcassets */; };
 		AA84F05419EE0E2D00DAA6B8 /* NBAccountsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA84F05319EE0E2D00DAA6B8 /* NBAccountsViewController.xib */; };
 		AA909123198339EA009BE1E9 /* libNBClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA909122198339EA009BE1E9 /* libNBClient.a */; };
 		AA90912D19833B0E009BE1E9 /* NBPeopleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA90912A19833B0E009BE1E9 /* NBPeopleViewController.xib */; };
@@ -54,6 +53,7 @@
 		AA90915019833D01009BE1E9 /* NBPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA90914B19833D01009BE1E9 /* NBPersonViewController.m */; };
 		AA90915119833D01009BE1E9 /* NBPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA90914B19833D01009BE1E9 /* NBPersonViewController.m */; };
 		AAC01B9519F95B7D0093EEA7 /* pe-icon-7-stroke.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AAC01B9419F95B7D0093EEA7 /* pe-icon-7-stroke.ttf */; };
+		AAD248EE1A1AED0700655CF9 /* NBClient_UI.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAD248ED1A1AED0700655CF9 /* NBClient_UI.xcassets */; };
 		AAEFEAEB19E62F9600777BC1 /* NBAccountButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAEFEAEA19E62F9600777BC1 /* NBAccountButton.xib */; };
 /* End PBXBuildFile section */
 
@@ -91,7 +91,6 @@
 		AA7904A419E8A0BA0007FF3E /* NationBuilder-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "NationBuilder-Info.plist"; sourceTree = "<group>"; };
 		AA7904A719E8A0D20007FF3E /* NationBuilder-Info-Local.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "NationBuilder-Info-Local.plist"; sourceTree = "<group>"; };
 		AA7F19B81A117834000A451B /* NBAppLaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NBAppLaunchScreen.xib; path = Nibs/NBAppLaunchScreen.xib; sourceTree = "<group>"; };
-		AA811B8B1A00775800F80EDF /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Media.xcassets; path = ../NBClient/NBClient/UI/Media.xcassets; sourceTree = "<group>"; };
 		AA84F05319EE0E2D00DAA6B8 /* NBAccountsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NBAccountsViewController.xib; path = ../NBClient/NBClient/UI/NBAccountsViewController.xib; sourceTree = "<group>"; };
 		AA909122198339EA009BE1E9 /* libNBClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libNBClient.a; path = "../NBClient/build/Debug-iphoneos/libNBClient.a"; sourceTree = "<group>"; };
 		AA90912A19833B0E009BE1E9 /* NBPeopleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NBPeopleViewController.xib; path = Nibs/NBPeopleViewController.xib; sourceTree = "<group>"; };
@@ -111,6 +110,7 @@
 		AA90914A19833D01009BE1E9 /* NBPersonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPersonViewController.h; path = Classes/NBPersonViewController.h; sourceTree = "<group>"; };
 		AA90914B19833D01009BE1E9 /* NBPersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBPersonViewController.m; path = Classes/NBPersonViewController.m; sourceTree = "<group>"; };
 		AAC01B9419F95B7D0093EEA7 /* pe-icon-7-stroke.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "pe-icon-7-stroke.ttf"; path = "../NBClient/NBClient/UI/pe-icon-7-stroke.ttf"; sourceTree = "<group>"; };
+		AAD248ED1A1AED0700655CF9 /* NBClient_UI.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = NBClient_UI.xcassets; path = ../NBClient/NBClient/UI/NBClient_UI.xcassets; sourceTree = "<group>"; };
 		AAEFEAEA19E62F9600777BC1 /* NBAccountButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NBAccountButton.xib; path = ../NBClient/NBClient/UI/NBAccountButton.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -240,8 +240,8 @@
 				AA62A14A19F0867200F338D0 /* NationBuilder.strings */,
 				AAEFEAEA19E62F9600777BC1 /* NBAccountButton.xib */,
 				AA84F05319EE0E2D00DAA6B8 /* NBAccountsViewController.xib */,
+				AAD248ED1A1AED0700655CF9 /* NBClient_UI.xcassets */,
 				AAC01B9419F95B7D0093EEA7 /* pe-icon-7-stroke.ttf */,
-				AA811B8B1A00775800F80EDF /* Media.xcassets */,
 			);
 			name = NBClient;
 			sourceTree = "<group>";
@@ -324,7 +324,6 @@
 			files = (
 				AA90912D19833B0E009BE1E9 /* NBPeopleViewController.xib in Resources */,
 				AA62A14B19F0867200F338D0 /* NationBuilder.strings in Resources */,
-				AA811B8C1A00775800F80EDF /* Media.xcassets in Resources */,
 				AA7F19B91A117834000A451B /* NBAppLaunchScreen.xib in Resources */,
 				AAC01B9519F95B7D0093EEA7 /* pe-icon-7-stroke.ttf in Resources */,
 				AA7904A819E8A0D20007FF3E /* NationBuilder-Info-Local.plist in Resources */,
@@ -334,6 +333,7 @@
 				AAEFEAEB19E62F9600777BC1 /* NBAccountButton.xib in Resources */,
 				AA15FAB41983317400A2E84B /* Images.xcassets in Resources */,
 				AA84F05419EE0E2D00DAA6B8 /* NBAccountsViewController.xib in Resources */,
+				AAD248EE1A1AED0700655CF9 /* NBClient_UI.xcassets in Resources */,
 				AA90912F19833B0E009BE1E9 /* NBPersonCellView.xib in Resources */,
 				AA90913119833B0E009BE1E9 /* NBPersonViewController.xib in Resources */,
 				AA7904A519E8A0BA0007FF3E /* NationBuilder-Info.plist in Resources */,
