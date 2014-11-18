@@ -169,8 +169,6 @@ static void *observationContext = &observationContext;
 
 - (void)setShouldUseCircleAvatarFrame:(BOOL)shouldUseCircleAvatarFrame
 {
-    // Guard.
-    if (shouldUseCircleAvatarFrame == _shouldUseCircleAvatarFrame) { return; }
     // Set.
     _shouldUseCircleAvatarFrame = shouldUseCircleAvatarFrame;
     // Did.
