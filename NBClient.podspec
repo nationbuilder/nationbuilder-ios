@@ -24,6 +24,7 @@ Pod::Spec.new do |s|
   s.subspec 'UI' do |sp|
     # Build settings
     sp.dependency 'NBClient/Core'
+    sp.dependency 'NBClient/Locale'
     sp.frameworks = 'UIKit'
     # File patterns
     sp.source_files = 'NBClient/NBClient/UI/*.{h,m}'
@@ -33,6 +34,18 @@ Pod::Spec.new do |s|
       'NBClient/NBClient/UI/NBClient_UI.xcassets',
       'NBClient/NBClient/UI/pe-icon-7-stroke.ttf'
     ]
+  end
+
+  s.subspec 'Locale' do |sp|
+    # Subspecs
+    sp.default_subspecs = 'en'
+    # File patterns
+    sp.subspec 'All' do |l|
+      l.resources = l.preserve_paths = 'NBClient/NBClient/*.lproj'
+    end
+    sp.subspec 'en' do |l|
+      l.resources = l.preserve_paths = 'NBClient/NBClient/en.lproj'
+    end
   end
 
 end
