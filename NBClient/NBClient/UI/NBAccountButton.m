@@ -22,6 +22,8 @@ static void *observationContext = &observationContext;
 @property (nonatomic, weak, readwrite) IBOutlet UILabel *nameLabel;
 @property (nonatomic, weak, readwrite) IBOutlet UIImageView *avatarImageView;
 
+@property (nonatomic, readwrite) UIBarButtonItem *barButtonItem;
+
 @property (nonatomic) NBAccountButtonType actualButtonType;
 
 // For avatar hiding.
@@ -177,13 +179,16 @@ static void *observationContext = &observationContext;
                                                : self.cornerRadius.floatValue);
 }
 
-- (UIBarButtonItem *)barButtonItem
+- (UIBarButtonItem *)barButtonItemWithCompactButtonType:(NBAccountButtonType)compactButtonType
 {
-    if (_barButtonItem) {
-        return _barButtonItem;
+    if (self.barButtonItem) {
+        return self.barButtonItem;
+    }
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+        self.buttonType = compactButtonType;
     }
     self.barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self];
-    return _barButtonItem;
+    return self.barButtonItem;
 }
 
 - (void)setContextHasMultipleActiveAccounts:(BOOL)contextHasMultipleActiveAccounts

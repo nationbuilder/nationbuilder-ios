@@ -436,26 +436,25 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 - (void)showAccountButton:(NBAccountButton *)accountButton
 {
-    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
-        // In situations where there isn't a lot of space:
-        
-        // 1. You can just show icons that update depending on the data source.
-        /*
-        accountButton.buttonType = NBAccountButtonTypeIconOnly;
-        */
-        // 2. You can just show the name text, which will fall back to sign-in text.
-        /*
-        accountButton.buttonType = NBAccountButtonTypeNameOnly;
-        */
-        // 3. You can only show the avatar, which will fall back to icons.
-        ///*
-        accountButton.buttonType = NBAccountButtonTypeAvatarOnly;
-        //*/
-    }
     // Hip circular icons are supported too.
     accountButton.shouldUseCircleAvatarFrame = YES;
-    
-    [self.navigationItem setLeftBarButtonItem:accountButton.barButtonItem animated:YES];
+    //
+    // In situations where there isn't a lot of space:
+    //
+    // 1. You can just show icons that update depending on the data source.
+    //
+    //    self.buttonType = NBAccountButtonTypeIconOnly;
+    //
+    // 2. You can just show the name text, which will fall back to sign-in text.
+    //
+    //    self.buttonType = NBAccountButtonTypeNameOnly;
+    //
+    // 3. You can only show the avatar, which will fall back to icons.
+    //
+    //    self.buttonType = NBAccountButtonTypeAvatarOnly;
+    //
+    [self.navigationItem setLeftBarButtonItem:[accountButton barButtonItemWithCompactButtonType:NBAccountButtonTypeAvatarOnly]
+                                     animated:YES];
 }
 
 #pragma mark - Private
