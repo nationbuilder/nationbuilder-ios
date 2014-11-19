@@ -9,21 +9,40 @@
 
 #import "NBDefines.h"
 
-extern NSString * const NBClientCurrentPageNumberKey;
-extern NSString * const NBClientNumberOfTotalPagesKey;
+extern NSString * const NBClientCurrentPageNumberKey; // #legacy
+extern NSString * const NBClientNumberOfTotalPagesKey; // #legacy
 extern NSString * const NBClientNumberOfItemsPerPageKey;
-extern NSString * const NBClientNumberOfTotalItemsKey;
+extern NSString * const NBClientNumberOfTotalItemsKey; // #legacy
+
+extern NSString * const NBClientPaginationLimitKey;
+extern NSString * const NBClientPaginationNextLinkKey;
+extern NSString * const NBClientPaginationPreviousLinkKey;
 
 @interface NBPaginationInfo : NSObject <NBDictionarySerializing>
 
-@property (nonatomic) NSUInteger currentPageNumber; // Starts at 1s.
-@property (nonatomic) NSUInteger numberOfTotalPages;
+// NOTE: Using the legacy NationBuilder API pagination is discouraged. Outside
+// of test tokens and older applications, it has been deprecated and the new
+// token-based pagination should be being used. The constants, properties, and
+// methods tagged with #legacy are part of the legacy pagination.
+
+@property (nonatomic) NSUInteger currentPageNumber; // Starts at 1.
 @property (nonatomic) NSUInteger numberOfItemsPerPage;
-@property (nonatomic) NSUInteger numberOfTotalItems;
+@property (nonatomic) NSUInteger numberOfTotalPages; // #legacy
+@property (nonatomic) NSUInteger numberOfTotalItems; // #legacy
 
 @property (nonatomic) NSUInteger numberOfTotalAvailableItems;
 
-- (NSUInteger)indexOfFirstItemAtPage:(NSUInteger)pageNumber;
-- (NSUInteger)numberOfItemsAtPage:(NSUInteger)pageNumber;
+@property (nonatomic, getter = isLegacy) BOOL legacy;
+
+@property (nonatomic, copy) NSString *nextPageURLString;
+@property (nonatomic, copy) NSString *previousPageURLString;
+
+- (NSDictionary *)queryParameters;
+
+// Designated initializer.
+- (instancetype)initWithDictionary:(NSDictionary *)dictionary legacy:(BOOL)legacy;
+
+- (NSUInteger)indexOfFirstItemAtPage:(NSUInteger)pageNumber; // #legacy
+- (NSUInteger)numberOfItemsAtPage:(NSUInteger)pageNumber; // #legacy
 
 @end

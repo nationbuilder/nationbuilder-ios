@@ -51,6 +51,8 @@ extern NSString * const NBClientDefaultBaseURLFormat;
 @property (nonatomic, copy) NSString *apiKey; // Set this upon successful authentication.
 @property (nonatomic, copy) NSString *apiVersion; // Optional. For future use.
 
+@property (nonatomic) BOOL shouldUseLegacyPagination; // Set this to true if absolutely necessary.
+
 // The main initializer.
 - (instancetype)initWithNationSlug:(NSString *)nationSlug
                      authenticator:(NBAuthenticator *)authenticator

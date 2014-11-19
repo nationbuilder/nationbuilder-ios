@@ -28,9 +28,18 @@ static NBLogLevel LogLevel = NBLogLevelDebug;
 static NBLogLevel LogLevel = NBLogLevelWarning;
 #endif
 
+NSString * const NBClientPaginationTokenOptInKey = @"token_paginator";
+static NSArray *LegacyPaginationEndpoints;
+
 @implementation NBClient
 
 #pragma mark - Initializers
+
++ (void)initialize {
+    if (self == [NBClient self]) {
+        LegacyPaginationEndpoints = @[ @"/api/v1/people/search" ];
+    }
+}
 
 - (instancetype)initWithNationSlug:(NSString *)nationSlug
                      authenticator:(NBAuthenticator *)authenticator
@@ -69,6 +78,8 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     self.sessionConfiguration = sessionConfiguration;
     
     self.defaultErrorRecoverySuggestion = @"message.unknown-error-solution".nb_localizedString;
+    
+    self.shouldUseLegacyPagination = NO;
 }
 
 #pragma mark - NBLogging
@@ -184,9 +195,15 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                                           paginationInfo:(NBPaginationInfo *)paginationInfo
                                        completionHandler:(NBClientResourceListCompletionHandler)completionHandler
 {
+    BOOL shouldUseLegacyPagination = self.shouldUseLegacyPagination;
     if (paginationInfo) {
-        NSMutableDictionary *mutableParameters = paginationInfo.dictionary.mutableCopy;
-        [mutableParameters removeObjectsForKeys:@[ NBClientNumberOfTotalPagesKey, NBClientNumberOfTotalItemsKey ]];
+        shouldUseLegacyPagination = [LegacyPaginationEndpoints containsObject:components.path];
+        paginationInfo.legacy = shouldUseLegacyPagination;
+        NSMutableDictionary *mutableParameters = [[paginationInfo queryParameters] mutableCopy];
+        if (!shouldUseLegacyPagination) {
+            // Only add the flag if opting in.
+            mutableParameters[NBClientPaginationTokenOptInKey] = @1;
+        }
         [mutableParameters addEntriesFromDictionary:[components.query nb_queryStringParametersWithEncoding:NSASCIIStringEncoding]];
         components.query = [mutableParameters nb_queryStringWithEncoding:NSASCIIStringEncoding
                                              skipPercentEncodingPairKeys:[NSSet setWithObject:@"email"]
@@ -196,7 +213,8 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     NBLogInfo(@"REQUEST: %@", request.nb_debugDescription);
     void (^taskCompletionHandler)(NSData *, NSURLResponse *, NSError *) =
     [self dataTaskCompletionHandlerForFetchResultsKey:resultsKey originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
-        NBPaginationInfo *responsePaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:jsonObject];
+        NBPaginationInfo *responsePaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:jsonObject
+                                                                                         legacy:shouldUseLegacyPagination];
         if (completionHandler) {
             completionHandler(results, responsePaginationInfo, error);
         }

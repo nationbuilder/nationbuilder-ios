@@ -62,13 +62,12 @@
 - (void)testFetchPeople
 {
     [self setUpAsync];
-    NSDictionary *paginationParameters = @{ NBClientCurrentPageNumberKey: @1,
-                                            NBClientNumberOfItemsPerPageKey: @5 };
+    NSDictionary *paginationParameters = @{ NBClientPaginationLimitKey: @5 };
     if (self.shouldUseHTTPStubbing) {
         [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people" identifier:NSNotFound parameters:paginationParameters];
     }
     NBPaginationInfo *requestPaginationInfo =
-    [[NBPaginationInfo alloc] initWithDictionary:paginationParameters];
+    [[NBPaginationInfo alloc] initWithDictionary:paginationParameters legacy:NO];
     NSURLSessionDataTask *task =
     [self.client
      fetchPeopleWithPaginationInfo:requestPaginationInfo
@@ -85,6 +84,7 @@
 - (void)testFetchPeopleByParameters
 {
     [self setUpAsync];
+    // NOTE: Uses legacy pagination.
     NSDictionary *paginationParameters = @{ NBClientCurrentPageNumberKey: @1,
                                             NBClientNumberOfItemsPerPageKey: @5 };
     NSDictionary *parameters = @{ @"state": @"CA" };
@@ -94,7 +94,7 @@
         [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people/search" identifier:NSNotFound parameters:mutableParameters];
     }
     NBPaginationInfo *requestPaginationInfo =
-    [[NBPaginationInfo alloc] initWithDictionary:paginationParameters];
+    [[NBPaginationInfo alloc] initWithDictionary:paginationParameters legacy:YES];
     NSURLSessionDataTask *task =
     [self.client
      fetchPeopleByParameters: parameters
