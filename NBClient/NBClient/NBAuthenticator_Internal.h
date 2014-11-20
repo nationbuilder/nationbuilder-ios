@@ -33,8 +33,8 @@
 
 @interface NBAuthenticationCredential ()
 
-@property (nonatomic, readwrite) NSString *accessToken;
-@property (nonatomic, readwrite) NSString *tokenType;
+@property (nonatomic, copy, readwrite) NSString *accessToken;
+@property (nonatomic, copy, readwrite) NSString *tokenType;
 
 + (NSMutableDictionary *)baseKeychainQueryDictionaryWithIdentifier:(NSString *)identifier;
 

@@ -26,7 +26,7 @@
 {
     static NSIndexSet *indexSet;
     if (!indexSet) {
-        indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(204, 1)];
+        indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(204, 100)];
     }
     return indexSet;
 }
@@ -140,7 +140,7 @@ static NSString *QueryPairJoiner = @"=";
 
 - (NSString *)nb_debugDescription
 {
-    NSMutableURLRequest *request = self.mutableCopy;
+    NSMutableURLRequest *request = [self mutableCopy];
     return [NSString stringWithFormat:
             @"%@\n"
             @"METHOD: %@\n"

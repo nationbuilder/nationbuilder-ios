@@ -25,7 +25,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 @property (nonatomic) NSURLSessionDataTask *saveTask;
 @property (nonatomic) NSURLSessionDataTask *deleteTask;
 
-@property (nonatomic) NSDictionary *realChanges;
+@property (nonatomic, copy) NSDictionary *realChanges;
 
 @end
 
@@ -35,12 +35,15 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 @synthesize delegate = _delegate;
 @synthesize changes = _changes;
 
++ (void)initialize
+{
+    if (self == [NBPersonViewDataSource self]) {
+        PersonKeyPath = NSStringFromSelector(@selector(person));
+    }
+}
+
 - (instancetype)initWithClient:(NBClient *)client
 {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        PersonKeyPath = NSStringFromSelector(@selector(person));
-    });
     self = [super init];
     if (self) {
         self.client = client;
@@ -204,7 +207,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 + (NSError *)parseClientError:(NSError *)error
 {
-    NSMutableDictionary *userInfo = error.userInfo.mutableCopy;
+    NSMutableDictionary *userInfo = [error.userInfo mutableCopy];
     NSString *title = userInfo[NBClientErrorMessageKey];
     if (!title.length) {
         title = NSLocalizedString(@"title.error", nil);

@@ -22,7 +22,7 @@
 @property (nonatomic, readonly) CGFloat bottomOffsetOverflow;
 @property (nonatomic, readonly) CGFloat topOffsetOverflow;
 
-@property (nonatomic, readonly) NSArray *decorationViewClasses;
+@property (nonatomic, copy, readonly) NSArray *decorationViewClasses;
 
 @property (nonatomic, readonly) BOOL hasMultipleColumns;
 @property (nonatomic, readonly) CGSize intrinsicContentSize;

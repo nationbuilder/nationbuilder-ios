@@ -40,7 +40,7 @@ extern NSString * const NBClientDefaultBaseURLFormat;
 
 @property (nonatomic, weak) id<NBClientDelegate> delegate;
 
-@property (nonatomic, readonly) NSString *nationSlug;
+@property (nonatomic, copy, readonly) NSString *nationSlug;
 @property (nonatomic, readonly) NSURLSession *urlSession;
 @property (nonatomic, readonly) NSURLSessionConfiguration *sessionConfiguration;
 
@@ -48,8 +48,8 @@ extern NSString * const NBClientDefaultBaseURLFormat;
 
 @property (nonatomic, readonly) NSURL *baseURL;
 
-@property (nonatomic) NSString *apiKey; // Set this upon successful authentication.
-@property (nonatomic) NSString *apiVersion; // Optional. For future use.
+@property (nonatomic, copy) NSString *apiKey; // Set this upon successful authentication.
+@property (nonatomic, copy) NSString *apiVersion; // Optional. For future use.
 
 // The main initializer.
 - (instancetype)initWithNationSlug:(NSString *)nationSlug

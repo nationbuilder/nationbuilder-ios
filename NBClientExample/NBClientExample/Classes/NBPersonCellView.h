@@ -20,7 +20,7 @@
 @property (nonatomic) UIColor *selectedBackgroundColor UI_APPEARANCE_SELECTOR;
 @property (nonatomic) UIColor *selectedForegroundColor UI_APPEARANCE_SELECTOR;
 
-@property (nonatomic) NSString *tagDelimiterString UI_APPEARANCE_SELECTOR;
+@property (nonatomic, copy) NSString *tagDelimiterString UI_APPEARANCE_SELECTOR;
 
 @property (nonatomic, getter = areBordersDisabled) BOOL bordersDisabled;
 

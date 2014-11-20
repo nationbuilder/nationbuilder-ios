@@ -11,7 +11,7 @@
 
 @interface NBPersonViewDataSource : NSObject <NBViewDataSource>
 
-@property (nonatomic) NSDictionary *person;
+@property (nonatomic, copy) NSDictionary *person;
 
 @property (nonatomic) UIImage *profileImage;
 

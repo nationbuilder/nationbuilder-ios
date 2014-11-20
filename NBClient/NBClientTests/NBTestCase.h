@@ -16,16 +16,16 @@
 
 @interface NBTestCase : XCTestCase
 
-@property (nonatomic, readonly) NSString *nationSlug;
-@property (nonatomic, readonly) NSURL *baseURL;
-@property (nonatomic, readonly) NSString *baseURLString;
+@property (nonatomic, copy, readonly) NSString *nationSlug;
+@property (nonatomic, copy, readonly) NSURL *baseURL;
+@property (nonatomic, copy, readonly) NSString *baseURLString;
 
-@property (nonatomic, readonly) NSString *testToken;
-@property (nonatomic, readonly) NSString *clientIdentifier;
-@property (nonatomic, readonly) NSString *clientSecret;
-@property (nonatomic, readonly) NSString *userEmailAddress;
+@property (nonatomic, copy, readonly) NSString *testToken;
+@property (nonatomic, copy, readonly) NSString *clientIdentifier;
+@property (nonatomic, copy, readonly) NSString *clientSecret;
+@property (nonatomic, copy, readonly) NSString *userEmailAddress;
 @property (nonatomic, readonly) NSUInteger userIdentifier;
-@property (nonatomic, readonly) NSString *userPassword;
+@property (nonatomic, copy, readonly) NSString *userPassword;
 
 @property (nonatomic, readonly) NBClient *client;
 

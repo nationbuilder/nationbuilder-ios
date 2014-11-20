@@ -20,16 +20,16 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
 
 @interface NBTestCase ()
 
-@property (nonatomic, readwrite) NSString *nationSlug;
+@property (nonatomic, copy, readwrite) NSString *nationSlug;
 @property (nonatomic, readwrite) NSURL *baseURL;
-@property (nonatomic, readwrite) NSString *baseURLString;
+@property (nonatomic, copy, readwrite) NSString *baseURLString;
 
-@property (nonatomic, readwrite) NSString *testToken;
-@property (nonatomic, readwrite) NSString *clientIdentifier;
-@property (nonatomic, readwrite) NSString *clientSecret;
-@property (nonatomic, readwrite) NSString *userEmailAddress;
+@property (nonatomic, copy, readwrite) NSString *testToken;
+@property (nonatomic, copy, readwrite) NSString *clientIdentifier;
+@property (nonatomic, copy, readwrite) NSString *clientSecret;
+@property (nonatomic, copy, readwrite) NSString *userEmailAddress;
 @property (nonatomic, readwrite) NSUInteger userIdentifier;
-@property (nonatomic, readwrite) NSString *userPassword;
+@property (nonatomic, copy, readwrite) NSString *userPassword;
 
 @property (nonatomic, readwrite) NBClient *client;
 
@@ -64,7 +64,7 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
 {
     [super setUp];
     // Provide default config for test cases.
-    NSDictionary *info = self.class.dictionaryWithContentsOfInfoFile;
+    NSDictionary *info = [self.class dictionaryWithContentsOfInfoFile];
     self.nationSlug = info[NBInfoNationSlugKey];
     NSAssert(self.nationSlug, @"Missing environment arguments for tests.");
     self.baseURLString = [NSString stringWithFormat:info[NBInfoBaseURLFormatKey], self.nationSlug];
@@ -101,7 +101,7 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
 
 + (BOOL)shouldUseHTTPStubbing
 {
-    return [self.dictionaryWithContentsOfInfoFile[NBInfoShouldUseHTTPStubbingKey] boolValue];
+    return [[self dictionaryWithContentsOfInfoFile][NBInfoShouldUseHTTPStubbingKey] boolValue];
 }
 
 - (BOOL)shouldUseHTTPStubbing

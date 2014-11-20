@@ -214,7 +214,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         return nil;
     }
     // Perform authentication against service.
-    NSMutableDictionary *mutableParameters = parameters.mutableCopy;
+    NSMutableDictionary *mutableParameters = [parameters mutableCopy];
     mutableParameters[@"client_id"] = self.clientIdentifier;
     parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
     

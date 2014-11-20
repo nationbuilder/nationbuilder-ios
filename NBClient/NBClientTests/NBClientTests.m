@@ -15,14 +15,14 @@
 
 @interface NBClientTests : NBTestCase
 
-@property (nonatomic, weak, readonly) NBClient *baseClientWithAuthenticator;
-@property (nonatomic, weak, readonly) NBClient *baseClientWithTestToken;
+- (NBClient *)baseClientWithAuthenticator;
+- (NBClient *)baseClientWithTestToken;
 
 - (void)assertCredential:(NBAuthenticationCredential *)credential;
 
-@property (nonatomic, weak, readonly) NBClient *baseClientWithTestTokenAndMockDelegate;
-@property (nonatomic, weak, readonly) NBClientResourceItemCompletionHandler delegateShouldHandleResponseForRequestFailBlock;
-@property (nonatomic, weak, readonly) void (^delegateShouldHandleResponseForRequestPassBlock)(NSInvocation *);
+- (NBClient *)baseClientWithTestTokenAndMockDelegate;
+- (NBClientResourceItemCompletionHandler)delegateShouldHandleResponseForRequestFailBlock;
+- (void (^)(NSInvocation *))delegateShouldHandleResponseForRequestPassBlock;
 
 - (LSStubRequestDSL *)stubFetchPersonForClientUserRequestWithClient:(NBClient *)client;
 - (void)stubDelegateShouldHandleResponseForRequestWithClient:(NBClient *)client

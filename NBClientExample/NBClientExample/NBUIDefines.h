@@ -38,7 +38,7 @@ typedef NS_ENUM(NSUInteger, NBScrollViewPullActionState) {
 
 @protocol NBViewController <NBLogging>
 
-@property (nonatomic, readonly) NSDictionary *nibNames;
+@property (nonatomic, copy, readonly) NSDictionary *nibNames;
 
 // Dedicated initializer.
 - (instancetype)initWithNibNames:(NSDictionary *)nibNamesOrNil bundle:(NSBundle *)nibBundleOrNil;

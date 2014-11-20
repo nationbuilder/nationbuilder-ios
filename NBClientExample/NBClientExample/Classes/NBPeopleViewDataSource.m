@@ -22,7 +22,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 @property (nonatomic, weak, readwrite) NBClient *client;
 
-@property (nonatomic, readwrite) NSArray *people;
+@property (nonatomic, copy, readwrite) NSArray *people;
 @property (nonatomic) NSMutableDictionary *mutablePersonDataSources;
 
 @end
@@ -58,7 +58,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 - (NSDictionary *)personDataSources
 {
-    return self.mutablePersonDataSources;
+    return [NSDictionary dictionaryWithDictionary:self.mutablePersonDataSources];
 }
 
 - (void)fetchAll
@@ -111,7 +111,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 {
     if ([dataSource isKindOfClass:[NBPersonViewDataSource class]] && [keyPath isEqualToString:NSStringFromSelector(@selector(person))]) {
         NBPersonViewDataSource *personDataSource = dataSource;
-        NSMutableArray *people = self.people.mutableCopy;
+        NSMutableArray *people = [self.people mutableCopy];
         NSDictionary *person = personDataSource.person;
         if (person) {
             // Keep `people` synced with `mutablePersonDataSources`.

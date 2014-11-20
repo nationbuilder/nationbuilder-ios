@@ -43,7 +43,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 <UICollectionViewDelegateFlowLayout, UINavigationControllerDelegate, NBCollectionViewCellDelegate>
 
-@property (nonatomic, readwrite) NSMutableDictionary *nibNames;
+@property (nonatomic, copy, readwrite) NSDictionary *nibNames;
 
 @property (nonatomic, readwrite) UILabel *notReadyLabel;
 
@@ -74,21 +74,25 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 @synthesize busy = _busy;
 @synthesize busyIndicator = _busyIndicator;
 
-- (instancetype)initWithNibNames:(NSDictionary *)nibNamesOrNil
-                          bundle:(NSBundle *)nibBundleOrNil
++ (void)initialize
 {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    if (self == [NBPeopleViewController self]) {
         DefaultNibNames = @{ NBNibNameViewKey: NSStringFromClass([self class]),
                              NBNibNameCellViewKey: NSStringFromClass([NBPersonCellView class]),
                              NBNibNameSectionHeaderViewKey: @"NBPeoplePageHeaderView",
                              NBNibNameDecorationViewKey: @"NBPeopleDecorationLabel" };
         PeopleKeyPath = NSStringFromSelector(@selector(people));
         ContentOffsetKeyPath = NSStringFromSelector(@selector(contentOffset));
-    });
+    }
+}
+
+- (instancetype)initWithNibNames:(NSDictionary *)nibNamesOrNil
+                          bundle:(NSBundle *)nibBundleOrNil
+{
     // Boilerplate.
-    self.nibNames = DefaultNibNames.mutableCopy;
-    [self.nibNames addEntriesFromDictionary:nibNamesOrNil];
+    NSMutableDictionary *nibNames = [DefaultNibNames mutableCopy];
+    [nibNames addEntriesFromDictionary:nibNamesOrNil];
+    self.nibNames = nibNames;
     // END: Boilerplate.
     self = [self initWithNibName:self.nibNames[NBNibNameViewKey] bundle:nibBundleOrNil];
     self.ready = NO;
