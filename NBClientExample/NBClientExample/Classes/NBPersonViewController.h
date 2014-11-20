@@ -19,7 +19,7 @@ typedef NS_ENUM(NSUInteger, NBPersonViewControllerMode) {
 @property (nonatomic) NSNumber *editingAnimationDuration UI_APPEARANCE_SELECTOR;
 @property (nonatomic) UIColor *editingBackgroundColor UI_APPEARANCE_SELECTOR;
 @property (nonatomic) NSNumber *subviewCornerRadius UI_APPEARANCE_SELECTOR;
-@property (nonatomic) NSString *tagDelimiterString UI_APPEARANCE_SELECTOR;
+@property (nonatomic, copy) NSString *tagDelimiterString UI_APPEARANCE_SELECTOR;
 @property (nonatomic) CGSize textFieldInsetSize UI_APPEARANCE_SELECTOR;
 
 @property (nonatomic) NBPersonViewControllerMode mode;

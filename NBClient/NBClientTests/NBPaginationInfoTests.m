@@ -13,7 +13,7 @@
 
 @interface NBPaginationInfoTests : NBTestCase
 
-@property (nonatomic) NSDictionary *dictionary;
+@property (nonatomic, copy) NSDictionary *dictionary;
 @property (nonatomic) NBPaginationInfo *paginationInfo;
 
 @end

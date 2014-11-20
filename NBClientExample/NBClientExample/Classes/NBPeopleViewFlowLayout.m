@@ -18,7 +18,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 @property (nonatomic, getter = isLandscape) BOOL landscape;
 @property (nonatomic) CGFloat originalItemHeight;
 
-@property (nonatomic) NSArray *decorationViewAttributes;
+@property (nonatomic, copy) NSArray *decorationViewAttributes;
 
 @end
 

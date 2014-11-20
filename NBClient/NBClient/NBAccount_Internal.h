@@ -11,12 +11,12 @@
 
 @property (nonatomic, weak, readwrite) id<NBAccountDelegate> delegate;
 @property (nonatomic, readwrite) NBClient *client;
-@property (nonatomic, readwrite) NSDictionary *clientInfo;
-@property (nonatomic, readwrite) NSDictionary *defaultClientInfo;
+@property (nonatomic, copy, readwrite) NSDictionary *clientInfo;
+@property (nonatomic, copy, readwrite) NSDictionary *defaultClientInfo;
 
 @property (nonatomic) NBAuthenticator *authenticator;
 
-@property (nonatomic) NSDictionary *person;
+@property (nonatomic, copy) NSDictionary *person;
 
 - (NSURL *)baseURL;
 

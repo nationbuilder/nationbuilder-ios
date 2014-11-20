@@ -43,7 +43,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 <UICollectionViewDelegateFlowLayout, UINavigationControllerDelegate, NBCollectionViewCellDelegate>
 
-@property (nonatomic, readwrite) NSMutableDictionary *nibNames;
+@property (nonatomic, copy, readwrite) NSDictionary *nibNames;
 
 @property (nonatomic, readwrite) UILabel *notReadyLabel;
 
@@ -90,8 +90,9 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                           bundle:(NSBundle *)nibBundleOrNil
 {
     // Boilerplate.
-    self.nibNames = [DefaultNibNames mutableCopy];
-    [self.nibNames addEntriesFromDictionary:nibNamesOrNil];
+    NSMutableDictionary *nibNames = [DefaultNibNames mutableCopy];
+    [nibNames addEntriesFromDictionary:nibNamesOrNil];
+    self.nibNames = nibNames;
     // END: Boilerplate.
     self = [self initWithNibName:self.nibNames[NBNibNameViewKey] bundle:nibBundleOrNil];
     self.ready = NO;

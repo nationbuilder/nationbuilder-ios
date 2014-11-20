@@ -16,7 +16,7 @@
 
 @interface NBAuthenticatorTests : NBTestCase
 
-@property (nonatomic) NSString *credentialIdentifier;
+@property (nonatomic, copy) NSString *credentialIdentifier;
 
 @end
 

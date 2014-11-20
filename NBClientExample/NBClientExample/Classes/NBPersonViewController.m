@@ -33,7 +33,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 <UITextFieldDelegate, UITextViewDelegate, UIAlertViewDelegate>
 
-@property (nonatomic, readwrite) NSMutableDictionary *nibNames;
+@property (nonatomic, copy, readwrite) NSDictionary *nibNames;
 
 @property (nonatomic, weak) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, weak) IBOutlet UIView *contentView;
@@ -54,7 +54,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 @property (nonatomic, weak) IBOutlet UILabel *tagsLabel;
 @property (nonatomic, weak) IBOutlet UITextView *tagsField;
 
-@property (nonatomic) NSArray *fields;
+@property (nonatomic, copy) NSArray *fields;
 
 @property (nonatomic, weak) id keyboardDidShowObserver;
 @property (nonatomic, weak) id keyboardWillHideObserver;
@@ -117,8 +117,9 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     self = [self initWithNibName:self.nibNames[NBNibNameViewKey] bundle:nibBundleOrNil];
     self.mode = NBPersonViewControllerModeViewAndEdit;
     // Boilerplate.
-    self.nibNames = [DefaultNibNames mutableCopy];
-    [self.nibNames addEntriesFromDictionary:nibNamesOrNil];
+    NSMutableDictionary *nibNames = [DefaultNibNames mutableCopy];
+    [nibNames addEntriesFromDictionary:nibNamesOrNil];
+    self.nibNames = nibNames;
     // END: Boilerplate.
     return self;
 }

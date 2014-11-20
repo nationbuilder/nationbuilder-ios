@@ -25,7 +25,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 @property (nonatomic) NSURLSessionDataTask *saveTask;
 @property (nonatomic) NSURLSessionDataTask *deleteTask;
 
-@property (nonatomic) NSDictionary *realChanges;
+@property (nonatomic, copy) NSDictionary *realChanges;
 
 @end
 

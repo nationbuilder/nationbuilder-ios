@@ -25,7 +25,7 @@
 @property (nonatomic) NBAccountsManager *accountsManager;
 @property (nonatomic) NBAccountsViewController *accountsViewController;
 
-@property (nonatomic) NSDictionary *customClientInfo;
+@property (nonatomic, copy) NSDictionary *customClientInfo;
 @property (nonatomic) NBPeopleViewController *peopleViewController;
 
 - (IBAction)presentAccountsViewController:(id)sender;
