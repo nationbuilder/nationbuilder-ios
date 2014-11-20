@@ -204,7 +204,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 + (NSError *)parseClientError:(NSError *)error
 {
-    NSMutableDictionary *userInfo = error.userInfo.mutableCopy;
+    NSMutableDictionary *userInfo = [error.userInfo mutableCopy];
     NSString *title = userInfo[NBClientErrorMessageKey];
     if (!title.length) {
         title = NSLocalizedString(@"title.error", nil);

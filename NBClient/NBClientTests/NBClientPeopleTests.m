@@ -89,7 +89,7 @@
                                             NBClientNumberOfItemsPerPageKey: @5 };
     NSDictionary *parameters = @{ @"state": @"CA" };
     if (self.shouldUseHTTPStubbing) {
-        NSMutableDictionary *mutableParameters = paginationParameters.mutableCopy;
+        NSMutableDictionary *mutableParameters = [paginationParameters mutableCopy];
         [mutableParameters addEntriesFromDictionary:parameters];
         [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people/search" identifier:NSNotFound parameters:mutableParameters];
     }

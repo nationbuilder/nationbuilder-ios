@@ -34,7 +34,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         if (!clientInfoOrNil) {
             clientInfoOrNil = self.defaultClientInfo;
         }
-        NSMutableDictionary *mutableClientInfo = clientInfoOrNil.mutableCopy;
+        NSMutableDictionary *mutableClientInfo = [clientInfoOrNil mutableCopy];
         // Fill in OAuth client ID if needed.
         mutableClientInfo[NBInfoClientIdentifierKey] = mutableClientInfo[NBInfoClientIdentifierKey] ?: self.defaultClientInfo[NBInfoClientIdentifierKey];
         // Check for developer.

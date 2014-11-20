@@ -84,7 +84,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
 {
-    NSMutableArray *allAttributes = [super layoutAttributesForElementsInRect:rect].mutableCopy;
+    NSMutableArray *allAttributes = [[super layoutAttributesForElementsInRect:rect] mutableCopy];
     for (Class aClass in self.decorationViewClasses) {
         if ((!self.shouldShowLoadMore && aClass == [NBPeopleLoadMoreDecorationLabel class]) ||
             (!self.shouldShowRefresh && aClass == [NBPeopleRefreshDecorationLabel class])) {

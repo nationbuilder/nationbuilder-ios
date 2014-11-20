@@ -64,7 +64,7 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
 {
     [super setUp];
     // Provide default config for test cases.
-    NSDictionary *info = self.class.dictionaryWithContentsOfInfoFile;
+    NSDictionary *info = [self.class dictionaryWithContentsOfInfoFile];
     self.nationSlug = info[NBInfoNationSlugKey];
     NSAssert(self.nationSlug, @"Missing environment arguments for tests.");
     self.baseURLString = [NSString stringWithFormat:info[NBInfoBaseURLFormatKey], self.nationSlug];
@@ -101,7 +101,7 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
 
 + (BOOL)shouldUseHTTPStubbing
 {
-    return [self.dictionaryWithContentsOfInfoFile[NBInfoShouldUseHTTPStubbingKey] boolValue];
+    return [[self dictionaryWithContentsOfInfoFile][NBInfoShouldUseHTTPStubbingKey] boolValue];
 }
 
 - (BOOL)shouldUseHTTPStubbing

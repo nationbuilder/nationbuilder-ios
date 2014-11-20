@@ -140,7 +140,7 @@ static NSString *QueryPairJoiner = @"=";
 
 - (NSString *)nb_debugDescription
 {
-    NSMutableURLRequest *request = self.mutableCopy;
+    NSMutableURLRequest *request = [self mutableCopy];
     return [NSString stringWithFormat:
             @"%@\n"
             @"METHOD: %@\n"

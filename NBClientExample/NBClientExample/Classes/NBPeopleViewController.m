@@ -87,7 +87,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         ContentOffsetKeyPath = NSStringFromSelector(@selector(contentOffset));
     });
     // Boilerplate.
-    self.nibNames = DefaultNibNames.mutableCopy;
+    self.nibNames = [DefaultNibNames mutableCopy];
     [self.nibNames addEntriesFromDictionary:nibNamesOrNil];
     // END: Boilerplate.
     self = [self initWithNibName:self.nibNames[NBNibNameViewKey] bundle:nibBundleOrNil];
