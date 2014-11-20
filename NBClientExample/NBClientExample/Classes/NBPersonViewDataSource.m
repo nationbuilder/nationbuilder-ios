@@ -35,12 +35,15 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 @synthesize delegate = _delegate;
 @synthesize changes = _changes;
 
++ (void)initialize
+{
+    if (self == [NBPersonViewDataSource self]) {
+        PersonKeyPath = NSStringFromSelector(@selector(person));
+    }
+}
+
 - (instancetype)initWithClient:(NBClient *)client
 {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        PersonKeyPath = NSStringFromSelector(@selector(person));
-    });
     self = [super init];
     if (self) {
         self.client = client;

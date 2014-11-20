@@ -105,13 +105,16 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 @implementation NBAccountsViewController
 
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
++ (void)initialize
 {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    if (self == [NBAccountsViewController self]) {
         IsSignedInKeyPath = @"signedIn";
         SelectedAccountKeyPath = NSStringFromSelector(@selector(selectedAccount));
-    });
+    }
+}
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization

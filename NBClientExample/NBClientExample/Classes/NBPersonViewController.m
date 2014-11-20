@@ -98,11 +98,9 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 @synthesize busyIndicator = _busyIndicator;
 @synthesize cancelButtonItem = _cancelButtonItem;
 
-- (instancetype)initWithNibNames:(NSDictionary *)nibNamesOrNil
-                          bundle:(NSBundle *)nibBundleOrNil
++ (void)initialize
 {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    if (self == [NBPersonViewController self]) {
         DefaultNibNames = @{ NBNibNameViewKey: NSStringFromClass([self class]) };
         PersonKeyPath = NSStringFromSelector(@selector(person));
         DataToFieldKeyPathsMap = @{ @"full_name": @"nameField.text",
@@ -110,7 +108,12 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                                     @"phone": @"phoneField.text",
                                     @"occupation": @"titleField.text",
                                     @"tags_text": @"tagsField.text" };
-    });
+    }
+}
+
+- (instancetype)initWithNibNames:(NSDictionary *)nibNamesOrNil
+                          bundle:(NSBundle *)nibBundleOrNil
+{
     self = [self initWithNibName:self.nibNames[NBNibNameViewKey] bundle:nibBundleOrNil];
     self.mode = NBPersonViewControllerModeViewAndEdit;
     // Boilerplate.
