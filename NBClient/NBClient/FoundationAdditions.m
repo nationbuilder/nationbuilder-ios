@@ -26,7 +26,7 @@
 {
     static NSIndexSet *indexSet;
     if (!indexSet) {
-        indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(204, 1)];
+        indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(204, 100)];
     }
     return indexSet;
 }
