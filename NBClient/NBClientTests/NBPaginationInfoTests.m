@@ -53,6 +53,8 @@
     [super tearDown];
 }
 
+#pragma mark - Tests
+
 - (void)testInitializingWithDictionary
 {
     NBPaginationInfo *paginationInfo = [[NBPaginationInfo alloc] initWithDictionary:self.dictionary legacy:NO];
@@ -73,7 +75,7 @@
                   @"Pagination should be equal to dictionary.");
 }
 
-#pragma mark - Legacy
+#pragma mark Legacy
 
 - (void)testInitializingWithLegacyDictionary
 {
@@ -94,6 +96,8 @@
     XCTAssertTrue([self.legacyPaginationInfo isEqualToDictionary:self.legacyDictionary],
                   @"Pagination should be equal to dictionary.");
 }
+
+#pragma mark Helpers
 
 - (void)testCurrentPageNumberConstraints
 {
