@@ -45,7 +45,7 @@
 - (void)testCheckingIfDictionaryContainsDictionary
 {
     NSDictionary *source = @{ @"name": @"Foo Bar", @"age": @1, @"email": @"foo@bar.com",
-                                     @"collection": @{ @"foo": @"foo", @"bar": @"bar", @"baz": @"baz" } };
+                              @"collection": @{ @"foo": @"foo", @"bar": @"bar", @"baz": @"baz" } };
     NSDictionary *dictionary = @{ @"name": @"Foo Bar",
                                   @"collection": @{ @"foo": @"foo", @"bar": @"bar" } };
     NSDictionary *uncontainedDictionary = @{ @"not": @"contained" };
