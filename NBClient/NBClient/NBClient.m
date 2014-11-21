@@ -215,6 +215,8 @@ static NSArray *LegacyPaginationEndpoints;
     [self dataTaskCompletionHandlerForFetchResultsKey:resultsKey originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
         NBPaginationInfo *responsePaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:jsonObject
                                                                                          legacy:shouldUseLegacyPagination];
+        responsePaginationInfo.currentDirection = paginationInfo.currentDirection;
+        [responsePaginationInfo updateCurrentPageNumber];
         if (completionHandler) {
             completionHandler(results, responsePaginationInfo, error);
         }
