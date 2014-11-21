@@ -117,4 +117,6 @@
     [self tearDownAsync];
 }
 
+// NOTE: Credential persistence is tested in NBClientTests.
+
 @end

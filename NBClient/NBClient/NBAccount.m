@@ -195,27 +195,34 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 - (void)requestActiveWithPriorSignout:(BOOL)needsPriorSignout
                     completionHandler:(NBGenericCompletionHandler)completionHandler
 {
+    void (^authenticationCompletionHandler)(NBAuthenticationCredential *, NSError *) = ^(NBAuthenticationCredential *credential, NSError *error) {
+        if (error) {
+            NBLogError(@"%@", error);
+        } else if (credential) {
+            // Success.
+            NBLogInfo(@"Activating account for nation %@", self.clientInfo[NBInfoNationSlugKey]);
+            self.client.apiKey = credential.accessToken;
+            self.active = YES;
+            // TODO: This will be more robust with an NSOperationQueue.
+            [self fetchPersonWithCompletionHandler:completionHandler];
+            return;
+        } else {
+            NBLogWarning(@"Unhandled case.");
+        }
+        if (completionHandler) {
+            completionHandler(error);
+        }
+    };
+    // Return saved credential if possible.
+    if (self.authenticator.credential) {
+        authenticationCompletionHandler(self.authenticator.credential, nil);
+        return;
+    }
+    // Authenticate.
     [self.authenticator
      authenticateWithRedirectPath:self.clientInfo[NBInfoRedirectPathKey]
      priorSignout:needsPriorSignout
-     completionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
-         if (error) {
-             NBLogError(@"%@", error);
-         } else if (credential) {
-             // Success.
-             NBLogInfo(@"Activating account for nation %@", self.clientInfo[NBInfoNationSlugKey]);
-             self.client.apiKey = credential.accessToken;
-             self.active = YES;
-             // TODO: This will be more robust with an NSOperationQueue.
-             [self fetchPersonWithCompletionHandler:completionHandler];
-             return;
-         } else {
-             NBLogWarning(@"Unhandled case.");
-         }
-         if (completionHandler) {
-             completionHandler(error);
-         }
-     }];
+     completionHandler:authenticationCompletionHandler];
 }
 
 - (BOOL)requestCleanUpWithError:(NSError *__autoreleasing *)error

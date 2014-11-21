@@ -120,6 +120,26 @@
     [self tearDownAsync];
 }
 
+- (void)testActivationFromSavedCredential
+{
+    [self setUpAsync];
+    // Given: an authenticator with a stored credential.
+    id accountMock = OCMPartialMock(self.account);
+    id authenticatorMock = OCMPartialMock(self.account.authenticator);
+    [OCMStub([accountMock authenticator]) andReturn:authenticatorMock];
+    [authenticatorMock setCredential:[[NBAuthenticationCredential alloc] initWithAccessToken:@"somehash" tokenType:nil]];
+    // Then: authentication should be skipped.
+    [OCMStub([authenticatorMock authenticateWithRedirectPath:OCMOCK_ANY priorSignout:NO completionHandler:OCMOCK_ANY])
+     andDo:^(NSInvocation *invocation) {
+         XCTFail(@"Default authentication request should not occur.");
+     }];
+    // When.
+    [accountMock requestActiveWithPriorSignout:NO completionHandler:^(NSError *error) {
+        [self completeAsync];
+    }];
+    [self tearDownAsync];
+}
+
 - (void)testDeactivationAndCleanup
 {
     // Given: account has authenticator with credential and working client.
