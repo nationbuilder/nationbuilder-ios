@@ -60,6 +60,7 @@
     self.accountButton = [NBAccountButton accountButtonFromNibWithTarget:self action:@selector(presentAccountsViewController:)];
     self.accountsManager = [[NBAccountsManager alloc] initWithClientInfo:self.customClientInfo delegate:self];
     self.accountsViewController = [[NBAccountsViewController alloc] initWithNibName:nil bundle:nil];
+    self.accountButton.dataSources = self.accountsManager;
     self.accountsViewController.dataSource = self.accountsManager;
     // Pass our account button to the view controller that will show it for
     // further configuration. Please refer to the method for configuration options.
@@ -111,9 +112,6 @@
 
 - (void)accountsManager:(NBAccountsManager *)accountsManager didSwitchToAccount:(NBAccount *)account
 {
-    // Update the account button.
-    self.accountButton.dataSource = account;
-    self.accountButton.contextHasMultipleActiveAccounts = self.accountsManager.accounts.count > 1;
     // If we have a new / different account.
     if (account) {
         // Clear out our data.

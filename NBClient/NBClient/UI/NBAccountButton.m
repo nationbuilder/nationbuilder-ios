@@ -13,7 +13,8 @@
 #import "NBAccountsViewDefines.h"
 #import "NBDefines.h"
 
-static NSString *HiddenKeyPath = @"hidden";
+static NSString *HiddenKeyPath;
+static NSString *SelectedAccountKeyPath;
 
 static void *observationContext = &observationContext;
 
@@ -50,6 +51,14 @@ static void *observationContext = &observationContext;
 @end
 
 @implementation NBAccountButton
+
++ (void)initialize
+{
+    if (self == [NBAccountButton self]) {
+        HiddenKeyPath = @"hidden";
+        SelectedAccountKeyPath = NSStringFromSelector(@selector(selectedAccount));
+    }
+}
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -135,6 +144,9 @@ static void *observationContext = &observationContext;
             [self toggleNameLabelHidden];
         }
     }
+    if (object == self.dataSources && [keyPath isEqual:SelectedAccountKeyPath]) {
+        self.dataSource = self.dataSources.selectedAccount;
+    }
 }
 
 #pragma mark - Public
@@ -157,6 +169,20 @@ static void *observationContext = &observationContext;
     }
     [self updateButtonType];
     [self update];
+}
+
+- (void)setDataSources:(id<NBAccountsViewDataSource>)dataSources
+{
+    // Will.
+    if (self.dataSources) {
+        [(id)self.dataSources removeObserver:self forKeyPath:SelectedAccountKeyPath context:&observationContext];
+    }
+    // Set.
+    _dataSources = dataSources;
+    // Did.
+    if (self.dataSources) {
+        [(id)self.dataSources addObserver:self forKeyPath:SelectedAccountKeyPath options:0 context:&observationContext];
+    }
 }
 
 - (void)setButtonType:(NBAccountButtonType)buttonType
@@ -187,16 +213,6 @@ static void *observationContext = &observationContext;
     }
     self.barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self];
     return self.barButtonItem;
-}
-
-- (void)setContextHasMultipleActiveAccounts:(BOOL)contextHasMultipleActiveAccounts
-{
-    // Guard.
-    if (contextHasMultipleActiveAccounts == _contextHasMultipleActiveAccounts) { return; }
-    // Set.
-    _contextHasMultipleActiveAccounts = contextHasMultipleActiveAccounts;
-    // Did.
-    [self updateButtonType];
 }
 
 #pragma mark - Private
@@ -243,7 +259,7 @@ static void *observationContext = &observationContext;
     }
     if (self.dataSource) {
         if (self.actualButtonType == NBAccountButtonTypeIconOnly) {
-            self.nameLabel.text = self.contextHasMultipleActiveAccounts ? usersIcon : userIcon;
+            self.nameLabel.text = self.dataSources.accounts.count > 1 ? usersIcon : userIcon;
         } else {
             self.nameLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
             self.nameLabel.text = self.dataSource.name;

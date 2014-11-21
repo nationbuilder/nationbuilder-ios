@@ -15,10 +15,13 @@ typedef NS_ENUM(NSUInteger, NBAccountButtonType) {
 };
 
 @protocol NBAccountViewDataSource;
+@protocol NBAccountsViewDataSource;
 
 @interface NBAccountButton : UIControl
 
 @property (nonatomic, weak) id<NBAccountViewDataSource> dataSource;
+// Set this to reference your NBAccountManager if you are using one.
+@property (nonatomic, weak) id<NBAccountsViewDataSource> dataSources;
 
 @property (nonatomic, weak, readonly) UILabel *nameLabel;
 @property (nonatomic, weak, readonly) UIImageView *avatarImageView;
@@ -32,8 +35,6 @@ typedef NS_ENUM(NSUInteger, NBAccountButtonType) {
 
 // Use `-barButtonItemWithCompactButtonType:` to get the initial button item.
 @property (nonatomic, readonly) UIBarButtonItem *barButtonItem;
-
-@property (nonatomic) BOOL contextHasMultipleActiveAccounts;
 
 // This is a convenience factory method.
 + (NBAccountButton *)accountButtonFromNibWithTarget:(id)target action:(SEL)action;
