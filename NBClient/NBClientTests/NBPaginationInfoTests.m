@@ -9,6 +9,7 @@
 
 #import "NBTestCase.h"
 
+#import "FoundationAdditions.h"
 #import "NBPaginationInfo.h"
 
 @interface NBPaginationInfoTests : NBTestCase
@@ -19,6 +20,9 @@
 @property (nonatomic, copy) NSDictionary *legacyDictionary;
 @property (nonatomic) NBPaginationInfo *legacyPaginationInfo;
 
+@property (nonatomic, copy) NSString *paginationNonce;
+@property (nonatomic, copy) NSString *paginationToken;
+
 @end
 
 @implementation NBPaginationInfoTests
@@ -26,7 +30,10 @@
 - (void)setUp
 {
     [super setUp];
-    NSString *urlString = @"/api/v1/resource?__nonce=somehash&__token=somehash&limit=10";
+    self.paginationNonce = @"somenoncehash";
+    self.paginationToken = @"sometokenhash";
+    NSString *urlString = [NSString stringWithFormat:@"/api/v1/resource?__nonce=%@&__token=%@&limit=10",
+                           self.paginationNonce, self.paginationToken];
     // Given: dictionary and pagination info contain same values.
     self.dictionary = @{ NBClientPaginationLimitKey: @10,
                          NBClientPaginationNextLinkKey: urlString,
@@ -128,6 +135,25 @@
     [self.paginationInfo updateCurrentPageNumber];
     XCTAssertEqual(self.paginationInfo.currentPageNumber, oldNumber + 1,
                    @"Then current page number should have increased by 1.");
+}
+
+- (void)testGeneratingQueryParameters
+{
+    NSDictionary *legacyParameters = @{ NBClientCurrentPageNumberKey: @(self.legacyPaginationInfo.currentPageNumber),
+                                        NBClientNumberOfItemsPerPageKey: @(self.legacyPaginationInfo.numberOfItemsPerPage) };
+    XCTAssertTrue([[self.legacyPaginationInfo queryParameters] isEqualToDictionary:legacyParameters],
+                  @"Should properly generate legacy query parameters.");
+    
+    NSDictionary *parameters = @{ @"__nonce": self.paginationNonce,
+                                  @"__token": self.paginationToken,
+                                  NBClientPaginationLimitKey: @(self.paginationInfo.numberOfItemsPerPage) };
+    XCTAssertTrue([[self.paginationInfo queryParameters] nb_isEquivalentToDictionary:parameters],
+                  @"Should properly generate query parameters from next URL.");
+    
+    NBPaginationInfo *paginationInfo = [[NBPaginationInfo alloc] initWithDictionary:nil legacy:NO];
+    NSDictionary *initialParameters = @{ NBClientPaginationLimitKey: @(paginationInfo.numberOfItemsPerPage) };
+    XCTAssertTrue([[paginationInfo queryParameters] isEqualToDictionary:initialParameters],
+                  @"Should properly generate query parameters.");
 }
 
 @end
