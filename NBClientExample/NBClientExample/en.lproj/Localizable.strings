@@ -16,7 +16,7 @@
 "message.sign-in" = "Please sign in.";
 
 "pagination.item-title.format" = "%1$ld – %2$ld"; // Note the custom whitespacing.
-"pagination.page-title.format" = "Page %1$ld / %2$ld"; // Note the custom whitespacing.
+"pagination.page-title.format" = "Page %1$ld";
 
 "title.error" = "Error";
 

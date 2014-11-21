@@ -307,7 +307,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
             if (subview.tag == SectionHeaderPaginationPageLabelTag) {
                 UILabel *pageLabel = (id)subview;
                 pageLabel.text = [[NSString localizedStringWithFormat:NSLocalizedString(@"pagination.page-title.format", nil),
-                                   (indexPath.section + 1), paginationInfo.numberOfTotalPages]
+                                   (indexPath.section + 1)]
                                   uppercaseStringWithLocale:[NSLocale currentLocale]];
             } else if (subview.tag == SectionHeaderPaginationItemLabelTag) {
                 UILabel *itemLabel = (id)subview;
@@ -358,7 +358,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     CGFloat requiredOffsetOverflow = layout.requiredContentOffsetOverflow.floatValue;
     BOOL didPassThresold;
     NBPaginationInfo *paginationInfo = ((NBPeopleViewDataSource *)self.dataSource).paginationInfo;
-    BOOL canLoadMore = paginationInfo.currentPageNumber < paginationInfo.numberOfTotalPages;
+    BOOL canLoadMore = !paginationInfo.isLastPage;
     layout.shouldShowLoadMore = canLoadMore;
     if (canLoadMore && self.loadMoreState != NBScrollViewPullActionStateInProgress) {
         // Update load-more state.

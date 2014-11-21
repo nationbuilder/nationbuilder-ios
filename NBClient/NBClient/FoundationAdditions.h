@@ -18,6 +18,8 @@
 
 - (BOOL)nb_containsDictionary:(NSDictionary *)dictionary;
 
+- (BOOL)nb_isEquivalentToDictionary:(NSDictionary *)dictionary;
+
 - (NSString *)nb_queryStringWithEncoding:(NSStringEncoding)stringEncoding
              skipPercentEncodingPairKeys:(NSSet *)skipPairKeys
               charactersToLeaveUnescaped:(NSString *)charactersToLeaveUnescaped;

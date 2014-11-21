@@ -40,7 +40,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     self = [super init];
     if (self) {
         self.client = client;
-        self.paginationInfo = [[NBPaginationInfo alloc] init];
+        self.paginationInfo = [[NBPaginationInfo alloc] initWithDictionary:nil legacy:YES];
     }
     return self;
 }
