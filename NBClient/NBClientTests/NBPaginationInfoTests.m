@@ -120,4 +120,14 @@
                    @"Last page item count should be properly calculated.");
 }
 
+- (void)testManuallyUpdatingCurrentPageNumber
+{
+    XCTAssertNotNil(self.paginationInfo.nextPageURLString,
+                    @"Given pagination info has next URL.");
+    NSUInteger oldNumber = self.paginationInfo.currentPageNumber;
+    [self.paginationInfo updateCurrentPageNumber];
+    XCTAssertEqual(self.paginationInfo.currentPageNumber, oldNumber + 1,
+                   @"Then current page number should have increased by 1.");
+}
+
 @end

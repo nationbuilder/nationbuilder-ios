@@ -18,6 +18,12 @@ NSString * const NBClientPaginationLimitKey = @"limit";
 NSString * const NBClientPaginationNextLinkKey = @"next";
 NSString * const NBClientPaginationPreviousLinkKey = @"prev";
 
+#if DEBUG
+static NBLogLevel LogLevel = NBLogLevelDebug;
+#else
+static NBLogLevel LogLevel = NBLogLevelWarning;
+#endif
+
 @interface NBPaginationInfo ()
 
 - (void)updateFromDictionary:(NSDictionary *)dictionary;
@@ -25,6 +31,8 @@ NSString * const NBClientPaginationPreviousLinkKey = @"prev";
 @end
 
 @implementation NBPaginationInfo
+
+#pragma mark - Initializers
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary legacy:(BOOL)legacy
 {
@@ -36,10 +44,44 @@ NSString * const NBClientPaginationPreviousLinkKey = @"prev";
     return self;
 }
 
+#pragma mark - NBLogging
+
++ (void)updateLoggingToLevel:(NBLogLevel)logLevel
+{
+    LogLevel = logLevel;
+}
+
+#pragma mark - Public
+
+- (void)updateCurrentPageNumber
+{
+    if (self.isLegacy) { return; }
+    switch (self.currentDirection) {
+        case NBPaginationDirectionNext:
+            self.currentPageNumber += 1;
+            break;
+        case NBPaginationDirectionPrevious:
+            self.currentPageNumber -= 1;
+            break;
+        default:
+            NBLogWarning(@"Unsupported pagination direction, %d", self.currentDirection);
+            break;
+    }
+}
+
+#pragma mark Accessors
+
 - (void)setCurrentPageNumber:(NSUInteger)currentPageNumber
 {
     currentPageNumber = MAX(currentPageNumber, (NSUInteger)1);
     _currentPageNumber = currentPageNumber;
+}
+
+- (BOOL)isLastPage
+{
+    return (self.isLegacy ?
+            self.currentPageNumber < self.numberOfTotalPages :
+            !self.nextPageURLString);
 }
 
 - (NSUInteger)indexOfFirstItemAtPage:(NSUInteger)pageNumber
@@ -69,9 +111,9 @@ NSString * const NBClientPaginationPreviousLinkKey = @"prev";
     } else {
         NSDictionary *dictionary = [self dictionary];
         NSURLComponents *components;
-        if (dictionary[NBClientPaginationNextLinkKey]) {
+        if (self.currentDirection == NBPaginationDirectionNext && dictionary[NBClientPaginationNextLinkKey]) {
             components = [NSURLComponents componentsWithString:dictionary[NBClientPaginationNextLinkKey]];
-        } else if (dictionary[NBClientPaginationPreviousLinkKey]) {
+        } else if (self.currentDirection == NBPaginationDirectionPrevious && dictionary[NBClientPaginationPreviousLinkKey]) {
             components = [NSURLComponents componentsWithString:dictionary[NBClientPaginationPreviousLinkKey]];
         }
         // Get parameters from generated URL strings, or get first page with initial parameters.
@@ -95,6 +137,7 @@ NSString * const NBClientPaginationPreviousLinkKey = @"prev";
         self.numberOfTotalPages = 0;
         self.numberOfItemsPerPage = 10;
         self.numberOfTotalItems = 0;
+        self.currentDirection = NBPaginationDirectionNext;
     }
     return self;
 }
@@ -158,7 +201,9 @@ NSString * const NBClientPaginationPreviousLinkKey = @"prev";
         } else if (dictionary[NBClientPaginationNextLinkKey]) {
             NSURLComponents *components = [NSURLComponents componentsWithString:dictionary[NBClientPaginationNextLinkKey]];
             NSDictionary *queryParameters = [components.query nb_queryStringParametersWithEncoding:NSUTF8StringEncoding];
-            self.numberOfItemsPerPage = (NSUInteger)[queryParameters[@"limit"] integerValue];
+            if (queryParameters[@"limit"]) {
+                self.numberOfItemsPerPage = (NSUInteger)[queryParameters[@"limit"] integerValue];
+            }
         }
         self.nextPageURLString = dictionary[NBClientPaginationNextLinkKey];
         self.previousPageURLString = dictionary[NBClientPaginationPreviousLinkKey];

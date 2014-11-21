@@ -18,7 +18,12 @@ extern NSString * const NBClientPaginationLimitKey;
 extern NSString * const NBClientPaginationNextLinkKey;
 extern NSString * const NBClientPaginationPreviousLinkKey;
 
-@interface NBPaginationInfo : NSObject <NBDictionarySerializing>
+typedef NS_ENUM(NSUInteger, NBPaginationDirection) {
+    NBPaginationDirectionNext,
+    NBPaginationDirectionPrevious,
+};
+
+@interface NBPaginationInfo : NSObject <NBDictionarySerializing, NBLogging>
 
 // NOTE: Using the legacy NationBuilder API pagination is discouraged. Outside
 // of test tokens and older applications, it has been deprecated and the new
@@ -36,13 +41,18 @@ extern NSString * const NBClientPaginationPreviousLinkKey;
 
 @property (nonatomic, copy) NSString *nextPageURLString;
 @property (nonatomic, copy) NSString *previousPageURLString;
+@property (nonatomic) NBPaginationDirection currentDirection;
+
+@property (nonatomic, readonly) BOOL isLastPage;
+
+- (NSUInteger)indexOfFirstItemAtPage:(NSUInteger)pageNumber;
+- (NSUInteger)numberOfItemsAtPage:(NSUInteger)pageNumber;
 
 - (NSDictionary *)queryParameters;
 
 // Designated initializer.
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary legacy:(BOOL)legacy;
 
-- (NSUInteger)indexOfFirstItemAtPage:(NSUInteger)pageNumber; // #legacy
-- (NSUInteger)numberOfItemsAtPage:(NSUInteger)pageNumber; // #legacy
+- (void)updateCurrentPageNumber;
 
 @end
