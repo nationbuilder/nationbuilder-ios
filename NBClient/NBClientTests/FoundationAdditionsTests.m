@@ -44,10 +44,32 @@
 
 - (void)testCheckingIfDictionaryContainsDictionary
 {
-    NSDictionary *source = @{ @"name": @"Foo Bar", @"age": @1, @"email": @"foo@bar.com" };
-    NSDictionary *dictionary = @{ @"name": @"Foo Bar" };
+    NSDictionary *source = @{ @"name": @"Foo Bar", @"age": @1, @"email": @"foo@bar.com",
+                                     @"collection": @{ @"foo": @"foo", @"bar": @"bar", @"baz": @"baz" } };
+    NSDictionary *dictionary = @{ @"name": @"Foo Bar",
+                                  @"collection": @{ @"foo": @"foo", @"bar": @"bar" } };
+    NSDictionary *uncontainedDictionary = @{ @"not": @"contained" };
     XCTAssertTrue([source nb_containsDictionary:dictionary],
                   @"Dictionary should be subset of source dictionary.");
+    XCTAssertFalse([source nb_containsDictionary:uncontainedDictionary],
+                   @"Dictionary should not be subset of source dictionary.");
+}
+
+- (void)testCheckingIfDictionariesAreEquivalent
+{
+    NSDictionary *source = @{ @"foo": @"foo", @"bar": @{ @"baz": @"baz" } };
+    NSDictionary *dictionary = @{ @"foo": @"foo", @"bar": @{ @"baz": @"baz" } };
+    XCTAssertTrue([source nb_isEquivalentToDictionary:source],
+                  @"Dictionaries should be equivalent if identical.");
+    XCTAssertTrue([source nb_isEquivalentToDictionary:dictionary],
+                  @"Dictionaries should be equivalent if non-identical.");
+
+    source = @{ @"foo": @"foo" };
+    dictionary = @{ @"foo": @"foo" };
+    NSDictionary *queryParameters = [[dictionary nb_queryStringWithEncoding:NSUTF8StringEncoding skipPercentEncodingPairKeys:nil charactersToLeaveUnescaped:nil]
+                                     nb_queryStringParametersWithEncoding:NSUTF8StringEncoding];
+    XCTAssertTrue([source nb_isEquivalentToDictionary:queryParameters],
+                  @"Dictionaries should be equivalent even if strings aren't equal in terms of encoding.");
 }
 
 - (void)testBuildingQueryStringFromDictionary

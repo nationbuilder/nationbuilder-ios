@@ -41,11 +41,34 @@ static NSString *QueryPairJoiner = @"=";
 - (BOOL)nb_containsDictionary:(NSDictionary *)dictionary
 {
     for (NSString *key in dictionary.allKeys) {
-        if (![dictionary[key] isEqual:self[key]]) {
+        id otherValue = dictionary[key];
+        id value = self[key];
+        if (![otherValue isEqual:value] &&
+            !([otherValue isKindOfClass:[NSString class]] && [value isKindOfClass:[NSString class]] &&
+              [otherValue isEqualToString:value]) &&
+            !([otherValue isKindOfClass:[NSDictionary class]] && [value isKindOfClass:[NSDictionary class]] &&
+              [value nb_containsDictionary:otherValue])
+        ) {
+            // NOTE: Arrays must be entirely contained (equal).
             return NO;
         }
     }
     return YES;
+}
+
+- (BOOL)nb_isEquivalentToDictionary:(NSDictionary *)dictionary
+{
+    if (dictionary.allKeys.count != self.allKeys.count) { return NO; }
+    for (NSString *key in dictionary.allKeys) {
+        id otherValue = dictionary[key];
+        id value = self[key];
+        if ([otherValue isKindOfClass:[NSDictionary class]] && [value isKindOfClass:[NSDictionary class]] &&
+            [[otherValue allKeys] count] != [[value allKeys] count]
+        ) {
+            return NO;
+        }
+    }
+    return [self nb_containsDictionary:dictionary];
 }
 
 - (NSString *)nb_queryStringWithEncoding:(NSStringEncoding)stringEncoding
