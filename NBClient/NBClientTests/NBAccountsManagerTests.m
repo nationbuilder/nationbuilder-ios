@@ -33,6 +33,14 @@
 
 @implementation NBAccountsManagerTests
 
+- (void)tearDown
+{
+    [super tearDown];
+    self.delegateMock = nil;
+    self.accountsManager = nil;
+    self.accountsManagerMock = nil;
+}
+
 #pragma mark - Helpers
 
 - (NBAccountsManager *)accountsManager
@@ -109,9 +117,11 @@
 
 - (void)performAccountPersistenceWithAccountsManager:(NBAccountsManager *)accountsManager
 {
+    [accountsManager setUpAccountPersistence];
     [accountsManager persistAccounts];
     accountsManager.mutableAccounts = [NSMutableArray array];
     [accountsManager loadPersistedAccounts];
+    [accountsManager tearDownAccountPersistence];
 }
 
 - (void)assertAccountsManagerDeactivatedAccountAndIsSignedOut
@@ -291,10 +301,9 @@
 
 - (void)testAccountPersistence
 {
-    // Given: delegate allows account persistence.
-    self.delegateMock = OCMProtocolMock(@protocol(NBAccountsManagerDelegate));
-    [OCMStub([self.delegateMock accountsManagerShouldPersistAccounts:OCMOCK_ANY]) andReturnValue:@YES];
     NBAccountsManager *accountsManager = self.accountsManagerMock;
+    // Given: delegate allows account persistence.
+    [OCMStub([self.delegateMock accountsManagerShouldPersistAccounts:OCMOCK_ANY]) andReturnValue:@YES];
     // Given: manager has populated accounts.
     [self populateAccountsManagerWithAccountMocks:accountsManager];
     // Given: accounts manager can properly create accounts.
@@ -308,7 +317,7 @@
     XCTAssertNotNil(accountsManager.selectedAccount,
                     @"Manager should have a selected account.");
     XCTAssertEqual(accountsManager.accounts.count, originalCount,
-                      @"Manager should have same number of accounts as before.");
+                   @"Manager should have same number of accounts as before.");
 }
 
 - (void)testAccountPersistenceDisabling
