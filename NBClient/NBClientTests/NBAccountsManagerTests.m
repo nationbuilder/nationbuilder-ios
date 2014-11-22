@@ -21,6 +21,7 @@
 @property (nonatomic) id accountsManagerMock;
 @property (nonatomic) id delegateMock;
 
+// NOTE: Sometimes creating real objects is necessary.
 - (NBAccount *)createAccount;
 
 - (id)createAccountMock;
@@ -306,16 +307,26 @@
     [OCMStub([self.delegateMock accountsManagerShouldPersistAccounts:OCMOCK_ANY]) andReturnValue:@YES];
     // Given: manager has populated accounts.
     [self populateAccountsManagerWithAccountMocks:accountsManager];
+    // Given: manager has last account selected.
+    accountsManager.selectedAccount = accountsManager.accounts.lastObject;
     // Given: accounts manager can properly create accounts.
-    [OCMStub([accountsManager createAccountWithNationSlug:self.nationSlug]) andReturn:[self createAccountMock]];
+    [OCMStub([accountsManager createAccountWithNationSlug:self.nationSlug]) andReturn:[self createAccount]];
+    // Given: accounts manager activates original selected account during restore.
+    NBAccount *originalSelectedAccount = (NBAccount *)accountsManager.selectedAccount;
+    [OCMStub([accountsManager activateAccount:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+        NBAccount *account;
+        [invocation getArgument:&account atIndex:2];
+        [invocation retainArguments];
+        // Then.
+        XCTAssertEqual(account.identifier, originalSelectedAccount.identifier,
+                       @"Manager should have the same selected account.");
+    }];
     // When: persisting and removing accounts, then loading accounts.
     NSUInteger originalCount = accountsManager.accounts.count;
     [self performAccountPersistenceWithAccountsManager:accountsManager];
     // Then: accounts should be restored and manager should be signed in.
     XCTAssertTrue(accountsManager.isSignedIn,
                   @"Manager should be signed in.");
-    XCTAssertNotNil(accountsManager.selectedAccount,
-                    @"Manager should have a selected account.");
     XCTAssertEqual(accountsManager.accounts.count, originalCount,
                    @"Manager should have same number of accounts as before.");
 }

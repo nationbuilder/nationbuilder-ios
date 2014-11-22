@@ -17,6 +17,7 @@ NSString * const NBAccountInfosDefaultsKey = @"NBAccountInfos";
 NSString * const NBAccountInfoIdentifierKey = @"User ID";
 NSString * const NBAccountInfoNameKey = @"User Name";
 NSString * const NBAccountInfoNationSlugKey = @"Nation Slug";
+NSString * const NBAccountInfoSelectedKey = @"Selected";
 
 #if DEBUG
 static NBLogLevel LogLevel = NBLogLevelDebug;
@@ -239,13 +240,21 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     if (!self.shouldPersistAccounts) { return; }
     NSArray *accountInfos = [[NSUserDefaults standardUserDefaults] arrayForKey:self.persistedAccountsIdentifier];
     if (accountInfos) {
+        NBAccount *selectedAccount;
         for (NSDictionary *accountInfo in accountInfos) {
             NBAccount *account = [self createAccountWithNationSlug:accountInfo[NBAccountInfoNationSlugKey]];
             account.name = accountInfo[NBAccountInfoNameKey];
             account.identifier = [accountInfo[NBAccountInfoIdentifierKey] unsignedIntegerValue];
             [self.mutableAccounts addObject:account];
+            if ([accountInfo[NBAccountInfoSelectedKey] boolValue]) {
+                selectedAccount = account;
+            }
         }
-        [self activateAccount:self.accounts.firstObject];
+        if (!selectedAccount) {
+            NBLogWarning(@"No selected account in persisted accounts. Restoring first account.");
+            selectedAccount = self.accounts.firstObject;
+        }
+        [self activateAccount:selectedAccount];
         NBLogInfo(@"Loaded %lu persisted account(s) for identifier \"%@\"",
                   (unsigned long)accountInfos.count, self.persistedAccountsIdentifier);
     }
@@ -259,7 +268,8 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         if (!account.name) { continue; }
         [accountInfos addObject:@{ NBAccountInfoIdentifierKey: @(account.identifier),
                                    NBAccountInfoNameKey: account.name,
-                                   NBAccountInfoNationSlugKey: account.nationSlug }];
+                                   NBAccountInfoNationSlugKey: account.nationSlug,
+                                   NBAccountInfoSelectedKey: @(account == self.selectedAccount) }];
     }
     [[NSUserDefaults standardUserDefaults] setObject:accountInfos forKey:self.persistedAccountsIdentifier];
     NBLogInfo(@"Persisted %lu persisted account(s) for identifier \"%@\"",
