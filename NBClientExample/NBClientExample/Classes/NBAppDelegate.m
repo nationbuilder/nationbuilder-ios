@@ -89,7 +89,9 @@
 - (void)accountsManager:(NBAccountsManager *)accountsManager didFailToSwitchToAccount:(NBAccount *)account withError:(NSError *)error
 {
     // Show an alert for generic errors
-    [[UIAlertView nb_genericAlertViewWithError:error] show];
+    if (error.code != NBAuthenticationErrorCodeUser) {
+        [[UIAlertView nb_genericAlertViewWithError:error] show];
+    }
 }
 
 - (void)accountsManager:(NBAccountsManager *)accountsManager didSignOutOfInvalidAccount:(NBAccount *)account fromHTTPError:(NSError *)error

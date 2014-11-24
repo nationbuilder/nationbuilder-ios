@@ -16,6 +16,7 @@ NSInteger const NBAuthenticationErrorCodeService = 20;
 NSInteger const NBAuthenticationErrorCodeURLType = 21;
 NSInteger const NBAuthenticationErrorCodeWebBrowser = 22;
 NSInteger const NBAuthenticationErrorCodeKeychain = 23;
+NSInteger const NBAuthenticationErrorCodeUser = 24;
 
 NSString * const NBAuthenticationDefaultRedirectPath = @"oauth/callback";
 
@@ -49,16 +50,22 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         self.baseURL = baseURL;
         self.clientIdentifier = clientIdentifier;
         self.shouldPersistCredential = YES;
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(finishAuthenticatingInWebBrowserWithNotification:)
-                                                     name:NBAuthenticationRedirectNotification object:nil];
+        NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+        [center addObserver:self
+                   selector:@selector(finishAuthenticatingInWebBrowserWithNotification:)
+                       name:NBAuthenticationRedirectNotification object:nil];
+        [center addObserver:self
+                   selector:@selector(finishAuthenticatingInWebBrowserWithNotification:)
+                       name:UIApplicationDidBecomeActiveNotification object:nil];
     }
     return self;
 }
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:NBAuthenticationRedirectNotification object:nil];
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center removeObserver:self name:NBAuthenticationRedirectNotification object:nil];
+    [center removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 #pragma mark - NBLogging
@@ -268,6 +275,16 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     if (!self.isAuthenticatingInWebBrowser) { return; }
     NBAuthenticationCredential *credential;
     NSError *error;
+    if (notification.name == UIApplicationDidBecomeActiveNotification) {
+        // Handle user manually stopping authorization flow, ie. manually
+        // switching back to app before authorization.
+        error = [NSError
+                 errorWithDomain:NBErrorDomain
+                 code:NBAuthenticationErrorCodeUser
+                 userInfo:@{ NSLocalizedDescriptionKey: @"message.redirect-error".nb_localizedString,
+                             NSLocalizedFailureReasonErrorKey: @"message.redirect-error.user-stopped".nb_localizedString,
+                             NSLocalizedRecoverySuggestionErrorKey: @"message.redirect-error.sign-in-again".nb_localizedString }];
+    } else
     if (notification.name == NBAuthenticationRedirectNotification) {
         // Check our notification.
         if (!notification.userInfo[NBAuthenticationRedirectTokenKey]) {

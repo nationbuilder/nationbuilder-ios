@@ -17,6 +17,7 @@ extern NSInteger const NBAuthenticationErrorCodeService;
 extern NSInteger const NBAuthenticationErrorCodeURLType;
 extern NSInteger const NBAuthenticationErrorCodeWebBrowser;
 extern NSInteger const NBAuthenticationErrorCodeKeychain;
+extern NSInteger const NBAuthenticationErrorCodeUser;
 
 extern NSString * const NBAuthenticationDefaultRedirectPath;
 
