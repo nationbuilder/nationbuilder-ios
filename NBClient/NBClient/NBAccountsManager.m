@@ -149,7 +149,9 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 - (void)activateAccount:(NBAccount *)account
 {
-    BOOL needsPriorSignout = self.selectedAccount && [self.selectedAccount.nationSlug isEqualToString:account.nationSlug];
+    BOOL isFirstAccount = self.accounts.count == 1; // We cannot know which account the user wants to use.
+    BOOL isOtherSameNationAccount = self.selectedAccount && [self.selectedAccount.nationSlug isEqualToString:account.nationSlug];
+    BOOL needsPriorSignout = isFirstAccount || isOtherSameNationAccount;
     [account requestActiveWithPriorSignout:needsPriorSignout completionHandler:^(NSError *error) {
         BOOL shouldBail = NO;
         if (error) {
