@@ -38,6 +38,8 @@
 
 - (NSString *)nb_localizedString;
 
+- (BOOL)nb_isNumeric;
+
 @end
 
 @interface NSURLRequest (NBAdditions)

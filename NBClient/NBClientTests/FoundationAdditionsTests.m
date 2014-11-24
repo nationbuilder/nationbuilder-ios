@@ -57,8 +57,8 @@
 
 - (void)testCheckingIfDictionariesAreEquivalent
 {
-    NSDictionary *source = @{ @"foo": @"foo", @"bar": @{ @"baz": @"baz" } };
-    NSDictionary *dictionary = @{ @"foo": @"foo", @"bar": @{ @"baz": @"baz" } };
+    NSDictionary *source = @{ @"foo": @"foo", @"bar": @{ @"baz": @1 } };
+    NSDictionary *dictionary = @{ @"foo": @"foo", @"bar": @{ @"baz": @1 } };
     XCTAssertTrue([source nb_isEquivalentToDictionary:source],
                   @"Dictionaries should be equivalent if identical.");
     XCTAssertTrue([source nb_isEquivalentToDictionary:dictionary],
@@ -95,15 +95,6 @@
                   @"Query string value should be properly formed.");
 }
 
-- (void)testBuildingDictionaryFromQueryString
-{
-    NSString *string = @"age=1&email=foo@bar.com&name=Foo%20Bar";
-    NSDictionary *parameters = [string nb_queryStringParametersWithEncoding:NSUTF8StringEncoding];
-    NSDictionary *expectedParameters = @{ @"name": @"Foo Bar", @"age": @"1", @"email": @"foo@bar.com" };
-    XCTAssertEqualObjects(parameters, expectedParameters,
-                          @"Query parameters should be properly formed");
-}
-
 - (void)testPercentUnescapingQueryStringPairValue
 {
     NSString *escapedString = @"%20%21%22%23%24%25%26%27%28%29%2A%2B%2C%2F";
@@ -111,6 +102,24 @@
                                                                  charactersToLeaveEscaped:nil];
     XCTAssertTrue([unescapedString isEqualToString:@" !\"#$%&'()*+,/"],
                   @"Query string value should be properly formed.");
+}
+
+- (void)testBuildingDictionaryFromQueryString
+{
+    NSString *string = @"age=1&email=foo@bar.com&name=Foo%20Bar";
+    NSDictionary *parameters = [string nb_queryStringParametersWithEncoding:NSUTF8StringEncoding];
+    NSDictionary *expectedParameters = @{ @"name": @"Foo Bar", @"age": @1, @"email": @"foo@bar.com" };
+    XCTAssertEqualObjects(parameters, expectedParameters,
+                          @"Query parameters should be properly formed");
+}
+
+- (void)testCheckingIfStringIsNumeric
+{
+    XCTAssertTrue(@"1".nb_isNumeric, @"Whole numbers should be numeric.");
+    XCTAssertTrue(@"1.1".nb_isNumeric, @"Decimal numbers should be numeric.");
+    XCTAssertFalse(@"1-111-111-1111".nb_isNumeric, @"Phone numbers (numbers with dashes) should not be numeric.");
+    XCTAssertFalse(@"1,111,111,1111".nb_isNumeric, @"Formatted numbers (comma-delimited) should not be numeric.");
+    XCTAssertFalse(@"abc123".nb_isNumeric, @"Strings that are partially numeric should not be numeric.");
 }
 
 @end
