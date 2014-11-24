@@ -56,7 +56,7 @@ extern NSString * const NBAuthenticationDefaultRedirectPath;
 
 // #token-flow
 + (NSString *)authorizationRedirectApplicationURLScheme;
-+ (BOOL)finishAuthenticatingInWebBrowserWithURL:(NSURL *)url error:(NSError **)error;
++ (BOOL)finishAuthenticatingInWebBrowserWithURL:(NSURL *)url;
 
 @end
 

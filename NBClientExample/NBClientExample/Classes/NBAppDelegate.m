@@ -77,11 +77,7 @@
 {
     // In addition to setting CFBundleURLTypes, this is the basics of what is
     // required for the preferred way of authenticating against NationBuilder.
-    NSError *error;
-    [NBAuthenticator finishAuthenticatingInWebBrowserWithURL:url error:&error];
-    if (error) {
-        [[UIAlertView nb_genericAlertViewWithError:error] show];
-    }
+    [NBAuthenticator finishAuthenticatingInWebBrowserWithURL:url];
     // You should return NO regardless of whether or not the authentication
     // succeeded. There's a system-level bug that prevents your app from opening
     // the same URL after a previous successful opening.

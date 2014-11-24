@@ -104,7 +104,7 @@
                       @"Authorization url parameters should be correct.");
         // App delegate method would call this.
         [NBAuthenticator finishAuthenticatingInWebBrowserWithURL:
-         [NSURL URLWithString:[NSString stringWithFormat:@"#access_token=%@", accessToken] relativeToURL:redirectURI] error:nil];
+         [NSURL URLWithString:[NSString stringWithFormat:@"#access_token=%@", accessToken] relativeToURL:redirectURI]];
     }];
     [self setUpAsync];
     // When.

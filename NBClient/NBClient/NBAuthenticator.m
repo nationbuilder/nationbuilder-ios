@@ -177,25 +177,17 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 // Since this is a stateless method, decoupled from any one authenticator, it
 // must rely on notifications.
-+ (BOOL)finishAuthenticatingInWebBrowserWithURL:(NSURL *)url error:(NSError *__autoreleasing *)error
++ (BOOL)finishAuthenticatingInWebBrowserWithURL:(NSURL *)url
 {
     BOOL didOpen = NO;
     NSURLComponents *components = [[NSURLComponents alloc] initWithURL:url resolvingAgainstBaseURL:YES];
     if ([components.scheme isEqualToString:self.authorizationRedirectApplicationURLScheme]) {
         NSDictionary *parameters = [components.fragment nb_queryStringParametersWithEncoding:NSUTF8StringEncoding];
         NSString *accessToken = parameters[NBAuthenticationRedirectTokenKey];
+        [[NSNotificationCenter defaultCenter] postNotificationName:NBAuthenticationRedirectNotification object:nil
+                                                          userInfo:@{ NBAuthenticationRedirectTokenKey: accessToken }];
         if (accessToken) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:NBAuthenticationRedirectNotification object:nil
-                                                              userInfo:@{ NBAuthenticationRedirectTokenKey: accessToken }];
             didOpen = YES;
-        } else {
-            *error = [NSError
-                      errorWithDomain:NBErrorDomain
-                      code:NBAuthenticationErrorCodeService
-                      userInfo:@{ NSLocalizedDescriptionKey: @"message.nb-redirect-error".nb_localizedString,
-                                  NSLocalizedFailureReasonErrorKey: @"message.nb-redirect-error.no-access-token".nb_localizedString,
-                                  NSLocalizedRecoverySuggestionErrorKey: @"message.unknown-error-solution".nb_localizedString }];
-            NBLogError(@"%@", *error);
         }
     }
     return didOpen;
@@ -272,12 +264,28 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 - (void)finishAuthenticatingInWebBrowserWithNotification:(NSNotification *)notification
 {
-    if (!self.isAuthenticatingInWebBrowser || !notification.userInfo[NBAuthenticationRedirectTokenKey]) {
-        return;
+    // Check our state.
+    if (!self.isAuthenticatingInWebBrowser) { return; }
+    NBAuthenticationCredential *credential;
+    NSError *error;
+    if (notification.name == NBAuthenticationRedirectNotification) {
+        // Check our notification.
+        if (!notification.userInfo[NBAuthenticationRedirectTokenKey]) {
+            error = [NSError
+                     errorWithDomain:NBErrorDomain
+                     code:NBAuthenticationErrorCodeService
+                     userInfo:@{ NSLocalizedDescriptionKey: @"message.nb-redirect-error".nb_localizedString,
+                                 NSLocalizedFailureReasonErrorKey: @"message.nb-redirect-error.no-access-token".nb_localizedString,
+                                 NSLocalizedRecoverySuggestionErrorKey: @"message.unknown-error-solution".nb_localizedString }];
+        } else {
+            // Handle normal completion of authorization flow.
+            credential = [[NBAuthenticationCredential alloc] initWithAccessToken:notification.userInfo[NBAuthenticationRedirectTokenKey]
+                                                                       tokenType:nil];
+            self.credential = credential;
+        }
     }
-    self.credential = [[NBAuthenticationCredential alloc] initWithAccessToken:notification.userInfo[NBAuthenticationRedirectTokenKey]
-                                                                    tokenType:nil];
-    self.currentInBrowserAuthenticationCompletionHandler(self.credential, nil);
+    // Complete.
+    self.currentInBrowserAuthenticationCompletionHandler(credential, error);
     self.currentInBrowserAuthenticationCompletionHandler = nil;
 }
 
