@@ -95,13 +95,15 @@
 {
     // NOTE: We're not partial mocking this because its functionality is not this layer's concern.
     id accountMock = OCMClassMock([NBAccount class]);
-    [OCMStub([accountMock requestActiveWithPriorSignout:NO completionHandler:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+    void (^accountRequestActiveStub)(NSInvocation *) = ^(NSInvocation *invocation) {
         [OCMStub([accountMock isActive]) andReturnValue:@YES];
         NBGenericCompletionHandler completionHandler;
         [invocation getArgument:&completionHandler atIndex:3];
         [invocation retainArguments];
         completionHandler(nil);
-    }];
+    };
+    [OCMStub([accountMock requestActiveWithPriorSignout:YES completionHandler:OCMOCK_ANY]) andDo:accountRequestActiveStub];
+    [OCMStub([accountMock requestActiveWithPriorSignout:NO completionHandler:OCMOCK_ANY]) andDo:accountRequestActiveStub];
     return accountMock;
 }
 
@@ -224,7 +226,7 @@
     // Given: an account that can't properly activate.
     id accountMock = OCMClassMock([NBAccount class]);
     NSError *error = [NSError errorWithDomain:NBErrorDomain code:0 userInfo:nil];
-    [OCMStub([accountMock requestActiveWithPriorSignout:NO completionHandler:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+    [OCMStub([accountMock requestActiveWithPriorSignout:YES completionHandler:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
         NBGenericCompletionHandler completionHandler;
         [invocation getArgument:&completionHandler atIndex:3];
         [invocation retainArguments];
