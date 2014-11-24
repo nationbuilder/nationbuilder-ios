@@ -42,6 +42,11 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     return self;
 }
 
+- (void)dealloc
+{
+    [self tearDownAccountPersistence];
+}
+
 #pragma mark - NBLogging
 
 + (void)updateLoggingToLevel:(NBLogLevel)logLevel
