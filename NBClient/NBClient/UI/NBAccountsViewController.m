@@ -212,13 +212,15 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     if (alertView == self.nationSlugPromptView && buttonIndex != alertView.cancelButtonIndex) {
         __block NSError *error;
         NSString *nationSlug = [alertView textFieldAtIndex:0].text;
-        BOOL didAdd = [self.dataSource addAccountWithNationSlug:nationSlug error:&error];
-        if (!didAdd) {
-            // Work around the fact automatic alert dismissal can't be prevented.
-            self.nationSlugErrorView = [UIAlertView nb_genericAlertViewWithError:error];
-            self.nationSlugErrorView.delegate = self;
-            [self.nationSlugErrorView show];
-        }
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            BOOL didAdd = [self.dataSource addAccountWithNationSlug:nationSlug error:&error];
+            if (!didAdd) {
+                // Work around the fact automatic alert dismissal can't be prevented.
+                self.nationSlugErrorView = [UIAlertView nb_genericAlertViewWithError:error];
+                self.nationSlugErrorView.delegate = self;
+                [self.nationSlugErrorView show];
+            }
+        });
     } else if (alertView == self.nationSlugErrorView) {
         [self promptForNationSlug];
     } else if (buttonIndex != alertView.cancelButtonIndex){
