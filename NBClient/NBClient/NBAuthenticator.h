@@ -17,6 +17,7 @@ extern NSInteger const NBAuthenticationErrorCodeService;
 extern NSInteger const NBAuthenticationErrorCodeURLType;
 extern NSInteger const NBAuthenticationErrorCodeWebBrowser;
 extern NSInteger const NBAuthenticationErrorCodeKeychain;
+extern NSInteger const NBAuthenticationErrorCodeUser;
 
 extern NSString * const NBAuthenticationDefaultRedirectPath;
 
@@ -34,6 +35,7 @@ extern NSString * const NBAuthenticationDefaultRedirectPath;
 @property (nonatomic, readonly, getter = isAuthenticatingInWebBrowser) BOOL authenticatingInWebBrowser;
 
 @property (nonatomic, copy) NSString *credentialIdentifier;
+@property (nonatomic, copy, readonly) NSString *defaultCredentialIdentifier;
 @property (nonatomic) BOOL shouldPersistCredential;
 
 // Designated initializer.
@@ -56,7 +58,7 @@ extern NSString * const NBAuthenticationDefaultRedirectPath;
 
 // #token-flow
 + (NSString *)authorizationRedirectApplicationURLScheme;
-+ (BOOL)finishAuthenticatingInWebBrowserWithURL:(NSURL *)url error:(NSError **)error;
++ (BOOL)finishAuthenticatingInWebBrowserWithURL:(NSURL *)url;
 
 @end
 

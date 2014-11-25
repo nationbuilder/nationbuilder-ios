@@ -16,6 +16,7 @@ NSInteger const NBAuthenticationErrorCodeService = 20;
 NSInteger const NBAuthenticationErrorCodeURLType = 21;
 NSInteger const NBAuthenticationErrorCodeWebBrowser = 22;
 NSInteger const NBAuthenticationErrorCodeKeychain = 23;
+NSInteger const NBAuthenticationErrorCodeUser = 24;
 
 NSString * const NBAuthenticationDefaultRedirectPath = @"oauth/callback";
 
@@ -49,16 +50,22 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         self.baseURL = baseURL;
         self.clientIdentifier = clientIdentifier;
         self.shouldPersistCredential = YES;
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(finishAuthenticatingInWebBrowserWithNotification:)
-                                                     name:NBAuthenticationRedirectNotification object:nil];
+        NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+        [center addObserver:self
+                   selector:@selector(finishAuthenticatingInWebBrowserWithNotification:)
+                       name:NBAuthenticationRedirectNotification object:nil];
+        [center addObserver:self
+                   selector:@selector(finishAuthenticatingInWebBrowserWithNotification:)
+                       name:UIApplicationDidBecomeActiveNotification object:nil];
     }
     return self;
 }
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:NBAuthenticationRedirectNotification object:nil];
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center removeObserver:self name:NBAuthenticationRedirectNotification object:nil];
+    [center removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 #pragma mark - NBLogging
@@ -79,7 +86,9 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     if (_credential) {
         return _credential;
     }
-    self.credential = [NBAuthenticationCredential fetchCredentialWithIdentifier:self.credentialIdentifier];
+    if (self.shouldPersistCredential) {
+        self.credential = [NBAuthenticationCredential fetchCredentialWithIdentifier:self.credentialIdentifier];
+    }
     return _credential;
 }
 
@@ -102,8 +111,13 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     if (_credentialIdentifier) {
         return _credentialIdentifier;
     }
-    self.credentialIdentifier = self.baseURL.host;
+    self.credentialIdentifier = self.defaultCredentialIdentifier;
     return _credentialIdentifier;
+}
+
+- (NSString *)defaultCredentialIdentifier
+{
+    return self.baseURL.host;
 }
 
 #pragma mark Authenticate API
@@ -177,25 +191,17 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 // Since this is a stateless method, decoupled from any one authenticator, it
 // must rely on notifications.
-+ (BOOL)finishAuthenticatingInWebBrowserWithURL:(NSURL *)url error:(NSError *__autoreleasing *)error
++ (BOOL)finishAuthenticatingInWebBrowserWithURL:(NSURL *)url
 {
     BOOL didOpen = NO;
     NSURLComponents *components = [[NSURLComponents alloc] initWithURL:url resolvingAgainstBaseURL:YES];
     if ([components.scheme isEqualToString:self.authorizationRedirectApplicationURLScheme]) {
         NSDictionary *parameters = [components.fragment nb_queryStringParametersWithEncoding:NSUTF8StringEncoding];
         NSString *accessToken = parameters[NBAuthenticationRedirectTokenKey];
+        [[NSNotificationCenter defaultCenter] postNotificationName:NBAuthenticationRedirectNotification object:nil
+                                                          userInfo:@{ NBAuthenticationRedirectTokenKey: accessToken }];
         if (accessToken) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:NBAuthenticationRedirectNotification object:nil
-                                                              userInfo:@{ NBAuthenticationRedirectTokenKey: accessToken }];
             didOpen = YES;
-        } else {
-            *error = [NSError
-                      errorWithDomain:NBErrorDomain
-                      code:NBAuthenticationErrorCodeService
-                      userInfo:@{ NSLocalizedDescriptionKey: @"message.nb-redirect-error".nb_localizedString,
-                                  NSLocalizedFailureReasonErrorKey: @"message.nb-redirect-error.no-access-token".nb_localizedString,
-                                  NSLocalizedRecoverySuggestionErrorKey: @"message.unknown-error-solution".nb_localizedString }];
-            NBLogError(@"%@", *error);
         }
     }
     return didOpen;
@@ -209,7 +215,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 {
     NSAssert(completionHandler, @"Completion handler is required.");
     // Return saved credential if possible.
-    if (self.credential && self.shouldPersistCredential) {
+    if (self.credential) {
         completionHandler(self.credential, nil);
         return nil;
     }
@@ -272,12 +278,38 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 - (void)finishAuthenticatingInWebBrowserWithNotification:(NSNotification *)notification
 {
-    if (!self.isAuthenticatingInWebBrowser || !notification.userInfo[NBAuthenticationRedirectTokenKey]) {
-        return;
+    // Check our state.
+    if (!self.isAuthenticatingInWebBrowser) { return; }
+    NBAuthenticationCredential *credential;
+    NSError *error;
+    if (notification.name == UIApplicationDidBecomeActiveNotification) {
+        // Handle user manually stopping authorization flow, ie. manually
+        // switching back to app before authorization.
+        error = [NSError
+                 errorWithDomain:NBErrorDomain
+                 code:NBAuthenticationErrorCodeUser
+                 userInfo:@{ NSLocalizedDescriptionKey: @"message.redirect-error".nb_localizedString,
+                             NSLocalizedFailureReasonErrorKey: @"message.redirect-error.user-stopped".nb_localizedString,
+                             NSLocalizedRecoverySuggestionErrorKey: @"message.redirect-error.sign-in-again".nb_localizedString }];
+    } else
+    if (notification.name == NBAuthenticationRedirectNotification) {
+        // Check our notification.
+        if (!notification.userInfo[NBAuthenticationRedirectTokenKey]) {
+            error = [NSError
+                     errorWithDomain:NBErrorDomain
+                     code:NBAuthenticationErrorCodeService
+                     userInfo:@{ NSLocalizedDescriptionKey: @"message.nb-redirect-error".nb_localizedString,
+                                 NSLocalizedFailureReasonErrorKey: @"message.nb-redirect-error.no-access-token".nb_localizedString,
+                                 NSLocalizedRecoverySuggestionErrorKey: @"message.unknown-error-solution".nb_localizedString }];
+        } else {
+            // Handle normal completion of authorization flow.
+            credential = [[NBAuthenticationCredential alloc] initWithAccessToken:notification.userInfo[NBAuthenticationRedirectTokenKey]
+                                                                       tokenType:nil];
+            self.credential = credential;
+        }
     }
-    self.credential = [[NBAuthenticationCredential alloc] initWithAccessToken:notification.userInfo[NBAuthenticationRedirectTokenKey]
-                                                                    tokenType:nil];
-    self.currentInBrowserAuthenticationCompletionHandler(self.credential, nil);
+    // Complete.
+    self.currentInBrowserAuthenticationCompletionHandler(credential, error);
     self.currentInBrowserAuthenticationCompletionHandler = nil;
 }
 
@@ -292,7 +324,6 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     [mutableRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [mutableRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     
-
     return [[NSURLSession sharedSession]
      dataTaskWithRequest:mutableRequest
      completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -397,9 +428,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 {
     BOOL didSave = NO;
     // Handle saving nil.
-    if (!credential) {
-        return [self deleteCredentialWithIdentifier:identifier];
-    }
+    if (!credential) { return didSave; }
     // Setup dictionaries.
     NSMutableDictionary *query = [self baseKeychainQueryDictionaryWithIdentifier:identifier];
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
@@ -407,6 +436,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     dictionary[(__bridge id)kSecAttrAccessible] = (__bridge id)kSecAttrAccessibleWhenUnlocked;
     // Update else create.
     OSStatus status;
+    NBLogInfo(@"Fetching existing keychain credential...");
     BOOL alreadyExists = [self fetchCredentialWithIdentifier:identifier] != nil;
     if (alreadyExists) {
         status = SecItemUpdate((__bridge CFDictionaryRef)query, (__bridge CFDictionaryRef)dictionary);

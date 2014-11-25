@@ -83,7 +83,7 @@ static NSString *QueryPairJoiner = @"=";
         if ([value isKindOfClass:[NSArray class]] ||
             [value isKindOfClass:[NSDictionary class]] ||
             [value isKindOfClass:[NSSet class]]
-            ) {
+        ) {
             NBLog(@"WARNING: Unable to serialize key %@ with value %@", key, value);
             continue;
         }
@@ -120,6 +120,12 @@ static NSString *QueryPairJoiner = @"=";
 
 - (NSDictionary *)nb_queryStringParametersWithEncoding:(NSStringEncoding)stringEncoding
 {
+    static NSNumberFormatter *numberFormatter;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        numberFormatter = [[NSNumberFormatter alloc] init];
+        numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
+    });
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     NSArray *pairs = [self componentsSeparatedByString:QueryJoiner];
     for (NSString *pairString in pairs) {
@@ -127,10 +133,16 @@ static NSString *QueryPairJoiner = @"=";
         NSString *key = [pair[0] nb_percentUnescapedQueryStringWithEncoding:NSUTF8StringEncoding
                                                    charactersToLeaveEscaped:nil];
         if (pair.count > 1) {
-            NSString *valueString = [pair[1] nb_percentUnescapedQueryStringWithEncoding:NSUTF8StringEncoding
-                                                               charactersToLeaveEscaped:nil];
+            id value;
+            NSString *stringValue = [pair[1] nb_percentUnescapedQueryStringWithEncoding:NSUTF8StringEncoding
+                                                  charactersToLeaveEscaped:nil];
+            if ([stringValue nb_isNumeric]) {
+                value = [numberFormatter numberFromString:stringValue];
+            } else {
+                value = stringValue;
+            }
             // TODO: Add support for collection-based data types.
-            parameters[key] = valueString;
+            parameters[key] = value;
         }
     }
     return [NSDictionary dictionaryWithDictionary:parameters];
@@ -155,6 +167,13 @@ static NSString *QueryPairJoiner = @"=";
         NBLog(@"WARNING: No localized string found for %@", self);
     }
     return localizedString;
+}
+
+- (BOOL)nb_isNumeric
+{
+    static NSString *decimalDigitAndPointCharacterSet = @"1234567890.";
+    return [[NSCharacterSet characterSetWithCharactersInString:decimalDigitAndPointCharacterSet] isSupersetOfSet:
+            [NSCharacterSet characterSetWithCharactersInString:self]];
 }
 
 @end

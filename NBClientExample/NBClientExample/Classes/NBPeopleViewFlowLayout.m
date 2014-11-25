@@ -66,7 +66,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         return YES;
     } else if (self.collectionView.isDragging &&
                (self.topOffsetOverflow >= 0.0f || self.bottomOffsetOverflow >= 0.0f)
-               ) {
+    ) {
         return YES;
     }
     return [super shouldInvalidateLayoutForBoundsChange:newBounds];

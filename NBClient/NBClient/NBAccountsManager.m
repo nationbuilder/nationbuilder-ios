@@ -37,7 +37,18 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         self.clientInfo = clientInfoOrNil;
         self.mutableAccounts = [NSMutableArray array];
         [self setUpAccountPersistence];
-        [self loadPersistedAccounts];
+        if ([UIApplication sharedApplication].applicationState == UIApplicationStateInactive) {
+            __weak __typeof(self)weakSelf = self;
+            self.applicationDidBecomeActiveObserver =
+            [[NSNotificationCenter defaultCenter]
+             addObserverForName:UIApplicationDidBecomeActiveNotification object:nil queue:[NSOperationQueue mainQueue]
+             usingBlock:^(NSNotification *note) {
+                 [weakSelf loadPersistedAccounts];
+                 [[NSNotificationCenter defaultCenter] removeObserver:weakSelf.applicationDidBecomeActiveObserver];
+             }];
+        } else {
+            [self loadPersistedAccounts];
+        }
     }
     return self;
 }
@@ -85,6 +96,10 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     }
     // Set.
     _selectedAccount = selectedAccount;
+    // Persist accounts, given that we also persist which account is selected.
+    if (self.selectedAccount || !self.isSignedIn) {
+        [self persistAccounts];
+    }
     // Did.
     if ([self.delegate respondsToSelector:@selector(accountsManager:didSwitchToAccount:)]) {
         [self.delegate accountsManager:self didSwitchToAccount:account];
@@ -149,7 +164,9 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 - (void)activateAccount:(NBAccount *)account
 {
-    BOOL needsPriorSignout = self.selectedAccount && [self.selectedAccount.nationSlug isEqualToString:account.nationSlug];
+    BOOL isFirstAccount = self.accounts.count == 1; // We cannot know which account the user wants to use.
+    BOOL isOtherSameNationAccount = self.selectedAccount && [self.selectedAccount.nationSlug isEqualToString:account.nationSlug];
+    BOOL needsPriorSignout = isFirstAccount || isOtherSameNationAccount;
     [account requestActiveWithPriorSignout:needsPriorSignout completionHandler:^(NSError *error) {
         BOOL shouldBail = NO;
         if (error) {
@@ -224,7 +241,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                                         ?: [NSString stringWithFormat:@"%@-%@",
                                             NBAccountInfosDefaultsKey, NSStringFromClass(self.delegate.class)]);
     __weak __typeof(self)weakSelf = self;
-    self.applicationDidEnterBackgroundNotifier =
+    self.applicationDidEnterBackgroundObserver =
     [[NSNotificationCenter defaultCenter]
      addObserverForName:UIApplicationDidEnterBackgroundNotification
      object:[UIApplication sharedApplication] queue:[NSOperationQueue mainQueue]
@@ -237,7 +254,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 - (void)tearDownAccountPersistence
 {
     if (!self.shouldPersistAccounts) { return; }
-    [[NSNotificationCenter defaultCenter] removeObserver:self.applicationDidEnterBackgroundNotifier];
+    [[NSNotificationCenter defaultCenter] removeObserver:self.applicationDidEnterBackgroundObserver];
 }
 
 - (void)loadPersistedAccounts
@@ -259,6 +276,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
             NBLogWarning(@"No selected account in persisted accounts. Restoring first account.");
             selectedAccount = self.accounts.firstObject;
         }
+        NBLogInfo(@"Activating originally selected account %d", selectedAccount.identifier);
         [self activateAccount:selectedAccount];
         NBLogInfo(@"Loaded %lu persisted account(s) for identifier \"%@\"",
                   (unsigned long)accountInfos.count, self.persistedAccountsIdentifier);
@@ -268,6 +286,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 - (void)persistAccounts
 {
     if (!self.shouldPersistAccounts) { return; }
+    NSArray *existingAccountInfos = [[NSUserDefaults standardUserDefaults] arrayForKey:self.persistedAccountsIdentifier];
     NSMutableArray *accountInfos = [NSMutableArray array];
     for (NBAccount *account in self.accounts) {
         if (!account.name) { continue; }
@@ -277,8 +296,12 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                                    NBAccountInfoSelectedKey: @(account == self.selectedAccount) }];
     }
     [[NSUserDefaults standardUserDefaults] setObject:accountInfos forKey:self.persistedAccountsIdentifier];
-    NBLogInfo(@"Persisted %lu persisted account(s) for identifier \"%@\"",
-              (unsigned long)accountInfos.count, self.persistedAccountsIdentifier);
+    BOOL immediately = accountInfos.count != existingAccountInfos.count;
+    if (immediately) {
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    NBLogInfo(@"Persisted %lu persisted account(s) for identifier \"%@\" immediately (%d)",
+              (unsigned long)accountInfos.count, self.persistedAccountsIdentifier, immediately);
 }
 
 @end

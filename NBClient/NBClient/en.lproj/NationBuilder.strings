@@ -35,6 +35,9 @@
 "message.invalid-redirect-url-scheme.no-url-type.format" = "Cannot find a URL type with the URL identifier '%@'.";
 "message.invalid-redirect-url-scheme.suggestion" = "In your main info plist, set a URL type with the URL identifier '%@'.";
 
+"message.redirect-error" = "Authorization redirect failed.";
+"message.redirect-error.user-stopped" = "Authorization was stopped because you left Safari.";
+"message.redirect-error.sign-in-again" = "Sign in again to continue authorization.";
 "message.nb-redirect-error" = "Service errored fulfilling authorization redirect.";
 "message.nb-redirect-error.no-access-token" = "No 'access_token' query parameter was provided.";
 
