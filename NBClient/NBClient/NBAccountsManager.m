@@ -96,6 +96,10 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     }
     // Set.
     _selectedAccount = selectedAccount;
+    // Persist accounts, given that we also persist which account is selected.
+    if (self.selectedAccount || !self.isSignedIn) {
+        [self persistAccounts];
+    }
     // Did.
     if ([self.delegate respondsToSelector:@selector(accountsManager:didSwitchToAccount:)]) {
         [self.delegate accountsManager:self didSwitchToAccount:account];
@@ -272,6 +276,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
             NBLogWarning(@"No selected account in persisted accounts. Restoring first account.");
             selectedAccount = self.accounts.firstObject;
         }
+        NBLogInfo(@"Activating originally selected account %d", selectedAccount.identifier);
         [self activateAccount:selectedAccount];
         NBLogInfo(@"Loaded %lu persisted account(s) for identifier \"%@\"",
                   (unsigned long)accountInfos.count, self.persistedAccountsIdentifier);
@@ -281,6 +286,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 - (void)persistAccounts
 {
     if (!self.shouldPersistAccounts) { return; }
+    NSArray *existingAccountInfos = [[NSUserDefaults standardUserDefaults] arrayForKey:self.persistedAccountsIdentifier];
     NSMutableArray *accountInfos = [NSMutableArray array];
     for (NBAccount *account in self.accounts) {
         if (!account.name) { continue; }
@@ -290,8 +296,12 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                                    NBAccountInfoSelectedKey: @(account == self.selectedAccount) }];
     }
     [[NSUserDefaults standardUserDefaults] setObject:accountInfos forKey:self.persistedAccountsIdentifier];
-    NBLogInfo(@"Persisted %lu persisted account(s) for identifier \"%@\"",
-              (unsigned long)accountInfos.count, self.persistedAccountsIdentifier);
+    BOOL immediately = accountInfos.count != existingAccountInfos.count;
+    if (immediately) {
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    NBLogInfo(@"Persisted %lu persisted account(s) for identifier \"%@\" immediately (%d)",
+              (unsigned long)accountInfos.count, self.persistedAccountsIdentifier, immediately);
 }
 
 @end
