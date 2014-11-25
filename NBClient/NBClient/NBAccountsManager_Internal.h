@@ -20,7 +20,7 @@
 @property (nonatomic, copy) NSDictionary *clientInfo;
 @property (nonatomic) NSMutableArray *mutableAccounts;
 
-@property (nonatomic) id applicationDidEnterBackgroundNotifier;
+@property (nonatomic) id applicationDidEnterBackgroundObserver;
 @property (nonatomic, copy) NSString *persistedAccountsIdentifier;
 
 - (void)activateAccount:(NBAccount *)account;

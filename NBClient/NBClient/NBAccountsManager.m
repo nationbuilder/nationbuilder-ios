@@ -226,7 +226,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                                         ?: [NSString stringWithFormat:@"%@-%@",
                                             NBAccountInfosDefaultsKey, NSStringFromClass(self.delegate.class)]);
     __weak __typeof(self)weakSelf = self;
-    self.applicationDidEnterBackgroundNotifier =
+    self.applicationDidEnterBackgroundObserver =
     [[NSNotificationCenter defaultCenter]
      addObserverForName:UIApplicationDidEnterBackgroundNotification
      object:[UIApplication sharedApplication] queue:[NSOperationQueue mainQueue]
@@ -239,7 +239,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 - (void)tearDownAccountPersistence
 {
     if (!self.shouldPersistAccounts) { return; }
-    [[NSNotificationCenter defaultCenter] removeObserver:self.applicationDidEnterBackgroundNotifier];
+    [[NSNotificationCenter defaultCenter] removeObserver:self.applicationDidEnterBackgroundObserver];
 }
 
 - (void)loadPersistedAccounts
