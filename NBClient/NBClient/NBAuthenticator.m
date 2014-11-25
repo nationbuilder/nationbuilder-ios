@@ -429,9 +429,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 {
     BOOL didSave = NO;
     // Handle saving nil.
-    if (!credential) {
-        return [self deleteCredentialWithIdentifier:identifier];
-    }
+    if (!credential) { return didSave; }
     // Setup dictionaries.
     NSMutableDictionary *query = [self baseKeychainQueryDictionaryWithIdentifier:identifier];
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
@@ -439,6 +437,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     dictionary[(__bridge id)kSecAttrAccessible] = (__bridge id)kSecAttrAccessibleWhenUnlocked;
     // Update else create.
     OSStatus status;
+    NBLogInfo(@"Fetching existing keychain credential...");
     BOOL alreadyExists = [self fetchCredentialWithIdentifier:identifier] != nil;
     if (alreadyExists) {
         status = SecItemUpdate((__bridge CFDictionaryRef)query, (__bridge CFDictionaryRef)dictionary);
