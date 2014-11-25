@@ -35,6 +35,7 @@ extern NSString * const NBAuthenticationDefaultRedirectPath;
 @property (nonatomic, readonly, getter = isAuthenticatingInWebBrowser) BOOL authenticatingInWebBrowser;
 
 @property (nonatomic, copy) NSString *credentialIdentifier;
+@property (nonatomic, copy, readonly) NSString *defaultCredentialIdentifier;
 @property (nonatomic) BOOL shouldPersistCredential;
 
 // Designated initializer.

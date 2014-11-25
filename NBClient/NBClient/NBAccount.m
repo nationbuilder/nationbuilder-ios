@@ -214,8 +214,17 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         }
     };
     // Return saved credential if possible.
+    NBAuthenticationCredential *credential;
     if (self.authenticator.credential) {
-        authenticationCompletionHandler(self.authenticator.credential, nil);
+        credential = self.authenticator.credential;
+    } else {
+        BOOL didUpdate = [self updateCredentialIdentifier];
+        if (didUpdate) {
+            credential = [NBAuthenticationCredential fetchCredentialWithIdentifier:self.authenticator.credentialIdentifier];
+        }
+    }
+    if (credential) {
+        authenticationCompletionHandler(credential, nil);
         return;
     }
     // Authenticate.
@@ -281,12 +290,16 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     });
 }
 
-- (void)updateCredentialIdentifier
+- (BOOL)updateCredentialIdentifier
 {
-    if (![self.authenticator.credentialIdentifier isEqualToString:[self baseURL].host]) { return; }
-    self.authenticator.credentialIdentifier =
-    [self.authenticator.credentialIdentifier stringByAppendingString:
-     ((self.name && self.identifier != NSNotFound) ? [NSString stringWithFormat:@"-%@-%lu", self.name, (unsigned long)self.identifier] : @"")];
+    BOOL didUpdate = NO;
+    if (self.name && self.identifier != NSNotFound) {
+        self.authenticator.credentialIdentifier =
+        [self.authenticator.defaultCredentialIdentifier stringByAppendingString:
+         [NSString stringWithFormat:@"-%@-%lu", self.name, (unsigned long)self.identifier]];
+        didUpdate = YES;
+    }
+    return didUpdate;
 }
 
 @end

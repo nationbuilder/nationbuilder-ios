@@ -23,6 +23,6 @@
 - (void)fetchPersonWithCompletionHandler:(NBGenericCompletionHandler)completionHandler;
 - (void)fetchAvatarWithCompletionHandler:(NBGenericCompletionHandler)completionHandler;
 
-- (void)updateCredentialIdentifier;
+- (BOOL)updateCredentialIdentifier;
 
 @end

@@ -86,7 +86,9 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     if (_credential) {
         return _credential;
     }
-    self.credential = [NBAuthenticationCredential fetchCredentialWithIdentifier:self.credentialIdentifier];
+    if (self.shouldPersistCredential) {
+        self.credential = [NBAuthenticationCredential fetchCredentialWithIdentifier:self.credentialIdentifier];
+    }
     return _credential;
 }
 
@@ -109,8 +111,13 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     if (_credentialIdentifier) {
         return _credentialIdentifier;
     }
-    self.credentialIdentifier = self.baseURL.host;
+    self.credentialIdentifier = self.defaultCredentialIdentifier;
     return _credentialIdentifier;
+}
+
+- (NSString *)defaultCredentialIdentifier
+{
+    return self.baseURL.host;
 }
 
 #pragma mark Authenticate API
@@ -208,7 +215,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 {
     NSAssert(completionHandler, @"Completion handler is required.");
     // Return saved credential if possible.
-    if (self.credential && self.shouldPersistCredential) {
+    if (self.credential) {
         completionHandler(self.credential, nil);
         return nil;
     }
