@@ -20,6 +20,7 @@
 @property (nonatomic, copy) NSDictionary *clientInfo;
 @property (nonatomic) NSMutableArray *mutableAccounts;
 
+@property (nonatomic) id applicationDidBecomeActiveObserver;
 @property (nonatomic) id applicationDidEnterBackgroundObserver;
 @property (nonatomic, copy) NSString *persistedAccountsIdentifier;
 

@@ -37,7 +37,18 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         self.clientInfo = clientInfoOrNil;
         self.mutableAccounts = [NSMutableArray array];
         [self setUpAccountPersistence];
-        [self loadPersistedAccounts];
+        if ([UIApplication sharedApplication].applicationState == UIApplicationStateInactive) {
+            __weak __typeof(self)weakSelf = self;
+            self.applicationDidBecomeActiveObserver =
+            [[NSNotificationCenter defaultCenter]
+             addObserverForName:UIApplicationDidBecomeActiveNotification object:nil queue:[NSOperationQueue mainQueue]
+             usingBlock:^(NSNotification *note) {
+                 [weakSelf loadPersistedAccounts];
+                 [[NSNotificationCenter defaultCenter] removeObserver:weakSelf.applicationDidBecomeActiveObserver];
+             }];
+        } else {
+            [self loadPersistedAccounts];
+        }
     }
     return self;
 }
