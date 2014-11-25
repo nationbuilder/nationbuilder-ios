@@ -324,7 +324,6 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     [mutableRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [mutableRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     
-
     return [[NSURLSession sharedSession]
      dataTaskWithRequest:mutableRequest
      completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {

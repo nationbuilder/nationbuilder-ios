@@ -83,7 +83,7 @@ static NSString *QueryPairJoiner = @"=";
         if ([value isKindOfClass:[NSArray class]] ||
             [value isKindOfClass:[NSDictionary class]] ||
             [value isKindOfClass:[NSSet class]]
-            ) {
+        ) {
             NBLog(@"WARNING: Unable to serialize key %@ with value %@", key, value);
             continue;
         }
