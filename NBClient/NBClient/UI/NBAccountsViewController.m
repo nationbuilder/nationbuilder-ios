@@ -596,8 +596,9 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
             NSUInteger selectedIndex = [self selectedIndex];
             if (selectedIndex == NSNotFound) {
                 NBLogError(@"Invalid selected account index. Aborting row selection.");
+            } else {
+                [self.accountsPicker selectRow:(NSInteger)selectedIndex inComponent:0 animated:YES];
             }
-            [self.accountsPicker selectRow:(NSInteger)selectedIndex inComponent:0 animated:YES];
         } else {
             // Otherwise restore our flag.
             self.selectingAccount = NO;
