@@ -7,11 +7,22 @@
 
 ## Usage
 
-To try out the sample app, run the NBClientExample project: 
+To try out the sample app, follow these steps.
 
-1. Open the NBClient workspace and build the NBClientExample scheme. 
-2. Through the Control Panel, install the NBClientTests app for your nation.
-3. Sign into your account on your nation and authorize the app. 
+1. Make sure you clone this repo and download Xcode. You'll eventually need to
+run and build the NBClientExample project.
+
+2. Open `NBClient.workspace` and build the `NBClientExample` scheme. 
+
+3. Using the NationBuilder Control Panel, go to `Settings` > `Apps` > `Install
+new app install`. Install the `NBClientExample` app for your nation.
+
+4. Build and open the app `NB Sample` in the iOS Simulator.
+
+5. In the app, click the signin button on the top left. Provide your nation's slug. In
+Safari, sign into your account on your nation and authorize the app.
+
+Refer to the [documentation section][] on how to use the SDK to build your app.
 
 ## Installation
 
@@ -29,10 +40,9 @@ component, the sample app) are universal, supporting both iPhone and iPad.
 
 ## Documentation
 
-Refer to the NationBuilder [iOS developer documentation][] for a detailed
-getting-started guide that includes code samples. Alternatively, if you prefer
-reading on Github or want to contribute edits, the [guides are also available on
-Github][Github guides].
+Detailed guides and code samples are at NationBuilder [iOS developer
+documentation][]. Or, if you prefer reading on Github or want to contribute
+edits, the [guides][Github guides] are also available on Github.
 
 ## Testing
 
@@ -50,6 +60,12 @@ nationbuilder-ios> rake test
 
 NBClient is available under the MIT license. See the LICENSE file for more info.
 
+## Credits
+
+The NBClient/UI component uses the [Stroke 7 Icon Font Set by Pixeden][icon font].
+
+[documentation section]: #documentation
 [CocoaPods]: http://cocoapods.org
 [iOS developer documentation]: #TODO
 [Github guides]: Documentation/Guides
+[icon font]: http://pixeden.com/icon-fonts/stroke-7-icon-font-set
