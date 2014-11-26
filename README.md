@@ -7,22 +7,27 @@
 
 ## Usage
 
-To try out the sample app, follow these steps.
+To try out the sample app (NB Sample), follow these steps.
 
 1. Make sure you clone this repo and download Xcode. You'll eventually need to
 run and build the NBClientExample project.
 
-2. Open `NBClient.workspace` and build the `NBClientExample` scheme. 
+2. Open `NBClient.workspace`. Make sure to delete the configuration file at
+`./NBClientExample/NBClientExample/NationBuilder-Info-Local.plist`. Build and
+run using the `NBClientExample` scheme.
 
 3. Using the NationBuilder Control Panel, go to `Settings` > `Apps` > `Install
 new app install`. Install the `NBClientExample` app for your nation.
 
-4. Build and open the app `NB Sample` in the iOS Simulator.
+4. Open the previously built `NB Sample` app in the iOS Simulator.
 
 5. In the app, click the signin button on the top left. Provide your nation's slug. In
 Safari, sign into your account on your nation and authorize the app.
 
 Refer to the [documentation section][] on how to use the SDK to build your app.
+Note that the sample app intends to be a modest example of using the NBClient
+library. It intends to use modern iOS conventions, no external dependencies,
+and stock UIKit classes.
 
 ## Installation
 
