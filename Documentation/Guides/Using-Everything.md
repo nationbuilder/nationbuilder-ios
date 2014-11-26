@@ -23,6 +23,8 @@ __Note:__ Many more methods are coming soon. Feel free to [contribute][] some yo
 This is the standard checklist for getting your app integrated with the current
 SDK.
 
+Follow the [installation guide][]:
+
 - [ ] Install the desired NationBuilder app for your nation, ex: `NBClientExample`
 
 - [ ] Add the SDK to your Podfile
@@ -30,6 +32,10 @@ SDK.
 
 - [ ] Update your app's info plist
   - [ ] Add the `Fonts provided by application` item if using the UI component
+
+Follow the [accounts usage guide][]:
+
+- [ ] Update your app's info plist
   - [ ] Add the `URL types`/0/`URL identifier` as `com.nationbuilder.oauth`
   - [ ] Add the `URL types`/0/`URL Schemes`/0 as the path for the NationBuilder 
         app's redirect URI
@@ -49,3 +55,5 @@ SDK.
 __[Next: Contact & Contributing Info ➔][contribute]__
 
 [contribute]: ../../CONTRIBUTING.md
+[installation guide]: Installing.md
+[accounts usage guide]: Using-Accounts.md
