@@ -85,8 +85,7 @@
 {
     [self setUpAsync];
     // NOTE: Uses legacy pagination.
-    NSDictionary *paginationParameters = @{ NBClientCurrentPageNumberKey: @1,
-                                            NBClientNumberOfItemsPerPageKey: @5 };
+    NSDictionary *paginationParameters = @{ NBClientPaginationLimitKey: @5 };
     NSDictionary *parameters = @{ @"state": @"CA" };
     if (self.shouldUseHTTPStubbing) {
         NSMutableDictionary *mutableParameters = [paginationParameters mutableCopy];

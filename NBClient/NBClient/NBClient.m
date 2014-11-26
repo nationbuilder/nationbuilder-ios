@@ -37,7 +37,7 @@ static NSArray *LegacyPaginationEndpoints;
 
 + (void)initialize {
     if (self == [NBClient self]) {
-        LegacyPaginationEndpoints = @[ @"/api/v1/people/search" ];
+        LegacyPaginationEndpoints = @[];
     }
 }
 
