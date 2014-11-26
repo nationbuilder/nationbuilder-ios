@@ -7,8 +7,6 @@
 
 #import "NBAppDelegate.h"
 
-#import <Crashlytics/Crashlytics.h>
-
 #import <NBClient/Main.h>
 #import <NBClient/UI.h>
 
@@ -38,7 +36,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [Crashlytics startWithAPIKey:@"40c37689b7be7476400be06f7b2784cc8697c931"];
     // Configure log levels. Default is 'Debug' for debug configurations and
     // 'Warning' for release configurations. For example, by setting client
     // logging to warning level during development parts of the sample app
