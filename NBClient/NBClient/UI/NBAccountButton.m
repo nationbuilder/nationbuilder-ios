@@ -36,6 +36,7 @@ static void *observationContext = &observationContext;
 // For name hiding.
 @property (nonatomic) CGFloat originalNameLabelWidth;
 
+- (void)setUp;
 - (void)setUpSubviews;
 - (void)tearDownSubviews;
 
@@ -66,11 +67,6 @@ static void *observationContext = &observationContext;
     if (self) {
         [self setUp];
     }
-    return self;
-}
-- (instancetype)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
     return self;
 }
 - (void)awakeFromNib

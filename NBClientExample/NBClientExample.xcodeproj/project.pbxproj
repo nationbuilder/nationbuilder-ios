@@ -18,7 +18,6 @@
 		AA15FABC1983317400A2E84B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA15FAA11983317400A2E84B /* Foundation.framework */; };
 		AA15FABD1983317400A2E84B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA15FAA51983317400A2E84B /* UIKit.framework */; };
 		AA15FAC51983317400A2E84B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AA15FAC31983317400A2E84B /* InfoPlist.strings */; };
-		AA15FAD31983339800A2E84B /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA15FAD21983339800A2E84B /* Crashlytics.framework */; };
 		AA602C2E198C3966001A7DB2 /* NBPeoplePageHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA602C2D198C3966001A7DB2 /* NBPeoplePageHeaderView.xib */; };
 		AA602C2F198C3966001A7DB2 /* NBPeoplePageHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA602C2D198C3966001A7DB2 /* NBPeoplePageHeaderView.xib */; };
 		AA602C32199157B7001A7DB2 /* NBPeopleViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = AA602C31199157B7001A7DB2 /* NBPeopleViewFlowLayout.m */; };
@@ -83,7 +82,6 @@
 		AA15FABA1983317400A2E84B /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		AA15FAC21983317400A2E84B /* NBClientExampleTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "NBClientExampleTests-Info.plist"; sourceTree = "<group>"; };
 		AA15FAC41983317400A2E84B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		AA15FAD21983339800A2E84B /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		AA602C2D198C3966001A7DB2 /* NBPeoplePageHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NBPeoplePageHeaderView.xib; path = Nibs/NBPeoplePageHeaderView.xib; sourceTree = "<group>"; };
 		AA602C30199157B7001A7DB2 /* NBPeopleViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NBPeopleViewFlowLayout.h; path = Classes/NBPeopleViewFlowLayout.h; sourceTree = "<group>"; };
 		AA602C31199157B7001A7DB2 /* NBPeopleViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBPeopleViewFlowLayout.m; path = Classes/NBPeopleViewFlowLayout.m; sourceTree = "<group>"; };
@@ -120,7 +118,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA909123198339EA009BE1E9 /* libNBClient.a in Frameworks */,
-				AA15FAD31983339800A2E84B /* Crashlytics.framework in Frameworks */,
 				AA15FAA41983317400A2E84B /* CoreGraphics.framework in Frameworks */,
 				AA15FAA61983317400A2E84B /* UIKit.framework in Frameworks */,
 				AA15FAA21983317400A2E84B /* Foundation.framework in Frameworks */,
@@ -163,7 +160,6 @@
 			isa = PBXGroup;
 			children = (
 				AAEFEAE719E62D9F00777BC1 /* NBClient */,
-				AA15FAD21983339800A2E84B /* Crashlytics.framework */,
 				AA15FAA11983317400A2E84B /* Foundation.framework */,
 				AA15FAA31983317400A2E84B /* CoreGraphics.framework */,
 				AA15FAA51983317400A2E84B /* UIKit.framework */,
