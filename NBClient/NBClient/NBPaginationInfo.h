@@ -27,7 +27,7 @@ typedef NS_ENUM(NSUInteger, NBPaginationDirection) {
 
 // NOTE: Using the legacy NationBuilder API pagination is discouraged. Outside
 // of test tokens and older applications, it has been deprecated and the new
-// token-based pagination should be being used. The constants, properties, and
+// token-based pagination should be used. The constants, properties, and
 // methods tagged with #legacy are part of the legacy pagination.
 
 @property (nonatomic) NSUInteger currentPageNumber; // Starts at 1.
