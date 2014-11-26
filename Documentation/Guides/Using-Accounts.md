@@ -5,6 +5,25 @@ use accounts to better represent users and user sessions. You should also use
 the account management feature. It will add multi-account, multi-nation support
 to your app. Read on to learn more about the entire accounts layer.
 
+<!-- MarkdownTOC -->
+
+- [NBAccount](#nbaccount)
+    - [Sign in](#sign-in)
+    - [Sign out](#sign-out)
+- [NBAccountButton](#nbaccountbutton)
+- [NBAccountsManager](#nbaccountsmanager)
+    - [Sign in](#sign-in-1)
+    - [Sign out](#sign-out-1)
+- [NBAccountsViewController](#nbaccountsviewcontroller)
+    - [Presentation](#presentation)
+- [Delegation](#delegation)
+    - [Handling Stale Tokens](#handling-stale-tokens)
+- [Notes](#notes)
+    - [Custom UI](#custom-ui)
+    - [Appearance](#appearance)
+
+<!-- /MarkdownTOC -->
+
 ## NBAccount
 
 NBAccount is a model that builds upon the NBClient and NBAuthenticator. It helps

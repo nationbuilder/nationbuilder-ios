@@ -6,6 +6,23 @@ alone][installing selectively] if this fits your use case. However, it is more
 common to use the higher-level [accounts layer][]. Read on to learn more about
 what NBClient and NBAuthenticator can do.
 
+<!-- MarkdownTOC -->
+
+- [NBClient](#nbclient)
+- [NBAuthenticator](#nbauthenticator)
+- [NBClientDelegate](#nbclientdelegate)
+    - [Custom Error Handling](#custom-error-handling)
+    - [Custom Data Handling](#custom-data-handling)
+    - [Custom Request Handling](#custom-request-handling)
+- [Notes](#notes)
+    - [Pagination](#pagination)
+    - [NSURLSession](#nsurlsession)
+    - [NBLogging](#nblogging)
+    - [NSError](#nserror)
+    - [More](#more)
+
+<!-- /MarkdownTOC -->
+
 ## NBClient
 
 The base layer of the SDK is NBClient. In order for the client to do anything
