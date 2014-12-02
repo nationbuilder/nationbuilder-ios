@@ -31,13 +31,25 @@ and stock UIKit classes.
 
 ## Features
 
-| Authentication & Authorization | Account Management & Persistence |
-|--------------------------------|----------------------------------|
-| ![authentication gif][]        | ![accounts gif][]                |
+### Authentication & Authorization:
 
-| Methods for API Endpoints |
-|---------------------------|
-| ![people crud gif][]      |
+Via Safari, sign into your nation and authorize the application.
+
+![authentication gif][]
+
+### Account Management & Persistence:
+
+Sign into multiple nations or different accounts on the same nation. Accounts
+get stored and persist across app uses.
+
+![accounts gif][]
+
+### Methods for API Endpoints:
+
+Use the client to fetch and manipulate data via the NationBuilder API, to save
+you time to focus on building the rest of your app.
+
+![people crud gif][]
 
 ## Installation
 
@@ -84,6 +96,6 @@ The NBClient/UI component uses the [Stroke 7 Icon Font Set by Pixeden][icon font
 [accounts gif]: https://cloud.githubusercontent.com/assets/100884/5255636/6183ec8e-7972-11e4-8e14-8bec0d7b1e36.gif
 [people crud gif]: https://cloud.githubusercontent.com/assets/100884/5256354/140ad198-797c-11e4-8064-8f3c5ffef795.gif
 [CocoaPods]: http://cocoapods.org
-[iOS developer documentation]: #TODO
+[iOS developer documentation]: http://nationbuilder.com/api_documentation#ios_sdk
 [Github guides]: Documentation/Guides
 [icon font]: http://pixeden.com/icon-fonts/stroke-7-icon-font-set
