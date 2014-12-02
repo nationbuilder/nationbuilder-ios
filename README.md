@@ -29,6 +29,16 @@ Note that the sample app intends to be a modest example of using the NBClient
 library. It intends to use modern iOS conventions, no external dependencies,
 and stock UIKit classes.
 
+## Features
+
+| Authentication & Authorization | Account Management & Persistence |
+|--------------------------------|----------------------------------|
+| ![authentication gif][]        | ![accounts gif][]                |
+
+| Methods for API Endpoints |
+|---------------------------|
+| ![people crud gif][]      |
+
 ## Installation
 
 NBClient is available through [CocoaPods][]. To install it, simply add the
@@ -70,6 +80,9 @@ NBClient is available under the MIT license. See the LICENSE file for more info.
 The NBClient/UI component uses the [Stroke 7 Icon Font Set by Pixeden][icon font].
 
 [documentation section]: #documentation
+[authentication gif]: https://cloud.githubusercontent.com/assets/100884/5255641/655d2b68-7972-11e4-96fa-3384747c5f87.gif
+[accounts gif]: https://cloud.githubusercontent.com/assets/100884/5255636/6183ec8e-7972-11e4-8e14-8bec0d7b1e36.gif
+[people crud gif]: https://cloud.githubusercontent.com/assets/100884/5256354/140ad198-797c-11e4-8064-8f3c5ffef795.gif
 [CocoaPods]: http://cocoapods.org
 [iOS developer documentation]: #TODO
 [Github guides]: Documentation/Guides
