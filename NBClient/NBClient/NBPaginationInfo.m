@@ -64,7 +64,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
             self.currentPageNumber -= 1;
             break;
         default:
-            NBLogWarning(@"Unsupported pagination direction, %d", self.currentDirection);
+            NBLogWarning(@"Unsupported pagination direction, %lu", self.currentDirection);
             break;
     }
 }

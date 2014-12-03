@@ -276,7 +276,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
             NBLogWarning(@"No selected account in persisted accounts. Restoring first account.");
             selectedAccount = self.accounts.firstObject;
         }
-        NBLogInfo(@"Activating originally selected account %d", selectedAccount.identifier);
+        NBLogInfo(@"Activating originally selected account %lu", selectedAccount.identifier);
         [self activateAccount:selectedAccount];
         NBLogInfo(@"Loaded %lu persisted account(s) for identifier \"%@\"",
                   (unsigned long)accountInfos.count, self.persistedAccountsIdentifier);
