@@ -10,7 +10,13 @@
 To try out the sample app (NB Sample), follow these steps.
 
 1. Make sure you clone this repo and download Xcode. You'll eventually need to
-run and build the NBClientExample project.
+run and build the NBClientExample project. Before that you need to install some
+dependencies:
+
+  ```bash
+  ~> sudo gem install -N cocoapods
+  nationbuilder-ios> pod install
+  ```
 
 2. Open `NBClient.workspace`. Make sure to delete the configuration file at
 `./NBClientExample/NBClientExample/NationBuilder-Info-Local.plist`. Build and
@@ -76,8 +82,6 @@ edits, the [guides][Github guides] are also available on Github.
 ```bash
 # Install dependencies:
 ~> gem install -N xcpretty
-~> sudo gem install -N cocoapods
-nationbuilder-ios> pod install
 
 # Run unit tests against recorded production data:
 nationbuilder-ios> rake test
