@@ -278,15 +278,19 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 {
     NSURL *avatarURL = [NSURL URLWithString:self.person[@"profile_image_url_ssl"]];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        self.avatarImageData = [NSData dataWithContentsOfURL:avatarURL];
-        if (!self.avatarImageData) {
-            NBLogWarning(@"Invalid avatar URL %@", avatarURL.absoluteString);
-        }
-        if (completionHandler) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionHandler(nil);
-            });
-        }
+        [self.client.urlSession
+         dataTaskWithURL:avatarURL
+         completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+             self.avatarImageData = data;
+             if (!self.avatarImageData) {
+                 NBLogWarning(@"Invalid avatar URL %@", avatarURL.absoluteString);
+             }
+             if (completionHandler) {
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     completionHandler(nil);
+                 });
+             }
+        }];
     });
 }
 
