@@ -2,7 +2,7 @@
 //  NBPersonViewController.m
 //  NBClientExample
 //
-//  Copyright (c) 2014 NationBuilder. All rights reserved.
+//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
 //
 
 #import "NBPersonViewController.h"

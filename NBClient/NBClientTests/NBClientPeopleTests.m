@@ -2,7 +2,7 @@
 //  NBClientPeopleTests.m
 //  NBClient
 //
-//  Copyright (c) 2014 NationBuilder. All rights reserved.
+//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
 //
 
 #import "NBTestCase.h"
@@ -85,7 +85,7 @@
 {
     [self setUpAsync];
     // NOTE: Uses legacy pagination.
-    NSDictionary *paginationParameters = @{ NBClientPaginationLimitKey: @5 };
+    NSDictionary *paginationParameters = @{ NBClientPaginationLimitKey: @5 }; // TODO: Failing.
     NSDictionary *parameters = @{ @"state": @"CA" };
     if (self.shouldUseHTTPStubbing) {
         NSMutableDictionary *mutableParameters = [paginationParameters mutableCopy];
