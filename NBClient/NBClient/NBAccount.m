@@ -277,21 +277,20 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 - (void)fetchAvatarWithCompletionHandler:(NBGenericCompletionHandler)completionHandler
 {
     NSURL *avatarURL = [NSURL URLWithString:self.person[@"profile_image_url_ssl"]];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self.client.urlSession
-         dataTaskWithURL:avatarURL
-         completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-             self.avatarImageData = data;
-             if (!self.avatarImageData) {
-                 NBLogWarning(@"Invalid avatar URL %@", avatarURL.absoluteString);
-             }
-             if (completionHandler) {
-                 dispatch_async(dispatch_get_main_queue(), ^{
-                     completionHandler(nil);
-                 });
-             }
-        }];
-    });
+    NSURLSessionDownloadTask *avatarTask =
+    [self.client.urlSession
+     downloadTaskWithURL:avatarURL completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
+         self.avatarImageData = [NSData dataWithContentsOfURL:location];
+         if (!self.avatarImageData) {
+             NBLogWarning(@"Invalid avatar URL %@", avatarURL);
+         }
+         if (completionHandler) {
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 completionHandler(nil);
+             });
+         }
+     }];
+    [avatarTask resume];
 }
 
 - (BOOL)updateCredentialIdentifier
