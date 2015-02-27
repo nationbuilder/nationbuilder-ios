@@ -291,8 +291,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                  userInfo:@{ NSLocalizedDescriptionKey: @"message.redirect-error".nb_localizedString,
                              NSLocalizedFailureReasonErrorKey: @"message.redirect-error.user-stopped".nb_localizedString,
                              NSLocalizedRecoverySuggestionErrorKey: @"message.redirect-error.sign-in-again".nb_localizedString }];
-    } else
-    if (notification.name == NBAuthenticationRedirectNotification) {
+    } else if (notification.name == NBAuthenticationRedirectNotification) {
         // Check our notification.
         if (!notification.userInfo[NBAuthenticationRedirectTokenKey]) {
             error = [NSError
