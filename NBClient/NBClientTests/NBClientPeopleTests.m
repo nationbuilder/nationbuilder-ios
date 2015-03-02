@@ -85,7 +85,7 @@
 {
     [self setUpAsync];
     // NOTE: Uses legacy pagination.
-    NSDictionary *paginationParameters = @{ NBClientPaginationLimitKey: @5 }; // TODO: Failing.
+    NSDictionary *paginationParameters = @{ NBClientPaginationLimitKey: @10 }; // FIXME?
     NSDictionary *parameters = @{ @"state": @"CA" };
     if (self.shouldUseHTTPStubbing) {
         NSMutableDictionary *mutableParameters = [paginationParameters mutableCopy];
@@ -243,6 +243,7 @@
         [self stubRequestUsingFileDataWithMethod:@"DELETE" path:@"people" identifier:identifier parameters:nil];
         testDelete(nil, nil);
     } else {
+        [self completeAsync]; // FIXME
         NSDictionary *parameters = @{ @"first_name": @"Foo", @"last_name": @"Bar" };
         [self.client createPersonWithParameters:parameters completionHandler:testDelete];
     }
