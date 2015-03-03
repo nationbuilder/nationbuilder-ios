@@ -33,6 +33,19 @@
     return [self baseFetchTaskWithURLComponents:components resultsKey:@"results" paginationInfo:paginationInfo completionHandler:completionHandler];
 }
 
+- (NSURLSessionDataTask *)fetchPeopleNearbyByLocationInfo:(NSDictionary *)locationInfo
+                                       withPaginationInfo:(NBPaginationInfo *)paginationInfo
+                                        completionHandler:(NBClientResourceListCompletionHandler)completionHandler
+{
+    NSURLComponents *components = [self.baseURLComponents copy];
+    components.path = [components.path stringByAppendingString:@"/people/nearby"];
+    NSMutableDictionary *mutableParameters = [[components.percentEncodedQuery nb_queryStringParameters] mutableCopy];
+    mutableParameters[@"location"] = [NSString stringWithFormat:@"%@,%@", locationInfo[NBClientLocationLatitudeKey], locationInfo[NBClientLocationLongitudeKey]];
+    mutableParameters[@"distance"] = !locationInfo[NBClientLocationProximityDistanceKey] ? @1 : locationInfo[NBClientLocationProximityDistanceKey];
+    components.percentEncodedQuery = [mutableParameters nb_queryString];
+    return [self baseFetchTaskWithURLComponents:components resultsKey:@"results" paginationInfo:paginationInfo completionHandler:completionHandler];
+}
+
 - (NSURLSessionDataTask *)fetchPersonByIdentifier:(NSUInteger)identifier
                             withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {

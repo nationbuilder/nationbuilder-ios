@@ -29,6 +29,10 @@ extern NSString * const NBClientErrorInnerErrorKey;
 extern NSString * const NBClientDefaultAPIVersion;
 extern NSString * const NBClientDefaultBaseURLFormat;
 
+extern NSString * const NBClientLocationLatitudeKey;
+extern NSString * const NBClientLocationLongitudeKey;
+extern NSString * const NBClientLocationProximityDistanceKey; // Integer, radius in miles.
+
 // The client works with the NationBuilder API. It is an API client. For
 // authentication, it relies on its authenticator or test token. Conventionally,
 // its methods directly match the API endpoints, but are named according to its

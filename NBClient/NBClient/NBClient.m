@@ -22,6 +22,10 @@ NSString * const NBClientErrorInnerErrorKey = @"inner_error";
 NSString * const NBClientDefaultAPIVersion = @"v1";
 NSString * const NBClientDefaultBaseURLFormat = @"https://%@.nationbuilder.com";
 
+NSString * const NBClientLocationLatitudeKey = @"latitude";
+NSString * const NBClientLocationLongitudeKey = @"longitude";
+NSString * const NBClientLocationProximityDistanceKey = @"distance";
+
 #if DEBUG
 static NBLogLevel LogLevel = NBLogLevelDebug;
 #else

@@ -23,6 +23,11 @@
 - (NSURLSessionDataTask *)fetchPeopleByParameters:(NSDictionary *)parameters
                                withPaginationInfo:(NBPaginationInfo *)paginationInfo
                                 completionHandler:(NBClientResourceListCompletionHandler)completionHandler;
+// GET /people/nearby
+- (NSURLSessionDataTask *)fetchPeopleNearbyByLocationInfo:(NSDictionary *)locationInfo
+                                       withPaginationInfo:(NBPaginationInfo *)paginationInfo
+                                        completionHandler:(NBClientResourceListCompletionHandler)completionHandler;
+
 // GET /people/:id
 - (NSURLSessionDataTask *)fetchPersonByIdentifier:(NSUInteger)identifier
                             withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler;

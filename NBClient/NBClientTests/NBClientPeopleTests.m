@@ -107,6 +107,33 @@
     [self tearDownAsync];
 }
 
+- (void)testFetchPeopleNearbyByLocationInfo
+{
+    [self setUpAsync];
+    NSDictionary *paginationParameters = @{ NBClientPaginationLimitKey: @5 };
+    NSDictionary *locationInfo = @{ NBClientLocationLatitudeKey: @34.049031f,
+                                    NBClientLocationLongitudeKey: @(-118.25139f) };
+    if (self.shouldUseHTTPStubbing) {
+        NSMutableDictionary *mutableParameters = [paginationParameters mutableCopy];
+        [mutableParameters addEntriesFromDictionary:locationInfo];
+        [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people/nearby" identifier:NSNotFound parameters:mutableParameters];
+    }
+    NBPaginationInfo *requestPaginationInfo =
+    [[NBPaginationInfo alloc] initWithDictionary:paginationParameters legacy:NO];
+    NSURLSessionDataTask *task =
+    [self.client
+     fetchPeopleNearbyByLocationInfo: locationInfo
+     withPaginationInfo: requestPaginationInfo
+     completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
+         [self assertServiceError:error];
+         [self assertPeopleArray:items];
+         [self assertPaginationInfo:paginationInfo withPaginationParameters:paginationParameters];
+         [self completeAsync];
+     }];
+    [self assertSessionDataTask:task];
+    [self tearDownAsync];
+}
+
 - (void)testFetchPersonByIdentifier
 {
     [self setUpAsync];
