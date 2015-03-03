@@ -14,6 +14,7 @@
 
 // These are additional client info keys for certain tests against a local environment.
 NSString * const NBInfoShouldUseHTTPStubbingKey = @"Should Use HTTP Stubbing";
+NSString * const NBInfoSupporterIdentifierKey = @"Supporter ID";
 NSString * const NBInfoUserEmailAddressKey = @"User Email Address";
 NSString * const NBInfoUserIdentifierKey = @"User ID";
 NSString * const NBInfoUserPasswordKey = @"User Password";
@@ -27,6 +28,7 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
 @property (nonatomic, copy, readwrite) NSString *testToken;
 @property (nonatomic, copy, readwrite) NSString *clientIdentifier;
 @property (nonatomic, copy, readwrite) NSString *clientSecret;
+@property (nonatomic, readwrite) NSUInteger supporterIdentifier;
 @property (nonatomic, copy, readwrite) NSString *userEmailAddress;
 @property (nonatomic, readwrite) NSUInteger userIdentifier;
 @property (nonatomic, copy, readwrite) NSString *userPassword;
@@ -73,6 +75,7 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
     self.testToken = info[NBInfoTestTokenKey];
     self.clientIdentifier = info[NBInfoClientIdentifierKey];
     self.clientSecret = info[NBInfoClientSecretKey];
+    self.supporterIdentifier = [info[NBInfoSupporterIdentifierKey] unsignedIntegerValue];
     self.userEmailAddress = info[NBInfoUserEmailAddressKey];
     self.userIdentifier = [info[NBInfoUserIdentifierKey] unsignedIntegerValue];
     self.userPassword = info[NBInfoUserPasswordKey];

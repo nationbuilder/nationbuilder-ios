@@ -32,6 +32,9 @@
                                         completionHandler:(NBClientResourceListCompletionHandler)completionHandler;
 // GET /people/me
 - (NSURLSessionDataTask *)fetchPersonForClientUserWithCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+// GET /people/:id/register
+- (NSURLSessionDataTask *)registerPersonByIdentifier:(NSUInteger)identifier
+                               withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
 // GET /people/match
 - (NSURLSessionDataTask *)fetchPersonByParameters:(NSDictionary *)parameters
                             withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler;

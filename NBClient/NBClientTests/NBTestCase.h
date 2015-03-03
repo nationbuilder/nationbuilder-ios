@@ -23,6 +23,7 @@
 @property (nonatomic, copy, readonly) NSString *testToken;
 @property (nonatomic, copy, readonly) NSString *clientIdentifier;
 @property (nonatomic, copy, readonly) NSString *clientSecret;
+@property (nonatomic, readonly) NSUInteger supporterIdentifier;
 @property (nonatomic, copy, readonly) NSString *userEmailAddress;
 @property (nonatomic, readonly) NSUInteger userIdentifier;
 @property (nonatomic, copy, readonly) NSString *userPassword;

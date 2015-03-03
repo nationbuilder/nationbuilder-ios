@@ -376,9 +376,12 @@ static NSArray *LegacyPaginationEndpoints;
         if (self.delegate && [self.delegate respondsToSelector:@selector(client:didParseJSON:fromResponse:forRequest:)]) {
             [self.delegate client:self didParseJSON:jsonObject fromResponse:httpResponse forRequest:request];
         }
-        id results = jsonObject[resultsKey];
-        if (!results) {
-            error = [self errorForJsonData:jsonObject resultsKey:resultsKey];
+        id results;
+        if (resultsKey) {
+            results = jsonObject[resultsKey];
+            if (!results) {
+                error = [self errorForJsonData:jsonObject resultsKey:resultsKey];
+            }
         }
         if (error) {
             NBLogError(@"%@", error);

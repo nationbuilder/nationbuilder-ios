@@ -153,6 +153,25 @@
     [self tearDownAsync];
 }
 
+- (void)testRegisterPersonByIdentifier
+{
+    [self setUpAsync];
+    NSUInteger identifier = self.supporterIdentifier;
+    if (self.shouldUseHTTPStubbing) {
+        [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people/register" identifier:identifier parameters:nil];
+    }
+    NSURLSessionDataTask *task =
+    [self.client
+     registerPersonByIdentifier:identifier
+     withCompletionHandler:^(NSDictionary *item, NSError *error) {
+         [self assertServiceError:error];
+         XCTAssertNil(item, @"Nothing should be returned.");
+         [self completeAsync];
+     }];
+    [self assertSessionDataTask:task];
+    [self tearDownAsync];
+}
+
 - (void)testFetchPersonByParameters
 {
     [self setUpAsync];
