@@ -20,6 +20,8 @@
 
 - (BOOL)nb_isEquivalentToDictionary:(NSDictionary *)dictionary;
 
+- (NSString *)nb_queryString;
+
 - (NSString *)nb_queryStringWithEncoding:(NSStringEncoding)stringEncoding
              skipPercentEncodingPairKeys:(NSSet *)skipPairKeys
               charactersToLeaveUnescaped:(NSString *)charactersToLeaveUnescaped;
@@ -27,6 +29,8 @@
 @end
 
 @interface NSString (NBAdditions)
+
+- (NSDictionary *)nb_queryStringParameters;
 
 - (NSDictionary *)nb_queryStringParametersWithEncoding:(NSStringEncoding)stringEncoding;
 

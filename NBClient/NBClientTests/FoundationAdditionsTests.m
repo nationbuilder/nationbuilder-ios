@@ -66,8 +66,7 @@
 
     source = @{ @"foo": @"foo" };
     dictionary = @{ @"foo": @"foo" };
-    NSDictionary *queryParameters = [[dictionary nb_queryStringWithEncoding:NSUTF8StringEncoding skipPercentEncodingPairKeys:nil charactersToLeaveUnescaped:nil]
-                                     nb_queryStringParametersWithEncoding:NSUTF8StringEncoding];
+    NSDictionary *queryParameters = [[dictionary nb_queryString] nb_queryStringParameters];
     XCTAssertTrue([source nb_isEquivalentToDictionary:queryParameters],
                   @"Dictionaries should be equivalent even if strings aren't equal in terms of encoding.");
 }
@@ -107,7 +106,7 @@
 - (void)testBuildingDictionaryFromQueryString
 {
     NSString *string = @"age=1&email=foo@bar.com&name=Foo%20Bar";
-    NSDictionary *parameters = [string nb_queryStringParametersWithEncoding:NSUTF8StringEncoding];
+    NSDictionary *parameters = [string nb_queryStringParameters];
     NSDictionary *expectedParameters = @{ @"name": @"Foo Bar", @"age": @1, @"email": @"foo@bar.com" };
     XCTAssertEqualObjects(parameters, expectedParameters,
                           @"Query parameters should be properly formed");

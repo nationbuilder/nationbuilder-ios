@@ -71,6 +71,11 @@ static NSString *QueryPairJoiner = @"=";
     return [self nb_containsDictionary:dictionary];
 }
 
+- (NSString *)nb_queryString
+{
+    return [self nb_queryStringWithEncoding:NSUTF8StringEncoding skipPercentEncodingPairKeys:nil charactersToLeaveUnescaped:nil];
+}
+
 - (NSString *)nb_queryStringWithEncoding:(NSStringEncoding)stringEncoding
              skipPercentEncodingPairKeys:(NSSet *)skipPairKeys
               charactersToLeaveUnescaped:(NSString *)charactersToLeaveUnescaped
@@ -116,6 +121,11 @@ static NSString *QueryPairJoiner = @"=";
     /* charactersToLeaveUnescaped: */ charactersToLeaveUnescaped ? (__bridge CFStringRef)charactersToLeaveUnescaped : NULL,
     /* legalURLCharactersToBeEscaped: */ (__bridge CFStringRef)charactersToBeEscapedInQueryString,
     /* encoding */ CFStringConvertNSStringEncodingToEncoding(stringEncoding));
+}
+
+- (NSDictionary *)nb_queryStringParameters
+{
+    return [self nb_queryStringParametersWithEncoding:NSUTF8StringEncoding];
 }
 
 - (NSDictionary *)nb_queryStringParametersWithEncoding:(NSStringEncoding)stringEncoding

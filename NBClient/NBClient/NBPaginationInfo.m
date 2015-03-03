@@ -118,7 +118,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         }
         // Get parameters from generated URL strings, or get first page with initial parameters.
         if (components) {
-            parameters = [components.query nb_queryStringParametersWithEncoding:NSUTF8StringEncoding];
+            parameters = [components.percentEncodedQuery nb_queryStringParameters];
         } else {
             [mutableParameters removeObjectsForKeys:@[ NBClientPaginationNextLinkKey, NBClientPaginationPreviousLinkKey ]];
             parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
@@ -200,7 +200,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
             self.numberOfItemsPerPage = [dictionary[NBClientPaginationLimitKey] unsignedIntegerValue];
         } else if (dictionary[NBClientPaginationNextLinkKey]) {
             NSURLComponents *components = [NSURLComponents componentsWithString:dictionary[NBClientPaginationNextLinkKey]];
-            NSDictionary *queryParameters = [components.query nb_queryStringParametersWithEncoding:NSUTF8StringEncoding];
+            NSDictionary *queryParameters = [components.percentEncodedQuery nb_queryStringParameters];
             if (queryParameters[@"limit"]) {
                 self.numberOfItemsPerPage = (NSUInteger)[queryParameters[@"limit"] integerValue];
             }

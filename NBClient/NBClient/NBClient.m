@@ -170,11 +170,8 @@ static NSArray *LegacyPaginationEndpoints;
         return _baseURLComponents;
     }
     self.baseURLComponents = [NSURLComponents componentsWithURL:self.baseURL resolvingAgainstBaseURL:YES];
-    NSDictionary *queryParameters = @{ @"access_token": self.apiKey ?: @"" };
     _baseURLComponents.path = [NSString stringWithFormat:@"/api/%@", self.apiVersion];
-    _baseURLComponents.query = [queryParameters nb_queryStringWithEncoding:NSASCIIStringEncoding
-                                               skipPercentEncodingPairKeys:[NSSet setWithObject:@"email"]
-                                                charactersToLeaveUnescaped:nil];
+    _baseURLComponents.percentEncodedQuery = [@{ @"access_token": self.apiKey ?: @"" } nb_queryString];
     return _baseURLComponents;
 }
 
@@ -204,10 +201,8 @@ static NSArray *LegacyPaginationEndpoints;
             // Only add the flag if opting in.
             mutableParameters[NBClientPaginationTokenOptInKey] = @1;
         }
-        [mutableParameters addEntriesFromDictionary:[components.query nb_queryStringParametersWithEncoding:NSASCIIStringEncoding]];
-        components.query = [mutableParameters nb_queryStringWithEncoding:NSASCIIStringEncoding
-                                             skipPercentEncodingPairKeys:[NSSet setWithObject:@"email"]
-                                              charactersToLeaveUnescaped:nil];
+        [mutableParameters addEntriesFromDictionary:[components.percentEncodedQuery nb_queryStringParameters]];
+        components.percentEncodedQuery = mutableParameters.nb_queryString;
     }
     NSMutableURLRequest *request = [self baseFetchRequestWithURL:components.URL];
     NBLogInfo(@"REQUEST: %@", request.nb_debugDescription);

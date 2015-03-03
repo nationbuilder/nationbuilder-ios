@@ -196,7 +196,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     BOOL didOpen = NO;
     NSURLComponents *components = [[NSURLComponents alloc] initWithURL:url resolvingAgainstBaseURL:YES];
     if ([components.scheme isEqualToString:self.authorizationRedirectApplicationURLScheme]) {
-        NSDictionary *parameters = [components.fragment nb_queryStringParametersWithEncoding:NSUTF8StringEncoding];
+        NSDictionary *parameters = [components.fragment nb_queryStringParameters];
         NSString *accessToken = parameters[NBAuthenticationRedirectTokenKey];
         [[NSNotificationCenter defaultCenter] postNotificationName:NBAuthenticationRedirectNotification object:nil
                                                           userInfo:@{ NBAuthenticationRedirectTokenKey: accessToken }];
@@ -229,15 +229,13 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                                               relativeToURL:self.baseURL]
                resolvingAgainstBaseURL:YES];
     
-    components.query = [parameters nb_queryStringWithEncoding:NSASCIIStringEncoding
-                                  skipPercentEncodingPairKeys:[NSSet setWithObjects:@"username", @"redirect_uri", nil]
-                                   charactersToLeaveUnescaped:nil];
+    components.percentEncodedQuery = [parameters nb_queryString];
     
     NSURLSessionDataTask *task;
     NSURL *url = components.URL;
     if (self.currentlyNeedsPriorSignout) {
         // NOTE: NSURLComponents was forming URLs that Safari would misinterpret by chopping off the path.
-        NSString *escapedURLString = [url.absoluteString nb_percentEscapedQueryStringWithEncoding:NSASCIIStringEncoding
+        NSString *escapedURLString = [url.absoluteString nb_percentEscapedQueryStringWithEncoding:NSUTF8StringEncoding
                                                                        charactersToLeaveUnescaped:nil];
         url = [NSURL URLWithString:[NSString stringWithFormat:@"/logout?url=%@", escapedURLString]
                      relativeToURL:self.baseURL];

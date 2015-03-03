@@ -46,6 +46,7 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
 + (void)setUp
 {
     [super setUp];
+    // NOTE: Comment out to get more logging.
     [NBClient updateLoggingToLevel:NBLogLevelWarning];
     if ([self shouldUseHTTPStubbing]) {
         [[LSNocilla sharedInstance] start];
@@ -141,9 +142,7 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
     }
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
     mutableParameters[@"access_token"] = mutableParameters[@"access_token"] ?: client.apiKey;
-    components.query = [mutableParameters nb_queryStringWithEncoding:NSASCIIStringEncoding
-                                         skipPercentEncodingPairKeys:[NSSet setWithObject:@"email"]
-                                          charactersToLeaveUnescaped:nil];
+    components.percentEncodedQuery = [mutableParameters nb_queryString];
     NSMutableDictionary *headers = [NSMutableDictionary dictionary];
     headers[@"Accept"] = @"application/json";
     if ([method isEqual:@"POST"] || [method isEqual:@"PUT"]) {

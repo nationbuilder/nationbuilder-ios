@@ -28,10 +28,8 @@
     NSURLComponents *components = [self.baseURLComponents copy];
     components.path = [components.path stringByAppendingString:@"/people/search"];
     NSMutableDictionary *mutableParameters = [parameters mutableCopy];
-    [mutableParameters addEntriesFromDictionary:[components.query nb_queryStringParametersWithEncoding:NSASCIIStringEncoding]];
-    components.query = [mutableParameters nb_queryStringWithEncoding:NSASCIIStringEncoding
-                                         skipPercentEncodingPairKeys:[NSSet setWithObject:@"email"]
-                                          charactersToLeaveUnescaped:nil];
+    [mutableParameters addEntriesFromDictionary:[components.percentEncodedQuery nb_queryStringParameters]];
+    components.percentEncodedQuery = [mutableParameters nb_queryString];
     return [self baseFetchTaskWithURLComponents:components resultsKey:@"results" paginationInfo:paginationInfo completionHandler:completionHandler];
 }
 
@@ -50,10 +48,8 @@
     NSURLComponents *components = [self.baseURLComponents copy];
     components.path = [components.path stringByAppendingString:@"/people/match"];
     NSMutableDictionary *mutableParameters = [parameters mutableCopy];
-    [mutableParameters addEntriesFromDictionary:[components.query nb_queryStringParametersWithEncoding:NSASCIIStringEncoding]];
-    components.query = [mutableParameters nb_queryStringWithEncoding:NSASCIIStringEncoding
-                                         skipPercentEncodingPairKeys:[NSSet setWithObject:@"email"]
-                                          charactersToLeaveUnescaped:nil];
+    [mutableParameters addEntriesFromDictionary:[components.percentEncodedQuery nb_queryStringParameters]];
+    components.percentEncodedQuery = [mutableParameters nb_queryString];
     return [self baseFetchTaskWithURLComponents:components resultsKey:@"person" completionHandler:completionHandler];
 }
 
