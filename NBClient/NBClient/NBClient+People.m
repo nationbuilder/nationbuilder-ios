@@ -21,6 +21,15 @@
     return [self baseFetchTaskWithURLComponents:components resultsKey:@"results" paginationInfo:paginationInfo completionHandler:completionHandler];
 }
 
+- (NSURLSessionDataTask *)fetchPersonByIdentifier:(NSUInteger)identifier
+                            withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler
+{
+    NSURLComponents *components = [self.baseURLComponents copy];
+    components.path = [components.path stringByAppendingString:
+                       [NSString stringWithFormat:@"/people/%lu", (unsigned long)identifier]];
+    return [self baseFetchTaskWithURLComponents:components resultsKey:@"person" completionHandler:completionHandler];
+}
+
 - (NSURLSessionDataTask *)fetchPeopleByParameters:(NSDictionary *)parameters
                                withPaginationInfo:(NBPaginationInfo *)paginationInfo
                                 completionHandler:(NBClientResourceListCompletionHandler)completionHandler
@@ -46,12 +55,10 @@
     return [self baseFetchTaskWithURLComponents:components resultsKey:@"results" paginationInfo:paginationInfo completionHandler:completionHandler];
 }
 
-- (NSURLSessionDataTask *)fetchPersonByIdentifier:(NSUInteger)identifier
-                            withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler
+- (NSURLSessionDataTask *)fetchPersonForClientUserWithCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
     NSURLComponents *components = [self.baseURLComponents copy];
-    components.path = [components.path stringByAppendingString:
-                       [NSString stringWithFormat:@"/people/%lu", (unsigned long)identifier]];
+    components.path = [components.path stringByAppendingString:@"/people/me"];
     return [self baseFetchTaskWithURLComponents:components resultsKey:@"person" completionHandler:completionHandler];
 }
 
@@ -63,13 +70,6 @@
     NSMutableDictionary *mutableParameters = [parameters mutableCopy];
     [mutableParameters addEntriesFromDictionary:[components.percentEncodedQuery nb_queryStringParameters]];
     components.percentEncodedQuery = [mutableParameters nb_queryString];
-    return [self baseFetchTaskWithURLComponents:components resultsKey:@"person" completionHandler:completionHandler];
-}
-
-- (NSURLSessionDataTask *)fetchPersonForClientUserWithCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler
-{
-    NSURLComponents *components = [self.baseURLComponents copy];
-    components.path = [components.path stringByAppendingString:@"/people/me"];
     return [self baseFetchTaskWithURLComponents:components resultsKey:@"person" completionHandler:completionHandler];
 }
 

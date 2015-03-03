@@ -19,6 +19,9 @@
 // GET /people
 - (NSURLSessionDataTask *)fetchPeopleWithPaginationInfo:(NBPaginationInfo *)paginationInfo
                                       completionHandler:(NBClientResourceListCompletionHandler)completionHandler;
+// GET /people/:id
+- (NSURLSessionDataTask *)fetchPersonByIdentifier:(NSUInteger)identifier
+                            withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
 // GET /people/search
 - (NSURLSessionDataTask *)fetchPeopleByParameters:(NSDictionary *)parameters
                                withPaginationInfo:(NBPaginationInfo *)paginationInfo
@@ -27,17 +30,11 @@
 - (NSURLSessionDataTask *)fetchPeopleNearbyByLocationInfo:(NSDictionary *)locationInfo
                                        withPaginationInfo:(NBPaginationInfo *)paginationInfo
                                         completionHandler:(NBClientResourceListCompletionHandler)completionHandler;
-
-// GET /people/:id
-- (NSURLSessionDataTask *)fetchPersonByIdentifier:(NSUInteger)identifier
-                            withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+// GET /people/me
+- (NSURLSessionDataTask *)fetchPersonForClientUserWithCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
 // GET /people/match
 - (NSURLSessionDataTask *)fetchPersonByParameters:(NSDictionary *)parameters
                             withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
-
-// GET /people/me
-- (NSURLSessionDataTask *)fetchPersonForClientUserWithCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
-
 // POST /people
 - (NSURLSessionDataTask *)createPersonWithParameters:(NSDictionary *)parameters
                                    completionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
