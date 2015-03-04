@@ -38,6 +38,9 @@
 // GET /people/match
 - (NSURLSessionDataTask *)fetchPersonByParameters:(NSDictionary *)parameters
                             withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+// GET /people/:id/taggings
+- (NSURLSessionDataTask *)fetchPersonTaggingsByIdentifier:(NSUInteger)personIdentifier
+                                    withCompletionHandler:(NBClientResourceListCompletionHandler)completionHandler;
 // POST /people
 - (NSURLSessionDataTask *)createPersonWithParameters:(NSDictionary *)parameters
                                    completionHandler:(NBClientResourceItemCompletionHandler)completionHandler;

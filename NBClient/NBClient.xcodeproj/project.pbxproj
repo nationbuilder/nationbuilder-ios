@@ -50,6 +50,7 @@
 		AA90915819834164009BE1E9 /* NBClient+People.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA6FF3C2197DF2E00049B747 /* NBClient+People.h */; };
 		AA90915919834164009BE1E9 /* NBPaginationInfo.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA6FF3BC197D95220049B747 /* NBPaginationInfo.h */; };
 		AA90915A19834186009BE1E9 /* NBDefines.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA8B6823196F82D4009DDA91 /* NBDefines.h */; };
+		AA9677691AA79B3900FE2FC9 /* NBClientPeopleTaggingsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA9677681AA79B3900FE2FC9 /* NBClientPeopleTaggingsTests.m */; };
 		AAAEFC25196CD13D00222A48 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAAEFC24196CD13D00222A48 /* Foundation.framework */; };
 		AAAEFC2C196CD13D00222A48 /* NBClient.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAEFC2B196CD13D00222A48 /* NBClient.m */; };
 		AAAEFC33196CD13D00222A48 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAAEFC32196CD13D00222A48 /* XCTest.framework */; };
@@ -147,6 +148,7 @@
 		AA8B6821196F5539009DDA91 /* NBAuthenticatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAuthenticatorTests.m; sourceTree = "<group>"; };
 		AA8B6823196F82D4009DDA91 /* NBDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBDefines.h; sourceTree = "<group>"; };
 		AA8B6824196F82D4009DDA91 /* NBDefines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBDefines.m; sourceTree = "<group>"; };
+		AA9677681AA79B3900FE2FC9 /* NBClientPeopleTaggingsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBClientPeopleTaggingsTests.m; sourceTree = "<group>"; };
 		AAAEFC21196CD13D00222A48 /* libNBClient.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNBClient.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAAEFC24196CD13D00222A48 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		AAAEFC28196CD13D00222A48 /* NBClient-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NBClient-Prefix.pch"; sourceTree = "<group>"; };
@@ -309,6 +311,7 @@
 				AA2490531A099321006F0D24 /* NBAccountsManagerTests.m */,
 				AA8B6821196F5539009DDA91 /* NBAuthenticatorTests.m */,
 				AA668DD31976EA1600A952B0 /* NBClientPeopleTests.m */,
+				AA9677681AA79B3900FE2FC9 /* NBClientPeopleTaggingsTests.m */,
 				AAAEFC40196CD13D00222A48 /* NBClientTests.m */,
 				AA6FF3C0197DADEA0049B747 /* NBPaginationInfoTests.m */,
 				AA668DC419705FC800A952B0 /* NBTestCase.h */,
@@ -494,6 +497,7 @@
 			files = (
 				AA668DD61978418F00A952B0 /* FoundationAdditionsTests.m in Sources */,
 				AA2490521A099312006F0D24 /* NBAccountTests.m in Sources */,
+				AA9677691AA79B3900FE2FC9 /* NBClientPeopleTaggingsTests.m in Sources */,
 				AA8B6822196F5539009DDA91 /* NBAuthenticatorTests.m in Sources */,
 				AA668DD41976EA1600A952B0 /* NBClientPeopleTests.m in Sources */,
 				AAAEFC41196CD13D00222A48 /* NBClientTests.m in Sources */,

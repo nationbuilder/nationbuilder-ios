@@ -82,6 +82,15 @@
     return [self baseFetchTaskWithURLComponents:components resultsKey:@"person" completionHandler:completionHandler];
 }
 
+- (NSURLSessionDataTask *)fetchPersonTaggingsByIdentifier:(NSUInteger)personIdentifier
+                                    withCompletionHandler:(NBClientResourceListCompletionHandler)completionHandler
+{
+    NSURLComponents *components = [self.baseURLComponents copy];
+    components.path = [components.path stringByAppendingString:
+                       [NSString stringWithFormat:@"/people/%lu/taggings", (unsigned long)personIdentifier]];
+    return [self baseFetchTaskWithURLComponents:components resultsKey:@"taggings" paginationInfo:nil completionHandler:completionHandler];
+}
+
 - (NSURLSessionDataTask *)createPersonWithParameters:(NSDictionary *)parameters
                                    completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {

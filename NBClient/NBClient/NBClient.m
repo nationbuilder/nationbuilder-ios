@@ -26,6 +26,8 @@ NSString * const NBClientLocationLatitudeKey = @"latitude";
 NSString * const NBClientLocationLongitudeKey = @"longitude";
 NSString * const NBClientLocationProximityDistanceKey = @"distance";
 
+NSString * const NBClientTaggingTagNameOrListKey = @"tag";
+
 #if DEBUG
 static NBLogLevel LogLevel = NBLogLevelDebug;
 #else
