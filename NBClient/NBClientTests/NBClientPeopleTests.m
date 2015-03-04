@@ -38,7 +38,7 @@
 - (void)assertPeopleArray:(NSArray *)array
 {
     XCTAssertNotNil(array,
-                    @"Client should have fetched list of people.");
+                    @"Client should have received list of people.");
     for (NSDictionary *dictionary in array) {
         [self assertPersonDictionary:dictionary];
     }
@@ -76,7 +76,7 @@
          [self assertPeopleArray:items];
          [self assertPaginationInfo:paginationInfo withPaginationParameters:paginationParameters];
          [self completeAsync];
-    }];
+     }];
     [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
@@ -145,10 +145,10 @@
     [self.client
      fetchPersonByIdentifier:identifier
      withCompletionHandler:^(NSDictionary *item, NSError *error) {
-        [self assertServiceError:error];
-        [self assertPersonDictionary:item];
-        [self completeAsync];
-    }];
+         [self assertServiceError:error];
+         [self assertPersonDictionary:item];
+         [self completeAsync];
+     }];
     [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
