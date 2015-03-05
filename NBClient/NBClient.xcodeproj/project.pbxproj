@@ -39,6 +39,13 @@
 		AA84F04519EC7C9200DAA6B8 /* NationBuilder-Info-Local.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA84F04419EC7C9200DAA6B8 /* NationBuilder-Info-Local.plist */; };
 		AA84F04719EC888A00DAA6B8 /* NationBuilder-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA84F04619EC888A00DAA6B8 /* NationBuilder-Info.plist */; };
 		AA84F04919EC94A700DAA6B8 /* people_me_get.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA84F04819EC94A700DAA6B8 /* people_me_get.txt */; };
+		AA85EB0C1AA85E6300E3CC08 /* people_id_register_get.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA85EB051AA85E6300E3CC08 /* people_id_register_get.txt */; };
+		AA85EB0D1AA85E6300E3CC08 /* people_id_taggings_bulk_put.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA85EB061AA85E6300E3CC08 /* people_id_taggings_bulk_put.txt */; };
+		AA85EB0E1AA85E6300E3CC08 /* people_id_taggings_delete.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA85EB071AA85E6300E3CC08 /* people_id_taggings_delete.txt */; };
+		AA85EB0F1AA85E6300E3CC08 /* people_id_taggings_get.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA85EB081AA85E6300E3CC08 /* people_id_taggings_get.txt */; };
+		AA85EB101AA85E6300E3CC08 /* people_id_taggings_put.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA85EB091AA85E6300E3CC08 /* people_id_taggings_put.txt */; };
+		AA85EB111AA85E6300E3CC08 /* people_id_taggings_tag_delete.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA85EB0A1AA85E6300E3CC08 /* people_id_taggings_tag_delete.txt */; };
+		AA85EB121AA85E6300E3CC08 /* people_nearby_get.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA85EB0B1AA85E6300E3CC08 /* people_nearby_get.txt */; };
 		AA862851196F1651005060C9 /* NBAuthenticator.m in Sources */ = {isa = PBXBuildFile; fileRef = AA862850196F1651005060C9 /* NBAuthenticator.m */; };
 		AA8B6822196F5539009DDA91 /* NBAuthenticatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA8B6821196F5539009DDA91 /* NBAuthenticatorTests.m */; };
 		AA8B6825196F82D4009DDA91 /* NBDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = AA8B6824196F82D4009DDA91 /* NBDefines.m */; };
@@ -143,6 +150,13 @@
 		AA84F04619EC888A00DAA6B8 /* NationBuilder-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "NationBuilder-Info.plist"; sourceTree = "<group>"; };
 		AA84F04819EC94A700DAA6B8 /* people_me_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_me_get.txt; sourceTree = "<group>"; };
 		AA84F04B19EDF36D00DAA6B8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/NationBuilder.strings; sourceTree = "<group>"; };
+		AA85EB051AA85E6300E3CC08 /* people_id_register_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_id_register_get.txt; sourceTree = "<group>"; };
+		AA85EB061AA85E6300E3CC08 /* people_id_taggings_bulk_put.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_id_taggings_bulk_put.txt; sourceTree = "<group>"; };
+		AA85EB071AA85E6300E3CC08 /* people_id_taggings_delete.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_id_taggings_delete.txt; sourceTree = "<group>"; };
+		AA85EB081AA85E6300E3CC08 /* people_id_taggings_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_id_taggings_get.txt; sourceTree = "<group>"; };
+		AA85EB091AA85E6300E3CC08 /* people_id_taggings_put.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_id_taggings_put.txt; sourceTree = "<group>"; };
+		AA85EB0A1AA85E6300E3CC08 /* people_id_taggings_tag_delete.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_id_taggings_tag_delete.txt; sourceTree = "<group>"; };
+		AA85EB0B1AA85E6300E3CC08 /* people_nearby_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_nearby_get.txt; sourceTree = "<group>"; };
 		AA86284F196F1651005060C9 /* NBAuthenticator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBAuthenticator.h; sourceTree = "<group>"; };
 		AA862850196F1651005060C9 /* NBAuthenticator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAuthenticator.m; sourceTree = "<group>"; };
 		AA8B6821196F5539009DDA91 /* NBAuthenticatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAuthenticatorTests.m; sourceTree = "<group>"; };
@@ -223,8 +237,15 @@
 				AA78ED72199C563C0043B7C0 /* people_id_delete.txt */,
 				AA78ED73199C563C0043B7C0 /* people_id_get.txt */,
 				AA78ED74199C563C0043B7C0 /* people_id_put.txt */,
+				AA85EB051AA85E6300E3CC08 /* people_id_register_get.txt */,
+				AA85EB061AA85E6300E3CC08 /* people_id_taggings_bulk_put.txt */,
+				AA85EB071AA85E6300E3CC08 /* people_id_taggings_delete.txt */,
+				AA85EB081AA85E6300E3CC08 /* people_id_taggings_get.txt */,
+				AA85EB091AA85E6300E3CC08 /* people_id_taggings_put.txt */,
+				AA85EB0A1AA85E6300E3CC08 /* people_id_taggings_tag_delete.txt */,
 				AA78ED75199C563C0043B7C0 /* people_match_get.txt */,
 				AA84F04819EC94A700DAA6B8 /* people_me_get.txt */,
+				AA85EB0B1AA85E6300E3CC08 /* people_nearby_get.txt */,
 				AA78ED76199C563C0043B7C0 /* people_post.txt */,
 				AA78ED77199C563C0043B7C0 /* people_search_get.txt */,
 			);
@@ -426,13 +447,20 @@
 				AA78ED7A199C563C0043B7C0 /* people_id_delete.txt in Resources */,
 				AA84F04919EC94A700DAA6B8 /* people_me_get.txt in Resources */,
 				AA78ED79199C563C0043B7C0 /* people_get.txt in Resources */,
+				AA85EB0E1AA85E6300E3CC08 /* people_id_taggings_delete.txt in Resources */,
+				AA85EB101AA85E6300E3CC08 /* people_id_taggings_put.txt in Resources */,
 				AA84F04519EC7C9200DAA6B8 /* NationBuilder-Info-Local.plist in Resources */,
+				AA85EB0C1AA85E6300E3CC08 /* people_id_register_get.txt in Resources */,
 				AA78ED7C199C563C0043B7C0 /* people_id_put.txt in Resources */,
 				AAAEFC3F196CD13D00222A48 /* InfoPlist.strings in Resources */,
 				AA78ED7F199C563C0043B7C0 /* people_search_get.txt in Resources */,
 				AA78ED7D199C563C0043B7C0 /* people_match_get.txt in Resources */,
 				AA78ED7E199C563C0043B7C0 /* people_post.txt in Resources */,
+				AA85EB0F1AA85E6300E3CC08 /* people_id_taggings_get.txt in Resources */,
+				AA85EB111AA85E6300E3CC08 /* people_id_taggings_tag_delete.txt in Resources */,
 				AA78ED7B199C563C0043B7C0 /* people_id_get.txt in Resources */,
+				AA85EB121AA85E6300E3CC08 /* people_nearby_get.txt in Resources */,
+				AA85EB0D1AA85E6300E3CC08 /* people_id_taggings_bulk_put.txt in Resources */,
 				AA84F04719EC888A00DAA6B8 /* NationBuilder-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
