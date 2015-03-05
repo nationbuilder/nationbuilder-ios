@@ -8,7 +8,10 @@ task :test do
   command << " clean test"
   command << " | xcpretty -c; exit ${PIPESTATUS[0]}"
   sh(command) rescue nil
-  puts error_text("iOS unit tests failed") unless $?.success?
+  unless $?.success?
+    puts error_text("iOS unit tests failed")
+    exit $?.exitstatus
+  end
 end
 
 task :default => 'test'
