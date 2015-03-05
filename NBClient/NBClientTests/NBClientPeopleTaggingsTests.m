@@ -66,7 +66,7 @@
     [self setUpAsync];
     NSUInteger personIdentifier = self.userIdentifier;
     if (self.shouldUseHTTPStubbing) {
-        [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people/taggings" identifier:personIdentifier parameters:nil];
+        [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"people/:id/taggings" pathVariables:@{ @"id": @(personIdentifier) } queryParameters:nil];
     }
     NSURLSessionDataTask *task =
     [self.client
@@ -85,7 +85,9 @@
     [self setUpAsync];
     NSDictionary *taggingInfo = @{ NBClientTaggingTagNameOrListKey: self.tagName };
     NSUInteger personIdentifier = self.userIdentifier;
-    if (self.shouldUseHTTPStubbing) {}
+    if (self.shouldUseHTTPStubbing) {
+        [self stubRequestUsingFileDataWithMethod:@"PUT" pathFormat:@"people/:id/taggings" pathVariables:@{ @"id": @(personIdentifier) } queryParameters:nil];
+    }
     void (^undoTestChanges)(void) = ^{
         // TODO
         [self completeAsync];
@@ -114,7 +116,10 @@
     [self setUpAsync];
     NSUInteger personIdentifier = self.userIdentifier;
     NSDictionary *taggingInfo = @{ NBClientTaggingTagNameOrListKey: self.tagList };
-    if (self.shouldUseHTTPStubbing) {}
+    if (self.shouldUseHTTPStubbing) {
+        [self stubRequestUsingFileDataWithMethod:@"PUT" pathFormat:@"people/:id/taggings" pathVariables:@{ @"id": @(personIdentifier) } queryParameters:nil
+                                         variant:@"bulk" client:nil];
+    }
     void (^undoTestChanges)(void) = ^{
         // TODO
         [self completeAsync];

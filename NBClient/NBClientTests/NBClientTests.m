@@ -168,7 +168,7 @@
 
 - (LSStubRequestDSL *)stubFetchPersonForClientUserRequestWithClient:(NBClient *)client
 {
-    return [self stubRequestWithMethod:@"GET" path:@"people/me" identifier:NSNotFound parameters:nil client:client];
+    return [self stubRequestWithMethod:@"GET" pathFormat:@"people/me" pathVariables:nil queryParameters:nil client:client];
 }
 
 // OCMProtocolMock allows the object to respond to all protocol method selectors,

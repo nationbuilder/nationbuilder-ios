@@ -131,52 +131,73 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
 }
 
 - (LSStubRequestDSL *)stubRequestWithMethod:(NSString *)method
-                                       path:(NSString *)path
-                                 identifier:(NSUInteger)identifier
-                                 parameters:(NSDictionary *)parameters
+                                 pathFormat:(NSString *)pathFormat
+                              pathVariables:(NSDictionary *)pathVariables
+                            queryParameters:(NSDictionary *)queryParameters
                                      client:(NBClient *)client
 {
+    static NSString *finalPathFormat = @"/api/%@/%@";
     client = client ?: self.client;
+    // We need to build our path.
     NSURLComponents *components = [NSURLComponents componentsWithURL:client.baseURL resolvingAgainstBaseURL:NO];
-    components.path = [NSString stringWithFormat:@"/api/%@/%@", client.apiVersion, path];
-    BOOL hasIdentifier = identifier != NSNotFound;
-    if (hasIdentifier) {
-        components.path = [components.path stringByAppendingString:[NSString stringWithFormat:@"/%lu", (unsigned long)identifier]];
+    NSString *path = pathFormat;
+    if (pathVariables) {
+        NSMutableArray *pathComponents = pathFormat.pathComponents.mutableCopy;
+        for (NSString *variableName in pathVariables.allKeys) {
+            NSUInteger index = [pathComponents indexOfObject:[NSString stringWithFormat:@":%@", variableName]];
+            [pathComponents replaceObjectAtIndex:index withObject:[NSString stringWithFormat:@"%@", pathVariables[variableName]]];
+        }
+        path = [NSString pathWithComponents:pathComponents];
     }
-    NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
+    components.path = [NSString stringWithFormat:finalPathFormat, client.apiVersion, path];
+    // And we need to build our query.
+    NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionaryWithDictionary:queryParameters];
     mutableParameters[@"access_token"] = mutableParameters[@"access_token"] ?: client.apiKey;
     components.percentEncodedQuery = [mutableParameters nb_queryString];
+    // Check our URL.
+    NBLog(@"STUB: %@", components.URL.absoluteString);
+    // And our headers.
     NSMutableDictionary *headers = [NSMutableDictionary dictionary];
     headers[@"Accept"] = @"application/json";
     if ([method isEqual:@"POST"] || [method isEqual:@"PUT"]) {
         headers[@"Content-Type"] = @"application/json";
     }
-    NBLog(@"STUB: %@", components.URL.absoluteString);
+    // Finally, send it to Nocilla.
     return stubRequest(method, components.URL.absoluteString).withHeaders(headers);
 }
 
 - (LSStubResponseDSL *)stubRequestUsingFileDataWithMethod:(NSString *)method
                                                      path:(NSString *)path
-                                               identifier:(NSUInteger)identifier
-                                               parameters:(NSDictionary *)parameters
+                                          queryParameters:(NSDictionary *)queryParameters
 {
-    return [self stubRequestUsingFileDataWithMethod:method path:path identifier:identifier parameters:parameters client:nil];
+    return [self stubRequestUsingFileDataWithMethod:method pathFormat:path pathVariables:nil queryParameters:queryParameters];
+}
+
+- (LSStubResponseDSL *)stubRequestUsingFileDataWithMethod:(NSString *)method
+                                               pathFormat:(NSString *)pathFormat
+                                            pathVariables:(NSDictionary *)pathVariables
+                                          queryParameters:(NSDictionary *)queryParameters
+{
+    return [self stubRequestUsingFileDataWithMethod:method pathFormat:pathFormat pathVariables:pathVariables queryParameters:queryParameters variant:nil client:nil];
 }
 - (LSStubResponseDSL *)stubRequestUsingFileDataWithMethod:(NSString *)method
-                                                     path:(NSString *)path
-                                               identifier:(NSUInteger)identifier
-                                               parameters:(NSDictionary *)parameters
+                                               pathFormat:(NSString *)pathFormat
+                                            pathVariables:(NSDictionary *)pathVariables
+                                          queryParameters:(NSDictionary *)queryParameters
+                                                  variant:(NSString *)variant
                                                    client:(NBClient *)client
 {
-    BOOL hasIdentifier = identifier != NSNotFound;
-    // Get file name that's conventionally composed from path, identifier existence, and method.
+    // NOTE: We purposefully do not include dynamic data in the file names, for easy maintenance.
+    // Get file name that's conventionally composed from path and method.
     NSString *fileName = [NSString stringWithFormat:@"%@%@_%@",
-                          [path stringByReplacingOccurrencesOfString:@"/" withString:@"_"],
-                          (hasIdentifier ? @"_id" : @""),
+                          [[pathFormat
+                            stringByReplacingOccurrencesOfString:@"/" withString:@"_"]
+                           stringByReplacingOccurrencesOfString:@":" withString:@""],
+                          (variant ? [NSString stringWithFormat:@"_%@", variant] : @""),
                           method.lowercaseString];
     NSData *data = [NSData dataWithContentsOfFile:
                     [[NSBundle bundleForClass:self.class] pathForResource:fileName ofType:@"txt"]];
-    return ([self stubRequestWithMethod:method path:path identifier:identifier parameters:parameters client:client]
+    return ([self stubRequestWithMethod:method pathFormat:pathFormat pathVariables:pathVariables queryParameters:queryParameters client:client]
             .andReturnRawResponse(data));
 }
 

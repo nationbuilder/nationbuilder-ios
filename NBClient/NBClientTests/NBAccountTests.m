@@ -92,7 +92,8 @@
          completionHandler(credential, nil);
      }];
     // Given: a client that properly fetches person data for its account user.
-    [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people/me" identifier:NSNotFound parameters:@{ @"access_token": accessToken }
+    [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"people/me" pathVariables:nil
+                             queryParameters:@{ @"access_token": accessToken } variant:nil
                                       client:[(NBAccount *)accountMock client]];
     // Given: keychain persistence that works.
     id credentialMock = OCMClassMock([NBAuthenticationCredential class]);
@@ -167,7 +168,7 @@
     [OCMStub([self.account.authenticator discardCredential]) andReturnValue:@YES];
     // Given: account client properly returns 401 if access token is invalid or has expired.
     self.account.shouldUseTestToken = YES;
-    [self stubRequestWithMethod:@"GET" path:@"people/me" identifier:NSNotFound parameters:nil client:self.account.client].andReturn(401);
+    [self stubRequestWithMethod:@"GET" pathFormat:@"people/me" pathVariables:nil queryParameters:nil client:self.account.client].andReturn(401);
     // When making a request that returns 401, then the delegate method should be called.
     [self.account.client fetchPersonForClientUserWithCompletionHandler:^(NSDictionary *item, NSError *error) {
         XCTFail(@"Default response handling should not occur.");
