@@ -48,8 +48,12 @@
                                    completionHandler:(id)completionHandler;
 
 - (NSMutableURLRequest *)baseDeleteRequestWithURL:(NSURL *)url;
+// This is the more common delete method.
 - (NSURLSessionDataTask *)baseDeleteTaskWithURL:(NSURL *)url
                               completionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+// This is the less common one, for custom requests.
+- (NSURLSessionDataTask *)baseDeleteTaskWithURLRequest:(NSURLRequest *)request
+                                     completionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
 
 - (NSURLSessionDataTask *)startTask:(NSURLSessionDataTask *)task;
 

@@ -50,6 +50,10 @@
 - (NSURLSessionDataTask *)createPersonTaggingsByIdentifier:(NSUInteger)personIdentifier
                                            withTaggingInfo:(NSDictionary *)taggingInfo
                                          completionHandler:(NBClientResourceListCompletionHandler)completionHandler;
+// DELETE /people/:id/taggings/:tag
+- (NSURLSessionDataTask *)deletePersonTaggingsByIdentifier:(NSUInteger)personIdentifier
+                                                  tagNames:(NSArray *)tagNames
+                                     withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
 // POST /people
 - (NSURLSessionDataTask *)createPersonWithParameters:(NSDictionary *)parameters
                                    completionHandler:(NBClientResourceItemCompletionHandler)completionHandler;

@@ -89,8 +89,8 @@
         [self stubRequestUsingFileDataWithMethod:@"PUT" pathFormat:@"people/:id/taggings" pathVariables:@{ @"id": @(personIdentifier) } queryParameters:nil];
     }
     void (^undoTestChanges)(void) = ^{
-        // TODO
-        [self completeAsync];
+        [self.client deletePersonTaggingsByIdentifier:personIdentifier tagNames:@[ self.tagName ]
+                                withCompletionHandler:^(NSDictionary *item, NSError *error) { [self completeAsync]; }];
     };
     NSURLSessionDataTask *task =
     [self.client
@@ -121,8 +121,8 @@
                                          variant:@"bulk" client:nil];
     }
     void (^undoTestChanges)(void) = ^{
-        // TODO
-        [self completeAsync];
+        [self.client deletePersonTaggingsByIdentifier:personIdentifier tagNames:self.tagList
+                                withCompletionHandler:^(NSDictionary *item, NSError *error) { [self completeAsync]; }];
     };
     NSURLSessionDataTask *task =
     [self.client
@@ -138,6 +138,65 @@
          }
      }];
     [self assertSessionDataTask:task];
+    [self tearDownAsync];
+}
+
+- (void)testDeletePersonTagging
+{
+    [self setUpAsync];
+    NSUInteger personIdentifier = self.userIdentifier;
+    NSString *tagName = self.tagName;
+    NBClientResourceItemCompletionHandler testDelete = ^(NSDictionary *item, NSError *error) {
+        NSURLSessionDataTask *task =
+        [self.client
+         deletePersonTaggingsByIdentifier:personIdentifier
+         tagNames:@[ item[@"tag"] ]
+         withCompletionHandler:^(NSDictionary *deletedItem, NSError *deleteError) {
+             [self assertServiceError:deleteError];
+             XCTAssertNil(deletedItem,
+                          @"Tagging should not exist.");
+             [self completeAsync];
+         }];
+        [self assertSessionDataTask:task];
+    };
+    if (self.shouldUseHTTPStubbing) {
+        [self stubRequestUsingFileDataWithMethod:@"DELETE" pathFormat:@"people/:id/taggings/:tag"
+                                   pathVariables:@{ @"id": @(personIdentifier), @"tag": tagName } queryParameters:nil];
+        testDelete(nil, nil);
+    } else {
+        [self completeAsync]; // FIXME
+        [self.client createPersonTaggingByIdentifier:personIdentifier withTaggingInfo:@{ NBClientTaggingTagNameOrListKey: tagName }
+                                   completionHandler:testDelete];
+    }
+    [self tearDownAsync];
+}
+
+- (void)testDeletePersonTaggings
+{
+    [self setUpAsync];
+    NSUInteger personIdentifier = self.userIdentifier;
+    NSArray *tagList = self.tagList;
+    NBClientResourceListCompletionHandler testDelete = ^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
+        NSURLSessionDataTask *task =
+        [self.client
+         deletePersonTaggingsByIdentifier:personIdentifier
+         tagNames:tagList
+         withCompletionHandler:^(NSDictionary *deletedItem, NSError *deleteError) {
+             [self assertServiceError:deleteError];
+             XCTAssertNil(deletedItem,
+                          @"Tagging should not exist.");
+             [self completeAsync];
+         }];
+        [self assertSessionDataTask:task];
+    };
+    if (self.shouldUseHTTPStubbing) {
+        [self stubRequestUsingFileDataWithMethod:@"DELETE" pathFormat:@"people/:id/taggings" pathVariables:@{ @"id": @(personIdentifier) } queryParameters:nil];
+        testDelete(nil, nil, nil);
+    } else {
+        [self completeAsync]; // FIXME
+        [self.client createPersonTaggingsByIdentifier:personIdentifier withTaggingInfo:@{ NBClientTaggingTagNameOrListKey: tagList }
+                                    completionHandler:testDelete];
+    }
     [self tearDownAsync];
 }
 

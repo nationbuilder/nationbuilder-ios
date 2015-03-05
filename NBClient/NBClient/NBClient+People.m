@@ -127,6 +127,31 @@
     return [self baseSaveTaskWithURLRequest:request resultsKey:@"taggings" completionHandler:completionHandler];
 }
 
+- (NSURLSessionDataTask *)deletePersonTaggingsByIdentifier:(NSUInteger)personIdentifier
+                                                  tagNames:(NSArray *)tagNames
+                                     withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler
+{
+    NSURLComponents *components = [self.baseURLComponents copy];
+    components.path = [components.path stringByAppendingString:
+                       [NSString stringWithFormat:@"/people/%lu/taggings", (unsigned long)personIdentifier]];
+    BOOL isBulk = tagNames.count > 1;
+    if (!isBulk) {
+        // Use the non-bulk endpoint if we can.
+        components.path = [components.path stringByAppendingPathComponent:tagNames.firstObject];
+    }
+    NSMutableURLRequest *request = [self baseDeleteRequestWithURL:components.URL];
+    if (isBulk) {
+        [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        NSError *error;
+        [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:@{ @"tagging": @{ NBClientTaggingTagNameOrListKey: tagNames } } options:0 error:&error]];
+        if (error) {
+            dispatch_async(dispatch_get_main_queue(), ^{ completionHandler(nil, error); });
+            return nil;
+        }
+    }
+    return [self baseDeleteTaskWithURLRequest:request completionHandler:completionHandler];
+}
+
 #pragma mark - Updating
 
 - (NSURLSessionDataTask *)createPersonWithParameters:(NSDictionary *)parameters

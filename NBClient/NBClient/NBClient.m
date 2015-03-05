@@ -294,7 +294,12 @@ static NSArray *LegacyPaginationEndpoints;
 - (NSURLSessionDataTask *)baseDeleteTaskWithURL:(NSURL *)url
                               completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
-    NSURLRequest *request = [self baseDeleteRequestWithURL:url];
+    return [self baseDeleteTaskWithURLRequest:[self baseDeleteRequestWithURL:url] completionHandler:completionHandler];
+}
+
+- (NSURLSessionDataTask *)baseDeleteTaskWithURLRequest:(NSURLRequest *)request
+                                     completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
+{
     NBLogInfo(@"REQUEST: %@", request.nb_debugDescription);
     void (^taskCompletionHandler)(NSData *, NSURLResponse *, NSError *) =
     [self dataTaskCompletionHandlerForFetchResultsKey:nil originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
