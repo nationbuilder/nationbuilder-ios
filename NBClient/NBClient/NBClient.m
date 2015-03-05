@@ -28,6 +28,9 @@ NSString * const NBClientLocationProximityDistanceKey = @"distance";
 
 NSString * const NBClientTaggingTagNameOrListKey = @"tag";
 
+NSString * const NBClientCapitalAmountInCentsKey = @"amount_in_cents";
+NSString * const NBClientCapitalUserContentKey = @"content";
+
 #if DEBUG
 static NBLogLevel LogLevel = NBLogLevelDebug;
 #else

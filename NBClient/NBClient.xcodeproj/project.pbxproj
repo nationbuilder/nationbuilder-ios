@@ -47,6 +47,9 @@
 		AA85EB111AA85E6300E3CC08 /* people_id_taggings_tag_delete.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA85EB0A1AA85E6300E3CC08 /* people_id_taggings_tag_delete.txt */; };
 		AA85EB121AA85E6300E3CC08 /* people_nearby_get.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA85EB0B1AA85E6300E3CC08 /* people_nearby_get.txt */; };
 		AA85EB141AA8E42100E3CC08 /* NBClientPeopleCapitalsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA85EB131AA8E42100E3CC08 /* NBClientPeopleCapitalsTests.m */; };
+		AA85EB181AA94FDE00E3CC08 /* people_id_capitals_delete.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA85EB151AA94FDE00E3CC08 /* people_id_capitals_delete.txt */; };
+		AA85EB191AA94FDE00E3CC08 /* people_id_capitals_post.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA85EB161AA94FDE00E3CC08 /* people_id_capitals_post.txt */; };
+		AA85EB1A1AA94FDE00E3CC08 /* people_id_capitals_get.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA85EB171AA94FDE00E3CC08 /* people_id_capitals_get.txt */; };
 		AA862851196F1651005060C9 /* NBAuthenticator.m in Sources */ = {isa = PBXBuildFile; fileRef = AA862850196F1651005060C9 /* NBAuthenticator.m */; };
 		AA8B6822196F5539009DDA91 /* NBAuthenticatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA8B6821196F5539009DDA91 /* NBAuthenticatorTests.m */; };
 		AA8B6825196F82D4009DDA91 /* NBDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = AA8B6824196F82D4009DDA91 /* NBDefines.m */; };
@@ -159,6 +162,9 @@
 		AA85EB0A1AA85E6300E3CC08 /* people_id_taggings_tag_delete.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_id_taggings_tag_delete.txt; sourceTree = "<group>"; };
 		AA85EB0B1AA85E6300E3CC08 /* people_nearby_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_nearby_get.txt; sourceTree = "<group>"; };
 		AA85EB131AA8E42100E3CC08 /* NBClientPeopleCapitalsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBClientPeopleCapitalsTests.m; sourceTree = "<group>"; };
+		AA85EB151AA94FDE00E3CC08 /* people_id_capitals_delete.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_id_capitals_delete.txt; sourceTree = "<group>"; };
+		AA85EB161AA94FDE00E3CC08 /* people_id_capitals_post.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_id_capitals_post.txt; sourceTree = "<group>"; };
+		AA85EB171AA94FDE00E3CC08 /* people_id_capitals_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_id_capitals_get.txt; sourceTree = "<group>"; };
 		AA86284F196F1651005060C9 /* NBAuthenticator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBAuthenticator.h; sourceTree = "<group>"; };
 		AA862850196F1651005060C9 /* NBAuthenticator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAuthenticator.m; sourceTree = "<group>"; };
 		AA8B6821196F5539009DDA91 /* NBAuthenticatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAuthenticatorTests.m; sourceTree = "<group>"; };
@@ -236,6 +242,9 @@
 			isa = PBXGroup;
 			children = (
 				AA78ED71199C563C0043B7C0 /* people_get.txt */,
+				AA85EB151AA94FDE00E3CC08 /* people_id_capitals_delete.txt */,
+				AA85EB171AA94FDE00E3CC08 /* people_id_capitals_get.txt */,
+				AA85EB161AA94FDE00E3CC08 /* people_id_capitals_post.txt */,
 				AA78ED72199C563C0043B7C0 /* people_id_delete.txt */,
 				AA78ED73199C563C0043B7C0 /* people_id_get.txt */,
 				AA78ED74199C563C0043B7C0 /* people_id_put.txt */,
@@ -447,6 +456,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA85EB1A1AA94FDE00E3CC08 /* people_id_capitals_get.txt in Resources */,
 				AA78ED7A199C563C0043B7C0 /* people_id_delete.txt in Resources */,
 				AA84F04919EC94A700DAA6B8 /* people_me_get.txt in Resources */,
 				AA78ED79199C563C0043B7C0 /* people_get.txt in Resources */,
@@ -461,10 +471,12 @@
 				AA78ED7E199C563C0043B7C0 /* people_post.txt in Resources */,
 				AA85EB0F1AA85E6300E3CC08 /* people_id_taggings_get.txt in Resources */,
 				AA85EB111AA85E6300E3CC08 /* people_id_taggings_tag_delete.txt in Resources */,
+				AA85EB181AA94FDE00E3CC08 /* people_id_capitals_delete.txt in Resources */,
 				AA78ED7B199C563C0043B7C0 /* people_id_get.txt in Resources */,
 				AA85EB121AA85E6300E3CC08 /* people_nearby_get.txt in Resources */,
 				AA85EB0D1AA85E6300E3CC08 /* people_id_taggings_bulk_put.txt in Resources */,
 				AA84F04719EC888A00DAA6B8 /* NationBuilder-Info.plist in Resources */,
+				AA85EB191AA94FDE00E3CC08 /* people_id_capitals_post.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

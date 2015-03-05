@@ -54,6 +54,18 @@
 - (NSURLSessionDataTask *)deletePersonTaggingsByIdentifier:(NSUInteger)personIdentifier
                                                   tagNames:(NSArray *)tagNames
                                      withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+// GET /people/:id/capitals
+- (NSURLSessionDataTask *)fetchPersonCapitalsByIdentifier:(NSUInteger)personIdentifier
+                                       withPaginationInfo:(NBPaginationInfo *)paginationInfo
+                                        completionHandler:(NBClientResourceListCompletionHandler)completionHandler;
+// POST /people/:id/capitals
+- (NSURLSessionDataTask *)createPersonCapitalByIdentifier:(NSUInteger)personIdentifier
+                                          withCapitalInfo:(NSDictionary *)capitalInfo
+                                        completionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+// DELETE /people/:person_id/capitals/:capital_id
+- (NSURLSessionDataTask *)deletePersonCapitalByPersonIdentifier:(NSUInteger)personIdentifier
+                                              capitalIdentifier:(NSUInteger)capitalIdentifier
+                                          withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
 // POST /people
 - (NSURLSessionDataTask *)createPersonWithParameters:(NSDictionary *)parameters
                                    completionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
