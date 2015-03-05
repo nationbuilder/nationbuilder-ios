@@ -13,6 +13,8 @@
 
 @implementation NBClient (People)
 
+#pragma mark - Fetch
+
 - (NSURLSessionDataTask *)fetchPeopleWithPaginationInfo:(NBPaginationInfo *)paginationInfo
                                       completionHandler:(NBClientResourceListCompletionHandler)completionHandler
 {
@@ -82,6 +84,8 @@
     return [self baseFetchTaskWithURLComponents:components resultsKey:@"person" completionHandler:completionHandler];
 }
 
+#pragma mark - Taggings
+
 - (NSURLSessionDataTask *)fetchPersonTaggingsByIdentifier:(NSUInteger)personIdentifier
                                     withCompletionHandler:(NBClientResourceListCompletionHandler)completionHandler
 {
@@ -112,7 +116,8 @@
                                          completionHandler:(NBClientResourceListCompletionHandler)completionHandler
 {
     NSURLComponents *components = [self.baseURLComponents copy];
-    components.path = [components.path stringByAppendingString:[NSString stringWithFormat:@"/people/%lu/taggings", (unsigned long)personIdentifier]];
+    components.path = [components.path stringByAppendingString:
+                       [NSString stringWithFormat:@"/people/%lu/taggings", (unsigned long)personIdentifier]];
     NSError *error;
     NSMutableURLRequest *request = [self baseSaveRequestWithURL:components.URL parameters:@{ @"tagging": taggingInfo } error:&error];
     if (error) {
@@ -121,6 +126,8 @@
     }
     return [self baseSaveTaskWithURLRequest:request resultsKey:@"taggings" completionHandler:completionHandler];
 }
+
+#pragma mark - Updating
 
 - (NSURLSessionDataTask *)createPersonWithParameters:(NSDictionary *)parameters
                                    completionHandler:(NBClientResourceItemCompletionHandler)completionHandler

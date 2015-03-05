@@ -14,6 +14,8 @@
  
  The endpoint annotations are for reference only to link to the API docs and may
  change independently of the method selectors below.
+ 
+ The order of the methods listing attempts to mirror that of apiexplorer.nationbuilder.com.
  */
 
 // GET /people
