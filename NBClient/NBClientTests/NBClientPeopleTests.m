@@ -15,6 +15,8 @@
 
 @interface NBClientPeopleTests : NBTestCase
 
+@property (nonatomic) NSDictionary *paginationParameters;
+
 - (void)assertPeopleArray:(NSArray *)array;
 - (void)assertPersonDictionary:(NSDictionary *)dictionary;
 
@@ -26,6 +28,7 @@
 {
     [super setUp];
     [self setUpSharedClient];
+    self.paginationParameters = @{ NBClientPaginationLimitKey: @5, NBClientPaginationTokenOptInKey: @1 };
 }
 
 - (void)tearDown
@@ -59,10 +62,13 @@
 
 #pragma mark - Tests
 
+// NOTE: Using the pagination opt-in flag is needed for apps or tokens that
+//       existed before the pagination change.
+
 - (void)testFetchPeople
 {
     [self setUpAsync];
-    NSDictionary *paginationParameters = @{ NBClientPaginationLimitKey: @5 };
+    NSDictionary *paginationParameters = self.paginationParameters;
     if (self.shouldUseHTTPStubbing) {
         [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people" queryParameters:paginationParameters];
     }
@@ -84,7 +90,7 @@
 - (void)testFetchPeopleByParameters
 {
     [self setUpAsync];
-    NSDictionary *paginationParameters = @{ NBClientPaginationLimitKey: @5 };
+    NSDictionary *paginationParameters = self.paginationParameters;
     NSDictionary *parameters = @{ @"state": @"CA" };
     if (self.shouldUseHTTPStubbing) {
         NSMutableDictionary *mutableParameters = [paginationParameters mutableCopy];
@@ -110,12 +116,14 @@
 - (void)testFetchPeopleNearbyByLocationInfo
 {
     [self setUpAsync];
-    NSDictionary *paginationParameters = @{ NBClientPaginationLimitKey: @5 };
+    NSDictionary *paginationParameters = self.paginationParameters;
     NSDictionary *locationInfo = @{ NBClientLocationLatitudeKey: @34.049031f,
                                     NBClientLocationLongitudeKey: @(-118.25139f) };
     if (self.shouldUseHTTPStubbing) {
         NSMutableDictionary *mutableParameters = [paginationParameters mutableCopy];
-        [mutableParameters addEntriesFromDictionary:locationInfo];
+        mutableParameters[@"location"] = [NSString stringWithFormat:@"%@,%@",
+                                          locationInfo[NBClientLocationLatitudeKey], locationInfo[NBClientLocationLongitudeKey]];
+        mutableParameters[@"distance"] = @1;
         [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people/nearby" queryParameters:mutableParameters];
     }
     NBPaginationInfo *requestPaginationInfo =

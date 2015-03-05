@@ -95,6 +95,7 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
     dispatch_once(&onceToken, ^{
         NSString *pathName;
 #if DEBUG
+        // NOTE: Comment out to run CI tests.
         pathName = [NBInfoFileName stringByAppendingString:@"-Local"];
 #endif
         pathName = pathName ?: NBInfoFileName;

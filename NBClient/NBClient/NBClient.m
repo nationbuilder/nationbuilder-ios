@@ -204,7 +204,7 @@ static NSArray *LegacyPaginationEndpoints;
         paginationInfo.legacy = shouldUseLegacyPagination;
         NSMutableDictionary *mutableParameters = [[paginationInfo queryParameters] mutableCopy];
         if (!shouldUseLegacyPagination) {
-            // Only add the flag if opting in.
+            // Only add the flag if opting in, necessary for older apps.
             mutableParameters[NBClientPaginationTokenOptInKey] = @1;
         }
         [mutableParameters addEntriesFromDictionary:[components.percentEncodedQuery nb_queryStringParameters]];
@@ -216,6 +216,7 @@ static NSArray *LegacyPaginationEndpoints;
     [self dataTaskCompletionHandlerForFetchResultsKey:resultsKey originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
         NBPaginationInfo *responsePaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:jsonObject
                                                                                          legacy:shouldUseLegacyPagination];
+        responsePaginationInfo.numberOfItemsPerPage = paginationInfo.numberOfItemsPerPage;
         responsePaginationInfo.currentDirection = paginationInfo.currentDirection;
         [responsePaginationInfo updateCurrentPageNumber];
         if (completionHandler) {

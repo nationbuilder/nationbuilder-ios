@@ -11,6 +11,7 @@
 	<key>Should Use HTTP Stubbing</key>
 	<true/>
 	<key>Test Token</key>
+    <!-- NOTE: This is revoked and only usable as a placeholder with test fixtures. -->
 	<string>2be2921dcb1abe3ebf2495b6cc514ba3d91900abb7ad45a8a50aed09e46bc691</string>
 	<key>Supporter ID</key>
 	<integer>699</integer>

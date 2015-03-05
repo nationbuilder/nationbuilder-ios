@@ -29,6 +29,8 @@ extern NSString * const NBClientErrorInnerErrorKey;
 extern NSString * const NBClientDefaultAPIVersion;
 extern NSString * const NBClientDefaultBaseURLFormat;
 
+extern NSString * const NBClientPaginationTokenOptInKey;
+
 extern NSString * const NBClientLocationLatitudeKey;
 extern NSString * const NBClientLocationLongitudeKey;
 extern NSString * const NBClientLocationProximityDistanceKey; // Integer, radius in miles.
