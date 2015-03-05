@@ -150,7 +150,7 @@
         NSURLSessionDataTask *task =
         [self.client
          deletePersonTaggingsByIdentifier:personIdentifier
-         tagNames:@[ item[@"tag"] ]
+         tagNames:@[ tagName ]
          withCompletionHandler:^(NSDictionary *deletedItem, NSError *deleteError) {
              [self assertServiceError:deleteError];
              XCTAssertNil(deletedItem,
