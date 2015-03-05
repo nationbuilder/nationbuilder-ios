@@ -35,9 +35,12 @@
 - (NSMutableURLRequest *)baseSaveRequestWithURL:(NSURL *)url
                                      parameters:(NSDictionary *)parameters
                                           error:(NSError **)error;
+// NOTE: We use a dynamically typed block (to allow both resource item and list
+//       completion handlers) because there's no other different in method selector
+//       if it were to be two methods, unlike the base fetch task methods.
 - (NSURLSessionDataTask *)baseSaveTaskWithURLRequest:(NSURLRequest *)request
                                           resultsKey:(NSString *)resultsKey
-                                   completionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+                                   completionHandler:(id)completionHandler;
 
 - (NSMutableURLRequest *)baseDeleteRequestWithURL:(NSURL *)url;
 - (NSURLSessionDataTask *)baseDeleteTaskWithURL:(NSURL *)url

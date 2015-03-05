@@ -106,4 +106,33 @@
     [self tearDownAsync];
 }
 
+- (void)testCreatePersonTaggings
+{
+    [self setUpAsync];
+    NSUInteger personIdentifier = self.userIdentifier;
+    NSDictionary *taggingInfo = @{ NBClientTaggingTagNameOrListKey: @[ @"test 1", @"test 2" ] };
+    if (self.shouldUseHTTPStubbing) {
+        [self stubRequestUsingFileDataWithMethod:@"PUT" path:@"people/taggings" identifier:personIdentifier parameters:nil];
+    }
+    void (^undoTestChanges)(void) = ^{
+        // TODO
+        [self completeAsync];
+    };
+    NSURLSessionDataTask *task =
+    [self.client
+     createPersonTaggingsByIdentifier:personIdentifier
+     withTaggingInfo:taggingInfo
+     completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
+         [self assertServiceError:error];
+         [self assertTaggingsArray:items];
+         if (self.shouldUseHTTPStubbing) {
+             [self completeAsync];
+         } else {
+             undoTestChanges();
+         }
+     }];
+    [self assertSessionDataTask:task];
+    [self tearDownAsync];
+}
+
 @end

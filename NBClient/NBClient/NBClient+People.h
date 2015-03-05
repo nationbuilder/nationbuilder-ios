@@ -45,6 +45,9 @@
 - (NSURLSessionDataTask *)createPersonTaggingByIdentifier:(NSUInteger)personIdentifier
                                           withTaggingInfo:(NSDictionary *)taggingInfo
                                         completionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+- (NSURLSessionDataTask *)createPersonTaggingsByIdentifier:(NSUInteger)personIdentifier
+                                           withTaggingInfo:(NSDictionary *)taggingInfo
+                                         completionHandler:(NBClientResourceListCompletionHandler)completionHandler;
 // POST /people
 - (NSURLSessionDataTask *)createPersonWithParameters:(NSDictionary *)parameters
                                    completionHandler:(NBClientResourceItemCompletionHandler)completionHandler;

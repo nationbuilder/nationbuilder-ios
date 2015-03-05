@@ -261,13 +261,17 @@ static NSArray *LegacyPaginationEndpoints;
 
 - (NSURLSessionDataTask *)baseSaveTaskWithURLRequest:(NSURLRequest *)request
                                           resultsKey:(NSString *)resultsKey
-                                   completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
+                                   completionHandler:(id)completionHandler
 {
     NBLogInfo(@"REQUEST: %@", request.nb_debugDescription);
     void (^taskCompletionHandler)(NSData *, NSURLResponse *, NSError *) =
     [self dataTaskCompletionHandlerForFetchResultsKey:resultsKey originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
         if (completionHandler) {
-            completionHandler(results, error);
+            if ([results isKindOfClass:[NSArray class]]) {
+                ((NBClientResourceListCompletionHandler)completionHandler)(results, nil, error);
+            } else if (!results || [results isKindOfClass:[NSDictionary class]]) {
+                ((NBClientResourceItemCompletionHandler)completionHandler)(results, error);
+            }
         }
     }];
     NSURLSessionDataTask *task = [self.urlSession dataTaskWithRequest:request completionHandler:taskCompletionHandler];
