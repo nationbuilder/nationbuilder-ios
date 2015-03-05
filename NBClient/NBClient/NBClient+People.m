@@ -91,6 +91,22 @@
     return [self baseFetchTaskWithURLComponents:components resultsKey:@"taggings" paginationInfo:nil completionHandler:completionHandler];
 }
 
+- (NSURLSessionDataTask *)createPersonTaggingByIdentifier:(NSUInteger)personIdentifier
+                                          withTaggingInfo:(NSDictionary *)taggingInfo
+                                        completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
+{
+    NSURLComponents *components = [self.baseURLComponents copy];
+    components.path = [components.path stringByAppendingString:
+                       [NSString stringWithFormat:@"/people/%lu/taggings", (unsigned long)personIdentifier]];
+    NSError *error;
+    NSMutableURLRequest *request = [self baseSaveRequestWithURL:components.URL parameters:@{ @"tagging": taggingInfo } error:&error];
+    if (error) {
+        dispatch_async(dispatch_get_main_queue(), ^{ completionHandler(nil, error); });
+        return nil;
+    }
+    return [self baseSaveTaskWithURLRequest:request resultsKey:@"tagging" completionHandler:completionHandler];
+}
+
 - (NSURLSessionDataTask *)createPersonWithParameters:(NSDictionary *)parameters
                                    completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
