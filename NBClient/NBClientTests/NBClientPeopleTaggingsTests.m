@@ -14,6 +14,9 @@
 
 @interface NBClientPeopleTaggingsTests : NBTestCase
 
+@property (nonatomic) NSArray *tagList;
+@property (nonatomic) NSString *tagName;
+
 - (void)assertTaggingsArray:(NSArray *)array;
 - (void)assertTaggingDictionary:(NSDictionary *)dictionary;
 
@@ -24,6 +27,8 @@
 - (void)setUp {
     [super setUp];
     [self setUpSharedClient];
+    self.tagList = @[ @"test 1", @"test 2" ];
+    self.tagName = @"test";
 }
 
 - (void)tearDown {
@@ -78,7 +83,7 @@
 - (void)testCreatePersonTagging
 {
     [self setUpAsync];
-    NSDictionary *taggingInfo = @{ NBClientTaggingTagNameOrListKey: @"test" };
+    NSDictionary *taggingInfo = @{ NBClientTaggingTagNameOrListKey: self.tagName };
     NSUInteger personIdentifier = self.userIdentifier;
     if (self.shouldUseHTTPStubbing) {}
     void (^undoTestChanges)(void) = ^{
@@ -108,7 +113,7 @@
 {
     [self setUpAsync];
     NSUInteger personIdentifier = self.userIdentifier;
-    NSDictionary *taggingInfo = @{ NBClientTaggingTagNameOrListKey: @[ @"test 1", @"test 2" ] };
+    NSDictionary *taggingInfo = @{ NBClientTaggingTagNameOrListKey: self.tagList };
     if (self.shouldUseHTTPStubbing) {}
     void (^undoTestChanges)(void) = ^{
         // TODO
