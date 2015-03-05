@@ -80,9 +80,7 @@
     [self setUpAsync];
     NSDictionary *taggingInfo = @{ NBClientTaggingTagNameOrListKey: @"test" };
     NSUInteger personIdentifier = self.userIdentifier;
-    if (self.shouldUseHTTPStubbing) {
-        [self stubRequestUsingFileDataWithMethod:@"PUT" path:@"people/tagging" identifier:personIdentifier parameters:nil];
-    }
+    if (self.shouldUseHTTPStubbing) {}
     void (^undoTestChanges)(void) = ^{
         // TODO
         [self completeAsync];
@@ -111,9 +109,7 @@
     [self setUpAsync];
     NSUInteger personIdentifier = self.userIdentifier;
     NSDictionary *taggingInfo = @{ NBClientTaggingTagNameOrListKey: @[ @"test 1", @"test 2" ] };
-    if (self.shouldUseHTTPStubbing) {
-        [self stubRequestUsingFileDataWithMethod:@"PUT" path:@"people/taggings" identifier:personIdentifier parameters:nil];
-    }
+    if (self.shouldUseHTTPStubbing) {}
     void (^undoTestChanges)(void) = ^{
         // TODO
         [self completeAsync];
