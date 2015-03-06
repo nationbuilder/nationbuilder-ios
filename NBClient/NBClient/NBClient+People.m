@@ -152,6 +152,46 @@
     return [self baseDeleteTaskWithURLRequest:request completionHandler:completionHandler];
 }
 
+#pragma mark - Political Capital
+
+- (NSURLSessionDataTask *)fetchPersonCapitalsByIdentifier:(NSUInteger)personIdentifier
+                                       withPaginationInfo:(NBPaginationInfo *)paginationInfo
+                                        completionHandler:(NBClientResourceListCompletionHandler)completionHandler
+{
+    NSURLComponents *components = [self.baseURLComponents copy];
+    components.path = [components.path stringByAppendingString:
+                       [NSString stringWithFormat:@"/people/%lu/capitals", (unsigned long)personIdentifier]];
+    return [self baseFetchTaskWithURLComponents:components resultsKey:@"results" paginationInfo:paginationInfo completionHandler:completionHandler];
+}
+
+- (NSURLSessionDataTask *)createPersonCapitalByIdentifier:(NSUInteger)personIdentifier
+                                          withCapitalInfo:(NSDictionary *)capitalInfo
+                                        completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
+{
+    NSURLComponents *components = [self.baseURLComponents copy];
+    components.path = [components.path stringByAppendingString:
+                       [NSString stringWithFormat:@"/people/%lu/capitals", (unsigned long)personIdentifier]];
+    NSError *error;
+    NSMutableURLRequest *request = [self baseSaveRequestWithURL:components.URL parameters:@{ @"capital": capitalInfo } error:&error];
+    if (error) {
+        dispatch_async(dispatch_get_main_queue(), ^{ completionHandler(nil, error); });
+        return nil;
+    }
+    request.HTTPMethod = @"POST";
+    return [self baseSaveTaskWithURLRequest:request resultsKey:@"capital" completionHandler:completionHandler];
+}
+
+- (NSURLSessionDataTask *)deletePersonCapitalByPersonIdentifier:(NSUInteger)personIdentifier
+                                              capitalIdentifier:(NSUInteger)capitalIdentifier
+                                          withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler
+{
+    NSURLComponents *components = [self.baseURLComponents copy];
+    components.path = [components.path stringByAppendingString:
+                       [NSString stringWithFormat:@"/people/%lu/capitals/%lu",
+                        (unsigned long)personIdentifier, (unsigned long)capitalIdentifier]];
+    return [self baseDeleteTaskWithURL:components.URL completionHandler:completionHandler];
+}
+
 #pragma mark - Updating
 
 - (NSURLSessionDataTask *)createPersonWithParameters:(NSDictionary *)parameters
