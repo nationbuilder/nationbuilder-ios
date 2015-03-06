@@ -15,6 +15,8 @@
 
 @interface NBClientPeopleTests : NBTestCase
 
+@property (nonatomic) NSDictionary *paginationParameters;
+
 - (void)assertPeopleArray:(NSArray *)array;
 - (void)assertPersonDictionary:(NSDictionary *)dictionary;
 
@@ -26,6 +28,7 @@
 {
     [super setUp];
     [self setUpSharedClient];
+    self.paginationParameters = @{ NBClientPaginationLimitKey: @5, NBClientPaginationTokenOptInKey: @1 };
 }
 
 - (void)tearDown
@@ -37,8 +40,7 @@
 
 - (void)assertPeopleArray:(NSArray *)array
 {
-    XCTAssertNotNil(array,
-                    @"Client should have fetched list of people.");
+    XCTAssertNotNil(array, @"Client should have received list of people.");
     for (NSDictionary *dictionary in array) {
         [self assertPersonDictionary:dictionary];
     }
@@ -52,22 +54,23 @@
         keys = @[ @"email", @"id", @"first_name", @"last_name", @"support_level" ];
     });
     for (NSString *key in keys) {
-        XCTAssertNotNil(dictionary[key],
-                        @"Person dictionary should have value for %@", key);
+        XCTAssertNotNil(dictionary[key], @"Person dictionary should have value for %@", key);
     }
 }
 
 #pragma mark - Tests
 
+// NOTE: Using the pagination opt-in flag is needed for apps or tokens that
+//       existed before the pagination change.
+
 - (void)testFetchPeople
 {
     [self setUpAsync];
-    NSDictionary *paginationParameters = @{ NBClientPaginationLimitKey: @5 };
+    NSDictionary *paginationParameters = self.paginationParameters;
     if (self.shouldUseHTTPStubbing) {
-        [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people" identifier:NSNotFound parameters:paginationParameters];
+        [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people" queryParameters:paginationParameters];
     }
-    NBPaginationInfo *requestPaginationInfo =
-    [[NBPaginationInfo alloc] initWithDictionary:paginationParameters legacy:NO];
+    NBPaginationInfo *requestPaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:paginationParameters legacy:NO];
     NSURLSessionDataTask *task =
     [self.client
      fetchPeopleWithPaginationInfo:requestPaginationInfo
@@ -76,7 +79,7 @@
          [self assertPeopleArray:items];
          [self assertPaginationInfo:paginationInfo withPaginationParameters:paginationParameters];
          [self completeAsync];
-    }];
+     }];
     [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
@@ -84,19 +87,46 @@
 - (void)testFetchPeopleByParameters
 {
     [self setUpAsync];
-    NSDictionary *paginationParameters = @{ NBClientPaginationLimitKey: @5 };
+    NSDictionary *paginationParameters = self.paginationParameters;
     NSDictionary *parameters = @{ @"state": @"CA" };
     if (self.shouldUseHTTPStubbing) {
         NSMutableDictionary *mutableParameters = [paginationParameters mutableCopy];
         [mutableParameters addEntriesFromDictionary:parameters];
-        [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people/search" identifier:NSNotFound parameters:mutableParameters];
+        [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people/search" queryParameters:mutableParameters];
     }
-    NBPaginationInfo *requestPaginationInfo =
-    [[NBPaginationInfo alloc] initWithDictionary:paginationParameters legacy:NO];
+    NBPaginationInfo *requestPaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:paginationParameters legacy:NO];
     NSURLSessionDataTask *task =
     [self.client
      fetchPeopleByParameters: parameters
      withPaginationInfo:requestPaginationInfo
+     completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
+         [self assertServiceError:error];
+         [self assertPeopleArray:items];
+         [self assertPaginationInfo:paginationInfo withPaginationParameters:paginationParameters];
+         [self completeAsync];
+     }];
+    [self assertSessionDataTask:task];
+    [self tearDownAsync];
+}
+
+- (void)testFetchPeopleNearbyByLocationInfo
+{
+    [self setUpAsync];
+    NSDictionary *paginationParameters = self.paginationParameters;
+    NSDictionary *locationInfo = @{ NBClientLocationLatitudeKey: @34.049031f,
+                                    NBClientLocationLongitudeKey: @(-118.25139f) };
+    if (self.shouldUseHTTPStubbing) {
+        NSMutableDictionary *mutableParameters = [paginationParameters mutableCopy];
+        mutableParameters[@"location"] = [NSString stringWithFormat:@"%@,%@",
+                                          locationInfo[NBClientLocationLatitudeKey], locationInfo[NBClientLocationLongitudeKey]];
+        mutableParameters[@"distance"] = @1;
+        [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people/nearby" queryParameters:mutableParameters];
+    }
+    NBPaginationInfo *requestPaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:paginationParameters legacy:NO];
+    NSURLSessionDataTask *task =
+    [self.client
+     fetchPeopleNearbyByLocationInfo: locationInfo
+     withPaginationInfo: requestPaginationInfo
      completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
          [self assertServiceError:error];
          [self assertPeopleArray:items];
@@ -112,16 +142,35 @@
     [self setUpAsync];
     NSUInteger identifier = self.userIdentifier;
     if (self.shouldUseHTTPStubbing) {
-        [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people" identifier:identifier parameters:nil];
+        [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"people/:id" pathVariables:@{ @"id": @(identifier) } queryParameters:nil];
     }
     NSURLSessionDataTask *task =
     [self.client
      fetchPersonByIdentifier:identifier
      withCompletionHandler:^(NSDictionary *item, NSError *error) {
-        [self assertServiceError:error];
-        [self assertPersonDictionary:item];
-        [self completeAsync];
-    }];
+         [self assertServiceError:error];
+         [self assertPersonDictionary:item];
+         [self completeAsync];
+     }];
+    [self assertSessionDataTask:task];
+    [self tearDownAsync];
+}
+
+- (void)testRegisterPersonByIdentifier
+{
+    [self setUpAsync];
+    NSUInteger identifier = self.supporterIdentifier;
+    if (self.shouldUseHTTPStubbing) {
+        [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"people/:id/register" pathVariables:@{ @"id": @(identifier) } queryParameters:nil];
+    }
+    NSURLSessionDataTask *task =
+    [self.client
+     registerPersonByIdentifier:identifier
+     withCompletionHandler:^(NSDictionary *item, NSError *error) {
+         [self assertServiceError:error];
+         XCTAssertNil(item, @"Nothing should be returned.");
+         [self completeAsync];
+     }];
     [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
@@ -131,7 +180,7 @@
     [self setUpAsync];
     NSDictionary *parameters = @{ @"email" : self.userEmailAddress };
     if (self.shouldUseHTTPStubbing) {
-        [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people/match" identifier:NSNotFound parameters:parameters];
+        [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people/match" queryParameters:parameters];
     }
     NSURLSessionDataTask *task =
     [self.client
@@ -149,7 +198,7 @@
 {
     [self setUpAsync];
     if (self.shouldUseHTTPStubbing) {
-        [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people/me" identifier:NSNotFound parameters:nil];
+        [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people/me" queryParameters:nil];
     }
     NSURLSessionDataTask *task =
     [self.client
@@ -167,7 +216,7 @@
     [self setUpAsync];
     NSDictionary *parameters = @{ @"first_name": @"Foo", @"last_name": @"Bar" };
     if (self.shouldUseHTTPStubbing) {
-        [self stubRequestUsingFileDataWithMethod:@"POST" path:@"people" identifier:NSNotFound parameters:nil];
+        [self stubRequestUsingFileDataWithMethod:@"POST" path:@"people" queryParameters:nil];
     }
     void (^undoTestChanges)(NSUInteger) = ^(NSUInteger identifier) {
         [self.client deletePersonByIdentifier:identifier
@@ -201,7 +250,7 @@
                           completionHandler:^(NSDictionary *item, NSError *error) { [self completeAsync]; }];
     };
     if (self.shouldUseHTTPStubbing) {
-        [self stubRequestUsingFileDataWithMethod:@"PUT" path:@"people" identifier:identifier parameters:nil];
+        [self stubRequestUsingFileDataWithMethod:@"PUT" pathFormat:@"people/:id" pathVariables:@{ @"id": @(identifier) } queryParameters:nil];
     }
     NSURLSessionDataTask *task =
     [self.client
@@ -226,7 +275,7 @@
 {
     [self setUpAsync];
     NSUInteger identifier = 701;
-    void (^testDelete)(NSDictionary *, NSError *) = ^(NSDictionary *item, NSError *error) {
+    NBClientResourceItemCompletionHandler testDelete = ^(NSDictionary *item, NSError *error) {
         NSURLSessionDataTask *task =
         [self.client
          deletePersonByIdentifier:(!item ? identifier : [item[@"id"] unsignedIntegerValue])
@@ -239,7 +288,7 @@
         [self assertSessionDataTask:task];
     };
     if (self.shouldUseHTTPStubbing) {
-        [self stubRequestUsingFileDataWithMethod:@"DELETE" path:@"people" identifier:identifier parameters:nil];
+        [self stubRequestUsingFileDataWithMethod:@"DELETE" pathFormat:@"people/:id" pathVariables:@{ @"id": @(identifier) } queryParameters:nil];
         testDelete(nil, nil);
     } else {
         [self completeAsync]; // FIXME

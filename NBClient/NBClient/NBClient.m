@@ -22,6 +22,15 @@ NSString * const NBClientErrorInnerErrorKey = @"inner_error";
 NSString * const NBClientDefaultAPIVersion = @"v1";
 NSString * const NBClientDefaultBaseURLFormat = @"https://%@.nationbuilder.com";
 
+NSString * const NBClientLocationLatitudeKey = @"latitude";
+NSString * const NBClientLocationLongitudeKey = @"longitude";
+NSString * const NBClientLocationProximityDistanceKey = @"distance";
+
+NSString * const NBClientTaggingTagNameOrListKey = @"tag";
+
+NSString * const NBClientCapitalAmountInCentsKey = @"amount_in_cents";
+NSString * const NBClientCapitalUserContentKey = @"content";
+
 #if DEBUG
 static NBLogLevel LogLevel = NBLogLevelDebug;
 #else
@@ -198,7 +207,7 @@ static NSArray *LegacyPaginationEndpoints;
         paginationInfo.legacy = shouldUseLegacyPagination;
         NSMutableDictionary *mutableParameters = [[paginationInfo queryParameters] mutableCopy];
         if (!shouldUseLegacyPagination) {
-            // Only add the flag if opting in.
+            // Only add the flag if opting in, necessary for older apps.
             mutableParameters[NBClientPaginationTokenOptInKey] = @1;
         }
         [mutableParameters addEntriesFromDictionary:[components.percentEncodedQuery nb_queryStringParameters]];
@@ -210,6 +219,7 @@ static NSArray *LegacyPaginationEndpoints;
     [self dataTaskCompletionHandlerForFetchResultsKey:resultsKey originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
         NBPaginationInfo *responsePaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:jsonObject
                                                                                          legacy:shouldUseLegacyPagination];
+        responsePaginationInfo.numberOfItemsPerPage = paginationInfo.numberOfItemsPerPage;
         responsePaginationInfo.currentDirection = paginationInfo.currentDirection;
         [responsePaginationInfo updateCurrentPageNumber];
         if (completionHandler) {
@@ -253,15 +263,48 @@ static NSArray *LegacyPaginationEndpoints;
     return request;
 }
 
+-(NSURLSessionDataTask *)baseSaveTaskWithURL:(NSURL *)url
+                                  parameters:(NSDictionary *)parameters
+                                  resultsKey:(NSString *)resultsKey
+                           completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
+{
+    NSError *error;
+    NSMutableURLRequest *request = [self baseSaveRequestWithURL:url parameters:parameters error:&error];
+    if (error) {
+        dispatch_async(dispatch_get_main_queue(), ^{ completionHandler(nil, error); });
+        return nil;
+    }
+    return [self baseSaveTaskWithURLRequest:request resultsKey:resultsKey completionHandler:completionHandler];
+}
+
+-(NSURLSessionDataTask *)baseCreateTaskWithURL:(NSURL *)url
+                                    parameters:(NSDictionary *)parameters
+                                    resultsKey:(NSString *)resultsKey
+                             completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
+{
+    NSError *error;
+    NSMutableURLRequest *request = [self baseSaveRequestWithURL:url parameters:parameters error:&error];
+    if (error) {
+        dispatch_async(dispatch_get_main_queue(), ^{ completionHandler(nil, error); });
+        return nil;
+    }
+    request.HTTPMethod = @"POST";
+    return [self baseSaveTaskWithURLRequest:request resultsKey:resultsKey completionHandler:completionHandler];
+}
+
 - (NSURLSessionDataTask *)baseSaveTaskWithURLRequest:(NSURLRequest *)request
                                           resultsKey:(NSString *)resultsKey
-                                   completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
+                                   completionHandler:(id)completionHandler
 {
     NBLogInfo(@"REQUEST: %@", request.nb_debugDescription);
     void (^taskCompletionHandler)(NSData *, NSURLResponse *, NSError *) =
     [self dataTaskCompletionHandlerForFetchResultsKey:resultsKey originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
         if (completionHandler) {
-            completionHandler(results, error);
+            if ([results isKindOfClass:[NSArray class]]) {
+                ((NBClientResourceListCompletionHandler)completionHandler)(results, nil, error);
+            } else if (!results || [results isKindOfClass:[NSDictionary class]]) {
+                ((NBClientResourceItemCompletionHandler)completionHandler)(results, error);
+            }
         }
     }];
     NSURLSessionDataTask *task = [self.urlSession dataTaskWithRequest:request completionHandler:taskCompletionHandler];
@@ -284,7 +327,12 @@ static NSArray *LegacyPaginationEndpoints;
 - (NSURLSessionDataTask *)baseDeleteTaskWithURL:(NSURL *)url
                               completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
-    NSURLRequest *request = [self baseDeleteRequestWithURL:url];
+    return [self baseDeleteTaskWithURLRequest:[self baseDeleteRequestWithURL:url] completionHandler:completionHandler];
+}
+
+- (NSURLSessionDataTask *)baseDeleteTaskWithURLRequest:(NSURLRequest *)request
+                                     completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
+{
     NBLogInfo(@"REQUEST: %@", request.nb_debugDescription);
     void (^taskCompletionHandler)(NSData *, NSURLResponse *, NSError *) =
     [self dataTaskCompletionHandlerForFetchResultsKey:nil originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
@@ -372,9 +420,12 @@ static NSArray *LegacyPaginationEndpoints;
         if (self.delegate && [self.delegate respondsToSelector:@selector(client:didParseJSON:fromResponse:forRequest:)]) {
             [self.delegate client:self didParseJSON:jsonObject fromResponse:httpResponse forRequest:request];
         }
-        id results = jsonObject[resultsKey];
-        if (!results) {
-            error = [self errorForJsonData:jsonObject resultsKey:resultsKey];
+        id results;
+        if (resultsKey) {
+            results = jsonObject[resultsKey];
+            if (!results) {
+                error = [self errorForJsonData:jsonObject resultsKey:resultsKey];
+            }
         }
         if (error) {
             NBLogError(@"%@", error);

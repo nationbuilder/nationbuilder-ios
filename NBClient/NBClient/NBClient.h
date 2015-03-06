@@ -29,6 +29,19 @@ extern NSString * const NBClientErrorInnerErrorKey;
 extern NSString * const NBClientDefaultAPIVersion;
 extern NSString * const NBClientDefaultBaseURLFormat;
 
+extern NSString * const NBClientPaginationTokenOptInKey;
+
+// NOTE: With the exception of the person resource, convenient key constants are
+//       provided for request payload property names.
+extern NSString * const NBClientLocationLatitudeKey;
+extern NSString * const NBClientLocationLongitudeKey;
+extern NSString * const NBClientLocationProximityDistanceKey; // Integer, radius in miles.
+
+extern NSString * const NBClientTaggingTagNameOrListKey; // String or array for bulk operations.
+
+extern NSString * const NBClientCapitalAmountInCentsKey;
+extern NSString * const NBClientCapitalUserContentKey;
+
 // The client works with the NationBuilder API. It is an API client. For
 // authentication, it relies on its authenticator or test token. Conventionally,
 // its methods directly match the API endpoints, but are named according to its

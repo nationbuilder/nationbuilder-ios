@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name     = 'NBClient'
-  s.version  = '1.0.2'
+  s.version  = '1.1.0'
   s.license  = 'MIT'
   s.summary  = 'An iOS client to the NationBuilder API.'
   s.homepage = 'https://github.com/3dna/nationbuilder-ios'

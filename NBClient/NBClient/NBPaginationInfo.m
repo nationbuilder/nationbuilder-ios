@@ -198,7 +198,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     } else {
         if (dictionary[NBClientPaginationLimitKey]) {
             self.numberOfItemsPerPage = [dictionary[NBClientPaginationLimitKey] unsignedIntegerValue];
-        } else if (dictionary[NBClientPaginationNextLinkKey]) {
+        } else if (dictionary[NBClientPaginationNextLinkKey] && ![dictionary[NBClientPaginationNextLinkKey] isEqual:[NSNull null]]) {
             NSURLComponents *components = [NSURLComponents componentsWithString:dictionary[NBClientPaginationNextLinkKey]];
             NSDictionary *queryParameters = [components.percentEncodedQuery nb_queryStringParameters];
             if (queryParameters[@"limit"]) {

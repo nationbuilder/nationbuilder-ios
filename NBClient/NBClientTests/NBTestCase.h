@@ -23,6 +23,7 @@
 @property (nonatomic, copy, readonly) NSString *testToken;
 @property (nonatomic, copy, readonly) NSString *clientIdentifier;
 @property (nonatomic, copy, readonly) NSString *clientSecret;
+@property (nonatomic, readonly) NSUInteger supporterIdentifier;
 @property (nonatomic, copy, readonly) NSString *userEmailAddress;
 @property (nonatomic, readonly) NSUInteger userIdentifier;
 @property (nonatomic, copy, readonly) NSString *userPassword;
@@ -34,19 +35,27 @@
 @property (nonatomic) BOOL shouldUseHTTPStubbingOnce;
 
 - (void)setUpSharedClient;
+// Partial stubbing method for ad-hoc stubbing.
 - (LSStubRequestDSL *)stubRequestWithMethod:(NSString *)method
-                                       path:(NSString *)path
-                                 identifier:(NSUInteger)identifier
-                                 parameters:(NSDictionary *)parameters
+                                 pathFormat:(NSString *)pathFormat
+                              pathVariables:(NSDictionary *)pathVariables
+                            queryParameters:(NSDictionary *)queryParameters
                                      client:(NBClient *)client;
+// Convenience full stubbing method for the simplest requests.
 - (LSStubResponseDSL *)stubRequestUsingFileDataWithMethod:(NSString *)method
                                                      path:(NSString *)path
-                                               identifier:(NSUInteger)identifier
-                                               parameters:(NSDictionary *)parameters; // Convenience.
+                                          queryParameters:(NSDictionary *)queryParameters;
+// Convenience full stubbing method if test-specific clients aren't needed.
 - (LSStubResponseDSL *)stubRequestUsingFileDataWithMethod:(NSString *)method
-                                                     path:(NSString *)path
-                                               identifier:(NSUInteger)identifier
-                                               parameters:(NSDictionary *)parameters
+                                               pathFormat:(NSString *)pathFormat
+                                            pathVariables:(NSDictionary *)pathVariables
+                                          queryParameters:(NSDictionary *)queryParameters;
+// Otherwise this is the de-facto, full stubbing method.
+- (LSStubResponseDSL *)stubRequestUsingFileDataWithMethod:(NSString *)method
+                                               pathFormat:(NSString *)pathFormat
+                                            pathVariables:(NSDictionary *)pathVariables
+                                          queryParameters:(NSDictionary *)queryParameters
+                                                  variant:(NSString *)variant // Custom file distinguisher for atypical endpoints.
                                                    client:(NBClient *)client;
 
 - (void)assertPaginationInfo:(NBPaginationInfo *)paginationInfo
