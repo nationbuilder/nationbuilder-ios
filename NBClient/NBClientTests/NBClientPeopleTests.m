@@ -40,8 +40,7 @@
 
 - (void)assertPeopleArray:(NSArray *)array
 {
-    XCTAssertNotNil(array,
-                    @"Client should have received list of people.");
+    XCTAssertNotNil(array, @"Client should have received list of people.");
     for (NSDictionary *dictionary in array) {
         [self assertPersonDictionary:dictionary];
     }
@@ -55,8 +54,7 @@
         keys = @[ @"email", @"id", @"first_name", @"last_name", @"support_level" ];
     });
     for (NSString *key in keys) {
-        XCTAssertNotNil(dictionary[key],
-                        @"Person dictionary should have value for %@", key);
+        XCTAssertNotNil(dictionary[key], @"Person dictionary should have value for %@", key);
     }
 }
 
@@ -72,8 +70,7 @@
     if (self.shouldUseHTTPStubbing) {
         [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people" queryParameters:paginationParameters];
     }
-    NBPaginationInfo *requestPaginationInfo =
-    [[NBPaginationInfo alloc] initWithDictionary:paginationParameters legacy:NO];
+    NBPaginationInfo *requestPaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:paginationParameters legacy:NO];
     NSURLSessionDataTask *task =
     [self.client
      fetchPeopleWithPaginationInfo:requestPaginationInfo
@@ -97,8 +94,7 @@
         [mutableParameters addEntriesFromDictionary:parameters];
         [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people/search" queryParameters:mutableParameters];
     }
-    NBPaginationInfo *requestPaginationInfo =
-    [[NBPaginationInfo alloc] initWithDictionary:paginationParameters legacy:NO];
+    NBPaginationInfo *requestPaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:paginationParameters legacy:NO];
     NSURLSessionDataTask *task =
     [self.client
      fetchPeopleByParameters: parameters
@@ -126,8 +122,7 @@
         mutableParameters[@"distance"] = @1;
         [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people/nearby" queryParameters:mutableParameters];
     }
-    NBPaginationInfo *requestPaginationInfo =
-    [[NBPaginationInfo alloc] initWithDictionary:paginationParameters legacy:NO];
+    NBPaginationInfo *requestPaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:paginationParameters legacy:NO];
     NSURLSessionDataTask *task =
     [self.client
      fetchPeopleNearbyByLocationInfo: locationInfo
@@ -280,7 +275,7 @@
 {
     [self setUpAsync];
     NSUInteger identifier = 701;
-    void (^testDelete)(NSDictionary *, NSError *) = ^(NSDictionary *item, NSError *error) {
+    NBClientResourceItemCompletionHandler testDelete = ^(NSDictionary *item, NSError *error) {
         NSURLSessionDataTask *task =
         [self.client
          deletePersonByIdentifier:(!item ? identifier : [item[@"id"] unsignedIntegerValue])

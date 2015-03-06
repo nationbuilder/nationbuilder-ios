@@ -39,8 +39,7 @@
 
 - (void)assertTaggingsArray:(NSArray *)array
 {
-    XCTAssertNotNil(array,
-                    @"Client should have received list of taggings.");
+    XCTAssertNotNil(array, @"Client should have received list of taggings.");
     for (NSDictionary *dictionary in array) {
         [self assertTaggingDictionary:dictionary];
     }
@@ -54,8 +53,7 @@
         keys = @[ @"person_id", @"tag", @"created_at" ];
     });
     for (NSString *key in keys) {
-        XCTAssertNotNil(dictionary[key],
-                        @"Tagging dictionary should have value for %@", key);
+        XCTAssertNotNil(dictionary[key], @"Tagging dictionary should have value for %@", key);
     }
 }
 
@@ -153,8 +151,7 @@
          tagNames:@[ tagName ]
          withCompletionHandler:^(NSDictionary *deletedItem, NSError *deleteError) {
              [self assertServiceError:deleteError];
-             XCTAssertNil(deletedItem,
-                          @"Tagging should not exist.");
+             XCTAssertNil(deletedItem, @"Tagging should not exist.");
              [self completeAsync];
          }];
         [self assertSessionDataTask:task];
@@ -183,8 +180,7 @@
          tagNames:tagList
          withCompletionHandler:^(NSDictionary *deletedItem, NSError *deleteError) {
              [self assertServiceError:deleteError];
-             XCTAssertNil(deletedItem,
-                          @"Tagging should not exist.");
+             XCTAssertNil(deletedItem, @"Tagging should not exist.");
              [self completeAsync];
          }];
         [self assertSessionDataTask:task];

@@ -40,8 +40,7 @@
 
 - (void)assertCapitalsArray:(NSArray *)array
 {
-    XCTAssertNotNil(array,
-                    @"Client should have received list of capitals.");
+    XCTAssertNotNil(array, @"Client should have received list of capitals.");
     for (NSDictionary *dictionary in array) {
         [self assertCapitalDictionary:dictionary];
     }
@@ -55,8 +54,7 @@
         keys = @[ @"id", @"person_id", @"author_id", @"type", @"amount_in_cents", @"created_at", @"content" ];
     });
     for (NSString *key in keys) {
-        XCTAssertNotNil(dictionary[key],
-                        @"Capital dictionary should have value for %@", key);
+        XCTAssertNotNil(dictionary[key], @"Capital dictionary should have value for %@", key);
     }
 }
 
@@ -128,8 +126,7 @@
          capitalIdentifier:[item[@"id"] unsignedIntegerValue]
          withCompletionHandler:^(NSDictionary *deletedItem, NSError *deleteError) {
              [self assertServiceError:deleteError];
-             XCTAssertNil(deletedItem,
-                          @"Capital should not exist.");
+             XCTAssertNil(deletedItem, @"Capital should not exist.");
              [self completeAsync];
          }];
         [self assertSessionDataTask:task];
