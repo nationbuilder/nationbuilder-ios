@@ -5,16 +5,24 @@ larger scale.
 
 ## NationBuilder API Coverage
 
-|     API Endpoint     |                         NBClient Method                          |
-|----------------------|------------------------------------------------------------------|
-| GET `/people`        | `-fetchPeopleWithPaginationInfo:completionHandler:`              |
-| GET `/people/search` | `-fetchPeopleByParameters:withPaginationInfo:completionHandler:` |
-| GET `/people/:id`    | `-fetchPersonByIdentifier:completionHandler:`                    |
-| GET `/people/match`  | `-fetchPersonByParameters:completionHandler:`                    |
-| GET `/people/me`     | `-fetchPersonForClientUserWithCompletionHandler:`                |
-| POST `/people`       | `-createPersonWithParameters:completionHandler:`                 |
-| PUT `/people/:id`    | `-savePersonByIdentifier:withParameters:completionHandler:`      |
-| DELETE `/people/:id` | `-deletePersonByIdentifier:withCompletionHandler:`               |
+|            API Endpoint            |                                                                NBClient Method                                                                |
+|------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
+| GET `/people`                      | `-fetchPeopleWithPaginationInfo:completionHandler:`                                                                                           |
+| GET `/people/:id`                  | `-fetchPersonByIdentifier:completionHandler:`                                                                                                 |
+| GET `/people/search`               | `-fetchPeopleByParameters:withPaginationInfo:completionHandler:`                                                                              |
+| GET `/people/nearby`               | `-fetchPeopleNearbyByLocationInfo:withPaginationInfo:completionHandler:`                                                                      |
+| GET `/people/me`                   | `-fetchPersonForClientUserWithCompletionHandler:`                                                                                             |
+| GET `/people/:id/register`         | `-registerPersonByIdentifier:withCompletionHandler:`                                                                                          |
+| GET `/people/match`                | `-fetchPersonByParameters:completionHandler:`                                                                                                 |
+| GET `/people/:id/taggings`         | `-fetchPersonTaggingsByIdentifier:withCompletionHandler:`                                                                                     |
+| PUT `/people/:id/taggings`         | `-createPersonTaggingByIdentifier:withTaggingInfo:completionHandler:`, `-createPersonTaggingsByIdentifier:withTaggingInfo:completionHandler:` |
+| DELETE `/people/:id/taggings/:tag` | `-deletePersonTaggingsByIdentifier:tagNames:withCompletionHandler:`                                                                           |
+| GET `/people/:id/capitals`         | `-fetchPersonCapitalsByIdentifier:withPaginationInfo:completionHandler:`                                                                      |
+| POST `/people/:id/capitals`        | `-createPersonCapitalByIdentifier:withCapitalInfo:completionHandler:`                                                                         |
+| DELETE `/people/:id/capitals/:id`  | `-deletePersonCapitalByPersonIdentifier:capitalIdentifier:withCompletionHandler:`                                                             |
+| POST `/people`                     | `-createPersonWithParameters:completionHandler:`                                                                                              |
+| PUT `/people/:id`                  | `-savePersonByIdentifier:withParameters:completionHandler:`                                                                                   |
+| DELETE `/people/:id`               | `-deletePersonByIdentifier:withCompletionHandler:`                                                                                            |
 
 __Note:__ Many more methods are coming soon. Feel free to [contribute][] some yourself.
 
