@@ -102,13 +102,7 @@
     NSURLComponents *components = [self.baseURLComponents copy];
     components.path = [components.path stringByAppendingString:
                        [NSString stringWithFormat:@"/people/%lu/taggings", (unsigned long)personIdentifier]];
-    NSError *error;
-    NSMutableURLRequest *request = [self baseSaveRequestWithURL:components.URL parameters:@{ @"tagging": taggingInfo } error:&error];
-    if (error) {
-        dispatch_async(dispatch_get_main_queue(), ^{ completionHandler(nil, error); });
-        return nil;
-    }
-    return [self baseSaveTaskWithURLRequest:request resultsKey:@"tagging" completionHandler:completionHandler];
+    return [self baseSaveTaskWithURL:components.URL parameters:@{ @"tagging": taggingInfo } resultsKey:@"tagging" completionHandler:completionHandler];
 }
 
 - (NSURLSessionDataTask *)createPersonTaggingsByIdentifier:(NSUInteger)personIdentifier
@@ -171,14 +165,7 @@
     NSURLComponents *components = [self.baseURLComponents copy];
     components.path = [components.path stringByAppendingString:
                        [NSString stringWithFormat:@"/people/%lu/capitals", (unsigned long)personIdentifier]];
-    NSError *error;
-    NSMutableURLRequest *request = [self baseSaveRequestWithURL:components.URL parameters:@{ @"capital": capitalInfo } error:&error];
-    if (error) {
-        dispatch_async(dispatch_get_main_queue(), ^{ completionHandler(nil, error); });
-        return nil;
-    }
-    request.HTTPMethod = @"POST";
-    return [self baseSaveTaskWithURLRequest:request resultsKey:@"capital" completionHandler:completionHandler];
+    return [self baseCreateTaskWithURL:components.URL parameters:@{ @"capital": capitalInfo } resultsKey:@"capital" completionHandler:completionHandler];
 }
 
 - (NSURLSessionDataTask *)deletePersonCapitalByPersonIdentifier:(NSUInteger)personIdentifier
@@ -199,14 +186,7 @@
 {
     NSURLComponents *components = [self.baseURLComponents copy];
     components.path = [components.path stringByAppendingString:@"/people"];
-    NSError *error;
-    NSMutableURLRequest *request = [self baseSaveRequestWithURL:components.URL parameters:@{ @"person": parameters } error:&error];
-    if (error) {
-        dispatch_async(dispatch_get_main_queue(), ^{ completionHandler(nil, error); });
-        return nil;
-    }
-    request.HTTPMethod = @"POST";
-    return [self baseSaveTaskWithURLRequest:request resultsKey:@"person" completionHandler:completionHandler];
+    return [self baseCreateTaskWithURL:components.URL parameters:@{ @"person": parameters } resultsKey:@"person" completionHandler:completionHandler];
 }
 
 - (NSURLSessionDataTask *)savePersonByIdentifier:(NSUInteger)identifier
@@ -216,13 +196,7 @@
     NSURLComponents *components = [self.baseURLComponents copy];
     components.path = [components.path stringByAppendingString:
                        [NSString stringWithFormat:@"/people/%lu", (unsigned long)identifier]];
-    NSError *error;
-    NSMutableURLRequest *request = [self baseSaveRequestWithURL:components.URL parameters:@{ @"person": parameters } error:&error];
-    if (error) {
-        dispatch_async(dispatch_get_main_queue(), ^{ completionHandler(nil, error); });
-        return nil;
-    }
-    return [self baseSaveTaskWithURLRequest:request resultsKey:@"person" completionHandler:completionHandler];
+    return [self baseSaveTaskWithURL:components.URL parameters:@{ @"person": parameters } resultsKey:@"person" completionHandler:completionHandler];
 }
 
 - (NSURLSessionDataTask *)deletePersonByIdentifier:(NSUInteger)identifier

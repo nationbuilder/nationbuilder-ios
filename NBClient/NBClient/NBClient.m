@@ -263,6 +263,35 @@ static NSArray *LegacyPaginationEndpoints;
     return request;
 }
 
+-(NSURLSessionDataTask *)baseSaveTaskWithURL:(NSURL *)url
+                                  parameters:(NSDictionary *)parameters
+                                  resultsKey:(NSString *)resultsKey
+                           completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
+{
+    NSError *error;
+    NSMutableURLRequest *request = [self baseSaveRequestWithURL:url parameters:parameters error:&error];
+    if (error) {
+        dispatch_async(dispatch_get_main_queue(), ^{ completionHandler(nil, error); });
+        return nil;
+    }
+    return [self baseSaveTaskWithURLRequest:request resultsKey:resultsKey completionHandler:completionHandler];
+}
+
+-(NSURLSessionDataTask *)baseCreateTaskWithURL:(NSURL *)url
+                                    parameters:(NSDictionary *)parameters
+                                    resultsKey:(NSString *)resultsKey
+                             completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
+{
+    NSError *error;
+    NSMutableURLRequest *request = [self baseSaveRequestWithURL:url parameters:parameters error:&error];
+    if (error) {
+        dispatch_async(dispatch_get_main_queue(), ^{ completionHandler(nil, error); });
+        return nil;
+    }
+    request.HTTPMethod = @"POST";
+    return [self baseSaveTaskWithURLRequest:request resultsKey:resultsKey completionHandler:completionHandler];
+}
+
 - (NSURLSessionDataTask *)baseSaveTaskWithURLRequest:(NSURLRequest *)request
                                           resultsKey:(NSString *)resultsKey
                                    completionHandler:(id)completionHandler

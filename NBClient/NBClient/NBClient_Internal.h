@@ -38,8 +38,17 @@
 - (NSMutableURLRequest *)baseSaveRequestWithURL:(NSURL *)url
                                      parameters:(NSDictionary *)parameters
                                           error:(NSError **)error;
-// This is the more common save method, because common saves and creates are so
-// similar, except of the HTTP method, so custom requests are needed.
+// This is the more common save method.
+-(NSURLSessionDataTask *)baseSaveTaskWithURL:(NSURL *)url
+                                  parameters:(NSDictionary *)parameters
+                                  resultsKey:(NSString *)resultsKey
+                           completionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+// And its alternate is the common create method.
+-(NSURLSessionDataTask *)baseCreateTaskWithURL:(NSURL *)url
+                                    parameters:(NSDictionary *)parameters
+                                    resultsKey:(NSString *)resultsKey
+                             completionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+// This is the less common one, for custom requests.
 // NOTE: We use a dynamically typed block (to allow both resource item and list
 //       completion handlers) because there's no other different in method selector
 //       if it were to be two methods, unlike the base fetch task methods.
