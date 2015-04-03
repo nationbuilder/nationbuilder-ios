@@ -9,33 +9,33 @@
 
 @interface NBAuthenticator ()
 
-@property (nonatomic, readwrite) NSURL *baseURL;
-@property (nonatomic, readwrite) NSString *clientIdentifier;
-@property (nonatomic, readwrite) NBAuthenticationCredential *credential;
+@property (nonatomic, readwrite, nonnull) NSURL *baseURL;
+@property (nonatomic, readwrite, nonnull) NSString *clientIdentifier;
+@property (nonatomic, readwrite, nullable) NBAuthenticationCredential *credential;
 
 // #token-flow
-@property (nonatomic, strong) NBAuthenticationCompletionHandler currentInBrowserAuthenticationCompletionHandler;
+@property (nonatomic, strong, nullable) NBAuthenticationCompletionHandler currentInBrowserAuthenticationCompletionHandler;
 @property (nonatomic) BOOL currentlyNeedsPriorSignout;
 
-- (NSURLSessionDataTask *)authenticateWithSubPath:(NSString *)subPath
-                                       parameters:(NSDictionary *)parameters
-                                completionHandler:(NBAuthenticationCompletionHandler)completionHandler;
+- (nullable NSURLSessionDataTask *)authenticateWithSubPath:(nonnull NSString *)subPath
+                                                parameters:(nonnull NSDictionary *)parameters
+                                         completionHandler:(nonnull NBAuthenticationCompletionHandler)completionHandler;
 
 // #token-flow
-- (void)authenticateInWebBrowserWithURL:(NSURL *)url
-                      completionHandler:(NBAuthenticationCompletionHandler)completionHandler;
-- (void)finishAuthenticatingInWebBrowserWithNotification:(NSNotification *)notification;
+- (void)authenticateInWebBrowserWithURL:(nonnull NSURL *)url
+                      completionHandler:(nonnull NBAuthenticationCompletionHandler)completionHandler;
+- (void)finishAuthenticatingInWebBrowserWithNotification:(nonnull NSNotification *)notification;
 
-- (NSURLSessionDataTask *)authenticationDataTaskWithURL:(NSURL *)url
-                                      completionHandler:(NBAuthenticationCompletionHandler)completionHandler;
+- (nonnull NSURLSessionDataTask *)authenticationDataTaskWithURL:(nonnull NSURL *)url
+                                              completionHandler:(nullable NBAuthenticationCompletionHandler)completionHandler;
 
 @end
 
 @interface NBAuthenticationCredential ()
 
-@property (nonatomic, copy, readwrite) NSString *accessToken;
-@property (nonatomic, copy, readwrite) NSString *tokenType;
+@property (nonatomic, copy, readwrite, nonnull) NSString *accessToken;
+@property (nonatomic, copy, readwrite, nullable) NSString *tokenType;
 
-+ (NSMutableDictionary *)baseKeychainQueryDictionaryWithIdentifier:(NSString *)identifier;
++ (nonnull NSMutableDictionary *)baseKeychainQueryDictionaryWithIdentifier:(nonnull NSString *)identifier;
 
 @end
