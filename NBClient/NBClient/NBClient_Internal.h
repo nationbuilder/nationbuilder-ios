@@ -9,69 +9,70 @@
 
 @interface NBClient ()
 
-@property (nonatomic, copy, readwrite) NSString *nationSlug;
-@property (nonatomic, readwrite) NSURLSession *urlSession;
-@property (nonatomic, readwrite) NSURLSessionConfiguration *sessionConfiguration;
+@property (nonatomic, copy, readwrite, nonnull) NSString *nationSlug;
+@property (nonatomic, readwrite, nonnull) NSURLSession *urlSession;
+@property (nonatomic, readwrite, nonnull) NSURLSessionConfiguration *sessionConfiguration;
 
-@property (nonatomic, readwrite) NBAuthenticator *authenticator;
+@property (nonatomic, readwrite, nullable) NBAuthenticator *authenticator;
 
-@property (nonatomic, readwrite) NSURL *baseURL;
-@property (nonatomic) NSURLComponents *baseURLComponents;
-@property (nonatomic, copy) NSString *defaultErrorRecoverySuggestion;
+@property (nonatomic, readwrite, nonnull) NSURL *baseURL;
+@property (nonatomic, null_resettable) NSURLComponents *baseURLComponents;
+@property (nonatomic, copy, nonnull) NSString *defaultErrorRecoverySuggestion;
 
-- (void)commonInitWithNationSlug:(NSString *)nationSlug
-                customURLSession:(NSURLSession *)urlSession
-   customURLSessionConfiguration:(NSURLSessionConfiguration *)sessionConfiguration;
+- (void)commonInitWithNationSlug:(nonnull NSString *)nationSlug
+                customURLSession:(nullable NSURLSession *)urlSession
+   customURLSessionConfiguration:(nullable NSURLSessionConfiguration *)sessionConfiguration;
 
 // These request methods are called by default in the base*TaskWithURL: methods,
 // but you can call them to customize the request for the endpoint and pass the
 // request into base*TaskForURLRequest:
-- (NSMutableURLRequest *)baseFetchRequestWithURL:(NSURL *)url;
-- (NSURLSessionDataTask *)baseFetchTaskWithURLComponents:(NSURLComponents *)components
-                                              resultsKey:(NSString *)resultsKey
-                                          paginationInfo:(NBPaginationInfo *)paginationInfo
-                                       completionHandler:(NBClientResourceListCompletionHandler)completionHandler;
-- (NSURLSessionDataTask *)baseFetchTaskWithURLComponents:(NSURLComponents *)components
-                                              resultsKey:(NSString *)resultsKey
-                                       completionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+- (nonnull NSMutableURLRequest *)baseFetchRequestWithURL:(nonnull NSURL *)url;
+- (nonnull NSURLSessionDataTask *)baseFetchTaskWithURLComponents:(nonnull NSURLComponents *)components
+                                                      resultsKey:(nonnull NSString *)resultsKey
+                                                  paginationInfo:(nullable NBPaginationInfo *)paginationInfo
+                                               completionHandler:(nullable NBClientResourceListCompletionHandler)completionHandler;
+- (nonnull NSURLSessionDataTask *)baseFetchTaskWithURLComponents:(nonnull NSURLComponents *)components
+                                                      resultsKey:(nullable NSString *)resultsKey
+                                               completionHandler:(nullable NBClientResourceItemCompletionHandler)completionHandler;
 
-- (NSMutableURLRequest *)baseSaveRequestWithURL:(NSURL *)url
-                                     parameters:(NSDictionary *)parameters
-                                          error:(NSError **)error;
+- (nonnull NSMutableURLRequest *)baseSaveRequestWithURL:(nonnull NSURL *)url
+                                             parameters:(nonnull NSDictionary *)parameters
+                                                  error:(NSError * __nullable * __nullable)error;
 // This is the more common save method.
--(NSURLSessionDataTask *)baseSaveTaskWithURL:(NSURL *)url
-                                  parameters:(NSDictionary *)parameters
-                                  resultsKey:(NSString *)resultsKey
-                           completionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+- (nonnull NSURLSessionDataTask *)baseSaveTaskWithURL:(nonnull NSURL *)url
+                                           parameters:(nonnull NSDictionary *)parameters
+                                           resultsKey:(nonnull NSString *)resultsKey
+                                    completionHandler:(nullable NBClientResourceItemCompletionHandler)completionHandler;
 // And its alternate is the common create method.
--(NSURLSessionDataTask *)baseCreateTaskWithURL:(NSURL *)url
-                                    parameters:(NSDictionary *)parameters
-                                    resultsKey:(NSString *)resultsKey
-                             completionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+- (nonnull NSURLSessionDataTask *)baseCreateTaskWithURL:(nonnull NSURL *)url
+                                             parameters:(nonnull NSDictionary *)parameters
+                                             resultsKey:(nonnull NSString *)resultsKey
+                                      completionHandler:(nullable NBClientResourceItemCompletionHandler)completionHandler;
 // This is the less common one, for custom requests.
 // NOTE: We use a dynamically typed block (to allow both resource item and list
 //       completion handlers) because there's no other different in method selector
 //       if it were to be two methods, unlike the base fetch task methods.
-- (NSURLSessionDataTask *)baseSaveTaskWithURLRequest:(NSURLRequest *)request
-                                          resultsKey:(NSString *)resultsKey
-                                   completionHandler:(id)completionHandler;
+- (nonnull NSURLSessionDataTask *)baseSaveTaskWithURLRequest:(nonnull NSURLRequest *)request
+                                                  resultsKey:(nonnull NSString *)resultsKey
+                                           completionHandler:(nullable id)completionHandler;
 
-- (NSMutableURLRequest *)baseDeleteRequestWithURL:(NSURL *)url;
+- (nonnull NSMutableURLRequest *)baseDeleteRequestWithURL:(nonnull NSURL *)url;
 // This is the more common delete method.
-- (NSURLSessionDataTask *)baseDeleteTaskWithURL:(NSURL *)url
-                              completionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+- (nonnull NSURLSessionDataTask *)baseDeleteTaskWithURL:(nonnull NSURL *)url
+                                      completionHandler:(nullable NBClientResourceItemCompletionHandler)completionHandler;
 // This is the less common one, for custom requests.
-- (NSURLSessionDataTask *)baseDeleteTaskWithURLRequest:(NSURLRequest *)request
-                                     completionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+- (nonnull NSURLSessionDataTask *)baseDeleteTaskWithURLRequest:(nonnull NSURLRequest *)request
+                                             completionHandler:(nullable NBClientResourceItemCompletionHandler)completionHandler;
 
-- (NSURLSessionDataTask *)startTask:(NSURLSessionDataTask *)task;
+- (nonnull NSURLSessionDataTask *)startTask:(nonnull NSURLSessionDataTask *)task;
 
-- (void (^)(NSData *, NSURLResponse *, NSError *))dataTaskCompletionHandlerForFetchResultsKey:(NSString *)resultsKey
-                                                                              originalRequest:(NSURLRequest *)request
-                                                                            completionHandler:(void (^)(id results, NSDictionary *jsonObject, NSError *error))completionHandler;
+- (nonnull void (^)(NSData * __nonnull, NSURLResponse * __nonnull, NSError * __nullable))
+  dataTaskCompletionHandlerForFetchResultsKey:(nullable NSString *)resultsKey
+                              originalRequest:(nonnull NSURLRequest *)request
+                            completionHandler:(nullable void (^)(id __nullable results, NSDictionary * __nullable jsonObject, NSError * __nullable error))completionHandler;
 
-- (NSError *)errorForResponse:(NSHTTPURLResponse *)response jsonData:(NSDictionary *)data;
-- (NSError *)errorForJsonData:(NSDictionary *)data resultsKey:(NSString *)resultsKey;
-- (void)logResponse:(NSHTTPURLResponse *)response data:(id)data;
+- (nonnull NSError *)errorForResponse:(nonnull NSHTTPURLResponse *)response jsonData:(nonnull NSDictionary *)data;
+- (nonnull NSError *)errorForJsonData:(nonnull NSDictionary *)data resultsKey:(nonnull NSString *)resultsKey;
+- (void)logResponse:(nullable NSHTTPURLResponse *)response data:(nullable id)data;
 
 @end
