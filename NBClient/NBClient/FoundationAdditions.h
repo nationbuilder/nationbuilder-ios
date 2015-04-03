@@ -9,38 +9,38 @@
 
 @interface NSIndexSet (NBAdditions)
 
-+ (NSIndexSet *)nb_indexSetOfSuccessfulHTTPStatusCodes;
-+ (NSIndexSet *)nb_indexSetOfSuccessfulEmptyResponseHTTPStatusCodes;
++ (nonnull NSIndexSet *)nb_indexSetOfSuccessfulHTTPStatusCodes;
++ (nonnull NSIndexSet *)nb_indexSetOfSuccessfulEmptyResponseHTTPStatusCodes;
 
 @end
 
 @interface NSDictionary (NBAdditions)
 
-- (BOOL)nb_containsDictionary:(NSDictionary *)dictionary;
+- (BOOL)nb_containsDictionary:(nonnull NSDictionary *)dictionary;
 
-- (BOOL)nb_isEquivalentToDictionary:(NSDictionary *)dictionary;
+- (BOOL)nb_isEquivalentToDictionary:(nonnull NSDictionary *)dictionary;
 
-- (NSString *)nb_queryString;
+- (nonnull NSString *)nb_queryString;
 
-- (NSString *)nb_queryStringWithEncoding:(NSStringEncoding)stringEncoding
-             skipPercentEncodingPairKeys:(NSSet *)skipPairKeys
-              charactersToLeaveUnescaped:(NSString *)charactersToLeaveUnescaped;
+- (nonnull NSString *)nb_queryStringWithEncoding:(NSStringEncoding)stringEncoding
+                     skipPercentEncodingPairKeys:(nullable NSSet *)skipPairKeys
+                      charactersToLeaveUnescaped:(nullable NSString *)charactersToLeaveUnescaped;
 
 @end
 
 @interface NSString (NBAdditions)
 
-- (NSDictionary *)nb_queryStringParameters;
+- (nonnull NSDictionary *)nb_queryStringParameters;
 
-- (NSDictionary *)nb_queryStringParametersWithEncoding:(NSStringEncoding)stringEncoding;
+- (nonnull NSDictionary *)nb_queryStringParametersWithEncoding:(NSStringEncoding)stringEncoding;
 
-- (NSString *)nb_percentEscapedQueryStringWithEncoding:(NSStringEncoding)stringEncoding
-                            charactersToLeaveUnescaped:(NSString *)charactersToLeaveUnescaped;
+- (nonnull NSString *)nb_percentEscapedQueryStringWithEncoding:(NSStringEncoding)stringEncoding
+                                    charactersToLeaveUnescaped:(nullable NSString *)charactersToLeaveUnescaped;
 
-- (NSString *)nb_percentUnescapedQueryStringWithEncoding:(NSStringEncoding)stringEncoding
-                                charactersToLeaveEscaped:(NSString *)charactersToLeaveEscaped;
+- (nonnull NSString *)nb_percentUnescapedQueryStringWithEncoding:(NSStringEncoding)stringEncoding
+                                        charactersToLeaveEscaped:(nullable NSString *)charactersToLeaveEscaped;
 
-- (NSString *)nb_localizedString;
+- (nonnull NSString *)nb_localizedString;
 
 - (BOOL)nb_isNumeric;
 
@@ -48,12 +48,12 @@
 
 @interface NSURLRequest (NBAdditions)
 
-- (NSString *)nb_debugDescription;
+- (nonnull NSString *)nb_debugDescription;
 
 @end
 
 @interface NSError (NBAdditions)
 
-+ (NSError *)nb_genericError;
++ (nonnull NSError *)nb_genericError;
 
 @end
