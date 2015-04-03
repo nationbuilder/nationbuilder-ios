@@ -18,10 +18,10 @@
 // accounts. It can become the data source for the accounts view controller.
 @interface NBAccountsManager : NSObject <NBAccountsViewDataSource, NBAccountDelegate, NBLogging>
 
-@property (nonatomic, weak, readonly) id<NBAccountsManagerDelegate> delegate;
+@property (nonatomic, weak, readonly, nonnull) id<NBAccountsManagerDelegate> delegate;
 @property (nonatomic, readonly) BOOL shouldPersistAccounts;
 
-- (instancetype)initWithClientInfo:(NSDictionary *)clientInfoOrNil
-                          delegate:(id<NBAccountsManagerDelegate>)delegate;
+- (nonnull instancetype)initWithClientInfo:(nullable NSDictionary *)clientInfoOrNil
+                                  delegate:(nonnull id<NBAccountsManagerDelegate>)delegate;
 
 @end
