@@ -19,63 +19,62 @@
  */
 
 // GET /people
-- (NSURLSessionDataTask *)fetchPeopleWithPaginationInfo:(NBPaginationInfo *)paginationInfo
-                                      completionHandler:(NBClientResourceListCompletionHandler)completionHandler;
+- (nonnull NSURLSessionDataTask *)fetchPeopleWithPaginationInfo:(nullable NBPaginationInfo *)paginationInfo
+                                              completionHandler:(nonnull NBClientResourceListCompletionHandler)completionHandler;
 // GET /people/:id
-- (NSURLSessionDataTask *)fetchPersonByIdentifier:(NSUInteger)identifier
-                            withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+- (nonnull NSURLSessionDataTask *)fetchPersonByIdentifier:(NSUInteger)identifier
+                                    withCompletionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
 // GET /people/search
-- (NSURLSessionDataTask *)fetchPeopleByParameters:(NSDictionary *)parameters
-                               withPaginationInfo:(NBPaginationInfo *)paginationInfo
-                                completionHandler:(NBClientResourceListCompletionHandler)completionHandler;
+- (nonnull NSURLSessionDataTask *)fetchPeopleByParameters:(nonnull NSDictionary *)parameters
+                                       withPaginationInfo:(nullable NBPaginationInfo *)paginationInfo
+                                        completionHandler:(nonnull NBClientResourceListCompletionHandler)completionHandler;
 // GET /people/nearby
-- (NSURLSessionDataTask *)fetchPeopleNearbyByLocationInfo:(NSDictionary *)locationInfo
-                                       withPaginationInfo:(NBPaginationInfo *)paginationInfo
-                                        completionHandler:(NBClientResourceListCompletionHandler)completionHandler;
+- (nonnull NSURLSessionDataTask *)fetchPeopleNearbyByLocationInfo:(nonnull NSDictionary *)locationInfo
+                                               withPaginationInfo:(nullable NBPaginationInfo *)paginationInfo
+                                                completionHandler:(nonnull NBClientResourceListCompletionHandler)completionHandler;
 // GET /people/me
-- (NSURLSessionDataTask *)fetchPersonForClientUserWithCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+- (nonnull NSURLSessionDataTask *)fetchPersonForClientUserWithCompletionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
 // GET /people/:id/register
-- (NSURLSessionDataTask *)registerPersonByIdentifier:(NSUInteger)identifier
-                               withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+- (nonnull NSURLSessionDataTask *)registerPersonByIdentifier:(NSUInteger)identifier
+                                       withCompletionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
 // GET /people/match
-- (NSURLSessionDataTask *)fetchPersonByParameters:(NSDictionary *)parameters
-                            withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+- (nonnull NSURLSessionDataTask *)fetchPersonByParameters:(nonnull NSDictionary *)parameters
+                                    withCompletionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
 // GET /people/:id/taggings
-- (NSURLSessionDataTask *)fetchPersonTaggingsByIdentifier:(NSUInteger)personIdentifier
-                                    withCompletionHandler:(NBClientResourceListCompletionHandler)completionHandler;
+- (nonnull NSURLSessionDataTask *)fetchPersonTaggingsByIdentifier:(NSUInteger)personIdentifier
+                                            withCompletionHandler:(nonnull NBClientResourceListCompletionHandler)completionHandler;
 // PUT /people/:id/taggings
-- (NSURLSessionDataTask *)createPersonTaggingByIdentifier:(NSUInteger)personIdentifier
-                                          withTaggingInfo:(NSDictionary *)taggingInfo
-                                        completionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
-- (NSURLSessionDataTask *)createPersonTaggingsByIdentifier:(NSUInteger)personIdentifier
-                                           withTaggingInfo:(NSDictionary *)taggingInfo
-                                         completionHandler:(NBClientResourceListCompletionHandler)completionHandler;
+- (nonnull NSURLSessionDataTask *)createPersonTaggingByIdentifier:(NSUInteger)personIdentifier
+                                                  withTaggingInfo:(nonnull NSDictionary *)taggingInfo
+                                                completionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
+- (nonnull NSURLSessionDataTask *)createPersonTaggingsByIdentifier:(NSUInteger)personIdentifier
+                                                   withTaggingInfo:(nonnull NSDictionary *)taggingInfo
+                                                 completionHandler:(nonnull NBClientResourceListCompletionHandler)completionHandler;
 // DELETE /people/:id/taggings/:tag
-- (NSURLSessionDataTask *)deletePersonTaggingsByIdentifier:(NSUInteger)personIdentifier
-                                                  tagNames:(NSArray *)tagNames
-                                     withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+- (nonnull NSURLSessionDataTask *)deletePersonTaggingsByIdentifier:(NSUInteger)personIdentifier
+                                                          tagNames:(nonnull NSArray *)tagNames
+                                             withCompletionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
 // GET /people/:id/capitals
-- (NSURLSessionDataTask *)fetchPersonCapitalsByIdentifier:(NSUInteger)personIdentifier
-                                       withPaginationInfo:(NBPaginationInfo *)paginationInfo
-                                        completionHandler:(NBClientResourceListCompletionHandler)completionHandler;
+- (nonnull NSURLSessionDataTask *)fetchPersonCapitalsByIdentifier:(NSUInteger)personIdentifier
+                                               withPaginationInfo:(nullable NBPaginationInfo *)paginationInfo
+                                                completionHandler:(nonnull NBClientResourceListCompletionHandler)completionHandler;
 // POST /people/:id/capitals
-- (NSURLSessionDataTask *)createPersonCapitalByIdentifier:(NSUInteger)personIdentifier
-                                          withCapitalInfo:(NSDictionary *)capitalInfo
-                                        completionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+- (nonnull NSURLSessionDataTask *)createPersonCapitalByIdentifier:(NSUInteger)personIdentifier
+                                                  withCapitalInfo:(nonnull NSDictionary *)capitalInfo
+                                                completionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
 // DELETE /people/:person_id/capitals/:capital_id
-- (NSURLSessionDataTask *)deletePersonCapitalByPersonIdentifier:(NSUInteger)personIdentifier
-                                              capitalIdentifier:(NSUInteger)capitalIdentifier
-                                          withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+- (nonnull NSURLSessionDataTask *)deletePersonCapitalByPersonIdentifier:(NSUInteger)personIdentifier
+                                                      capitalIdentifier:(NSUInteger)capitalIdentifier
+                                                  withCompletionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
 // POST /people
-- (NSURLSessionDataTask *)createPersonWithParameters:(NSDictionary *)parameters
-                                   completionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+- (nonnull NSURLSessionDataTask *)createPersonWithParameters:(nonnull NSDictionary *)parameters
+                                           completionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
 // PUT /people/:id
-- (NSURLSessionDataTask *)savePersonByIdentifier:(NSUInteger)identifier
-                                  withParameters:(NSDictionary *)parameters
-                               completionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
+- (nonnull NSURLSessionDataTask *)savePersonByIdentifier:(NSUInteger)identifier
+                                          withParameters:(nonnull NSDictionary *)parameters
+                                       completionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
 // DELETE /people/:id
-- (NSURLSessionDataTask *)deletePersonByIdentifier:(NSUInteger)identifier
-                             withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler;
-
+- (nonnull NSURLSessionDataTask *)deletePersonByIdentifier:(NSUInteger)identifier
+                                     withCompletionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
 
 @end
