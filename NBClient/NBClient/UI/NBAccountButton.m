@@ -149,7 +149,7 @@ static void *observationContext = &observationContext;
 
 + (NBAccountButton *)accountButtonFromNibWithTarget:(id)target action:(SEL)action
 {
-    NBAccountButton *accountButton = [[NSBundle mainBundle] loadNibNamed:@"NBAccountButton" owner:self options:nil].firstObject;
+    NBAccountButton *accountButton = [[NSBundle bundleForClass:[NBAccountButton class]] loadNibNamed:@"NBAccountButton" owner:self options:nil].firstObject;
     [accountButton addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
     return accountButton;
 }
