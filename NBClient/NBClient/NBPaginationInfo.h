@@ -9,14 +9,14 @@
 
 #import "NBDefines.h"
 
-extern NSString * const NBClientCurrentPageNumberKey; // #legacy
-extern NSString * const NBClientNumberOfTotalPagesKey; // #legacy
-extern NSString * const NBClientNumberOfItemsPerPageKey;
-extern NSString * const NBClientNumberOfTotalItemsKey; // #legacy
+extern NSString * __nonnull const NBClientCurrentPageNumberKey; // #legacy
+extern NSString * __nonnull const NBClientNumberOfTotalPagesKey; // #legacy
+extern NSString * __nonnull const NBClientNumberOfItemsPerPageKey;
+extern NSString * __nonnull const NBClientNumberOfTotalItemsKey; // #legacy
 
-extern NSString * const NBClientPaginationLimitKey;
-extern NSString * const NBClientPaginationNextLinkKey;
-extern NSString * const NBClientPaginationPreviousLinkKey;
+extern NSString * __nonnull const NBClientPaginationLimitKey;
+extern NSString * __nonnull const NBClientPaginationNextLinkKey;
+extern NSString * __nonnull const NBClientPaginationPreviousLinkKey;
 
 typedef NS_ENUM(NSUInteger, NBPaginationDirection) {
     NBPaginationDirectionNext,
@@ -39,8 +39,8 @@ typedef NS_ENUM(NSUInteger, NBPaginationDirection) {
 
 @property (nonatomic, getter = isLegacy) BOOL legacy;
 
-@property (nonatomic, copy) NSString *nextPageURLString;
-@property (nonatomic, copy) NSString *previousPageURLString;
+@property (nonatomic, copy, nullable) NSString *nextPageURLString;
+@property (nonatomic, copy, nullable) NSString *previousPageURLString;
 @property (nonatomic) NBPaginationDirection currentDirection;
 
 @property (nonatomic, readonly) BOOL isLastPage;
@@ -48,10 +48,10 @@ typedef NS_ENUM(NSUInteger, NBPaginationDirection) {
 - (NSUInteger)indexOfFirstItemAtPage:(NSUInteger)pageNumber;
 - (NSUInteger)numberOfItemsAtPage:(NSUInteger)pageNumber;
 
-- (NSDictionary *)queryParameters;
+- (nonnull NSDictionary *)queryParameters;
 
 // Designated initializer.
-- (instancetype)initWithDictionary:(NSDictionary *)dictionary legacy:(BOOL)legacy;
+- (nonnull instancetype)initWithDictionary:(nullable NSDictionary *)dictionary legacy:(BOOL)legacy;
 
 - (void)updateCurrentPageNumber;
 
