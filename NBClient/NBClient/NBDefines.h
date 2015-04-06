@@ -9,28 +9,28 @@
 
 #pragma mark - Constants
 
-extern NSString * const NBErrorDomain;
+extern NSString * __nonnull const NBErrorDomain;
 extern NSInteger const NBErrorCodeInvalidArgument;
 
 // Names for a dedicated NationBuilder Info.plist file, which is the suggested
 // method for storing relevant configuration. Refer to the implementation file
 // for actual values for these keys when creating your Info.plist file.
-extern NSString * const NBInfoFileName;
-extern NSString * const NBInfoBaseURLFormatKey;
-extern NSString * const NBInfoClientIdentifierKey;
-extern NSString * const NBInfoNationSlugKey;
-extern NSString * const NBInfoRedirectPathKey;
-extern NSString * const NBInfoTestTokenKey;
+extern NSString * __nonnull const NBInfoFileName;
+extern NSString * __nonnull const NBInfoBaseURLFormatKey;
+extern NSString * __nonnull const NBInfoClientIdentifierKey;
+extern NSString * __nonnull const NBInfoNationSlugKey;
+extern NSString * __nonnull const NBInfoRedirectPathKey;
+extern NSString * __nonnull const NBInfoTestTokenKey;
 
 // Storing the client secret is discouraged for apps not built by NationBuilder.
-extern NSString * const NBInfoClientSecretKey;
+extern NSString * __nonnull const NBInfoClientSecretKey;
 
 // To use our icon font you must add 'pe-icon-7-stroke' to 'Fonts provided by
 // application' in your Info.plist.
-extern NSString * const NBIconFontFamilyName;
+extern NSString * __nonnull const NBIconFontFamilyName;
 
 // Completion handlers are always called.
-typedef void (^NBGenericCompletionHandler)(NSError *error);
+typedef void (^NBGenericCompletionHandler)(NSError * __nullable error);
 
 #pragma mark - Logging
 
@@ -67,8 +67,8 @@ typedef NS_ENUM(NSUInteger, NBLogLevel) {
 
 @protocol NBDictionarySerializing <NSObject>
 
-- (instancetype)initWithDictionary:(NSDictionary *)dictionary;
-- (NSDictionary *)dictionary;
-- (BOOL)isEqualToDictionary:(NSDictionary *)dictionary;
+- (nonnull instancetype)initWithDictionary:(nonnull NSDictionary *)dictionary;
+- (nonnull NSDictionary *)dictionary;
+- (BOOL)isEqualToDictionary:(nonnull NSDictionary *)dictionary;
 
 @end
