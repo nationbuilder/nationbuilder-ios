@@ -10,9 +10,8 @@
 #import <CoreText/CoreText.h>
 
 #import "FoundationAdditions.h"
-#import "NBDefines.h"
-
 #import "NBAccountButton.h"
+#import "NBDefines.h"
 
 @implementation UIAlertView (NBAdditions)
 
