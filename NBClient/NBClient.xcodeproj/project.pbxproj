@@ -53,6 +53,7 @@
 		AA862851196F1651005060C9 /* NBAuthenticator.m in Sources */ = {isa = PBXBuildFile; fileRef = AA862850196F1651005060C9 /* NBAuthenticator.m */; };
 		AA8B6822196F5539009DDA91 /* NBAuthenticatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA8B6821196F5539009DDA91 /* NBAuthenticatorTests.m */; };
 		AA8B6825196F82D4009DDA91 /* NBDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = AA8B6824196F82D4009DDA91 /* NBDefines.m */; };
+		AA8BAB5E1AD43CC8003077A2 /* NationBuilder.strings in Resources */ = {isa = PBXBuildFile; fileRef = AA84F04C19EDF36D00DAA6B8 /* NationBuilder.strings */; };
 		AA90915319834164009BE1E9 /* Main.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AABD0029196F1FD6003A745F /* Main.h */; };
 		AA90915419834164009BE1E9 /* FoundationAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA668DCF1970B81800A952B0 /* FoundationAdditions.h */; };
 		AA90915519834164009BE1E9 /* NBAuthenticator.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA86284F196F1651005060C9 /* NBAuthenticator.h */; };
@@ -479,6 +480,7 @@
 				AA78ED7B199C563C0043B7C0 /* people_id_get.txt in Resources */,
 				AA85EB121AA85E6300E3CC08 /* people_nearby_get.txt in Resources */,
 				AA85EB0D1AA85E6300E3CC08 /* people_id_taggings_bulk_put.txt in Resources */,
+				AA8BAB5E1AD43CC8003077A2 /* NationBuilder.strings in Resources */,
 				AA84F04719EC888A00DAA6B8 /* NationBuilder-Info.plist in Resources */,
 				AA85EB191AA94FDE00E3CC08 /* people_id_capitals_post.txt in Resources */,
 			);
