@@ -58,7 +58,7 @@
                         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i5M-Pr-FkT" userLabel="Content View">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="561"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NBMark" translatesAutoresizingMaskIntoConstraints="NO" id="gLa-oV-esy">
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gLa-oV-esy">
                                     <rect key="frame" x="112" y="445" width="96" height="96"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="96" id="77f-ZK-BeA"/>
@@ -192,9 +192,6 @@
             <nil key="simulatedStatusBarMetrics"/>
         </view>
     </objects>
-    <resources>
-        <image name="NBMark" width="144" height="144"/>
-    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
