@@ -25,7 +25,7 @@ Pod::Spec.new do |s|
   s.subspec 'UI' do |sp|
     # Build settings
     sp.dependency 'NBClient/Core'
-    sp.frameworks = 'UIKit'
+    sp.frameworks = ['UIKit', 'CoreText']
     # File patterns
     sp.source_files = 'NBClient/NBClient/UI/*.{h,m}'
     sp.private_header_files = 'NBClient/NBClient/UI/*_Internal.h'

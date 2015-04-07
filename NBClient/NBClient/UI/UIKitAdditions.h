@@ -13,6 +13,12 @@
 
 @end
 
+@interface UIApplication (NBAdditions)
+
+- (void)nb_loadBundleResources;
+
+@end
+
 @interface UIView (NBAdditions)
 
 - (nonnull NSLayoutConstraint *)nb_addCenterXConstraintToSuperview;

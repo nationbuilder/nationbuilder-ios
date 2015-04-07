@@ -7,7 +7,12 @@
 
 #import "UIKitAdditions.h"
 
+#import <CoreText/CoreText.h>
+
 #import "FoundationAdditions.h"
+#import "NBDefines.h"
+
+#import "NBAccountButton.h"
 
 @implementation UIAlertView (NBAdditions)
 
@@ -20,6 +25,26 @@
                                                stringByAppendingFormat:@" %@", (userInfo[NSLocalizedRecoverySuggestionErrorKey] ?: @"")]
                                      delegate:self cancelButtonTitle:nil
                             otherButtonTitles:@"label.ok".nb_localizedString, nil];
+}
+
+@end
+
+@implementation UIApplication (NBAdditions)
+
+- (void)nb_loadBundleResources
+{
+    NSString *iconFontPath = [[NSBundle bundleForClass:[NBAccountButton class]] pathForResource:NBIconFontFamilyName ofType:@"ttf"];
+    NSData *iconFontData = [NSData dataWithContentsOfFile:iconFontPath];
+    CFErrorRef error;
+    CGDataProviderRef provider = CGDataProviderCreateWithCFData((__bridge CFDataRef)iconFontData);
+    CGFontRef iconFont = CGFontCreateWithDataProvider(provider);
+    if (!CTFontManagerRegisterGraphicsFont(iconFont, &error)) {
+        CFStringRef errorDescription = CFErrorCopyDescription(error);
+        NBLog(@"ERROR: Failed to load font: %@", errorDescription);
+        CFRelease(errorDescription);
+    }
+    CFRelease(iconFont);
+    CFRelease(provider);
 }
 
 @end

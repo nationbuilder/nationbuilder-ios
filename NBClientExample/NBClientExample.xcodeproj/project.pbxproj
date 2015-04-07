@@ -53,6 +53,7 @@
 		AA90915119833D01009BE1E9 /* NBPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA90914B19833D01009BE1E9 /* NBPersonViewController.m */; };
 		AAC01B9519F95B7D0093EEA7 /* pe-icon-7-stroke.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AAC01B9419F95B7D0093EEA7 /* pe-icon-7-stroke.ttf */; };
 		AAD248EE1A1AED0700655CF9 /* NBClient_UI.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAD248ED1A1AED0700655CF9 /* NBClient_UI.xcassets */; };
+		AAE62FC41AD37DA600926195 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE62FC31AD37DA600926195 /* CoreText.framework */; };
 		AAEFEAEB19E62F9600777BC1 /* NBAccountButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAEFEAEA19E62F9600777BC1 /* NBAccountButton.xib */; };
 /* End PBXBuildFile section */
 
@@ -109,6 +110,7 @@
 		AA90914B19833D01009BE1E9 /* NBPersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NBPersonViewController.m; path = Classes/NBPersonViewController.m; sourceTree = "<group>"; };
 		AAC01B9419F95B7D0093EEA7 /* pe-icon-7-stroke.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "pe-icon-7-stroke.ttf"; path = "../NBClient/NBClient/UI/pe-icon-7-stroke.ttf"; sourceTree = "<group>"; };
 		AAD248ED1A1AED0700655CF9 /* NBClient_UI.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = NBClient_UI.xcassets; path = ../NBClient/NBClient/UI/NBClient_UI.xcassets; sourceTree = "<group>"; };
+		AAE62FC31AD37DA600926195 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		AAEFEAEA19E62F9600777BC1 /* NBAccountButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NBAccountButton.xib; path = ../NBClient/NBClient/UI/NBAccountButton.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -118,6 +120,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA909123198339EA009BE1E9 /* libNBClient.a in Frameworks */,
+				AAE62FC41AD37DA600926195 /* CoreText.framework in Frameworks */,
 				AA15FAA41983317400A2E84B /* CoreGraphics.framework in Frameworks */,
 				AA15FAA61983317400A2E84B /* UIKit.framework in Frameworks */,
 				AA15FAA21983317400A2E84B /* Foundation.framework in Frameworks */,
@@ -159,6 +162,7 @@
 		AA15FAA01983317400A2E84B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AAE62FC31AD37DA600926195 /* CoreText.framework */,
 				AAEFEAE719E62D9F00777BC1 /* NBClient */,
 				AA15FAA11983317400A2E84B /* Foundation.framework */,
 				AA15FAA31983317400A2E84B /* CoreGraphics.framework */,
