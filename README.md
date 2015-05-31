@@ -35,6 +35,18 @@ how to use the SDK to build your app. Note that the sample app intends to be a
 modest example of using the NBClient library. It intends to use modern iOS
 conventions, no external dependencies, and stock UIKit classes.
 
+### Code Samples
+
+If the code in the sample app is too much for you, we have code samples in
+[Objective-C][code sample] and [Swift][swift code sample] that just contain a
+sample `UIAppDelegate` subclass.
+
+### Swift
+
+Swift support is currently in beta and on the [support-swift][] branch. It has
+only been tested on Xcode 6.3+. There are a couple additional things to do for
+using Swift with the SDK, and they are listed in the [code sample][swift code sample].
+
 ## Features
 
 ### Authentication & Authorization:
@@ -99,10 +111,13 @@ __[Next: Installing ➔](Documentation/Guides/Installing.md)__
 
 [documentation section]: #documentation
 [implementation checklist]: Documentation/Guides/Using-Everything.md#implementation-checklist
+[code sample]: https://gist.github.com/hlfcoding/0cf43f0dc72cc99e2ca6
+[swift code sample]: https://gist.github.com/hlfcoding/fa2052a3c822792a6d20
 [authentication gif]: https://cloud.githubusercontent.com/assets/100884/5255641/655d2b68-7972-11e4-96fa-3384747c5f87.gif
 [accounts gif]: https://cloud.githubusercontent.com/assets/100884/5255636/6183ec8e-7972-11e4-8e14-8bec0d7b1e36.gif
 [people crud gif]: https://cloud.githubusercontent.com/assets/100884/5256354/140ad198-797c-11e4-8064-8f3c5ffef795.gif
 [CocoaPods]: http://cocoapods.org
 [iOS developer documentation]: http://nationbuilder.com/api_documentation#ios_sdk
+[support-swift]: http://github.com/3dna/nationbuilder-ios/tree/peng/support-swift
 [Github guides]: Documentation/Guides
 [icon font]: http://pixeden.com/icon-fonts/stroke-7-icon-font-set

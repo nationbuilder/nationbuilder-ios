@@ -53,6 +53,7 @@
 		AA862851196F1651005060C9 /* NBAuthenticator.m in Sources */ = {isa = PBXBuildFile; fileRef = AA862850196F1651005060C9 /* NBAuthenticator.m */; };
 		AA8B6822196F5539009DDA91 /* NBAuthenticatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA8B6821196F5539009DDA91 /* NBAuthenticatorTests.m */; };
 		AA8B6825196F82D4009DDA91 /* NBDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = AA8B6824196F82D4009DDA91 /* NBDefines.m */; };
+		AA8BAB5E1AD43CC8003077A2 /* NationBuilder.strings in Resources */ = {isa = PBXBuildFile; fileRef = AA84F04C19EDF36D00DAA6B8 /* NationBuilder.strings */; };
 		AA90915319834164009BE1E9 /* Main.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AABD0029196F1FD6003A745F /* Main.h */; };
 		AA90915419834164009BE1E9 /* FoundationAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA668DCF1970B81800A952B0 /* FoundationAdditions.h */; };
 		AA90915519834164009BE1E9 /* NBAuthenticator.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA86284F196F1651005060C9 /* NBAuthenticator.h */; };
@@ -70,6 +71,7 @@
 		AAAEFC3F196CD13D00222A48 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AAAEFC3D196CD13D00222A48 /* InfoPlist.strings */; };
 		AAAEFC41196CD13D00222A48 /* NBClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AAAEFC40196CD13D00222A48 /* NBClientTests.m */; };
 		AAD2806B1A0BDFF200E6DF39 /* NBAccountsManager_Internal.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AAD2806A1A0BDF3900E6DF39 /* NBAccountsManager_Internal.h */; };
+		AAE62FC21AD37D6D00926195 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE62FC11AD37D6D00926195 /* CoreText.framework */; };
 		AAEFEAEF19E6E73800777BC1 /* NBAccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEFEAED19E6E73800777BC1 /* NBAccountsViewController.m */; };
 		AAEFEAF919E6EE8B00777BC1 /* NBAccountsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEFEAF819E6EE8B00777BC1 /* NBAccountsManager.m */; };
 		AAEFEAFF19E7131E00777BC1 /* NBAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEFEAFE19E7131E00777BC1 /* NBAccount.m */; };
@@ -184,6 +186,7 @@
 		AABD0029196F1FD6003A745F /* Main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Main.h; sourceTree = "<group>"; };
 		AAC01B9219F95B1C0093EEA7 /* pe-icon-7-stroke.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "pe-icon-7-stroke.ttf"; sourceTree = "<group>"; };
 		AAD2806A1A0BDF3900E6DF39 /* NBAccountsManager_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NBAccountsManager_Internal.h; sourceTree = "<group>"; };
+		AAE62FC11AD37D6D00926195 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		AAEFEAEC19E6E73800777BC1 /* NBAccountsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBAccountsViewController.h; sourceTree = "<group>"; };
 		AAEFEAED19E6E73800777BC1 /* NBAccountsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAccountsViewController.m; sourceTree = "<group>"; };
 		AAEFEAEE19E6E73800777BC1 /* NBAccountsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NBAccountsViewController.xib; sourceTree = "<group>"; };
@@ -201,6 +204,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AAE62FC21AD37D6D00926195 /* CoreText.framework in Frameworks */,
 				AA674EE519E60170009C6D4B /* UIKit.framework in Frameworks */,
 				AA6FF3C8197EDEE60049B747 /* Security.framework in Frameworks */,
 				AAAEFC25196CD13D00222A48 /* Foundation.framework in Frameworks */,
@@ -286,6 +290,7 @@
 		AAAEFC23196CD13D00222A48 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AAE62FC11AD37D6D00926195 /* CoreText.framework */,
 				AA78ED60199AC2F60043B7C0 /* libPods-NBClientTests.a */,
 				AAAEFC24196CD13D00222A48 /* Foundation.framework */,
 				AA6FF3C7197EDEE60049B747 /* Security.framework */,
@@ -475,6 +480,7 @@
 				AA78ED7B199C563C0043B7C0 /* people_id_get.txt in Resources */,
 				AA85EB121AA85E6300E3CC08 /* people_nearby_get.txt in Resources */,
 				AA85EB0D1AA85E6300E3CC08 /* people_id_taggings_bulk_put.txt in Resources */,
+				AA8BAB5E1AD43CC8003077A2 /* NationBuilder.strings in Resources */,
 				AA84F04719EC888A00DAA6B8 /* NationBuilder-Info.plist in Resources */,
 				AA85EB191AA94FDE00E3CC08 /* people_id_capitals_post.txt in Resources */,
 			);

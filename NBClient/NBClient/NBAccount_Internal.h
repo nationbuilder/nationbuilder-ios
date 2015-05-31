@@ -9,19 +9,20 @@
 
 @interface NBAccount ()
 
-@property (nonatomic, weak, readwrite) id<NBAccountDelegate> delegate;
-@property (nonatomic, readwrite) NBClient *client;
-@property (nonatomic, copy, readwrite) NSDictionary *clientInfo;
-@property (nonatomic, copy, readwrite) NSDictionary *defaultClientInfo;
+@property (nonatomic, weak, readwrite, nullable) id<NBAccountDelegate> delegate;
 
-@property (nonatomic) NBAuthenticator *authenticator;
+@property (nonatomic, readwrite, null_resettable) NBClient *client;
+@property (nonatomic, readwrite, nonnull) NBAuthenticator *authenticator;
 
-@property (nonatomic, copy) NSDictionary *person;
+@property (nonatomic, copy, readwrite, nonnull) NSDictionary *clientInfo;
+@property (nonatomic, copy, readwrite, nonnull) NSDictionary *defaultClientInfo;
 
-- (NSURL *)baseURL;
+@property (nonatomic, copy, nullable) NSDictionary *person;
 
-- (void)fetchPersonWithCompletionHandler:(NBGenericCompletionHandler)completionHandler;
-- (void)fetchAvatarWithCompletionHandler:(NBGenericCompletionHandler)completionHandler;
+- (nonnull NSURL *)baseURL;
+
+- (void)fetchPersonWithCompletionHandler:(nullable NBGenericCompletionHandler)completionHandler;
+- (void)fetchAvatarWithCompletionHandler:(nullable NBGenericCompletionHandler)completionHandler;
 
 - (BOOL)updateCredentialIdentifier;
 

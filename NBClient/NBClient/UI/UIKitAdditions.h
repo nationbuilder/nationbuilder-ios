@@ -9,13 +9,19 @@
 
 @interface UIAlertView (NBAdditions)
 
-+ (UIAlertView *)nb_genericAlertViewWithError:(NSError *)error;
++ (nonnull UIAlertView *)nb_genericAlertViewWithError:(nonnull NSError *)error;
+
+@end
+
+@interface UIApplication (NBAdditions)
+
+- (void)nb_loadBundleResources;
 
 @end
 
 @interface UIView (NBAdditions)
 
-- (NSLayoutConstraint *)nb_addCenterXConstraintToSuperview;
-- (NSLayoutConstraint *)nb_addCenterYConstraintToSuperview;
+- (nonnull NSLayoutConstraint *)nb_addCenterXConstraintToSuperview;
+- (nonnull NSLayoutConstraint *)nb_addCenterYConstraintToSuperview;
 
 @end

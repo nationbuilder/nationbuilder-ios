@@ -7,6 +7,7 @@
 
 #import "FoundationAdditions.h"
 
+#import "NBClient.h"
 #import "NBDefines.h"
 
 // The implementations are heavily inspired by AFNetworking.
@@ -171,8 +172,8 @@ static NSString *QueryPairJoiner = @"=";
 
 - (NSString *)nb_localizedString
 {
-    // NOTE: Cocoapods suggests using a dedicated bundle
-    NSString *localizedString = NSLocalizedStringFromTable(self, @"NationBuilder", nil);
+    NSBundle *bundle = [NSBundle bundleForClass:[NBClient class]];
+    NSString *localizedString = NSLocalizedStringFromTableInBundle(self, @"NationBuilder", bundle, nil);
     if ([localizedString isEqualToString:self]) {
         NBLog(@"WARNING: No localized string found for %@", self);
     }

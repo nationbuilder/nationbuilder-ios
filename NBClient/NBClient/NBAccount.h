@@ -21,33 +21,33 @@
 // become the data source for views including the account button.
 @interface NBAccount : NSObject <NBAccountViewDataSource, NBClientDelegate, NBLogging>
 
-@property (nonatomic, weak, readonly) id<NBAccountDelegate> delegate;
+@property (nonatomic, weak, readonly, nonnull) id<NBAccountDelegate> delegate;
 
-@property (nonatomic, readonly) NBClient *client;
-@property (nonatomic, readonly) NBAuthenticator *authenticator;
+@property (nonatomic, readonly, null_resettable) NBClient *client;
+@property (nonatomic, readonly, nonnull) NBAuthenticator *authenticator;
 
-@property (nonatomic, copy, readonly) NSDictionary *clientInfo;
+@property (nonatomic, copy, readonly, nonnull) NSDictionary *clientInfo;
 // Will load from the conventional plist with name equal to NBInfoFileName. Useful if your app is only for one nation.
-@property (nonatomic, copy, readonly) NSDictionary *defaultClientInfo;
+@property (nonatomic, copy, readonly, nonnull) NSDictionary *defaultClientInfo;
 
 @property (nonatomic) NSUInteger identifier;
-@property (nonatomic, copy) NSString *name; // Override.
+@property (nonatomic, copy, nullable) NSString *name; // Override.
 
 @property (nonatomic, getter = isActive) BOOL active;
 @property (nonatomic) BOOL shouldUseTestToken;
 
-- (instancetype)initWithClientInfo:(NSDictionary *)clientInfoOrNil
-                          delegate:(id<NBAccountDelegate>)delegate;
+- (nonnull instancetype)initWithClientInfo:(nullable NSDictionary *)clientInfoOrNil
+                          delegate:(nonnull id<NBAccountDelegate>)delegate;
 
 - (void)requestActiveWithPriorSignout:(BOOL)needsPriorSignout
-                    completionHandler:(NBGenericCompletionHandler)completionHandler;
+                    completionHandler:(nullable NBGenericCompletionHandler)completionHandler;
 
-- (BOOL)requestCleanUpWithError:(NSError **)error;
+- (BOOL)requestCleanUpWithError:(NSError * __nullable * __nullable)error;
 
 @end
 
 @protocol NBAccountDelegate <NSObject>
 
-- (void)account:(NBAccount *)account didBecomeInvalidFromHTTPError:(NSError *)error;
+- (void)account:(nonnull NBAccount *)account didBecomeInvalidFromHTTPError:(nonnull NSError *)error;
 
 @end

@@ -36,6 +36,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [application nb_loadBundleResources];
     // Configure log levels. Default is 'Debug' for debug configurations and
     // 'Warning' for release configurations. For example, by setting client
     // logging to warning level during development parts of the sample app

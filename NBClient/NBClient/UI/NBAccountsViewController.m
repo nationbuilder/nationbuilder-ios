@@ -146,6 +146,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         self.navigationItem.leftBarButtonItem = self.closeButtonItem;
     }
     self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.logoImageView.image = [UIImage imageNamed:@"NBMark" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
     self.logoImageView.image = [self.logoImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.logoImageView.tintColor = self.buttonBackgroundColor;
     [self setUpAccountView];

@@ -35,10 +35,6 @@
 	<string>1.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>UIAppFonts</key>
-	<array>
-		<string>pe-icon-7-stroke.ttf</string>
-	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>NBAppLaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
