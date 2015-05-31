@@ -43,9 +43,9 @@ sample `UIAppDelegate` subclass.
 
 ### Swift
 
-Swift support is currently in beta and on the [support-swift][] branch. It has
-only been tested on Xcode 6.3+. There are a couple additional things to do for
-using Swift with the SDK, and they are listed in the [code sample][swift code sample].
+Swift support is now available. It has only been tested on Xcode 6.3+. There
+are a couple additional things to do for using Swift with the SDK, and they
+are listed in the [code sample][swift code sample].
 
 ## Features
 
@@ -118,6 +118,5 @@ __[Next: Installing ➔](Documentation/Guides/Installing.md)__
 [people crud gif]: https://cloud.githubusercontent.com/assets/100884/5256354/140ad198-797c-11e4-8064-8f3c5ffef795.gif
 [CocoaPods]: http://cocoapods.org
 [iOS developer documentation]: http://nationbuilder.com/api_documentation#ios_sdk
-[support-swift]: http://github.com/3dna/nationbuilder-ios/tree/peng/support-swift
 [Github guides]: Documentation/Guides
 [icon font]: http://pixeden.com/icon-fonts/stroke-7-icon-font-set
