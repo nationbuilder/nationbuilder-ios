@@ -1,6 +1,6 @@
 # NationBuilder iOS SDK 
 
-[![CI Status](http://img.shields.io/travis/3dna/nationbuilder-ios.svg?style=flat)](https://travis-ci.org/3dna/nationbuilder-ios)
+[![CI Status](http://img.shields.io/travis/nationbuilder/nationbuilder-ios.svg?style=flat)](https://travis-ci.org/nationbuilder/nationbuilder-ios)
 [![Version](https://img.shields.io/cocoapods/v/NBClient.svg?style=flat)](http://cocoadocs.org/docsets/NBClient)
 [![License](https://img.shields.io/cocoapods/l/NBClient.svg?style=flat)](http://cocoadocs.org/docsets/NBClient)
 [![Platform](https://img.shields.io/cocoapods/p/NBClient.svg?style=flat)](http://cocoadocs.org/docsets/NBClient)
