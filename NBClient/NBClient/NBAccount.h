@@ -37,7 +37,7 @@
 @property (nonatomic) BOOL shouldUseTestToken;
 
 - (nonnull instancetype)initWithClientInfo:(nullable NSDictionary *)clientInfoOrNil
-                          delegate:(nonnull id<NBAccountDelegate>)delegate;
+                                  delegate:(nonnull id<NBAccountDelegate>)delegate;
 
 - (void)requestActiveWithPriorSignout:(BOOL)needsPriorSignout
                     completionHandler:(nullable NBGenericCompletionHandler)completionHandler;
