@@ -53,7 +53,7 @@
                     @"Authenticator should have credential ID.");
 }
 
-- (void)testManagingCredentialInKeychain
+- (void)xTestManagingCredentialInKeychain
 {
     NSString *accessToken = @"abc123";
     NBAuthenticationCredential *credential = [[NBAuthenticationCredential alloc]
