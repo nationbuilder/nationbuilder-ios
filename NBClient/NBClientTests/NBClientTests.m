@@ -130,7 +130,8 @@
     }
     NBClient *client = self.baseClientWithTestToken;
     client.apiVersion = [NBClientDefaultAPIVersion stringByAppendingString:@"0"];
-    NSURLSessionDataTask *task = [client fetchPeopleWithPaginationInfo:nil completionHandler:nil];
+    NSURLSessionDataTask *task = [client fetchPeopleWithPaginationInfo:nil
+                                                     completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {}];
     [task cancel];
     NSString *path = [[NSURLComponents componentsWithURL:task.currentRequest.URL resolvingAgainstBaseURL:YES] path];
     XCTAssertTrue([path rangeOfString:client.apiVersion].location != NSNotFound,
@@ -269,7 +270,7 @@
     NBClient *client = [self baseClientWithTestToken];
     client.delegate = OCMProtocolMock(@protocol(NBClientDelegate));
     [OCMStub([client.delegate client:client shouldAutomaticallyStartDataTask:OCMOCK_ANY]) andReturnValue:@NO];
-    NSURLSessionDataTask *task = [client fetchPersonForClientUserWithCompletionHandler:nil];
+    NSURLSessionDataTask *task = [client fetchPersonForClientUserWithCompletionHandler:^(NSDictionary *item, NSError *error) {}];
     XCTAssertNotNil(task, @"The task should be returned.");
     XCTAssertTrue(task.state == NSURLSessionTaskStateSuspended, @"The task should not have been automatically started.");
 }

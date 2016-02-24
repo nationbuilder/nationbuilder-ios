@@ -115,7 +115,7 @@ static void *observationContext = &observationContext;
     if (!(self.avatarImageView.isHidden || self.nameLabel.isHidden)) {
         width += self.originalAvatarImageWidth + self.originalAvatarImageMarginRight;
     }
-    if (width) {
+    if (width > 0.0f) {
         newSize.width = width;
     }
     return newSize;

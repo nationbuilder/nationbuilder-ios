@@ -21,7 +21,7 @@
 // become the data source for views including the account button.
 @interface NBAccount : NSObject <NBAccountViewDataSource, NBClientDelegate, NBLogging>
 
-@property (nonatomic, weak, readonly, nonnull) id<NBAccountDelegate> delegate;
+@property (nonatomic, weak, readonly, nullable) id<NBAccountDelegate> delegate;
 
 @property (nonatomic, readonly, null_resettable) NBClient *client;
 @property (nonatomic, readonly, nonnull) NBAuthenticator *authenticator;
@@ -37,7 +37,7 @@
 @property (nonatomic) BOOL shouldUseTestToken;
 
 - (nonnull instancetype)initWithClientInfo:(nullable NSDictionary *)clientInfoOrNil
-                          delegate:(nonnull id<NBAccountDelegate>)delegate;
+                                  delegate:(nonnull id<NBAccountDelegate>)delegate;
 
 - (void)requestActiveWithPriorSignout:(BOOL)needsPriorSignout
                     completionHandler:(nullable NBGenericCompletionHandler)completionHandler;
