@@ -5,8 +5,3 @@ xcode_configuration: Release
 xcode_scheme: NBClient
 xcode_sdk: iphonesimulator9.2
 xcode_workspace: NBClient.xcworkspace
-
-before_install:
-    - gem install cocoapods --no-rdoc --no-ri --no-document --quiet # override to latest
-    - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
-    - pod install
