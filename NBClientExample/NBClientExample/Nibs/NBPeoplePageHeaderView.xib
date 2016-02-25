@@ -12,20 +12,20 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="PAGE 1 / N" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PYj-44-kjW" userLabel="Page Label - PAGE 1 / N">
-                    <rect key="frame" x="15" y="2" width="73" height="16"/>
+                    <rect key="frame" x="15" y="2" width="74" height="16"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="16" id="e9I-GC-31M"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
                     <color key="textColor" red="0.81176470588235294" green="0.80784313725490198" blue="0.83921568627450982" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="1 – N" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mmb-uj-iwd" userLabel="Item Label - 1 - N">
-                    <rect key="frame" x="280" y="2" width="25" height="16"/>
+                    <rect key="frame" x="277" y="2" width="27.5" height="16"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="16" id="7dp-oH-79G"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
                     <color key="textColor" red="0.81176470588235294" green="0.80784313725490198" blue="0.83921568627450982" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
