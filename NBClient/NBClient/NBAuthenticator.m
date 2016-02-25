@@ -143,6 +143,11 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         completionHandler(nil, error);
         return;
     }
+    if (needsPriorSignout) {
+        NBLogWarning("Recent SSO changes make redirecting to a custom url upon signing out no longer possible. "
+                     "This means for the moment, NBAuthenticator no longer supports prior-signout.");
+        needsPriorSignout = NO;
+    }
     self.currentlyNeedsPriorSignout = needsPriorSignout;
     NSDictionary *parameters = @{ @"response_type": NBAuthenticationResponseTypeToken,
                                   @"redirect_uri":  [NSString stringWithFormat:@"%@://%@",
