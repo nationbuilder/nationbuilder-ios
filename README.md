@@ -91,13 +91,9 @@ edits, the [guides][Github guides] are also available on Github.
 
 ## Testing
 
-```bash
-# Install dependencies:
-~> gem install -N xcpretty
-
-# Run unit tests against recorded production data:
-nationbuilder-ios> rake test
-```
+You can pass the arguments in `.travis.yml` to `xctool` (`brew install xctool`)
+to run manually. The simpler alternative is to run tests in Xcode for the
+`NBClient` scheme.
 
 ## License
 
