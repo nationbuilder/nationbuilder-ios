@@ -5,10 +5,10 @@
 	<key>Base URL Format</key>
 	<string>http://%@.nbuild.dev</string>
 	<key>Client ID</key>
-	<string>65b707456300f8d29123cdad3b43eddb53f0ba2f8f31f082dbd9971c2a0c4eec</string>
+	<string>f50b9bdc3c976e715c43cb0e91fa527df7e4cbd45c78174db558ba3d90c1876d</string>
 	<key>Redirect Path</key>
 	<string>oauth/callback</string>
 	<key>Test Token</key>
-	<string>7e510bb4129451252102a9f3d160a35e68bba66b1193f11ef691aaff962c3060</string>
+	<string>271b568d52026348e73f413a73925fda590bb28e378dc1254c7827f7a28ceb91</string>
 </dict>
 </plist>
