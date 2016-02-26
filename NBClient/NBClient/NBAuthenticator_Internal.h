@@ -17,6 +17,9 @@
 @property (nonatomic, strong, nullable) NBAuthenticationCompletionHandler currentInBrowserAuthenticationCompletionHandler;
 @property (nonatomic) BOOL currentlyNeedsPriorSignout;
 
+- (nonnull NSDictionary *)authenticationParametersWithRedirectPath:(nonnull NSString *)redirectPath;
+- (nullable NSURL *)authenticationURLWithSubPath:(nonnull NSString *)subPath
+                                      parameters:(nonnull NSDictionary *)parameters;
 - (nullable NSURLSessionDataTask *)authenticateWithSubPath:(nonnull NSString *)subPath
                                                 parameters:(nonnull NSDictionary *)parameters
                                          completionHandler:(nonnull NBAuthenticationCompletionHandler)completionHandler;

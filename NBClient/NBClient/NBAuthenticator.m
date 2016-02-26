@@ -149,16 +149,25 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         needsPriorSignout = NO;
     }
     self.currentlyNeedsPriorSignout = needsPriorSignout;
-    NSDictionary *parameters = @{ @"response_type": NBAuthenticationResponseTypeToken,
-                                  @"redirect_uri":  [NSString stringWithFormat:@"%@://%@",
-                                                     self.class.authorizationRedirectApplicationURLScheme,
-                                                     redirectPath] };
     [self
-     authenticateWithSubPath:@"/authorize" parameters:parameters
+     authenticateWithSubPath:@"/authorize"
+     parameters:[self authenticationParametersWithRedirectPath:redirectPath]
      completionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
          self.currentlyNeedsPriorSignout = NO;
          completionHandler(credential, error);
      }];
+}
+
+- (void)setCredentialWithAccessToken:(NSString *)accessToken
+                           tokenType:(NSString *)tokenTypeOrNil
+{
+    self.credential = [[NBAuthenticationCredential alloc] initWithAccessToken:accessToken tokenType:tokenTypeOrNil];
+}
+
+- (NSURL *)authenticationURLWithRedirectPath:(NSString *)redirectPath
+{
+    return [self authenticationURLWithSubPath:@"/authorize"
+                                   parameters:[self authenticationParametersWithRedirectPath:redirectPath]];
 }
 
 - (NSURLSessionDataTask *)authenticateWithUserName:(NSString *)userName
@@ -214,17 +223,16 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 #pragma mark - Private
 
-- (NSURLSessionDataTask *)authenticateWithSubPath:(NSString *)subPath
-                                       parameters:(NSDictionary *)parameters
-                                completionHandler:(NBAuthenticationCompletionHandler)completionHandler
+- (NSDictionary *)authenticationParametersWithRedirectPath:(NSString *)redirectPath
 {
-    NSAssert(completionHandler, @"Completion handler is required.");
-    // Return saved credential if possible.
-    if (self.credential) {
-        completionHandler(self.credential, nil);
-        return nil;
-    }
-    // Perform authentication against service.
+    return @{ @"response_type": NBAuthenticationResponseTypeToken,
+              @"redirect_uri": [NSString stringWithFormat:@"%@://%@",
+                                self.class.authorizationRedirectApplicationURLScheme, redirectPath] };
+}
+
+- (NSURL *)authenticationURLWithSubPath:(NSString *)subPath
+                             parameters:(NSDictionary *)parameters
+{
     NSMutableDictionary *mutableParameters = [parameters mutableCopy];
     mutableParameters[@"client_id"] = self.clientIdentifier;
     parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
@@ -236,7 +244,6 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     
     components.percentEncodedQuery = [parameters nb_queryString];
     
-    NSURLSessionDataTask *task;
     NSURL *url = components.URL;
     if (self.currentlyNeedsPriorSignout) {
         // NOTE: NSURLComponents was forming URLs that Safari would misinterpret by chopping off the path.
@@ -247,6 +254,23 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         // NOTE: Safari seems to reject our relative URLs.
         url = url.absoluteURL;
     }
+    
+    return url;
+}
+
+- (NSURLSessionDataTask *)authenticateWithSubPath:(NSString *)subPath
+                                       parameters:(NSDictionary *)parameters
+                                completionHandler:(NBAuthenticationCompletionHandler)completionHandler
+{
+    NSAssert(completionHandler, @"Completion handler is required.");
+    // Return saved credential if possible.
+    if (self.credential) {
+        completionHandler(self.credential, nil);
+        return nil;
+    }
+    // Perform authentication against service.
+    NSURL *url = [self authenticationURLWithSubPath:subPath parameters:parameters];
+    NSURLSessionDataTask *task;
     if (parameters[@"response_type"] == NBAuthenticationResponseTypeToken) {
         [self authenticateInWebBrowserWithURL:url completionHandler:completionHandler];
     } else if (parameters[@"grant_type"] == NBAuthenticationGrantTypePasswordCredential) {
@@ -283,7 +307,6 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 {
     // Check our state.
     if (!self.isAuthenticatingInWebBrowser) { return; }
-    NBAuthenticationCredential *credential;
     NSError *error;
     if (notification.name == UIApplicationDidBecomeActiveNotification) {
         // Handle user manually stopping authorization flow, ie. manually
@@ -305,13 +328,11 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                                  NSLocalizedRecoverySuggestionErrorKey: @"message.unknown-error-solution".nb_localizedString }];
         } else {
             // Handle normal completion of authorization flow.
-            credential = [[NBAuthenticationCredential alloc] initWithAccessToken:notification.userInfo[NBAuthenticationRedirectTokenKey]
-                                                                       tokenType:nil];
-            self.credential = credential;
+            [self setCredentialWithAccessToken:notification.userInfo[NBAuthenticationRedirectTokenKey] tokenType:nil];
         }
     }
     // Complete.
-    self.currentInBrowserAuthenticationCompletionHandler(credential, error);
+    self.currentInBrowserAuthenticationCompletionHandler(self.credential, error);
     self.currentInBrowserAuthenticationCompletionHandler = nil;
 }
 
@@ -375,8 +396,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                           NSLocalizedRecoverySuggestionErrorKey: @"message.unknown-error-solution".nb_localizedString }];
              NBLogError(@"%@", error);
          } else {
-             self.credential = [[NBAuthenticationCredential alloc] initWithAccessToken:jsonObject[@"access_token"]
-                                                                             tokenType:jsonObject[@"token_type"]];
+             [self setCredentialWithAccessToken:jsonObject[@"access_token"] tokenType:jsonObject[@"token_type"]];
          }
          // Completed. Successful if error is nil.
          if (completionHandler) {

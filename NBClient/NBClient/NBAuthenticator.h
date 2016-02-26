@@ -48,6 +48,11 @@ extern NSString * __nonnull const NBAuthenticationDefaultRedirectPath;
 - (void)authenticateWithRedirectPath:(nonnull NSString *)redirectPath
                         priorSignout:(BOOL)needsPriorSignout
                    completionHandler:(nonnull NBAuthenticationCompletionHandler)completionHandler;
+// Use these methods if you are performing the authorization in your own
+// WKWebView and need to manually store and access token flow data.
+- (void)setCredentialWithAccessToken:(nonnull NSString *)accessToken
+                           tokenType:(nullable NSString *)tokenTypeOrNil;
+- (nullable NSURL *)authenticationURLWithRedirectPath:(nonnull NSString *)redirectPath;
 
 - (nullable NSURLSessionDataTask *)authenticateWithUserName:(nonnull NSString *)userName
                                                    password:(nonnull NSString *)password
