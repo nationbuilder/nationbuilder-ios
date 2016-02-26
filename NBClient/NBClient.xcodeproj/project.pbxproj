@@ -748,11 +748,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B1E2655016ADDC9B53544AA6 /* Pods-NBClientTests.debug.xcconfig */;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NBClient/NBClient-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -760,11 +755,6 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "NBClientTests/NBClientTests-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SOURCE_ROOT)/..",
-					"Client/Pods/build/Debug-iphoneos",
-				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nationbuilder.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
@@ -775,19 +765,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B7BA94556F404DEF440C3621 /* Pods-NBClientTests.release.xcconfig */;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NBClient/NBClient-Prefix.pch";
 				INFOPLIST_FILE = "NBClientTests/NBClientTests-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SOURCE_ROOT)/..",
-					"Client/Pods/build/Debug-iphoneos",
-				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nationbuilder.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
