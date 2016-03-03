@@ -41,6 +41,17 @@
     [super tearDown];
 }
 
+#pragma mark - Helpers
+
+- (void)stubPersonDataForClient:(NBClient *)client
+{
+    [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"people/me" pathVariables:nil
+                             queryParameters:@{ @"access_token": self.accessToken } variant:nil
+                                      client:client];
+}
+
+#pragma mark - Tests
+
 - (void)testDefaultInitialization
 {
     XCTAssertNotNil(self.account.clientInfo, @"Account always requires client info.");
@@ -81,6 +92,10 @@
 {
     [self setUpAsyncWithHTTPStubbing:YES];
     id accountMock = OCMPartialMock(self.account);
+    [accountMock setShouldAutoFetchAvatar:NO];
+    if (self.shouldUseHTTPStubbing) {
+        [self stubPersonDataForClient:[(NBAccount *)accountMock client]];
+    }
     // Given: an authenticator that authenticates properly using the token flow.
     id authenticatorMock = OCMPartialMock(self.account.authenticator);
     [OCMStub([accountMock authenticator]) andReturn:authenticatorMock];
@@ -92,15 +107,9 @@
          NBAuthenticationCredential *credential = [[NBAuthenticationCredential alloc] initWithAccessToken:self.accessToken tokenType:nil];
          completionHandler(credential, nil);
      }];
-    // Given: a client that properly fetches person data for its account user.
-    [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"people/me" pathVariables:nil
-                             queryParameters:@{ @"access_token": accessToken } variant:nil
-                                      client:[(NBAccount *)accountMock client]];
     // Given: keychain persistence that works.
     id credentialMock = OCMClassMock([NBAuthenticationCredential class]);
     [OCMStub([credentialMock saveCredential:OCMOCK_ANY withIdentifier:OCMOCK_ANY]) andReturnValue:@YES];
-    // Given: person data with a valid avatar image URL.
-    stubRequest(@"GET", @"https://d3n8a8pro7vhmx.cloudfront.net/assets/icons/buddy.png");
     // Given.
     XCTAssertNil(self.account.person, @"Initial account should have no person data.");
     // When.
@@ -111,7 +120,6 @@
         NBAccount *account = accountMock;
         // Then: data should be present.
         XCTAssertNotNil(account.person, @"Account should have person data.");
-        XCTAssertNotNil(account.avatarImageData, @"Account should have avatar image.");
         XCTAssertTrue([account.client.apiKey isEqualToString:self.accessToken],
                       @"Account client should be authenticated.");
         XCTAssertTrue(([[authenticatorMock credentialIdentifier] rangeOfString:account.name].location != NSNotFound &&
@@ -126,6 +134,10 @@
 {
     [self setUpAsync];
     id accountMock = OCMPartialMock(self.account);
+    [accountMock setShouldAutoFetchAvatar:NO];
+    if (self.shouldUseHTTPStubbing) {
+        [self stubPersonDataForClient:[(NBAccount *)accountMock client]];
+    }
     // Given: an authenticator with a stored credential.
     id authenticatorMock = OCMPartialMock(self.account.authenticator);
     [OCMStub([accountMock authenticator]) andReturn:authenticatorMock];

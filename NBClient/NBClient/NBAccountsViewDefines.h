@@ -86,6 +86,8 @@
 
 @property (nonatomic, copy, readonly, nonnull) NSString *name; // `username`, otherwise `full_name`
 @property (nonatomic, copy, readonly, nonnull) NSString *nationSlug;
+
 @property (nonatomic, nullable) NSData *avatarImageData; // Set to nil to clear memory.
+@property (nonatomic) BOOL shouldAutoFetchAvatar; // Defaults to true.
 
 @end
