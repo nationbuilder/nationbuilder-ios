@@ -111,9 +111,14 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     } else {
         NSDictionary *dictionary = [self dictionary];
         NSURLComponents *components;
-        if (self.currentDirection == NBPaginationDirectionNext && dictionary[NBClientPaginationNextLinkKey]) {
+        if (self.currentDirection == NBPaginationDirectionNext
+            && (dictionary[NBClientPaginationNextLinkKey] && dictionary[NBClientPaginationNextLinkKey] != [NSNull null]))
+        {
             components = [NSURLComponents componentsWithString:dictionary[NBClientPaginationNextLinkKey]];
-        } else if (self.currentDirection == NBPaginationDirectionPrevious && dictionary[NBClientPaginationPreviousLinkKey]) {
+
+        } else if (self.currentDirection == NBPaginationDirectionPrevious
+                   && (dictionary[NBClientPaginationPreviousLinkKey] && dictionary[NBClientPaginationPreviousLinkKey] != [NSNull null]))
+        {
             components = [NSURLComponents componentsWithString:dictionary[NBClientPaginationPreviousLinkKey]];
         }
         // Get parameters from generated URL strings, or get first page with initial parameters.

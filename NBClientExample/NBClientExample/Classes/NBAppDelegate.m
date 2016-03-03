@@ -73,6 +73,7 @@
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
+    NBLog(@"INFO: Finishing authenticating with URL: %@", url);
     // In addition to setting CFBundleURLTypes, this is the basics of what is
     // required for the preferred way of authenticating against NationBuilder.
     [NBAuthenticator finishAuthenticatingInWebBrowserWithURL:url];
