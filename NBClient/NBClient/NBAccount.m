@@ -29,6 +29,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         NSAssert(delegate, @"A delegate is required.");
         self.delegate = delegate;
         // Set defaults.
+        self.shouldAutoFetchAvatar = YES;
         self.shouldUseTestToken = NO;
         _identifier = NSNotFound;
         if (!clientInfoOrNil) {
@@ -61,6 +62,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 #pragma mark - NBAccountViewDataSource
 
 @synthesize avatarImageData = _avatarImageData;
+@synthesize shouldAutoFetchAvatar = _shouldAutoFetchAvatar;
 
 - (NSString *)nationSlug
 {
@@ -263,7 +265,11 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
             [self updateCredentialIdentifier];
             [NBAuthenticationCredential saveCredential:self.authenticator.credential
                                         withIdentifier:self.authenticator.credentialIdentifier];
-            [self fetchAvatarWithCompletionHandler:completionHandler];
+            if (self.shouldAutoFetchAvatar) {
+                [self fetchAvatarWithCompletionHandler:completionHandler];
+            } else {
+                completionHandler(nil);
+            }
             return;
         } else {
             NBLogWarning(@"Unhandled case.");
