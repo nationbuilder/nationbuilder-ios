@@ -71,6 +71,35 @@
                  @"Authentication credential should be not be in keychain.");
 }
 
+- (void)testSetCredentialWithAccessToken
+{
+    NBAuthenticator *authenticator = [[NBAuthenticator alloc] initWithBaseURL:self.baseURL
+                                                             clientIdentifier:self.clientIdentifier];
+    [authenticator setCredentialWithAccessToken:self.accessToken tokenType:nil];
+    XCTAssertTrue([authenticator.credential.accessToken isEqualToString:self.accessToken],
+                  @"Credential should be set.");
+}
+
+- (void)testAuthenticationURLWithRedirectPath
+{
+    // Given: a properly registered application url scheme.
+    id classMock = OCMClassMock([NBAuthenticator class]);
+    [OCMStub([classMock authorizationRedirectApplicationURLScheme]) andReturn:self.redirectURLScheme];
+    // Then: verify url.
+    NBAuthenticator *authenticator = [[NBAuthenticator alloc] initWithBaseURL:self.baseURL
+                                                             clientIdentifier:self.clientIdentifier];
+    NSURL *url = [authenticator authenticationURLWithRedirectPath:self.redirectPath];
+    NSString *redirectURIQueryString = [self.redirectURI.absoluteString
+                                        nb_percentEscapedQueryStringWithEncoding:NSUTF8StringEncoding
+                                        charactersToLeaveUnescaped:nil];
+    NSURL *expectedURL = [NSURL URLWithString:[NSString stringWithFormat:
+                                               @"/oauth/authorize?client_id=%@&redirect_uri=%@&response_type=token",
+                                               self.clientIdentifier, redirectURIQueryString]
+                                relativeToURL:self.baseURL];
+    XCTAssertTrue([url.absoluteString isEqualToString:expectedURL.absoluteString],
+                  @"Returns expected url.");
+}
+
 - (void)testAuthenticateWithRedirectPath
 {
     // Given: specified redirect scheme, URI, and resulting access token.
