@@ -122,20 +122,40 @@
     [self tearDownAsync];
 }
 
+#pragma mark - Mutation
+
+#pragma mark Helpers
+
+- (NSURL *)getSomeRequestURLForClient:(NBClient *)client {
+    if (self.shouldUseHTTPStubbing) {
+        // NOTE: There won't be a file, but request will be cancelled.
+        [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"people/me" pathVariables:nil queryParameters:nil variant:nil
+                                          client:client];
+    }
+    NBClientResourceItemCompletionHandler completion = ^(NSDictionary *item, NSError *error) {};
+    NSURLSessionDataTask *task = [client fetchPersonForClientUserWithCompletionHandler:completion];
+    [task cancel];
+    return task.currentRequest.URL;
+}
+
+#pragma mark Tests
+
 - (void)testConfiguringAPIVersion
 {
-    if (self.shouldUseHTTPStubbing) {
-        NBLog(@"SKIPPING");
-        return;
-    }
     NBClient *client = self.baseClientWithTestToken;
-    client.apiVersion = [NBClientDefaultAPIVersion stringByAppendingString:@"0"];
-    NSURLSessionDataTask *task = [client fetchPeopleWithPaginationInfo:nil
-                                                     completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {}];
-    [task cancel];
-    NSString *path = [[NSURLComponents componentsWithURL:task.currentRequest.URL resolvingAgainstBaseURL:YES] path];
+    client.apiVersion = [client.apiVersion stringByAppendingString:@"0"];
+    NSString *path = [self getSomeRequestURLForClient:client].path;
     XCTAssertTrue([path rangeOfString:client.apiVersion].location != NSNotFound,
                   @"Version string in all future request URLs should have been updated.");
+}
+
+- (void)testConfigurationAPIKey
+{
+    NBClient *client = self.baseClientWithTestToken;
+    client.apiKey = [client.apiKey stringByAppendingString:@"0"];
+    NSString *query = [self getSomeRequestURLForClient:client].query;
+    XCTAssertTrue([query rangeOfString:client.apiKey].location != NSNotFound,
+                  @"Key in all future request URLs should have been updated.");
 }
 
 #pragma mark - Delegation

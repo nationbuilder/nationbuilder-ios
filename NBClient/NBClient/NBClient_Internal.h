@@ -23,6 +23,8 @@
                 customURLSession:(nullable NSURLSession *)urlSession
    customURLSessionConfiguration:(nullable NSURLSessionConfiguration *)sessionConfiguration;
 
+- (void)updateBaseURLComponents;
+
 // These request methods are called by default in the base*TaskWithURL: methods,
 // but you can call them to customize the request for the endpoint and pass the
 // request into base*TaskForURLRequest:

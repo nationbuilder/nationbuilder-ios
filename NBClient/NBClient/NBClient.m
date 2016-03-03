@@ -161,9 +161,7 @@ static NSArray *LegacyPaginationEndpoints;
 - (void)setApiKey:(NSString *)apiKey
 {
     _apiKey = apiKey;
-    if (!apiKey) {
-        self.baseURLComponents = nil;
-    }
+    [self updateBaseURLComponents];
 }
 
 - (NSString *)apiVersion
@@ -174,10 +172,20 @@ static NSArray *LegacyPaginationEndpoints;
     self.apiVersion = NBClientDefaultAPIVersion;
     return _apiVersion;
 }
+- (void)setApiVersion:(NSString *)apiVersion
+{
+    if (!apiVersion) {
+        return;
+    }
+    _apiVersion = apiVersion;
+    [self updateBaseURLComponents];
+}
 
 #pragma mark - Private
 
 #pragma mark Requests & Tasks
+
+@synthesize baseURLComponents = _baseURLComponents;
 
 - (NSURLComponents *)baseURLComponents
 {
@@ -185,9 +193,14 @@ static NSArray *LegacyPaginationEndpoints;
         return _baseURLComponents;
     }
     self.baseURLComponents = [NSURLComponents componentsWithURL:self.baseURL resolvingAgainstBaseURL:YES];
-    _baseURLComponents.path = [NSString stringWithFormat:@"/api/%@", self.apiVersion];
-    _baseURLComponents.percentEncodedQuery = [@{ @"access_token": self.apiKey ?: @"" } nb_queryString];
+    [self updateBaseURLComponents];
     return _baseURLComponents;
+}
+
+- (void)updateBaseURLComponents
+{
+    self.baseURLComponents.path = [NSString stringWithFormat:@"/api/%@", self.apiVersion];
+    self.baseURLComponents.percentEncodedQuery = [@{ @"access_token": self.apiKey ?: @"" } nb_queryString];
 }
 
 - (NSMutableURLRequest *)baseFetchRequestWithURL:(NSURL *)url
