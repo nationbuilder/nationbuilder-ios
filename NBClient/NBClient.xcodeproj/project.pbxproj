@@ -225,6 +225,48 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AA5905561C87D47500B6643A /* NBAccount */ = {
+			isa = PBXGroup;
+			children = (
+				AAEFEAFD19E7131E00777BC1 /* NBAccount.h */,
+				AA2490551A09C72B006F0D24 /* NBAccount_Internal.h */,
+				AAEFEAFE19E7131E00777BC1 /* NBAccount.m */,
+				AAEFEAF019E6EADC00777BC1 /* NBAccountsViewDefines.h */,
+				AAEFEAF719E6EE8B00777BC1 /* NBAccountsManager.h */,
+				AAEFEAF819E6EE8B00777BC1 /* NBAccountsManager.m */,
+				AAD2806A1A0BDF3900E6DF39 /* NBAccountsManager_Internal.h */,
+				AA674EDA19E4D516009C6D4B /* UI */,
+			);
+			name = NBAccount;
+			sourceTree = "<group>";
+		};
+		AA5905581C87D8FE00B6643A /* NBAccount */ = {
+			isa = PBXGroup;
+			children = (
+				AA2490511A099312006F0D24 /* NBAccountTests.m */,
+				AA2490531A099321006F0D24 /* NBAccountsManagerTests.m */,
+			);
+			name = NBAccount;
+			sourceTree = "<group>";
+		};
+		AA59055A1C87D97B00B6643A /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				AA84F04619EC888A00DAA6B8 /* NationBuilder-Info.plist */,
+				AA84F04419EC7C9200DAA6B8 /* NationBuilder-Info-Local.plist */,
+			);
+			name = Configuration;
+			sourceTree = "<group>";
+		};
+		AA59055B1C87DA5600B6643A /* API */ = {
+			isa = PBXGroup;
+			children = (
+				AA6FF3C2197DF2E00049B747 /* NBClient+People.h */,
+				AA6FF3C3197DF2E00049B747 /* NBClient+People.m */,
+			);
+			name = API;
+			sourceTree = "<group>";
+		};
 		AA674EDA19E4D516009C6D4B /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -303,31 +345,22 @@
 		AAAEFC26196CD13D00222A48 /* NBClient */ = {
 			isa = PBXGroup;
 			children = (
-				AA84F04C19EDF36D00DAA6B8 /* NationBuilder.strings */,
 				AABD0029196F1FD6003A745F /* Main.h */,
 				AA668DCF1970B81800A952B0 /* FoundationAdditions.h */,
 				AA668DD01970B81800A952B0 /* FoundationAdditions.m */,
-				AAEFEAFD19E7131E00777BC1 /* NBAccount.h */,
-				AA2490551A09C72B006F0D24 /* NBAccount_Internal.h */,
-				AAEFEAFE19E7131E00777BC1 /* NBAccount.m */,
-				AAEFEAF019E6EADC00777BC1 /* NBAccountsViewDefines.h */,
-				AAEFEAF719E6EE8B00777BC1 /* NBAccountsManager.h */,
-				AAEFEAF819E6EE8B00777BC1 /* NBAccountsManager.m */,
-				AAD2806A1A0BDF3900E6DF39 /* NBAccountsManager_Internal.h */,
 				AA86284F196F1651005060C9 /* NBAuthenticator.h */,
 				AA71A9731A0855E0005E9231 /* NBAuthenticator_Internal.h */,
 				AA862850196F1651005060C9 /* NBAuthenticator.m */,
 				AAAEFC29196CD13D00222A48 /* NBClient.h */,
 				AA6FF3C6197DF5B10049B747 /* NBClient_Internal.h */,
 				AAAEFC2B196CD13D00222A48 /* NBClient.m */,
-				AA6FF3C2197DF2E00049B747 /* NBClient+People.h */,
-				AA6FF3C3197DF2E00049B747 /* NBClient+People.m */,
 				AA8B6823196F82D4009DDA91 /* NBDefines.h */,
 				AA8B6824196F82D4009DDA91 /* NBDefines.m */,
 				AA6FF3BC197D95220049B747 /* NBPaginationInfo.h */,
 				AA6FF3BD197D95220049B747 /* NBPaginationInfo.m */,
+				AA59055B1C87DA5600B6643A /* API */,
+				AA5905561C87D47500B6643A /* NBAccount */,
 				AAAEFC27196CD13D00222A48 /* Supporting Files */,
-				AA674EDA19E4D516009C6D4B /* UI */,
 			);
 			path = NBClient;
 			sourceTree = "<group>";
@@ -335,6 +368,7 @@
 		AAAEFC27196CD13D00222A48 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				AA84F04C19EDF36D00DAA6B8 /* NationBuilder.strings */,
 				AAAEFC28196CD13D00222A48 /* NBClient-Prefix.pch */,
 			);
 			name = "Supporting Files";
@@ -344,8 +378,6 @@
 			isa = PBXGroup;
 			children = (
 				AA668DD51978418F00A952B0 /* FoundationAdditionsTests.m */,
-				AA2490511A099312006F0D24 /* NBAccountTests.m */,
-				AA2490531A099321006F0D24 /* NBAccountsManagerTests.m */,
 				AA8B6821196F5539009DDA91 /* NBAuthenticatorTests.m */,
 				AA668DD31976EA1600A952B0 /* NBClientPeopleTests.m */,
 				AA9677681AA79B3900FE2FC9 /* NBClientPeopleTaggingsTests.m */,
@@ -354,8 +386,10 @@
 				AA6FF3C0197DADEA0049B747 /* NBPaginationInfoTests.m */,
 				AA668DC419705FC800A952B0 /* NBTestCase.h */,
 				AA668DC519705FC800A952B0 /* NBTestCase.m */,
-				AAAEFC3B196CD13D00222A48 /* Supporting Files */,
+				AA5905581C87D8FE00B6643A /* NBAccount */,
+				AA59055A1C87D97B00B6643A /* Configuration */,
 				AA78ED78199C563C0043B7C0 /* Fixtures */,
+				AAAEFC3B196CD13D00222A48 /* Supporting Files */,
 			);
 			path = NBClientTests;
 			sourceTree = "<group>";
@@ -363,8 +397,6 @@
 		AAAEFC3B196CD13D00222A48 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				AA84F04619EC888A00DAA6B8 /* NationBuilder-Info.plist */,
-				AA84F04419EC7C9200DAA6B8 /* NationBuilder-Info-Local.plist */,
 				AAAEFC3C196CD13D00222A48 /* NBClientTests-Info.plist */,
 				AAAEFC3D196CD13D00222A48 /* InfoPlist.strings */,
 			);
