@@ -98,9 +98,24 @@ static NSArray *LegacyPaginationEndpoints;
     LogLevel = logLevel;
 }
 
-#pragma mark - Private
+#pragma mark - Accessors
 
-#pragma mark Accessors
+@synthesize urlSession = _urlSession;
+@synthesize sessionConfiguration = _sessionConfiguration;
+@synthesize authenticator = _authenticator;
+@synthesize apiKey = _apiKey;
+@synthesize apiVersion = _apiVersion;
+
+- (NSURLSession *)urlSession
+{
+    if (_urlSession) {
+        return _urlSession;
+    }
+    self.urlSession = [NSURLSession sessionWithConfiguration:self.sessionConfiguration
+                                                    delegate:self
+                                               delegateQueue:[NSOperationQueue mainQueue]];
+    return _urlSession;
+}
 
 - (NSURLSessionConfiguration *)sessionConfiguration
 {
@@ -125,34 +140,6 @@ static NSArray *LegacyPaginationEndpoints;
     return _sessionConfiguration;
 }
 
-- (NSURLSession *)urlSession
-{
-    if (_urlSession) {
-        return _urlSession;
-    }
-    self.urlSession = [NSURLSession sessionWithConfiguration:self.sessionConfiguration
-                                                    delegate:self
-                                               delegateQueue:[NSOperationQueue mainQueue]];
-    return _urlSession;
-}
-
-- (NSString *)apiVersion
-{
-    if (_apiVersion) {
-        return _apiVersion;
-    }
-    self.apiVersion = NBClientDefaultAPIVersion;
-    return _apiVersion;
-}
-
-- (void)setApiKey:(NSString *)apiKey
-{
-    _apiKey = apiKey;
-    if (!apiKey) {
-        self.baseURLComponents = nil;
-    }
-}
-
 - (void)setAuthenticator:(NBAuthenticator *)authenticator
 {
     _authenticator = authenticator;
@@ -170,6 +157,25 @@ static NSArray *LegacyPaginationEndpoints;
     self.baseURL = [NSURL URLWithString:[NSString stringWithFormat:NBClientDefaultBaseURLFormat, self.nationSlug]];
     return _baseURL;
 }
+
+- (void)setApiKey:(NSString *)apiKey
+{
+    _apiKey = apiKey;
+    if (!apiKey) {
+        self.baseURLComponents = nil;
+    }
+}
+
+- (NSString *)apiVersion
+{
+    if (_apiVersion) {
+        return _apiVersion;
+    }
+    self.apiVersion = NBClientDefaultAPIVersion;
+    return _apiVersion;
+}
+
+#pragma mark - Private
 
 #pragma mark Requests & Tasks
 
