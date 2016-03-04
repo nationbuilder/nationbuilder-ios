@@ -16,6 +16,7 @@
 // #token-flow
 @property (nonatomic, strong, nullable) NBAuthenticationCompletionHandler currentInBrowserAuthenticationCompletionHandler;
 @property (nonatomic) BOOL currentlyNeedsPriorSignout;
+@property (nonatomic) BOOL isObservingApplicationState;
 
 - (nonnull NSDictionary *)authenticationParametersWithRedirectPath:(nonnull NSString *)redirectPath;
 - (nullable NSURL *)authenticationURLWithSubPath:(nonnull NSString *)subPath

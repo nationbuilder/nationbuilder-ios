@@ -49,23 +49,19 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     if (self) {
         self.baseURL = baseURL;
         self.clientIdentifier = clientIdentifier;
+        self.isObservingApplicationState = NO;
         self.shouldPersistCredential = YES;
-        NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-        [center addObserver:self
-                   selector:@selector(finishAuthenticatingInWebBrowserWithNotification:)
-                       name:NBAuthenticationRedirectNotification object:nil];
-        [center addObserver:self
-                   selector:@selector(finishAuthenticatingInWebBrowserWithNotification:)
-                       name:UIApplicationDidBecomeActiveNotification object:nil];
     }
     return self;
 }
 
 - (void)dealloc
 {
-    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center removeObserver:self name:NBAuthenticationRedirectNotification object:nil];
-    [center removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+    if (self.isObservingApplicationState) {
+        NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+        [center removeObserver:self name:NBAuthenticationRedirectNotification object:nil];
+        [center removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+    }
 }
 
 #pragma mark - NBLogging
@@ -283,6 +279,16 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 - (void)authenticateInWebBrowserWithURL:(NSURL *)url completionHandler:(NBAuthenticationCompletionHandler)completionHandler
 {
     UIApplication *application = [UIApplication sharedApplication];
+    if (!self.isObservingApplicationState) {
+        NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+        [center addObserver:self
+                   selector:@selector(finishAuthenticatingInWebBrowserWithNotification:)
+                       name:NBAuthenticationRedirectNotification object:nil];
+        [center addObserver:self
+                   selector:@selector(finishAuthenticatingInWebBrowserWithNotification:)
+                       name:UIApplicationDidBecomeActiveNotification object:nil];
+        self.isObservingApplicationState = YES;
+    }
     NSError *error;
     if ([application canOpenURL:url]) {
         self.currentInBrowserAuthenticationCompletionHandler = completionHandler;
