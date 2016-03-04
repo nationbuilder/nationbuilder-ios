@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.subspec 'Core' do |sp|
     # Build settings
     sp.dependency 'NBClient/Locale'
-    sp.frameworks = 'Security'
+    sp.frameworks = ['Security', 'UIKit']
     # File patterns
     sp.source_files = 'NBClient/NBClient/*.{h,m}'
     sp.exclude_files = 'NBClient/UI'

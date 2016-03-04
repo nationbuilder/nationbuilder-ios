@@ -15,6 +15,7 @@
 		AA3B62AA19E8BCDA00798C49 /* NBAccountsViewDefines.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AAEFEAF019E6EADC00777BC1 /* NBAccountsViewDefines.h */; };
 		AA3B62AC19E8BCE700798C49 /* NBAccountsManager.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AAEFEAF719E6EE8B00777BC1 /* NBAccountsManager.h */; };
 		AA3B62AD19E8BCF200798C49 /* NBAccountsViewController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AAEFEAEC19E6E73800777BC1 /* NBAccountsViewController.h */; };
+		AA59055D1C891AF400B6643A /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA59055C1C891AF400B6643A /* SafariServices.framework */; };
 		AA668DC619705FC800A952B0 /* NBTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = AA668DC519705FC800A952B0 /* NBTestCase.m */; };
 		AA668DD11970B81800A952B0 /* FoundationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = AA668DD01970B81800A952B0 /* FoundationAdditions.m */; };
 		AA668DD41976EA1600A952B0 /* NBClientPeopleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA668DD31976EA1600A952B0 /* NBClientPeopleTests.m */; };
@@ -124,6 +125,8 @@
 		AA2490551A09C72B006F0D24 /* NBAccount_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBAccount_Internal.h; sourceTree = "<group>"; };
 		AA3B62A619E8B86700798C49 /* UIKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIKitAdditions.h; sourceTree = "<group>"; };
 		AA3B62A719E8B86700798C49 /* UIKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIKitAdditions.m; sourceTree = "<group>"; };
+		AA59055C1C891AF400B6643A /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
+		AA59055E1C892C5700B6643A /* NBClient.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = NBClient.podspec; path = ../../NBClient.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		AA668DC419705FC800A952B0 /* NBTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBTestCase.h; sourceTree = "<group>"; };
 		AA668DC519705FC800A952B0 /* NBTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBTestCase.m; sourceTree = "<group>"; };
 		AA668DCF1970B81800A952B0 /* FoundationAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoundationAdditions.h; sourceTree = "<group>"; };
@@ -204,6 +207,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA59055D1C891AF400B6643A /* SafariServices.framework in Frameworks */,
 				AAE62FC21AD37D6D00926195 /* CoreText.framework in Frameworks */,
 				AA674EE519E60170009C6D4B /* UIKit.framework in Frameworks */,
 				AA6FF3C8197EDEE60049B747 /* Security.framework in Frameworks */,
@@ -332,8 +336,9 @@
 		AAAEFC23196CD13D00222A48 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				AAE62FC11AD37D6D00926195 /* CoreText.framework */,
 				AA78ED60199AC2F60043B7C0 /* libPods-NBClientTests.a */,
+				AA59055C1C891AF400B6643A /* SafariServices.framework */,
+				AAE62FC11AD37D6D00926195 /* CoreText.framework */,
 				AAAEFC24196CD13D00222A48 /* Foundation.framework */,
 				AA6FF3C7197EDEE60049B747 /* Security.framework */,
 				AA674EE419E60170009C6D4B /* UIKit.framework */,
@@ -370,6 +375,7 @@
 			children = (
 				AA84F04C19EDF36D00DAA6B8 /* NationBuilder.strings */,
 				AAAEFC28196CD13D00222A48 /* NBClient-Prefix.pch */,
+				AA59055E1C892C5700B6643A /* NBClient.podspec */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";

@@ -15,7 +15,7 @@
 
 #import "NBPeopleViewFlowLayout.h"
 
-@interface NBAppDelegate () <NBAccountsManagerDelegate>
+@interface NBAppDelegate () <NBAccountsManagerDelegate, NBAuthenticatorPresentationDelegate>
 
 @property (nonatomic, readonly) NBAccount *account;
 
@@ -81,6 +81,14 @@
     // succeeded. There's a system-level bug that prevents your app from opening
     // the same URL after a previous successful opening.
     return NO;
+}
+
+#pragma mark - NBAuthenticatorPresentationDelegate
+
+- (void)presentWebBrowserForAuthenticationWithRedirectPath:(SFSafariViewController *)webBrowser
+{
+    UIViewController *modalViewController = (UIViewController *)webBrowser;
+    [self.accountsViewController presentViewController:modalViewController animated:YES completion:nil];
 }
 
 #pragma mark - NBAccountsManagerDelegate
