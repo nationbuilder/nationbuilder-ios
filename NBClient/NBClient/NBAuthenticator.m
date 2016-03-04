@@ -8,6 +8,7 @@
 #import "NBAuthenticator.h"
 #import "NBAuthenticator_Internal.h"
 
+#import <SafariServices/SafariServices.h>
 #import <UIKit/UIApplication.h>
 
 #import "FoundationAdditions.h"
@@ -278,7 +279,6 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 - (void)authenticateInWebBrowserWithURL:(NSURL *)url completionHandler:(NBAuthenticationCompletionHandler)completionHandler
 {
-    UIApplication *application = [UIApplication sharedApplication];
     if (!self.isObservingApplicationState) {
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
         [center addObserver:self
@@ -289,23 +289,35 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                        name:UIApplicationDidBecomeActiveNotification object:nil];
         self.isObservingApplicationState = YES;
     }
+    self.currentInBrowserAuthenticationCompletionHandler = completionHandler;
+    [self openURLWithWebBrowser:url];
+}
+
+- (void)openURLWithWebBrowser:(NSURL *)url
+{
+    NBLogInfo(@"Opening authentication URL in Safari: %@", url);
+    id<NBAuthenticatorPresentationDelegate> presentationDelegate = self.delegate;
+    if (!presentationDelegate) {
+        id<UIApplicationDelegate> appDelegate = [UIApplication sharedApplication].delegate;
+        if ([appDelegate conformsToProtocol:@protocol(NBAuthenticatorPresentationDelegate)]) {
+            presentationDelegate = (id)appDelegate;
+        }
+    }
     NSError *error;
-    if ([application canOpenURL:url]) {
-        self.currentInBrowserAuthenticationCompletionHandler = completionHandler;
+    if (presentationDelegate) {
         NBLogInfo(@"Opening authentication URL in Safari: %@", url);
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [application openURL:url];
-        });
+        self.webBrowser = [[SFSafariViewController alloc] initWithURL:url];
+        [presentationDelegate presentWebBrowserForAuthenticationWithRedirectPath:self.webBrowser];
     } else {
         error = [NSError
                  errorWithDomain:NBErrorDomain
                  code:NBAuthenticationErrorCodeWebBrowser
-                 userInfo:@{ NSLocalizedDescriptionKey: @"message.invalid-browser".nb_localizedString,
-                             NSLocalizedFailureReasonErrorKey: @"message.invalid-browser.auth-requires-browser".nb_localizedString,
-                             NSLocalizedRecoverySuggestionErrorKey: @"message.invalid-browser.check-safari-installed".nb_localizedString }];
+                 userInfo:@{ NSLocalizedDescriptionKey: @"message.invalid-browser-presenter".nb_localizedString,
+                             NSLocalizedFailureReasonErrorKey: @"message.invalid-browser-presenter.auth-requires-presenter".nb_localizedString,
+                             NSLocalizedRecoverySuggestionErrorKey: @"message.invalid-browser-presenter.conform-to-protocol".nb_localizedString }];
     }
     if (error) {
-        completionHandler(nil, error);
+        self.currentInBrowserAuthenticationCompletionHandler(nil, error);
     }
 }
 
@@ -340,6 +352,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     // Complete.
     self.currentInBrowserAuthenticationCompletionHandler(self.credential, error);
     self.currentInBrowserAuthenticationCompletionHandler = nil;
+    self.webBrowser = nil;
 }
 
 

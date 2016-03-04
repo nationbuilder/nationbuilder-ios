@@ -7,6 +7,8 @@
 
 #import "NBAuthenticator.h"
 
+@class SFSafariViewController;
+
 @interface NBAuthenticator ()
 
 @property (nonatomic, readwrite, nonnull) NSURL *baseURL;
@@ -17,6 +19,7 @@
 @property (nonatomic, strong, nullable) NBAuthenticationCompletionHandler currentInBrowserAuthenticationCompletionHandler;
 @property (nonatomic) BOOL currentlyNeedsPriorSignout;
 @property (nonatomic) BOOL isObservingApplicationState;
+@property (nonatomic, strong, nullable) SFSafariViewController *webBrowser;
 
 - (nonnull NSDictionary *)authenticationParametersWithRedirectPath:(nonnull NSString *)redirectPath;
 - (nullable NSURL *)authenticationURLWithSubPath:(nonnull NSString *)subPath
@@ -29,6 +32,7 @@
 - (void)authenticateInWebBrowserWithURL:(nonnull NSURL *)url
                       completionHandler:(nonnull NBAuthenticationCompletionHandler)completionHandler;
 - (void)finishAuthenticatingInWebBrowserWithNotification:(nonnull NSNotification *)notification;
+- (void)openURLWithWebBrowser:(nonnull NSURL *)url;
 
 - (nonnull NSURLSessionDataTask *)authenticationDataTaskWithURL:(nonnull NSURL *)url
                                               completionHandler:(nullable NBAuthenticationCompletionHandler)completionHandler;

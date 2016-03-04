@@ -116,10 +116,6 @@
 
 - (void)testAuthenticateWithRedirectPath
 {
-    // Given: an application that can open authorization URL (Safari).
-    id applicationMock = OCMClassMock([UIApplication class]);
-    [OCMStub([applicationMock sharedApplication]) andReturn:applicationMock];
-    [OCMStub([applicationMock canOpenURL:OCMOCK_ANY]) andReturnValue:@YES];
     // Given: an authenticator that doesn't affect global state.
     id authenticatorMock = OCMPartialMock([[NBAuthenticator alloc] initWithBaseURL:self.baseURL
                                                                   clientIdentifier:self.clientIdentifier]);
@@ -127,7 +123,7 @@
     // Given: a properly registered application url scheme.
     [OCMStub([authenticatorMock authorizationRedirectApplicationURLScheme]) andReturn:self.redirectURLScheme];
     // Given: user authorization and subsequent opening of redirect URI in app.
-    [OCMStub([applicationMock openURL:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+    [OCMStub([authenticatorMock openURLWithWebBrowser:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
         // Then: verify authorization url.
         NSURL *authorizationURL;
         [invocation getArgument:&authorizationURL atIndex:2];
