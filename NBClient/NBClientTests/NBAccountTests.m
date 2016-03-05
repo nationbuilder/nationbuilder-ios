@@ -132,7 +132,7 @@
 
 - (void)testActivationFromSavedCredential
 {
-    [self setUpAsync];
+    [self setUpAsyncWithHTTPStubbing:YES];
     id accountMock = OCMPartialMock(self.account);
     [accountMock setShouldAutoFetchAvatar:NO];
     if (self.shouldUseHTTPStubbing) {
