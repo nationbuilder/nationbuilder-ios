@@ -25,14 +25,16 @@
 
 @implementation NBClientPeopleCapitalsTests
 
-- (void)setUp {
+- (void)setUp
+{
     [super setUp];
     [self setUpSharedClient];
     self.amountInCents = 100;
     self.userContent = @"test";
 }
 
-- (void)tearDown {
+- (void)tearDown
+{
     [super tearDown];
 }
 

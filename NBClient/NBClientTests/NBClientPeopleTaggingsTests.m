@@ -24,14 +24,16 @@
 
 @implementation NBClientPeopleTaggingsTests
 
-- (void)setUp {
+- (void)setUp
+{
     [super setUp];
     [self setUpSharedClient];
     self.tagList = @[ @"test 1", @"test 2" ];
     self.tagName = @"test";
 }
 
-- (void)tearDown {
+- (void)tearDown
+{
     [super tearDown];
 }
 
