@@ -88,6 +88,7 @@ static NSArray *LegacyPaginationEndpoints;
     
     self.defaultErrorRecoverySuggestion = @"message.unknown-error-solution".nb_localizedString;
     
+    self.baseURL = [NSURL URLWithString:[NSString stringWithFormat:NBClientDefaultBaseURLFormat, self.nationSlug]];
     self.shouldUseLegacyPagination = NO;
 }
 
@@ -105,6 +106,12 @@ static NSArray *LegacyPaginationEndpoints;
 @synthesize authenticator = _authenticator;
 @synthesize apiKey = _apiKey;
 @synthesize apiVersion = _apiVersion;
+
+- (void)setBaseURL:(NSURL *)baseURL
+{
+    _baseURL = baseURL;
+    [self updateBaseURLComponents];
+}
 
 - (NSURLSession *)urlSession
 {
@@ -149,15 +156,6 @@ static NSArray *LegacyPaginationEndpoints;
     }
 }
 
-- (NSURL *)baseURL
-{
-    if (_baseURL) {
-        return _baseURL;
-    }
-    self.baseURL = [NSURL URLWithString:[NSString stringWithFormat:NBClientDefaultBaseURLFormat, self.nationSlug]];
-    return _baseURL;
-}
-
 - (void)setApiKey:(NSString *)apiKey
 {
     _apiKey = apiKey;
@@ -192,13 +190,13 @@ static NSArray *LegacyPaginationEndpoints;
     if (_baseURLComponents) {
         return _baseURLComponents;
     }
-    self.baseURLComponents = [NSURLComponents componentsWithURL:self.baseURL resolvingAgainstBaseURL:YES];
     [self updateBaseURLComponents];
     return _baseURLComponents;
 }
 
 - (void)updateBaseURLComponents
 {
+    self.baseURLComponents = [NSURLComponents componentsWithURL:self.baseURL resolvingAgainstBaseURL:YES];
     self.baseURLComponents.path = [NSString stringWithFormat:@"/api/%@", self.apiVersion];
     self.baseURLComponents.percentEncodedQuery = [@{ @"access_token": self.apiKey ?: @"" } nb_queryString];
 }
