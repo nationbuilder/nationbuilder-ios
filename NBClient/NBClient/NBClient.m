@@ -226,6 +226,7 @@ static NSArray *LegacyPaginationEndpoints;
                                        completionHandler:(NBClientResourceListCompletionHandler)completionHandler
 {
     BOOL shouldUseLegacyPagination = self.shouldUseLegacyPagination;
+
     if (paginationInfo) {
         shouldUseLegacyPagination = [LegacyPaginationEndpoints containsObject:components.path];
         paginationInfo.legacy = shouldUseLegacyPagination;
@@ -236,16 +237,21 @@ static NSArray *LegacyPaginationEndpoints;
         }
         [mutableParameters addEntriesFromDictionary:[components.percentEncodedQuery nb_queryStringParameters]];
         components.percentEncodedQuery = mutableParameters.nb_queryString;
-    }
+    } // Otherwise endpoint uses the resource's default pagination.
+
     NSMutableURLRequest *request = [self baseFetchRequestWithURL:components.URL];
     NBLogInfo(@"REQUEST: %@", request.nb_debugDescription);
     void (^taskCompletionHandler)(NSData *, NSURLResponse *, NSError *) =
     [self dataTaskCompletionHandlerForFetchResultsKey:resultsKey originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
-        NBPaginationInfo *responsePaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:jsonObject
-                                                                                         legacy:shouldUseLegacyPagination];
-        responsePaginationInfo.numberOfItemsPerPage = paginationInfo.numberOfItemsPerPage;
-        responsePaginationInfo.currentDirection = paginationInfo.currentDirection;
-        [responsePaginationInfo updateCurrentPageNumber];
+
+        NBPaginationInfo *responsePaginationInfo;
+        if ([NBPaginationInfo dictionaryContainsPaginationInfo:jsonObject]) {
+            responsePaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:jsonObject legacy:shouldUseLegacyPagination];
+            responsePaginationInfo.numberOfItemsPerPage = paginationInfo.numberOfItemsPerPage;
+            responsePaginationInfo.currentDirection = paginationInfo.currentDirection;
+            [responsePaginationInfo updateCurrentPageNumber];
+        }
+
         if (completionHandler) {
             completionHandler(results, responsePaginationInfo, error);
         }

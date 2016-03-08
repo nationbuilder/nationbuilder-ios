@@ -55,4 +55,6 @@ typedef NS_ENUM(NSUInteger, NBPaginationDirection) {
 
 - (void)updateCurrentPageNumber;
 
++ (BOOL)dictionaryContainsPaginationInfo:(nonnull NSDictionary *)dictionary;
+
 @end
