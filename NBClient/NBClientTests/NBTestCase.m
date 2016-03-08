@@ -114,11 +114,6 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
     return [self.class shouldUseHTTPStubbing];
 }
 
-- (BOOL)shouldOnlyUseTestToken
-{
-    return !self.userPassword;
-}
-
 - (void)stubInfoFileBundleResourcePathForOperations:(void (^)(void))operationsBlock
 {
     id bundleMock = OCMClassMock([NSBundle class]);
@@ -204,34 +199,10 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
 
 - (void)setUpSharedClient
 {
-    // We need to use the shared session because we need to be in an application
-    // for an app-specific cache.
-    __block NSString *apiKey;
-    BOOL shouldUseTestToken = self.shouldOnlyUseTestToken;
-    if (!shouldUseTestToken) {
-        NBAuthenticator *authenticator = [[NBAuthenticator alloc] initWithBaseURL:self.baseURL
-                                                                 clientIdentifier:self.clientIdentifier];
-        NSURLSessionDataTask *task = [authenticator
-                                      authenticateWithUserName:self.userEmailAddress
-                                      password:self.userPassword
-                                      clientSecret:self.clientSecret
-                                      completionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
-                                          apiKey = credential.accessToken;
-                                      }];
-        if (task) {
-            NBLog(@"WARNING: Test case requires saved authentication credential. Re-authenticating should not happen.");
-            // Fallback to using test token.
-            [task cancel];
-            shouldUseTestToken = YES;
-        }
-    }
-    if (shouldUseTestToken) {
-        // NOTE: When using HTTP-stubbing, the authenticity of test token is not
-        // tested and does not matter.
-        apiKey = self.testToken;
-    }
+    // NOTE: When using HTTP-stubbing, the authenticity of test token is not
+    // tested and does not matter.
     self.client = [[NBClient alloc] initWithNationSlug:self.nationSlug
-                                                apiKey:apiKey
+                                                apiKey:self.testToken
                                          customBaseURL:self.baseURL
                                       customURLSession:[NSURLSession sharedSession]
                          customURLSessionConfiguration:nil];
