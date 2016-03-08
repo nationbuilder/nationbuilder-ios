@@ -31,6 +31,13 @@ NSString * const NBClientTaggingTagNameOrListKey = @"tag";
 NSString * const NBClientCapitalAmountInCentsKey = @"amount_in_cents";
 NSString * const NBClientCapitalUserContentKey = @"content";
 
+NSString * const NBClientContactBroadcasterIdentifierKey = @"broadcaster_id";
+NSString * const NBClientContactMethodKey = @"method";
+NSString * const NBClientContactNoteKey = @"note";
+NSString * const NBClientContactSenderIdentifierKey = @"sender_id";
+NSString * const NBClientContactStatusKey = @"status";
+NSString * const NBClientContactTypeIdentifierKey = @"type_id";
+
 #if DEBUG
 static NBLogLevel LogLevel = NBLogLevelDebug;
 #else

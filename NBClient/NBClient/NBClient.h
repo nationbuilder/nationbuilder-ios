@@ -42,6 +42,13 @@ extern NSString * __nonnull const NBClientTaggingTagNameOrListKey; // String or 
 extern NSString * __nonnull const NBClientCapitalAmountInCentsKey;
 extern NSString * __nonnull const NBClientCapitalUserContentKey;
 
+extern NSString * __nonnull const NBClientContactBroadcasterIdentifierKey;
+extern NSString * __nonnull const NBClientContactMethodKey;
+extern NSString * __nonnull const NBClientContactNoteKey;
+extern NSString * __nonnull const NBClientContactSenderIdentifierKey;
+extern NSString * __nonnull const NBClientContactStatusKey;
+extern NSString * __nonnull const NBClientContactTypeIdentifierKey;
+
 // The client works with the NationBuilder API. It is an API client. For
 // authentication, it relies on its authenticator or test token. Conventionally,
 // its methods directly match the API endpoints, but are named according to its
