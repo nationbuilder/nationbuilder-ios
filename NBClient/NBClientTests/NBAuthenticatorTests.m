@@ -68,7 +68,7 @@
                     @"Authenticator should have credential ID.");
 }
 
-- (void)x_testManagingCredentialInKeychain
+- (void)testManagingCredentialInKeychain
 {
     NBAuthenticationCredential *credential = [[NBAuthenticationCredential alloc]
                                               initWithAccessToken:self.accessToken tokenType:@"bearer"];
