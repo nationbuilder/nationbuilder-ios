@@ -38,6 +38,10 @@ NSString * const NBClientContactSenderIdentifierKey = @"sender_id";
 NSString * const NBClientContactStatusKey = @"status";
 NSString * const NBClientContactTypeIdentifierKey = @"type_id";
 
+NSString * const NBClientDonationAmountInCentsKey = @"amount_in_cents";
+NSString * const NBClientDonationDonorIdentifierKey = @"donor_id";
+NSString * const NBClientDonationPaymentTypeNameKey = @"payment_type_name";
+
 #if DEBUG
 static NBLogLevel LogLevel = NBLogLevelDebug;
 #else

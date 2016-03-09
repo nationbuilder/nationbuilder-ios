@@ -13,9 +13,16 @@
 		AA1289771C8F9AF300E3DD48 /* settings_contact_types_get.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA1289761C8F9AF300E3DD48 /* settings_contact_types_get.txt */; };
 		AA12897A1C8FA07F00E3DD48 /* settings_contact_methods_get.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA1289781C8FA07F00E3DD48 /* settings_contact_methods_get.txt */; };
 		AA12897B1C8FA07F00E3DD48 /* settings_contact_statuses_get.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA1289791C8FA07F00E3DD48 /* settings_contact_statuses_get.txt */; };
+		AA12897E1C8FAC9F00E3DD48 /* NBClient+Donations.m in Sources */ = {isa = PBXBuildFile; fileRef = AA12897D1C8FAC9F00E3DD48 /* NBClient+Donations.m */; };
+		AA12897F1C8FACB000E3DD48 /* NBClient+Donations.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA12897C1C8FAC9F00E3DD48 /* NBClient+Donations.h */; };
 		AA1289801C8FACE600E3DD48 /* Main.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AABD0029196F1FD6003A745F /* Main.h */; };
 		AA1289811C8FACEE00E3DD48 /* FoundationAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA668DCF1970B81800A952B0 /* FoundationAdditions.h */; };
 		AA1289821C8FACFD00E3DD48 /* NBAuthenticator.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA86284F196F1651005060C9 /* NBAuthenticator.h */; };
+		AA1289841C8FB3BD00E3DD48 /* NBClientDonationsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA1289831C8FB3BD00E3DD48 /* NBClientDonationsTests.m */; };
+		AA1289861C8FBCD300E3DD48 /* donations_get.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA1289851C8FBCD300E3DD48 /* donations_get.txt */; };
+		AA1289881C8FC3FF00E3DD48 /* donations_post.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA1289871C8FC3FF00E3DD48 /* donations_post.txt */; };
+		AA12898B1C8FC56500E3DD48 /* donations_id_delete.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA1289891C8FC56500E3DD48 /* donations_id_delete.txt */; };
+		AA12898C1C8FC56500E3DD48 /* donations_id_put.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA12898A1C8FC56500E3DD48 /* donations_id_put.txt */; };
 		AA2490521A099312006F0D24 /* NBAccountTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2490511A099312006F0D24 /* NBAccountTests.m */; };
 		AA2490541A099321006F0D24 /* NBAccountsManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2490531A099321006F0D24 /* NBAccountsManagerTests.m */; };
 		AA2490561A09C7AE006F0D24 /* NBAccount_Internal.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA2490551A09C72B006F0D24 /* NBAccount_Internal.h */; };
@@ -113,6 +120,7 @@
 				AA90915A19834186009BE1E9 /* NBDefines.h in CopyFiles */,
 				AA90915919834164009BE1E9 /* NBPaginationInfo.h in CopyFiles */,
 				AA1289751C8F8CC500E3DD48 /* NBClient+Contacts.h in CopyFiles */,
+				AA12897F1C8FACB000E3DD48 /* NBClient+Donations.h in CopyFiles */,
 				AA90915819834164009BE1E9 /* NBClient+People.h in CopyFiles */,
 				AAEFEB0019E716CE00777BC1 /* NBAccount.h in CopyFiles */,
 				AA2490561A09C7AE006F0D24 /* NBAccount_Internal.h in CopyFiles */,
@@ -134,6 +142,13 @@
 		AA1289761C8F9AF300E3DD48 /* settings_contact_types_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = settings_contact_types_get.txt; sourceTree = "<group>"; };
 		AA1289781C8FA07F00E3DD48 /* settings_contact_methods_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = settings_contact_methods_get.txt; sourceTree = "<group>"; };
 		AA1289791C8FA07F00E3DD48 /* settings_contact_statuses_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = settings_contact_statuses_get.txt; sourceTree = "<group>"; };
+		AA12897C1C8FAC9F00E3DD48 /* NBClient+Donations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NBClient+Donations.h"; sourceTree = "<group>"; };
+		AA12897D1C8FAC9F00E3DD48 /* NBClient+Donations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NBClient+Donations.m"; sourceTree = "<group>"; };
+		AA1289831C8FB3BD00E3DD48 /* NBClientDonationsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBClientDonationsTests.m; sourceTree = "<group>"; };
+		AA1289851C8FBCD300E3DD48 /* donations_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = donations_get.txt; sourceTree = "<group>"; };
+		AA1289871C8FC3FF00E3DD48 /* donations_post.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = donations_post.txt; sourceTree = "<group>"; };
+		AA1289891C8FC56500E3DD48 /* donations_id_delete.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = donations_id_delete.txt; sourceTree = "<group>"; };
+		AA12898A1C8FC56500E3DD48 /* donations_id_put.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = donations_id_put.txt; sourceTree = "<group>"; };
 		AA2490511A099312006F0D24 /* NBAccountTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAccountTests.m; sourceTree = "<group>"; };
 		AA2490531A099321006F0D24 /* NBAccountsManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAccountsManagerTests.m; sourceTree = "<group>"; };
 		AA2490551A09C72B006F0D24 /* NBAccount_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBAccount_Internal.h; sourceTree = "<group>"; };
@@ -250,6 +265,7 @@
 			isa = PBXGroup;
 			children = (
 				AA5905661C8E340800B6643A /* NBClientContactsTests.m */,
+				AA1289831C8FB3BD00E3DD48 /* NBClientDonationsTests.m */,
 				AA668DD31976EA1600A952B0 /* NBClientPeopleTests.m */,
 				AA9677681AA79B3900FE2FC9 /* NBClientPeopleTaggingsTests.m */,
 				AA85EB131AA8E42100E3CC08 /* NBClientPeopleCapitalsTests.m */,
@@ -295,6 +311,8 @@
 			children = (
 				AA5905631C8E325C00B6643A /* NBClient+Contacts.h */,
 				AA5905641C8E325C00B6643A /* NBClient+Contacts.m */,
+				AA12897C1C8FAC9F00E3DD48 /* NBClient+Donations.h */,
+				AA12897D1C8FAC9F00E3DD48 /* NBClient+Donations.m */,
 				AA6FF3C2197DF2E00049B747 /* NBClient+People.h */,
 				AA6FF3C3197DF2E00049B747 /* NBClient+People.m */,
 			);
@@ -321,6 +339,10 @@
 		AA78ED78199C563C0043B7C0 /* Fixtures */ = {
 			isa = PBXGroup;
 			children = (
+				AA1289851C8FBCD300E3DD48 /* donations_get.txt */,
+				AA1289891C8FC56500E3DD48 /* donations_id_delete.txt */,
+				AA12898A1C8FC56500E3DD48 /* donations_id_put.txt */,
+				AA1289871C8FC3FF00E3DD48 /* donations_post.txt */,
 				AA78ED71199C563C0043B7C0 /* people_get.txt */,
 				AA85EB151AA94FDE00E3CC08 /* people_id_capitals_delete.txt */,
 				AA85EB171AA94FDE00E3CC08 /* people_id_capitals_get.txt */,
@@ -535,6 +557,7 @@
 			files = (
 				AA85EB1A1AA94FDE00E3CC08 /* people_id_capitals_get.txt in Resources */,
 				AA78ED7A199C563C0043B7C0 /* people_id_delete.txt in Resources */,
+				AA12898C1C8FC56500E3DD48 /* donations_id_put.txt in Resources */,
 				AA84F04919EC94A700DAA6B8 /* people_me_get.txt in Resources */,
 				AA78ED79199C563C0043B7C0 /* people_get.txt in Resources */,
 				AA85EB0E1AA85E6300E3CC08 /* people_id_taggings_delete.txt in Resources */,
@@ -553,10 +576,13 @@
 				AA1289731C8E6E3D00E3DD48 /* people_id_contacts_get.txt in Resources */,
 				AA78ED7B199C563C0043B7C0 /* people_id_get.txt in Resources */,
 				AA1289771C8F9AF300E3DD48 /* settings_contact_types_get.txt in Resources */,
+				AA12898B1C8FC56500E3DD48 /* donations_id_delete.txt in Resources */,
 				AA85EB121AA85E6300E3CC08 /* people_nearby_get.txt in Resources */,
+				AA1289861C8FBCD300E3DD48 /* donations_get.txt in Resources */,
 				AA12897A1C8FA07F00E3DD48 /* settings_contact_methods_get.txt in Resources */,
 				AA85EB0D1AA85E6300E3CC08 /* people_id_taggings_bulk_put.txt in Resources */,
 				AA8BAB5E1AD43CC8003077A2 /* NationBuilder.strings in Resources */,
+				AA1289881C8FC3FF00E3DD48 /* donations_post.txt in Resources */,
 				AA1289741C8E6E3D00E3DD48 /* people_id_contacts_post.txt in Resources */,
 				AA84F04719EC888A00DAA6B8 /* NationBuilder-Info.plist in Resources */,
 				AA85EB191AA94FDE00E3CC08 /* people_id_capitals_post.txt in Resources */,
@@ -624,6 +650,7 @@
 				AA668DD11970B81800A952B0 /* FoundationAdditions.m in Sources */,
 				AAEFEAEF19E6E73800777BC1 /* NBAccountsViewController.m in Sources */,
 				AA862851196F1651005060C9 /* NBAuthenticator.m in Sources */,
+				AA12897E1C8FAC9F00E3DD48 /* NBClient+Donations.m in Sources */,
 				AAAEFC2C196CD13D00222A48 /* NBClient.m in Sources */,
 				AA3B62A819E8B86700798C49 /* UIKitAdditions.m in Sources */,
 				AAEFEAFF19E7131E00777BC1 /* NBAccount.m in Sources */,
@@ -637,6 +664,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA1289841C8FB3BD00E3DD48 /* NBClientDonationsTests.m in Sources */,
 				AA668DD61978418F00A952B0 /* FoundationAdditionsTests.m in Sources */,
 				AA2490521A099312006F0D24 /* NBAccountTests.m in Sources */,
 				AA9677691AA79B3900FE2FC9 /* NBClientPeopleTaggingsTests.m in Sources */,

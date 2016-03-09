@@ -15,6 +15,7 @@
     #import "NBAuthenticator.h"
     #import "NBClient.h"
     #import "NBClient+Contacts.h"
+    #import "NBClient+Donations.h"
     #import "NBClient+People.h"
     #import "NBDefines.h"
     #import "FoundationAdditions.h"
