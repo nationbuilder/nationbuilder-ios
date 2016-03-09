@@ -1,0 +1,27 @@
+HTTP/1.1 200 OK
+Server: cloudflare-nginx
+Date: Tue, 08 Mar 2016 23:41:36 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: keep-alive
+Set-Cookie: __cfduid=dcae818ff1e12738dad7cdb0ec009bc461457480495; expires=Wed, 08-Mar-17 23:41:35 GMT; path=/; domain=.nationbuilder.com; HttpOnly
+Cache-Control: max-age=0, private, must-revalidate
+Etag: W/"8770fdd6ce9fac4079936511bf42a238"
+Nation-Ratelimit-Limit: 10000
+Nation-Ratelimit-Remaining: 9990
+Nation-Ratelimit-Reset: 1457481600
+Status: 200 OK
+Vary: Accept-Encoding
+X-Powered-By: Phusion Passenger 4.0.53
+X-Pulse-Approved: true
+X-Rack-Cache: miss
+X-Ratelimit-Limit: 10s
+X-Ratelimit-Remaining: 99
+X-Ratelimit-Reset: 1457480506
+X-Request-Id: 359c6ae8340c987233364e14c4a81808
+X-Runtime: 0.095786
+X-Ua-Compatible: IE=Edge,chrome=1
+Via: 1.1 nationbuilder.com
+CF-RAY: 280a238b802c07e5-LAX
+
+{"results":[{"id":5,"name":"Fundraising appeal"},{"id":1,"name":"Inbox"},{"id":4,"name":"Invite"},{"id":2,"name":"Outreach"},{"id":3,"name":"Question"},{"id":8,"name":"social media outreach - initial"},{"id":7,"name":"Thank you"},{"id":6,"name":"Volunteer recruitment"}],"next":null,"prev":null}

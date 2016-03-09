@@ -30,6 +30,16 @@
                                                   withContactInfo:(nonnull NSDictionary *)contactInfo
                                                 completionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
 
-#pragma mark - Contact Types
+#pragma mark - Contact Types (Fetch Only)
+
+// GET settings/contact_types
+- (nonnull NSURLSessionDataTask *)fetchContactTypesWithPaginationInfo:(nullable NBPaginationInfo *)paginationInfo
+                                                    completionHandler:(nonnull NBClientResourceListCompletionHandler)completionHandler;
+
+// GET settings/contact_methods
+- (nonnull NSURLSessionDataTask *)fetchContactMethodsWithCompletionHandler:(nonnull NBClientResourceListCompletionHandler)completionHandler;
+
+// GET settings/contact_statuses
+- (nonnull NSURLSessionDataTask *)fetchContactStatusesWithCompletionHandler:(nonnull NBClientResourceListCompletionHandler)completionHandler;
 
 @end

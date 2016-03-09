@@ -10,6 +10,9 @@
 		AA1289731C8E6E3D00E3DD48 /* people_id_contacts_get.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA1289711C8E6E3D00E3DD48 /* people_id_contacts_get.txt */; };
 		AA1289741C8E6E3D00E3DD48 /* people_id_contacts_post.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA1289721C8E6E3D00E3DD48 /* people_id_contacts_post.txt */; };
 		AA1289751C8F8CC500E3DD48 /* NBClient+Contacts.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA5905631C8E325C00B6643A /* NBClient+Contacts.h */; };
+		AA1289771C8F9AF300E3DD48 /* settings_contact_types_get.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA1289761C8F9AF300E3DD48 /* settings_contact_types_get.txt */; };
+		AA12897A1C8FA07F00E3DD48 /* settings_contact_methods_get.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA1289781C8FA07F00E3DD48 /* settings_contact_methods_get.txt */; };
+		AA12897B1C8FA07F00E3DD48 /* settings_contact_statuses_get.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA1289791C8FA07F00E3DD48 /* settings_contact_statuses_get.txt */; };
 		AA2490521A099312006F0D24 /* NBAccountTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2490511A099312006F0D24 /* NBAccountTests.m */; };
 		AA2490541A099321006F0D24 /* NBAccountsManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2490531A099321006F0D24 /* NBAccountsManagerTests.m */; };
 		AA2490561A09C7AE006F0D24 /* NBAccount_Internal.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA2490551A09C72B006F0D24 /* NBAccount_Internal.h */; };
@@ -128,6 +131,9 @@
 /* Begin PBXFileReference section */
 		AA1289711C8E6E3D00E3DD48 /* people_id_contacts_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_id_contacts_get.txt; sourceTree = "<group>"; };
 		AA1289721C8E6E3D00E3DD48 /* people_id_contacts_post.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_id_contacts_post.txt; sourceTree = "<group>"; };
+		AA1289761C8F9AF300E3DD48 /* settings_contact_types_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = settings_contact_types_get.txt; sourceTree = "<group>"; };
+		AA1289781C8FA07F00E3DD48 /* settings_contact_methods_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = settings_contact_methods_get.txt; sourceTree = "<group>"; };
+		AA1289791C8FA07F00E3DD48 /* settings_contact_statuses_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = settings_contact_statuses_get.txt; sourceTree = "<group>"; };
 		AA2490511A099312006F0D24 /* NBAccountTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAccountTests.m; sourceTree = "<group>"; };
 		AA2490531A099321006F0D24 /* NBAccountsManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAccountsManagerTests.m; sourceTree = "<group>"; };
 		AA2490551A09C72B006F0D24 /* NBAccount_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBAccount_Internal.h; sourceTree = "<group>"; };
@@ -335,6 +341,9 @@
 				AA85EB0B1AA85E6300E3CC08 /* people_nearby_get.txt */,
 				AA78ED76199C563C0043B7C0 /* people_post.txt */,
 				AA78ED77199C563C0043B7C0 /* people_search_get.txt */,
+				AA1289781C8FA07F00E3DD48 /* settings_contact_methods_get.txt */,
+				AA1289791C8FA07F00E3DD48 /* settings_contact_statuses_get.txt */,
+				AA1289761C8F9AF300E3DD48 /* settings_contact_types_get.txt */,
 			);
 			path = Fixtures;
 			sourceTree = "<group>";
@@ -540,9 +549,12 @@
 				AA85EB0F1AA85E6300E3CC08 /* people_id_taggings_get.txt in Resources */,
 				AA85EB111AA85E6300E3CC08 /* people_id_taggings_tag_delete.txt in Resources */,
 				AA85EB181AA94FDE00E3CC08 /* people_id_capitals_delete.txt in Resources */,
+				AA12897B1C8FA07F00E3DD48 /* settings_contact_statuses_get.txt in Resources */,
 				AA1289731C8E6E3D00E3DD48 /* people_id_contacts_get.txt in Resources */,
 				AA78ED7B199C563C0043B7C0 /* people_id_get.txt in Resources */,
+				AA1289771C8F9AF300E3DD48 /* settings_contact_types_get.txt in Resources */,
 				AA85EB121AA85E6300E3CC08 /* people_nearby_get.txt in Resources */,
+				AA12897A1C8FA07F00E3DD48 /* settings_contact_methods_get.txt in Resources */,
 				AA85EB0D1AA85E6300E3CC08 /* people_id_taggings_bulk_put.txt in Resources */,
 				AA8BAB5E1AD43CC8003077A2 /* NationBuilder.strings in Resources */,
 				AA1289741C8E6E3D00E3DD48 /* people_id_contacts_post.txt in Resources */,
