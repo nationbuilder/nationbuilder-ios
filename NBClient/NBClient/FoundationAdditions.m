@@ -57,6 +57,21 @@ static NSString *QueryPairJoiner = @"=";
     return YES;
 }
 
+- (BOOL)nb_hasKeys:(NSArray *)keys
+{
+    SEL comparator = @selector(localizedCaseInsensitiveCompare:);
+    NSArray *ownKeys = self.allKeys;
+    if ([[ownKeys sortedArrayUsingSelector:comparator] isEqualToArray:[keys sortedArrayUsingSelector:comparator]]) {
+        return true;
+    }
+    for (NSString *key in keys) {
+        if (![ownKeys containsObject:key]) {
+            return false;
+        }
+    }
+    return true;
+}
+
 - (BOOL)nb_isEquivalentToDictionary:(NSDictionary *)dictionary
 {
     if (dictionary.allKeys.count != self.allKeys.count) { return NO; }

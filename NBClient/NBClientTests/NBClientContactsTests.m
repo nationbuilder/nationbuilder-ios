@@ -38,21 +38,15 @@
 - (void)assertContactsArray:(NSArray *)array
 {
     XCTAssertNotNil(array, @"Client should have received list of contacts.");
-    for (NSDictionary *dictionary in array) {
-        [self assertContactDictionary:dictionary];
-    }
+    for (NSDictionary *dictionary in array) { [self assertContactDictionary:dictionary]; }
 }
 
 - (void)assertContactDictionary:(NSDictionary *)dictionary
 {
-    static NSArray *keys;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        keys = [@[ @"type_id", @"method", @"sender_id", @"recipient_id", @"status", @"broadcaster_id", @"note", @"created_at" ]
-                sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    static NSArray *keys; static dispatch_once_t onceToken; dispatch_once(&onceToken, ^{
+        keys = @[ @"type_id", @"method", @"sender_id", @"recipient_id", @"status", @"broadcaster_id", @"note", @"created_at" ];
     });
-    XCTAssertEqualObjects([dictionary.allKeys sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)], keys,
-                          "Capital has correct attributes.");
+    return XCTAssertTrue([dictionary nb_hasKeys:keys], "Contact has correct attributes.");
 }
 
 #pragma mark - Tests

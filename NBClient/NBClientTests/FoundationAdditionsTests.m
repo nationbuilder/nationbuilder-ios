@@ -55,6 +55,21 @@
                    @"Dictionary should not be subset of source dictionary.");
 }
 
+- (void)testCheckingIfDictionaryHasKeys
+{
+    NSDictionary *dictionary = @{ @"foo": @0, @"bar": @1 };
+    NSArray *keys = @[ @"foo", @"bar" ];
+    NSArray *subsetKeys = @[ @"foo" ];
+    NSArray *unorderedKeys = @[ @"bar", @"foo" ];
+    XCTAssertTrue([dictionary nb_hasKeys:keys], @"Dictionary should have keys.");
+    XCTAssertTrue([dictionary nb_hasKeys:subsetKeys], @"Dictionary should have keys.");
+    XCTAssertTrue([dictionary nb_hasKeys:unorderedKeys], @"Should test regardless of key order.");
+    NSArray *otherKeys = @[ @"baz" ];
+    NSArray *supersetKeys = @[ @"foo", @"bar", @"baz" ];
+    XCTAssertFalse([dictionary nb_hasKeys:otherKeys], @"Dictionary should not have keys.");
+    XCTAssertFalse([dictionary nb_hasKeys:supersetKeys], @"Should test for having all given keys.");
+}
+
 - (void)testCheckingIfDictionariesAreEquivalent
 {
     NSDictionary *source = @{ @"foo": @"foo", @"bar": @{ @"baz": @1 } };
