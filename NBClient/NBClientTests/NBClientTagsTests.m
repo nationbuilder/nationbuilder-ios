@@ -80,10 +80,9 @@
 
 - (void)testFetchTagPeople
 {
+    if (!self.shouldUseHTTPStubbing) { return; }
     [self setUpAsync];
-    if (self.shouldUseHTTPStubbing) {
-        [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"tags/:tag/people" pathVariables:@{ @"tag": self.tagName } queryParameters:self.paginationParameters];
-    }
+    [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"tags/:tag/people" pathVariables:@{ @"tag": self.tagName } queryParameters:self.paginationParameters];
     NBPaginationInfo *requestPaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:self.paginationParameters legacy:NO];
     NSURLSessionDataTask *task =
     [self.client fetchTagPeopleByName:self.tagName withPaginationInfo:requestPaginationInfo completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {

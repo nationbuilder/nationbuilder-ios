@@ -90,10 +90,9 @@
 
 - (void)testFetchListPeople
 {
+    if (!self.shouldUseHTTPStubbing) { return; }
     [self setUpAsync];
-    if (self.shouldUseHTTPStubbing) {
-        [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"lists/:id/people" pathVariables:@{ @"id": @(self.listIdentifier) } queryParameters:self.paginationParameters];
-    }
+    [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"lists/:id/people" pathVariables:@{ @"id": @(self.listIdentifier) } queryParameters:self.paginationParameters];
     NBPaginationInfo *requestPaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:self.paginationParameters legacy:NO];
     NSURLSessionDataTask *task =
     [self.client fetchListPeopleByIdentifier:self.listIdentifier withPaginationInfo:requestPaginationInfo completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
