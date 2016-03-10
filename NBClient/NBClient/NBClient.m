@@ -361,15 +361,31 @@ static NSArray *LegacyPaginationEndpoints;
 - (NSURLSessionDataTask *)baseDeleteTaskWithURL:(NSURL *)url
                               completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
-    return [self baseDeleteTaskWithURLRequest:[self baseDeleteRequestWithURL:url] completionHandler:completionHandler];
+    return [self baseDeleteTaskWithURLRequest:[self baseDeleteRequestWithURL:url] resultsKey:nil completionHandler:completionHandler];
+}
+
+- (nonnull NSURLSessionDataTask *)baseDeleteTaskWithURL:(NSURL *)url
+                                             parameters:(NSDictionary *)parameters
+                                             resultsKey:(NSString *)resultsKey
+                                      completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
+{
+    NSError *error;
+    NSMutableURLRequest *request = [self baseSaveRequestWithURL:url parameters:parameters error:&error];
+    if (error) {
+        dispatch_async(dispatch_get_main_queue(), ^{ completionHandler(nil, error); });
+        return nil;
+    }
+    request.HTTPMethod = @"DELETE";
+    return [self baseDeleteTaskWithURLRequest:request resultsKey:resultsKey completionHandler:completionHandler];
 }
 
 - (NSURLSessionDataTask *)baseDeleteTaskWithURLRequest:(NSURLRequest *)request
+                                            resultsKey:(NSString *)resultsKey
                                      completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
     NBLogInfo(@"REQUEST: %@", request.nb_debugDescription);
     void (^taskCompletionHandler)(NSData *, NSURLResponse *, NSError *) =
-    [self dataTaskCompletionHandlerForFetchResultsKey:nil originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
+    [self dataTaskCompletionHandlerForFetchResultsKey:resultsKey originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
         if (completionHandler) {
             completionHandler(results, error);
         }

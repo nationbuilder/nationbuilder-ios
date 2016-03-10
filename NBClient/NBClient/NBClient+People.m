@@ -143,7 +143,7 @@
             return nil;
         }
     }
-    return [self baseDeleteTaskWithURLRequest:request completionHandler:completionHandler];
+    return [self baseDeleteTaskWithURLRequest:request resultsKey:nil completionHandler:completionHandler];
 }
 
 #pragma mark - Political Capital
