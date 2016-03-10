@@ -1,0 +1,27 @@
+HTTP/1.1 200 OK
+Server: cloudflare-nginx
+Date: Thu, 10 Mar 2016 02:36:05 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: keep-alive
+Set-Cookie: __cfduid=d871d79d5892b058b7e636ab2b7927e8b1457577364; expires=Fri, 10-Mar-17 02:36:04 GMT; path=/; domain=.nationbuilder.com; HttpOnly
+Cache-Control: max-age=0, private, must-revalidate
+Etag: W/"13a250bb5dda3d6a26734961270e2cac"
+Nation-Ratelimit-Limit: 10000
+Nation-Ratelimit-Remaining: 9990
+Nation-Ratelimit-Reset: 1457654400
+Status: 200 OK
+Vary: Accept-Encoding
+X-Powered-By: Phusion Passenger 4.0.53
+X-Pulse-Approved: true
+X-Rack-Cache: miss
+X-Ratelimit-Limit: 10s
+X-Ratelimit-Remaining: 98
+X-Ratelimit-Reset: 1457577374
+X-Request-Id: 8c11a7e1f4059adb66c713fc948a6470
+X-Runtime: 0.126601
+X-Ua-Compatible: IE=Edge,chrome=1
+Via: 1.1 nationbuilder.com
+CF-RAY: 28136081a31c1431-LAX
+
+{"results":[{"birthdate":null,"city_district":"14","civicrm_id":null,"county_district":"1","county_file_id":null,"created_at":"2014-10-13T11:06:25-07:00","datatrust_id":null,"do_not_call":false,"do_not_contact":false,"dw_id":null,"email":"peng+tester@nationbuilder.com","email_opt_in":true,"employer":"NationBuilder","external_id":null,"federal_district":"34","fire_district":null,"first_name":"John","has_facebook":false,"id":713,"is_twitter_follower":false,"is_volunteer":false,"judicial_district":null,"labour_region":null,"last_name":"Appleseed","linkedin_id":null,"mobile":"","mobile_opt_in":true,"nbec_guid":null,"ngp_id":null,"note":"John Chapman (September 26, 1774 \u2013 March 11, 1845), often called Johnny Appleseed, was an American pioneer nurseryman who introduced apple trees to large parts of Pennsylvania, Ohio, Indiana, and Illinois, as well as the northern counties of present day West Virginia. He became an American legend while still alive, due to his kind, generous ways, his leadership in conservation, and the symbolic importance he attributed to apples. He was also a missionary for The New Church (Swedenborgian) and the inspiration for many museums and historical sites such as the Johnny Appleseed Museum in Urbana, Ohio and the Johnny Appleseed Heritage Center in between Lucas, Ohio and Mifflin, Ohio.","occupation":"Dummy","party":"I","pf_strat_id":null,"phone":"","precinct_id":null,"primary_address":{"address1":"520 S Grand Ave","address2":"2nd floor","address3":null,"city":"Los Angeles","county":"","state":"CA","country_code":"US","zip":"90071","lat":"34.0497052","lng":"-118.2542879","fips":null},"profile_image_url_ssl":"https://d3n8a8pro7vhmx.cloudfront.net/assets/icons/buddy.png","recruiter_id":null,"rnc_id":null,"rnc_regid":null,"salesforce_id":null,"school_district":"19647330000001","school_sub_district":null,"sex":"M","signup_type":0,"state_file_id":null,"state_lower_district":"53","state_upper_district":"30","support_level":1,"supranational_district":null,"tags":["ios","public account"],"twitter_id":null,"twitter_name":null,"updated_at":"2014-10-13T16:02:29-07:00","van_id":null,"village_district":null,"ward":null,"work_phone_number":"213-394-4623"}],"next":null,"prev":null}
