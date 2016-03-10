@@ -15,6 +15,7 @@
 
 @interface NBClientDonationsTests : NBTestCase
 
+@property (nonatomic) NSUInteger donationIdentifier;
 @property (nonatomic) NSDictionary *paginationParameters;
 
 - (void)assertDonationsArray:(NSArray *)array;
@@ -28,12 +29,8 @@
 {
     [super setUp];
     [self setUpSharedClient];
+    self.donationIdentifier = 3;
     self.paginationParameters = @{ NBClientPaginationLimitKey: @5, NBClientPaginationTokenOptInKey: @1 };
-}
-
-- (void)tearDown
-{
-    [super tearDown];
 }
 
 #pragma mark - Helpers
@@ -76,10 +73,10 @@
 {
     if (!self.shouldUseHTTPStubbing) { return; }
     [self setUpAsync];
+    [self stubRequestUsingFileDataWithMethod:@"POST" path:@"donations" queryParameters:nil];
     NSDictionary *parameters = @{ NBClientDonationAmountInCentsKey: @"100",
                                   NBClientDonationDonorIdentifierKey: @(self.supporterIdentifier),
                                   NBClientDonationPaymentTypeNameKey: @"Cash" };
-    [self stubRequestUsingFileDataWithMethod:@"POST" path:@"donations" queryParameters:nil];
     NSURLSessionDataTask *task =
     [self.client createDonationWithParameters:parameters completionHandler:^(NSDictionary *item, NSError *error) {
         [self assertServiceError:error];
@@ -94,11 +91,10 @@
 {
     if (!self.shouldUseHTTPStubbing) { return; }
     [self setUpAsync];
-    NSUInteger identifier = 3;
+    [self stubRequestUsingFileDataWithMethod:@"PUT" pathFormat:@"donations/:id" pathVariables:@{ @"id": @(self.donationIdentifier) } queryParameters:nil];
     NSDictionary *parameters = @{ NBClientDonationAmountInCentsKey: @"200" };
-    [self stubRequestUsingFileDataWithMethod:@"PUT" pathFormat:@"donations/:id" pathVariables:@{ @"id": @(identifier) } queryParameters:nil];
     NSURLSessionDataTask *task =
-    [self.client saveDonationByIdentifier:identifier withParameters:parameters completionHandler:^(NSDictionary *item, NSError *error) {
+    [self.client saveDonationByIdentifier:self.donationIdentifier withParameters:parameters completionHandler:^(NSDictionary *item, NSError *error) {
         [self assertServiceError:error];
         [self assertDonationDictionary:item];
         [self completeAsync];
@@ -111,9 +107,8 @@
 {
     if (!self.shouldUseHTTPStubbing) { return; }
     [self setUpAsync];
-    NSUInteger identifier = 3;
-    [self stubRequestUsingFileDataWithMethod:@"DELETE" pathFormat:@"donations/:id" pathVariables:@{ @"id": @(identifier) } queryParameters:nil];
-    NSURLSessionDataTask *task = [self.client deleteDonationByIdentifier:identifier completionHandler:^(NSDictionary *item, NSError *error) {
+    [self stubRequestUsingFileDataWithMethod:@"DELETE" pathFormat:@"donations/:id" pathVariables:@{ @"id": @(self.donationIdentifier) } queryParameters:nil];
+    NSURLSessionDataTask *task = [self.client deleteDonationByIdentifier:self.donationIdentifier completionHandler:^(NSDictionary *item, NSError *error) {
         [self assertServiceError:error];
         XCTAssertNil(item, @"Donation dictionary should not exist.");
         [self completeAsync];

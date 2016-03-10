@@ -137,7 +137,7 @@
     [self tearDownAsync];
 }
 
-- (void)testFetchPersonByIdentifier
+- (void)testFetchPerson
 {
     [self setUpAsync];
     NSUInteger identifier = self.userIdentifier;
@@ -156,7 +156,7 @@
     [self tearDownAsync];
 }
 
-- (void)testRegisterPersonByIdentifier
+- (void)testRegisterPerson
 {
     [self setUpAsync];
     NSUInteger identifier = self.supporterIdentifier;

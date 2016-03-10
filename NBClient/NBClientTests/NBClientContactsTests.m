@@ -32,11 +32,6 @@
     [self setUpSharedClient];
 }
 
-- (void)tearDown
-{
-    [super tearDown];
-}
-
 #pragma mark - Contacts
 
 #pragma mark Helpers
@@ -61,20 +56,16 @@
 {
     [self setUpAsync];
     NSDictionary *paginationParameters = @{ NBClientPaginationLimitKey: @5, NBClientPaginationTokenOptInKey: @1 };
-    NSUInteger personIdentifier = self.supporterIdentifier;
     if (self.shouldUseHTTPStubbing) {
-        [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"people/:id/contacts" pathVariables:@{ @"id": @(personIdentifier) } queryParameters:paginationParameters];
+        [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"people/:id/contacts" pathVariables:@{ @"id": @(self.supporterIdentifier) } queryParameters:paginationParameters];
     }
     NBPaginationInfo *requestPaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:paginationParameters legacy:NO];
     NSURLSessionDataTask *task =
-    [self.client
-     fetchPersonContactsByIdentifier:personIdentifier
-     withPaginationInfo:requestPaginationInfo
-     completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
-         [self assertServiceError:error];
-         [self assertContactsArray:items];
-         [self completeAsync];
-     }];
+    [self.client fetchPersonContactsByIdentifier:self.supporterIdentifier withPaginationInfo:requestPaginationInfo completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
+        [self assertServiceError:error];
+        [self assertContactsArray:items];
+        [self completeAsync];
+    }];
     [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
@@ -88,19 +79,15 @@
                                    NBClientContactSenderIdentifierKey: @(self.userIdentifier),
                                    NBClientContactStatusKey: @"not_interested",
                                    NBClientContactTypeIdentifierKey: @4 };
-    NSUInteger personIdentifier = self.supporterIdentifier;
     if (self.shouldUseHTTPStubbing) {
-        [self stubRequestUsingFileDataWithMethod:@"POST" pathFormat:@"people/:id/contacts" pathVariables:@{ @"id": @(personIdentifier) } queryParameters:nil];
+        [self stubRequestUsingFileDataWithMethod:@"POST" pathFormat:@"people/:id/contacts" pathVariables:@{ @"id": @(self.supporterIdentifier) } queryParameters:nil];
     }
     NSURLSessionDataTask *task =
-    [self.client
-     createPersonContactByIdentifier:personIdentifier
-     withContactInfo:contactInfo
-     completionHandler:^(NSDictionary *item, NSError *error) {
-         [self assertServiceError:error];
-         [self assertContactDictionary:item];
-         [self completeAsync];
-     }];
+    [self.client createPersonContactByIdentifier:self.supporterIdentifier withContactInfo:contactInfo completionHandler:^(NSDictionary *item, NSError *error) {
+        [self assertServiceError:error];
+        [self assertContactDictionary:item];
+        [self completeAsync];
+    }];
     [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
