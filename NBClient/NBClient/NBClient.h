@@ -44,6 +44,8 @@ extern NSString * __nonnull const NBClientTaggingTagNameOrListKey; // String or 
 extern NSString * __nonnull const NBClientCapitalAmountInCentsKey;
 extern NSString * __nonnull const NBClientCapitalUserContentKey;
 
+extern NSString * __nonnull const NBClientNoteUserContentKey;
+
 extern NSString * __nonnull const NBClientContactBroadcasterIdentifierKey;
 extern NSString * __nonnull const NBClientContactMethodKey;
 extern NSString * __nonnull const NBClientContactNoteKey;

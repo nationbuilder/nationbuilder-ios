@@ -31,6 +31,8 @@ NSString * const NBClientTaggingTagNameOrListKey = @"tag";
 NSString * const NBClientCapitalAmountInCentsKey = @"amount_in_cents";
 NSString * const NBClientCapitalUserContentKey = @"content";
 
+NSString * const NBClientNoteUserContentKey = @"content";
+
 NSString * const NBClientContactBroadcasterIdentifierKey = @"broadcaster_id";
 NSString * const NBClientContactMethodKey = @"method";
 NSString * const NBClientContactNoteKey = @"note";

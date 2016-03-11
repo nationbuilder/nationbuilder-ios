@@ -186,6 +186,18 @@
     return [self baseDeleteTaskWithURL:components.URL completionHandler:completionHandler];
 }
 
+#pragma mark - Notes
+
+- (NSURLSessionDataTask *)createPersonPrivateNoteByIdentifier:(NSUInteger)personIdentifier
+                                                 withNoteInfo:(NSDictionary *)noteInfo
+                                            completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
+{
+    NSURLComponents *components = [self.baseURLComponents copy];
+    components.path = [components.path stringByAppendingString:
+                       [NSString stringWithFormat:@"/people/%lu/notes", (unsigned long)personIdentifier]];
+    return [self baseCreateTaskWithURL:components.URL parameters:@{ @"note": noteInfo } resultsKey:@"note" completionHandler:completionHandler];
+}
+
 #pragma mark - Updating
 
 - (NSURLSessionDataTask *)createPersonWithParameters:(NSDictionary *)parameters
