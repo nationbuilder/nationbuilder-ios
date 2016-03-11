@@ -31,23 +31,23 @@
     return [self baseFetchTaskWithURLComponents:components resultsKey:@"results" paginationInfo:paginationInfo completionHandler:completionHandler];
 }
 
-- (NSURLSessionDataTask *)createPeopleListingsByIdentifier:(NSUInteger)identifier
+- (NSURLSessionDataTask *)createPeopleListingsByIdentifier:(NSUInteger)listIdentifier
                                      withPeopleIdentifiers:(NSArray *)peopleIdentifiers
                                          completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
     NSURLComponents *components = [self.baseURLComponents copy];
     components.path = [components.path stringByAppendingString:
-                       [NSString stringWithFormat:@"/lists/%lu/people", (unsigned long)identifier]];
+                       [NSString stringWithFormat:@"/lists/%lu/people", (unsigned long)listIdentifier]];
     return [self baseCreateTaskWithURL:components.URL parameters:@{ @"people_ids": peopleIdentifiers } resultsKey:nil completionHandler:completionHandler];
 }
 
-- (NSURLSessionDataTask *)deletePeopleListingsByIdentifier:(NSUInteger)identifier
+- (NSURLSessionDataTask *)deletePeopleListingsByIdentifier:(NSUInteger)listIdentifier
                                      withPeopleIdentifiers:(NSArray *)peopleIdentifiers
                                          completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
     NSURLComponents *components = [self.baseURLComponents copy];
     components.path = [components.path stringByAppendingString:
-                       [NSString stringWithFormat:@"/lists/%lu/people", (unsigned long)identifier]];
+                       [NSString stringWithFormat:@"/lists/%lu/people", (unsigned long)listIdentifier]];
     return [self baseDeleteTaskWithURL:components.URL parameters:@{ @"people_ids": peopleIdentifiers } resultsKey:nil completionHandler:completionHandler];
 }
 

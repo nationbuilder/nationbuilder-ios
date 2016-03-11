@@ -28,12 +28,12 @@
                                             completionHandler:(nonnull NBClientResourceListCompletionHandler)completionHandler;
 
 // POST /lists/:id/people
-- (nonnull NSURLSessionDataTask *)createPeopleListingsByIdentifier:(NSUInteger)identifier
+- (nonnull NSURLSessionDataTask *)createPeopleListingsByIdentifier:(NSUInteger)listIdentifier
                                              withPeopleIdentifiers:(nonnull NSArray *)peopleIdentifiers
                                                  completionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
 
 // DELETE /lists/:id/people
-- (nonnull NSURLSessionDataTask *)deletePeopleListingsByIdentifier:(NSUInteger)identifier
+- (nonnull NSURLSessionDataTask *)deletePeopleListingsByIdentifier:(NSUInteger)listIdentifier
                                              withPeopleIdentifiers:(nonnull NSArray *)peopleIdentifiers
                                                  completionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
 
