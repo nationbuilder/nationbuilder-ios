@@ -44,6 +44,11 @@ NSString * const NBClientDonationAmountInCentsKey = @"amount_in_cents";
 NSString * const NBClientDonationDonorIdentifierKey = @"donor_id";
 NSString * const NBClientDonationPaymentTypeNameKey = @"payment_type_name";
 
+NSString * const NBClientSurveyResponderIdentifierKey = @"person_id";
+NSString * const NBClientSurveyResponsesKey = @"question_responses";
+NSString * const NBClientSurveyQuestionIdentifierKey = @"question_id";
+NSString * const NBClientSurveyQuestionResponseIdentifierKey = @"response";
+
 #if DEBUG
 static NBLogLevel LogLevel = NBLogLevelDebug;
 #else

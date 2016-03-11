@@ -1,0 +1,27 @@
+HTTP/1.1 200 OK
+Server: cloudflare-nginx
+Date: Fri, 11 Mar 2016 04:42:32 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: keep-alive
+Set-Cookie: __cfduid=dcc48e078f229200967586580767517861457671352; expires=Sat, 11-Mar-17 04:42:32 GMT; path=/; domain=.nationbuilder.com; HttpOnly
+Cache-Control: max-age=0, private, must-revalidate
+Etag: W/"f16d60fcb0eaed2a639ca38373ba94a1"
+Nation-Ratelimit-Limit: 10000
+Nation-Ratelimit-Remaining: 9973
+Nation-Ratelimit-Reset: 1457740800
+Status: 200 OK
+Vary: Accept-Encoding
+X-Powered-By: Phusion Passenger 4.0.53
+X-Pulse-Approved: true
+X-Rack-Cache: invalidate, pass
+X-Ratelimit-Limit: 10s
+X-Ratelimit-Remaining: 99
+X-Ratelimit-Reset: 1457671362
+X-Request-Id: 6e4f92560f2b4daab3271415d20b9947
+X-Runtime: 0.422919
+X-Ua-Compatible: IE=Edge,chrome=1
+Via: 1.1 nationbuilder.com
+CF-RAY: 281c571e19460d43-LAX
+
+{"survey":{"id":5,"tags":[],"slug":"survey_temp","path":null,"status":"unlisted","site_slug":"pengtest1","name":"Survey (temp)","headline":null,"title":null,"excerpt":null,"author_id":null,"published_at":null,"external_id":null,"questions":[{"id":5,"prompt":"Important issue?","slug":"important_issue_temp","type":"multiple","status":"unlisted","external_id":null,"tags":[],"no_tags":[],"choices":[{"id":9,"name":"foo","feedback":null,"tags":[]},{"id":10,"name":"bar","feedback":null,"tags":[]}]}]}}

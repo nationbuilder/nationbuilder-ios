@@ -57,6 +57,11 @@ extern NSString * __nonnull const NBClientDonationAmountInCentsKey;
 extern NSString * __nonnull const NBClientDonationDonorIdentifierKey;
 extern NSString * __nonnull const NBClientDonationPaymentTypeNameKey;
 
+extern NSString * __nonnull const NBClientSurveyResponderIdentifierKey;
+extern NSString * __nonnull const NBClientSurveyResponsesKey;
+extern NSString * __nonnull const NBClientSurveyQuestionIdentifierKey;
+extern NSString * __nonnull const NBClientSurveyQuestionResponseIdentifierKey;
+
 // The client works with the NationBuilder API. It is an API client. For
 // authentication, it relies on its authenticator or test token. Conventionally,
 // its methods directly match the API endpoints, but are named according to its
