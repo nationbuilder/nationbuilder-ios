@@ -37,6 +37,10 @@
 		AA1289A61C91152200E3DD48 /* tags_tag_people_get.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA1289A51C91152200E3DD48 /* tags_tag_people_get.txt */; };
 		AA1289A81C92488900E3DD48 /* people_count_get.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA1289A71C92488800E3DD48 /* people_count_get.txt */; };
 		AA1289AA1C9251DD00E3DD48 /* people_id_notes_post.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA1289A91C9251DD00E3DD48 /* people_id_notes_post.txt */; };
+		AA1289AD1C925D0B00E3DD48 /* NBClient+Sites.m in Sources */ = {isa = PBXBuildFile; fileRef = AA1289AC1C925D0B00E3DD48 /* NBClient+Sites.m */; };
+		AA1289B81C925E1100E3DD48 /* sites_get.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA1289B11C925E1100E3DD48 /* sites_get.txt */; };
+		AA1289BF1C925E2900E3DD48 /* NBClient+Sites.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA1289AB1C925D0B00E3DD48 /* NBClient+Sites.h */; };
+		AA1289C21C925E7300E3DD48 /* NBClientSitesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA1289C11C925E7300E3DD48 /* NBClientSitesTests.m */; };
 		AA2490521A099312006F0D24 /* NBAccountTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2490511A099312006F0D24 /* NBAccountTests.m */; };
 		AA2490541A099321006F0D24 /* NBAccountsManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2490531A099321006F0D24 /* NBAccountsManagerTests.m */; };
 		AA2490561A09C7AE006F0D24 /* NBAccount_Internal.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA2490551A09C72B006F0D24 /* NBAccount_Internal.h */; };
@@ -137,6 +141,7 @@
 				AA12897F1C8FACB000E3DD48 /* NBClient+Donations.h in CopyFiles */,
 				AA1289901C90EDF200E3DD48 /* NBClient+Lists.h in CopyFiles */,
 				AA90915819834164009BE1E9 /* NBClient+People.h in CopyFiles */,
+				AA1289BF1C925E2900E3DD48 /* NBClient+Sites.h in CopyFiles */,
 				AA1289A01C9112BE00E3DD48 /* NBClient+Tags.h in CopyFiles */,
 				AAEFEB0019E716CE00777BC1 /* NBAccount.h in CopyFiles */,
 				AA2490561A09C7AE006F0D24 /* NBAccount_Internal.h in CopyFiles */,
@@ -179,6 +184,10 @@
 		AA1289A51C91152200E3DD48 /* tags_tag_people_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tags_tag_people_get.txt; sourceTree = "<group>"; };
 		AA1289A71C92488800E3DD48 /* people_count_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_count_get.txt; sourceTree = "<group>"; };
 		AA1289A91C9251DD00E3DD48 /* people_id_notes_post.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_id_notes_post.txt; sourceTree = "<group>"; };
+		AA1289AB1C925D0B00E3DD48 /* NBClient+Sites.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NBClient+Sites.h"; sourceTree = "<group>"; };
+		AA1289AC1C925D0B00E3DD48 /* NBClient+Sites.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NBClient+Sites.m"; sourceTree = "<group>"; };
+		AA1289B11C925E1100E3DD48 /* sites_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sites_get.txt; sourceTree = "<group>"; };
+		AA1289C11C925E7300E3DD48 /* NBClientSitesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBClientSitesTests.m; sourceTree = "<group>"; };
 		AA2490511A099312006F0D24 /* NBAccountTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAccountTests.m; sourceTree = "<group>"; };
 		AA2490531A099321006F0D24 /* NBAccountsManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAccountsManagerTests.m; sourceTree = "<group>"; };
 		AA2490551A09C72B006F0D24 /* NBAccount_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBAccount_Internal.h; sourceTree = "<group>"; };
@@ -300,6 +309,7 @@
 				AA668DD31976EA1600A952B0 /* NBClientPeopleTests.m */,
 				AA9677681AA79B3900FE2FC9 /* NBClientPeopleTaggingsTests.m */,
 				AA85EB131AA8E42100E3CC08 /* NBClientPeopleCapitalsTests.m */,
+				AA1289C11C925E7300E3DD48 /* NBClientSitesTests.m */,
 				AA12899E1C9112A800E3DD48 /* NBClientTagsTests.m */,
 			);
 			name = API;
@@ -349,6 +359,8 @@
 				AA12898E1C90EDAB00E3DD48 /* NBClient+Lists.m */,
 				AA6FF3C2197DF2E00049B747 /* NBClient+People.h */,
 				AA6FF3C3197DF2E00049B747 /* NBClient+People.m */,
+				AA1289AB1C925D0B00E3DD48 /* NBClient+Sites.h */,
+				AA1289AC1C925D0B00E3DD48 /* NBClient+Sites.m */,
 				AA12899B1C9111B700E3DD48 /* NBClient+Tags.h */,
 				AA12899C1C9111B700E3DD48 /* NBClient+Tags.m */,
 			);
@@ -408,6 +420,7 @@
 				AA1289781C8FA07F00E3DD48 /* settings_contact_methods_get.txt */,
 				AA1289791C8FA07F00E3DD48 /* settings_contact_statuses_get.txt */,
 				AA1289761C8F9AF300E3DD48 /* settings_contact_types_get.txt */,
+				AA1289B11C925E1100E3DD48 /* sites_get.txt */,
 				AA1289A11C9113CC00E3DD48 /* tags_get.txt */,
 				AA1289A51C91152200E3DD48 /* tags_tag_people_get.txt */,
 			);
@@ -609,6 +622,7 @@
 				AA85EB0E1AA85E6300E3CC08 /* people_id_taggings_delete.txt in Resources */,
 				AA12899A1C90EEF200E3DD48 /* lists_id_people_post.txt in Resources */,
 				AA85EB101AA85E6300E3CC08 /* people_id_taggings_put.txt in Resources */,
+				AA1289B81C925E1100E3DD48 /* sites_get.txt in Resources */,
 				AA1289AA1C9251DD00E3DD48 /* people_id_notes_post.txt in Resources */,
 				AA84F04519EC7C9200DAA6B8 /* NationBuilder-Info-Local.plist in Resources */,
 				AA85EB0C1AA85E6300E3CC08 /* people_id_register_get.txt in Resources */,
@@ -709,6 +723,7 @@
 				AAEFEAFF19E7131E00777BC1 /* NBAccount.m in Sources */,
 				AA12898F1C90EDAB00E3DD48 /* NBClient+Lists.m in Sources */,
 				AA8B6825196F82D4009DDA91 /* NBDefines.m in Sources */,
+				AA1289AD1C925D0B00E3DD48 /* NBClient+Sites.m in Sources */,
 				AAEFEAF919E6EE8B00777BC1 /* NBAccountsManager.m in Sources */,
 				AA5905651C8E325C00B6643A /* NBClient+Contacts.m in Sources */,
 			);
@@ -718,6 +733,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA1289C21C925E7300E3DD48 /* NBClientSitesTests.m in Sources */,
 				AA1289841C8FB3BD00E3DD48 /* NBClientDonationsTests.m in Sources */,
 				AA668DD61978418F00A952B0 /* FoundationAdditionsTests.m in Sources */,
 				AA2490521A099312006F0D24 /* NBAccountTests.m in Sources */,
