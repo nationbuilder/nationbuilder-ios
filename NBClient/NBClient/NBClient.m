@@ -242,7 +242,7 @@ static NSArray *LegacyPaginationEndpoints;
     request.cachePolicy = NSURLRequestReloadRevalidatingCacheData;
     NBLogInfo(@"REQUEST: %@", request.nb_debugDescription);
     void (^taskCompletionHandler)(NSData *, NSURLResponse *, NSError *) =
-    [self dataTaskCompletionHandlerForFetchResultsKey:resultsKey originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
+    [self dataTaskCompletionHandlerForResultsKey:resultsKey originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
 
         NBPaginationInfo *responsePaginationInfo;
         if ([NBPaginationInfo dictionaryContainsPaginationInfo:jsonObject]) {
@@ -268,7 +268,7 @@ static NSArray *LegacyPaginationEndpoints;
     request.cachePolicy = NSURLRequestReloadRevalidatingCacheData;
     NBLogInfo(@"REQUEST: %@", request.nb_debugDescription);
     void (^taskCompletionHandler)(NSData *, NSURLResponse *, NSError *) =
-    [self dataTaskCompletionHandlerForFetchResultsKey:resultsKey originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
+    [self dataTaskCompletionHandlerForResultsKey:resultsKey originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
         if (completionHandler) {
             completionHandler(results, error);
         }
@@ -313,7 +313,7 @@ static NSArray *LegacyPaginationEndpoints;
 {
     NBLogInfo(@"REQUEST: %@", request.nb_debugDescription);
     void (^taskCompletionHandler)(NSData *, NSURLResponse *, NSError *) =
-    [self dataTaskCompletionHandlerForFetchResultsKey:resultsKey originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
+    [self dataTaskCompletionHandlerForResultsKey:resultsKey originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
         if (completionHandler) {
             if ([results isKindOfClass:[NSArray class]]) {
                 ((NBClientResourceListCompletionHandler)completionHandler)(results, nil, error);
@@ -334,7 +334,7 @@ static NSArray *LegacyPaginationEndpoints;
     return [self baseDeleteTaskWithURLRequest:request resultsKey:nil completionHandler:completionHandler];
 }
 
-- (nonnull NSURLSessionDataTask *)baseDeleteTaskWithURL:(NSURL *)url
+- (NSURLSessionDataTask *)baseDeleteTaskWithURL:(NSURL *)url
                                              parameters:(NSDictionary *)parameters
                                              resultsKey:(NSString *)resultsKey
                                       completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
@@ -355,7 +355,7 @@ static NSArray *LegacyPaginationEndpoints;
 {
     NBLogInfo(@"REQUEST: %@", request.nb_debugDescription);
     void (^taskCompletionHandler)(NSData *, NSURLResponse *, NSError *) =
-    [self dataTaskCompletionHandlerForFetchResultsKey:resultsKey originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
+    [self dataTaskCompletionHandlerForResultsKey:resultsKey originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
         if (completionHandler) {
             completionHandler(results, error);
         }
@@ -396,9 +396,9 @@ static NSArray *LegacyPaginationEndpoints;
 
 #pragma mark Handlers
 
-- (void (^)(NSData *, NSURLResponse *, NSError *))dataTaskCompletionHandlerForFetchResultsKey:(NSString *)resultsKey
-                                                                              originalRequest:(NSURLRequest *)request
-                                                                            completionHandler:(void (^)(id, NSDictionary *, NSError *))completionHandler
+- (void (^)(NSData *, NSURLResponse *, NSError *))dataTaskCompletionHandlerForResultsKey:(NSString *)resultsKey
+                                                                         originalRequest:(NSURLRequest *)request
+                                                                       completionHandler:(void (^)(id, NSDictionary *, NSError *))completionHandler
 {
     return ^(NSData *data, NSURLResponse *response, NSError *error) {
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;

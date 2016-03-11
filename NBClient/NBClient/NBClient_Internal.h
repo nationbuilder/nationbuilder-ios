@@ -45,7 +45,7 @@
                                     completionHandler:(nullable NBClientResourceItemCompletionHandler)completionHandler;
 // This is the less common one, for custom requests.
 // NOTE: We use a dynamically typed block (to allow both resource item and list
-//       completion handlers) because there's no other different in method selector
+//       completion handlers) because there's no other difference in method selector
 //       if it were to be two methods, unlike the base fetch task methods.
 - (nonnull NSURLSessionDataTask *)baseSaveTaskWithURLRequest:(nonnull NSURLRequest *)request
                                                   resultsKey:(nonnull NSString *)resultsKey
@@ -71,9 +71,9 @@
 - (nonnull NSURLSessionDataTask *)startTask:(nonnull NSURLSessionDataTask *)task;
 
 - (nonnull void (^)(NSData * __nonnull, NSURLResponse * __nonnull, NSError * __nullable))
-  dataTaskCompletionHandlerForFetchResultsKey:(nullable NSString *)resultsKey
-                              originalRequest:(nonnull NSURLRequest *)request
-                            completionHandler:(nullable void (^)(id __nullable results, NSDictionary * __nullable jsonObject, NSError * __nullable error))completionHandler;
+  dataTaskCompletionHandlerForResultsKey:(nullable NSString *)resultsKey
+                         originalRequest:(nonnull NSURLRequest *)request
+                       completionHandler:(nullable void (^)(id __nullable results, NSDictionary * __nullable jsonObject, NSError * __nullable error))completionHandler;
 
 - (nonnull NSError *)errorForResponse:(nonnull NSHTTPURLResponse *)response jsonData:(nonnull NSDictionary *)data;
 - (nonnull NSError *)errorForJsonData:(nonnull NSDictionary *)data resultsKey:(nonnull NSString *)resultsKey;
