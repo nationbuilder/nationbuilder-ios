@@ -84,6 +84,22 @@
     [self tearDownAsync];
 }
 
+- (void)testFetchPeopleCount
+{
+    [self setUpAsync];
+    if (self.shouldUseHTTPStubbing) {
+        [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people/count" queryParameters:nil];
+    }
+    NSURLSessionDataTask *task = [self.client fetchPeopleCountWithCompletionHandler:^(id result, NSError *error) {
+        [self assertServiceError:error];
+        XCTAssert([result isKindOfClass:[NSNumber class]],
+                  @"Client should have received people count.");
+        [self completeAsync];
+    }];
+    [self assertSessionDataTask:task];
+    [self tearDownAsync];
+}
+
 - (void)testFetchPeopleByParameters
 {
     [self setUpAsync];

@@ -23,6 +23,13 @@
     return [self baseFetchTaskWithURLComponents:components resultsKey:@"results" paginationInfo:paginationInfo completionHandler:completionHandler];
 }
 
+- (NSURLSessionDataTask *)fetchPeopleCountWithCompletionHandler:(NBClientResourceCompletionHandler)completionHandler
+{
+    NSURLComponents *components = [self.baseURLComponents copy];
+    components.path = [components.path stringByAppendingString:@"/people/count"];
+    return [self baseFetchTaskWithURLComponents:components resultsKey:@"people_count" completionHandler:completionHandler];
+}
+
 - (NSURLSessionDataTask *)fetchPersonByIdentifier:(NSUInteger)identifier
                             withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {

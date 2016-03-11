@@ -21,6 +21,8 @@
 // GET /people
 - (nonnull NSURLSessionDataTask *)fetchPeopleWithPaginationInfo:(nullable NBPaginationInfo *)paginationInfo
                                               completionHandler:(nonnull NBClientResourceListCompletionHandler)completionHandler;
+// GET /people/count
+- (nonnull NSURLSessionDataTask *)fetchPeopleCountWithCompletionHandler:(nonnull NBClientResourceCompletionHandler)completionHandler;
 // GET /people/:id
 - (nonnull NSURLSessionDataTask *)fetchPersonByIdentifier:(NSUInteger)identifier
                                     withCompletionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;

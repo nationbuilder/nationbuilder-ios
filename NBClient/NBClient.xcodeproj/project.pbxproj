@@ -35,6 +35,7 @@
 		AA1289A01C9112BE00E3DD48 /* NBClient+Tags.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA12899B1C9111B700E3DD48 /* NBClient+Tags.h */; };
 		AA1289A31C9113CC00E3DD48 /* tags_get.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA1289A11C9113CC00E3DD48 /* tags_get.txt */; };
 		AA1289A61C91152200E3DD48 /* tags_tag_people_get.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA1289A51C91152200E3DD48 /* tags_tag_people_get.txt */; };
+		AA1289A81C92488900E3DD48 /* people_count_get.txt in Resources */ = {isa = PBXBuildFile; fileRef = AA1289A71C92488800E3DD48 /* people_count_get.txt */; };
 		AA2490521A099312006F0D24 /* NBAccountTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2490511A099312006F0D24 /* NBAccountTests.m */; };
 		AA2490541A099321006F0D24 /* NBAccountsManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2490531A099321006F0D24 /* NBAccountsManagerTests.m */; };
 		AA2490561A09C7AE006F0D24 /* NBAccount_Internal.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA2490551A09C72B006F0D24 /* NBAccount_Internal.h */; };
@@ -175,6 +176,7 @@
 		AA12899E1C9112A800E3DD48 /* NBClientTagsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBClientTagsTests.m; sourceTree = "<group>"; };
 		AA1289A11C9113CC00E3DD48 /* tags_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tags_get.txt; sourceTree = "<group>"; };
 		AA1289A51C91152200E3DD48 /* tags_tag_people_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tags_tag_people_get.txt; sourceTree = "<group>"; };
+		AA1289A71C92488800E3DD48 /* people_count_get.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = people_count_get.txt; sourceTree = "<group>"; };
 		AA2490511A099312006F0D24 /* NBAccountTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAccountTests.m; sourceTree = "<group>"; };
 		AA2490531A099321006F0D24 /* NBAccountsManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBAccountsManagerTests.m; sourceTree = "<group>"; };
 		AA2490551A09C72B006F0D24 /* NBAccount_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBAccount_Internal.h; sourceTree = "<group>"; };
@@ -379,6 +381,7 @@
 				AA1289941C90EEF100E3DD48 /* lists_id_people_delete.txt */,
 				AA1289951C90EEF200E3DD48 /* lists_id_people_get.txt */,
 				AA1289961C90EEF200E3DD48 /* lists_id_people_post.txt */,
+				AA1289A71C92488800E3DD48 /* people_count_get.txt */,
 				AA78ED71199C563C0043B7C0 /* people_get.txt */,
 				AA85EB151AA94FDE00E3CC08 /* people_id_capitals_delete.txt */,
 				AA85EB171AA94FDE00E3CC08 /* people_id_capitals_get.txt */,
@@ -599,6 +602,7 @@
 				AA1289981C90EEF200E3DD48 /* lists_id_people_delete.txt in Resources */,
 				AA84F04919EC94A700DAA6B8 /* people_me_get.txt in Resources */,
 				AA78ED79199C563C0043B7C0 /* people_get.txt in Resources */,
+				AA1289A81C92488900E3DD48 /* people_count_get.txt in Resources */,
 				AA85EB0E1AA85E6300E3CC08 /* people_id_taggings_delete.txt in Resources */,
 				AA12899A1C90EEF200E3DD48 /* lists_id_people_post.txt in Resources */,
 				AA85EB101AA85E6300E3CC08 /* people_id_taggings_put.txt in Resources */,
