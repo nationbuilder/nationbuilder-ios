@@ -23,6 +23,13 @@
     return [self baseFetchTaskWithURLComponents:components resultsKey:@"results" paginationInfo:paginationInfo completionHandler:completionHandler];
 }
 
+- (NSURLSessionDataTask *)fetchPeopleCountWithCompletionHandler:(NBClientResourceCompletionHandler)completionHandler
+{
+    NSURLComponents *components = [self.baseURLComponents copy];
+    components.path = [components.path stringByAppendingString:@"/people/count"];
+    return [self baseFetchTaskWithURLComponents:components resultsKey:@"people_count" completionHandler:completionHandler];
+}
+
 - (NSURLSessionDataTask *)fetchPersonByIdentifier:(NSUInteger)identifier
                             withCompletionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
@@ -143,7 +150,7 @@
             return nil;
         }
     }
-    return [self baseDeleteTaskWithURLRequest:request completionHandler:completionHandler];
+    return [self baseDeleteTaskWithURLRequest:request resultsKey:nil completionHandler:completionHandler];
 }
 
 #pragma mark - Political Capital
@@ -177,6 +184,18 @@
                        [NSString stringWithFormat:@"/people/%lu/capitals/%lu",
                         (unsigned long)personIdentifier, (unsigned long)capitalIdentifier]];
     return [self baseDeleteTaskWithURL:components.URL completionHandler:completionHandler];
+}
+
+#pragma mark - Notes
+
+- (NSURLSessionDataTask *)createPersonPrivateNoteByIdentifier:(NSUInteger)personIdentifier
+                                                 withNoteInfo:(NSDictionary *)noteInfo
+                                            completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
+{
+    NSURLComponents *components = [self.baseURLComponents copy];
+    components.path = [components.path stringByAppendingString:
+                       [NSString stringWithFormat:@"/people/%lu/notes", (unsigned long)personIdentifier]];
+    return [self baseCreateTaskWithURL:components.URL parameters:@{ @"note": noteInfo } resultsKey:@"note" completionHandler:completionHandler];
 }
 
 #pragma mark - Updating

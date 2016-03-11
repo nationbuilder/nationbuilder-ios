@@ -69,6 +69,11 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     }
 }
 
++ (BOOL)dictionaryContainsPaginationInfo:(NSDictionary *)dictionary
+{
+    return dictionary[NBClientPaginationNextLinkKey] || dictionary[NBClientPaginationNextLinkKey];
+}
+
 #pragma mark Accessors
 
 - (void)setCurrentPageNumber:(NSUInteger)currentPageNumber

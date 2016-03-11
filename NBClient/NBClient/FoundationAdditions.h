@@ -18,6 +18,8 @@
 
 - (BOOL)nb_containsDictionary:(nonnull NSDictionary *)dictionary;
 
+- (BOOL)nb_hasKeys:(nonnull NSArray *)keys;
+
 - (BOOL)nb_isEquivalentToDictionary:(nonnull NSDictionary *)dictionary;
 
 - (nonnull NSString *)nb_queryString;

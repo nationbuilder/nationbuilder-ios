@@ -1,0 +1,27 @@
+HTTP/1.1 200 OK
+Server: cloudflare-nginx
+Date: Wed, 09 Mar 2016 02:37:23 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: keep-alive
+Set-Cookie: __cfduid=d3250024fc60c14753ea15c62375932911457491042; expires=Thu, 09-Mar-17 02:37:22 GMT; path=/; domain=.nationbuilder.com; HttpOnly
+Cache-Control: max-age=0, private, must-revalidate
+Etag: W/"43ed06077fec78dc1f79f1f1c6ceff33"
+Nation-Ratelimit-Limit: 10000
+Nation-Ratelimit-Remaining: 9996
+Nation-Ratelimit-Reset: 1457568000
+Status: 200 OK
+Vary: Accept-Encoding
+X-Powered-By: Phusion Passenger 4.0.53
+X-Pulse-Approved: true
+X-Rack-Cache: invalidate, pass
+X-Ratelimit-Limit: 10s
+X-Ratelimit-Remaining: 99
+X-Ratelimit-Reset: 1457491053
+X-Request-Id: f48e8fa8060f9ecf3ef41ac2cde762f2
+X-Runtime: 0.390465
+X-Ua-Compatible: IE=Edge,chrome=1
+Via: 1.1 nationbuilder.com
+CF-RAY: 280b250a60ba07e5-LAX
+
+{"donation":{"actblue_order_number":null,"amount":"$1.00","amount_in_cents":100,"authorization":null,"author_id":2,"billing_address":{"address1":null,"address2":null,"address3":null,"city":null,"county":null,"state":null,"country_code":null,"zip":null,"lat":null,"lng":null,"fips":null},"canceled_at":null,"check_number":null,"corporate_contribution":false,"created_at":"2016-03-08T18:37:23-08:00","donor":{"birthdate":"1974-05-17","city_district":null,"civicrm_id":null,"county_district":null,"county_file_id":null,"created_at":"2014-08-13T14:48:45-07:00","datatrust_id":null,"do_not_call":true,"do_not_contact":false,"dw_id":null,"email":"peng+test+cfuller@nationbuilder.com","email_opt_in":true,"employer":"","external_id":null,"federal_district":null,"fire_district":null,"first_name":"Diana","has_facebook":false,"id":699,"is_twitter_follower":false,"is_volunteer":true,"judicial_district":null,"labour_region":null,"last_name":"Fuller","linkedin_id":null,"mobile":"","mobile_opt_in":true,"nbec_guid":null,"ngp_id":null,"note":null,"occupation":"","party":"L","pf_strat_id":null,"phone":"","precinct_id":null,"primary_address":null,"profile_image_url_ssl":"https://d3n8a8pro7vhmx.cloudfront.net/assets/icons/buddy.png","recruiter_id":null,"rnc_id":null,"rnc_regid":null,"salesforce_id":null,"school_district":null,"school_sub_district":null,"sex":"F","signup_type":0,"state_file_id":null,"state_lower_district":null,"state_upper_district":null,"support_level":2,"supranational_district":null,"tags":["import batch #1","storyteller","test account","register-limbo"],"twitter_id":null,"twitter_name":null,"updated_at":"2016-03-07T17:54:29-08:00","van_id":null,"village_district":null,"ward":null,"work_phone_number":""},"donor_id":699,"election":null,"email":"peng+test+cfuller@nationbuilder.com","employer":"","failed_at":null,"fec_type":"Contribution","fec_type_ngp_code":"C","first_name":"Diana","id":3,"import_id":null,"is_private":false,"last_name":"Fuller","mailing_slug":null,"merchant_account_id":null,"ngp_id":null,"note":null,"occupation":"","page_slug":null,"payment_type_name":"Cash","payment_type_ngp_code":"C","pledge_id":null,"recruiter_name_or_email":"Diana Fuller","recurring_donation_id":null,"succeeded_at":null,"tracking_code_slug":null,"updated_at":"2016-03-08T18:37:23-08:00","work_address":null}}

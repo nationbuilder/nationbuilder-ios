@@ -21,6 +21,8 @@
 // GET /people
 - (nonnull NSURLSessionDataTask *)fetchPeopleWithPaginationInfo:(nullable NBPaginationInfo *)paginationInfo
                                               completionHandler:(nonnull NBClientResourceListCompletionHandler)completionHandler;
+// GET /people/count
+- (nonnull NSURLSessionDataTask *)fetchPeopleCountWithCompletionHandler:(nonnull NBClientResourceCompletionHandler)completionHandler;
 // GET /people/:id
 - (nonnull NSURLSessionDataTask *)fetchPersonByIdentifier:(NSUInteger)identifier
                                     withCompletionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
@@ -66,6 +68,10 @@
 - (nonnull NSURLSessionDataTask *)deletePersonCapitalByPersonIdentifier:(NSUInteger)personIdentifier
                                                       capitalIdentifier:(NSUInteger)capitalIdentifier
                                                   withCompletionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
+// POST /people/:person_id/notes
+- (nonnull NSURLSessionDataTask *)createPersonPrivateNoteByIdentifier:(NSUInteger)personIdentifier
+                                                         withNoteInfo:(nonnull NSDictionary *)noteInfo
+                                                    completionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
 // POST /people
 - (nonnull NSURLSessionDataTask *)createPersonWithParameters:(nonnull NSDictionary *)parameters
                                            completionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;

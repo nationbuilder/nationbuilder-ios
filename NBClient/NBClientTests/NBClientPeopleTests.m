@@ -84,6 +84,22 @@
     [self tearDownAsync];
 }
 
+- (void)testFetchPeopleCount
+{
+    [self setUpAsync];
+    if (self.shouldUseHTTPStubbing) {
+        [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people/count" queryParameters:nil];
+    }
+    NSURLSessionDataTask *task = [self.client fetchPeopleCountWithCompletionHandler:^(id result, NSError *error) {
+        [self assertServiceError:error];
+        XCTAssert([result isKindOfClass:[NSNumber class]],
+                  @"Client should have received people count.");
+        [self completeAsync];
+    }];
+    [self assertSessionDataTask:task];
+    [self tearDownAsync];
+}
+
 - (void)testFetchPeopleByParameters
 {
     [self setUpAsync];
@@ -137,7 +153,7 @@
     [self tearDownAsync];
 }
 
-- (void)testFetchPersonByIdentifier
+- (void)testFetchPerson
 {
     [self setUpAsync];
     NSUInteger identifier = self.userIdentifier;
@@ -156,7 +172,7 @@
     [self tearDownAsync];
 }
 
-- (void)testRegisterPersonByIdentifier
+- (void)testRegisterPerson
 {
     [self setUpAsync];
     NSUInteger identifier = self.supporterIdentifier;
@@ -207,6 +223,25 @@
          [self assertPersonDictionary:item];
          [self completeAsync];
      }];
+    [self assertSessionDataTask:task];
+    [self tearDownAsync];
+}
+
+// NOTE: Putting this here for now.
+- (void)testCreatePersonPrivateNote
+{
+    [self setUpAsync];
+    if (self.shouldUseHTTPStubbing) {
+        [self stubRequestUsingFileDataWithMethod:@"POST" pathFormat:@"people/:id/notes" pathVariables:@{ @"id": @(self.userIdentifier) } queryParameters:nil];
+    }
+    NSDictionary *noteInfo = @{ NBClientNoteUserContentKey: @"He likes to plant apple trees." };
+    NSURLSessionDataTask *task =
+    [self.client createPersonPrivateNoteByIdentifier:self.userIdentifier withNoteInfo:noteInfo completionHandler:^(NSDictionary *item, NSError *error) {
+        [self assertServiceError:error];
+        NSArray *keys = @[ @"person_id", @"author_id", @"content" ];
+        XCTAssertTrue([item nb_hasKeys:keys], "Note has correct attributes.");
+        [self completeAsync];
+    }];
     [self assertSessionDataTask:task];
     [self tearDownAsync];
 }

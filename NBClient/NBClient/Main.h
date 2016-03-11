@@ -14,7 +14,11 @@
 
     #import "NBAuthenticator.h"
     #import "NBClient.h"
+    #import "NBClient+Contacts.h"
+    #import "NBClient+Donations.h"
+    #import "NBClient+Lists.h"
     #import "NBClient+People.h"
+    #import "NBClient+Tags.h"
     #import "NBDefines.h"
     #import "FoundationAdditions.h"
     #import "NBPaginationInfo.h"

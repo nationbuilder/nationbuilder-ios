@@ -31,6 +31,24 @@ NSString * const NBClientTaggingTagNameOrListKey = @"tag";
 NSString * const NBClientCapitalAmountInCentsKey = @"amount_in_cents";
 NSString * const NBClientCapitalUserContentKey = @"content";
 
+NSString * const NBClientNoteUserContentKey = @"content";
+
+NSString * const NBClientContactBroadcasterIdentifierKey = @"broadcaster_id";
+NSString * const NBClientContactMethodKey = @"method";
+NSString * const NBClientContactNoteKey = @"note";
+NSString * const NBClientContactSenderIdentifierKey = @"sender_id";
+NSString * const NBClientContactStatusKey = @"status";
+NSString * const NBClientContactTypeIdentifierKey = @"type_id";
+
+NSString * const NBClientDonationAmountInCentsKey = @"amount_in_cents";
+NSString * const NBClientDonationDonorIdentifierKey = @"donor_id";
+NSString * const NBClientDonationPaymentTypeNameKey = @"payment_type_name";
+
+NSString * const NBClientSurveyResponderIdentifierKey = @"person_id";
+NSString * const NBClientSurveyResponsesKey = @"question_responses";
+NSString * const NBClientSurveyQuestionIdentifierKey = @"question_id";
+NSString * const NBClientSurveyQuestionResponseIdentifierKey = @"response";
+
 #if DEBUG
 static NBLogLevel LogLevel = NBLogLevelDebug;
 #else
@@ -88,6 +106,7 @@ static NSArray *LegacyPaginationEndpoints;
     
     self.defaultErrorRecoverySuggestion = @"message.unknown-error-solution".nb_localizedString;
     
+    self.baseURL = [NSURL URLWithString:[NSString stringWithFormat:NBClientDefaultBaseURLFormat, self.nationSlug]];
     self.shouldUseLegacyPagination = NO;
 }
 
@@ -105,6 +124,12 @@ static NSArray *LegacyPaginationEndpoints;
 @synthesize authenticator = _authenticator;
 @synthesize apiKey = _apiKey;
 @synthesize apiVersion = _apiVersion;
+
+- (void)setBaseURL:(NSURL *)baseURL
+{
+    _baseURL = baseURL;
+    [self updateBaseURLComponents];
+}
 
 - (NSURLSession *)urlSession
 {
@@ -149,15 +174,6 @@ static NSArray *LegacyPaginationEndpoints;
     }
 }
 
-- (NSURL *)baseURL
-{
-    if (_baseURL) {
-        return _baseURL;
-    }
-    self.baseURL = [NSURL URLWithString:[NSString stringWithFormat:NBClientDefaultBaseURLFormat, self.nationSlug]];
-    return _baseURL;
-}
-
 - (void)setApiKey:(NSString *)apiKey
 {
     _apiKey = apiKey;
@@ -192,13 +208,13 @@ static NSArray *LegacyPaginationEndpoints;
     if (_baseURLComponents) {
         return _baseURLComponents;
     }
-    self.baseURLComponents = [NSURLComponents componentsWithURL:self.baseURL resolvingAgainstBaseURL:YES];
     [self updateBaseURLComponents];
     return _baseURLComponents;
 }
 
 - (void)updateBaseURLComponents
 {
+    self.baseURLComponents = [NSURLComponents componentsWithURL:self.baseURL resolvingAgainstBaseURL:YES];
     self.baseURLComponents.path = [NSString stringWithFormat:@"/api/%@", self.apiVersion];
     self.baseURLComponents.percentEncodedQuery = [@{ @"access_token": self.apiKey ?: @"" } nb_queryString];
 }
@@ -221,6 +237,7 @@ static NSArray *LegacyPaginationEndpoints;
                                        completionHandler:(NBClientResourceListCompletionHandler)completionHandler
 {
     BOOL shouldUseLegacyPagination = self.shouldUseLegacyPagination;
+
     if (paginationInfo) {
         shouldUseLegacyPagination = [LegacyPaginationEndpoints containsObject:components.path];
         paginationInfo.legacy = shouldUseLegacyPagination;
@@ -231,16 +248,21 @@ static NSArray *LegacyPaginationEndpoints;
         }
         [mutableParameters addEntriesFromDictionary:[components.percentEncodedQuery nb_queryStringParameters]];
         components.percentEncodedQuery = mutableParameters.nb_queryString;
-    }
+    } // Otherwise endpoint uses the resource's default pagination.
+
     NSMutableURLRequest *request = [self baseFetchRequestWithURL:components.URL];
     NBLogInfo(@"REQUEST: %@", request.nb_debugDescription);
     void (^taskCompletionHandler)(NSData *, NSURLResponse *, NSError *) =
     [self dataTaskCompletionHandlerForFetchResultsKey:resultsKey originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
-        NBPaginationInfo *responsePaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:jsonObject
-                                                                                         legacy:shouldUseLegacyPagination];
-        responsePaginationInfo.numberOfItemsPerPage = paginationInfo.numberOfItemsPerPage;
-        responsePaginationInfo.currentDirection = paginationInfo.currentDirection;
-        [responsePaginationInfo updateCurrentPageNumber];
+
+        NBPaginationInfo *responsePaginationInfo;
+        if ([NBPaginationInfo dictionaryContainsPaginationInfo:jsonObject]) {
+            responsePaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:jsonObject legacy:shouldUseLegacyPagination];
+            responsePaginationInfo.numberOfItemsPerPage = paginationInfo.numberOfItemsPerPage;
+            responsePaginationInfo.currentDirection = paginationInfo.currentDirection;
+            [responsePaginationInfo updateCurrentPageNumber];
+        }
+
         if (completionHandler) {
             completionHandler(results, responsePaginationInfo, error);
         }
@@ -346,15 +368,31 @@ static NSArray *LegacyPaginationEndpoints;
 - (NSURLSessionDataTask *)baseDeleteTaskWithURL:(NSURL *)url
                               completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
-    return [self baseDeleteTaskWithURLRequest:[self baseDeleteRequestWithURL:url] completionHandler:completionHandler];
+    return [self baseDeleteTaskWithURLRequest:[self baseDeleteRequestWithURL:url] resultsKey:nil completionHandler:completionHandler];
+}
+
+- (nonnull NSURLSessionDataTask *)baseDeleteTaskWithURL:(NSURL *)url
+                                             parameters:(NSDictionary *)parameters
+                                             resultsKey:(NSString *)resultsKey
+                                      completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
+{
+    NSError *error;
+    NSMutableURLRequest *request = [self baseSaveRequestWithURL:url parameters:parameters error:&error];
+    if (error) {
+        dispatch_async(dispatch_get_main_queue(), ^{ completionHandler(nil, error); });
+        return nil;
+    }
+    request.HTTPMethod = @"DELETE";
+    return [self baseDeleteTaskWithURLRequest:request resultsKey:resultsKey completionHandler:completionHandler];
 }
 
 - (NSURLSessionDataTask *)baseDeleteTaskWithURLRequest:(NSURLRequest *)request
+                                            resultsKey:(NSString *)resultsKey
                                      completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
     NBLogInfo(@"REQUEST: %@", request.nb_debugDescription);
     void (^taskCompletionHandler)(NSData *, NSURLResponse *, NSError *) =
-    [self dataTaskCompletionHandlerForFetchResultsKey:nil originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
+    [self dataTaskCompletionHandlerForFetchResultsKey:resultsKey originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
         if (completionHandler) {
             completionHandler(results, error);
         }

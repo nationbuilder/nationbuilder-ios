@@ -48,7 +48,7 @@
 // And its alternate is the common create method.
 - (nonnull NSURLSessionDataTask *)baseCreateTaskWithURL:(nonnull NSURL *)url
                                              parameters:(nonnull NSDictionary *)parameters
-                                             resultsKey:(nonnull NSString *)resultsKey
+                                             resultsKey:(nullable NSString *)resultsKey
                                       completionHandler:(nullable NBClientResourceItemCompletionHandler)completionHandler;
 // This is the less common one, for custom requests.
 // NOTE: We use a dynamically typed block (to allow both resource item and list
@@ -62,8 +62,14 @@
 // This is the more common delete method.
 - (nonnull NSURLSessionDataTask *)baseDeleteTaskWithURL:(nonnull NSURL *)url
                                       completionHandler:(nullable NBClientResourceItemCompletionHandler)completionHandler;
-// This is the less common one, for custom requests.
+// This is a less common one, for partial deletes.
+- (nonnull NSURLSessionDataTask *)baseDeleteTaskWithURL:(nonnull NSURL *)url
+                                             parameters:(nonnull NSDictionary *)parameters
+                                             resultsKey:(nullable NSString *)resultsKey
+                                      completionHandler:(nullable NBClientResourceItemCompletionHandler)completionHandler;
+// This is a less common one, for custom requests.
 - (nonnull NSURLSessionDataTask *)baseDeleteTaskWithURLRequest:(nonnull NSURLRequest *)request
+                                                    resultsKey:(nullable NSString *)resultsKey
                                              completionHandler:(nullable NBClientResourceItemCompletionHandler)completionHandler;
 
 - (nonnull NSURLSessionDataTask *)startTask:(nonnull NSURLSessionDataTask *)task;

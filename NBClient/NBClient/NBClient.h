@@ -16,6 +16,8 @@
 
 typedef void (^NBClientResourceListCompletionHandler)(NSArray * __nullable items, NBPaginationInfo * __nullable paginationInfo, NSError * __nullable error);
 typedef void (^NBClientResourceItemCompletionHandler)(NSDictionary * __nullable item, NSError * __nullable error);
+// Sometimes the API will return non-RESTful resources, ie. people/count.
+typedef void (^NBClientResourceCompletionHandler)(id __nullable result, NSError * __nullable error);
 
 // Use these constants when working with the client's errors.
 extern NSUInteger const NBClientErrorCodeService;
@@ -41,6 +43,24 @@ extern NSString * __nonnull const NBClientTaggingTagNameOrListKey; // String or 
 
 extern NSString * __nonnull const NBClientCapitalAmountInCentsKey;
 extern NSString * __nonnull const NBClientCapitalUserContentKey;
+
+extern NSString * __nonnull const NBClientNoteUserContentKey;
+
+extern NSString * __nonnull const NBClientContactBroadcasterIdentifierKey;
+extern NSString * __nonnull const NBClientContactMethodKey;
+extern NSString * __nonnull const NBClientContactNoteKey;
+extern NSString * __nonnull const NBClientContactSenderIdentifierKey;
+extern NSString * __nonnull const NBClientContactStatusKey;
+extern NSString * __nonnull const NBClientContactTypeIdentifierKey;
+
+extern NSString * __nonnull const NBClientDonationAmountInCentsKey;
+extern NSString * __nonnull const NBClientDonationDonorIdentifierKey;
+extern NSString * __nonnull const NBClientDonationPaymentTypeNameKey;
+
+extern NSString * __nonnull const NBClientSurveyResponderIdentifierKey;
+extern NSString * __nonnull const NBClientSurveyResponsesKey;
+extern NSString * __nonnull const NBClientSurveyQuestionIdentifierKey;
+extern NSString * __nonnull const NBClientSurveyQuestionResponseIdentifierKey;
 
 // The client works with the NationBuilder API. It is an API client. For
 // authentication, it relies on its authenticator or test token. Conventionally,
