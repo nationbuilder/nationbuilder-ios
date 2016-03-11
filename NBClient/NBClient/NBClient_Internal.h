@@ -25,10 +25,6 @@
 
 - (void)updateBaseURLComponents;
 
-// These request methods are called by default in the base*TaskWithURL: methods,
-// but you can call them to customize the request for the endpoint and pass the
-// request into base*TaskForURLRequest:
-- (nonnull NSMutableURLRequest *)baseFetchRequestWithURL:(nonnull NSURL *)url;
 - (nonnull NSURLSessionDataTask *)baseFetchTaskWithURLComponents:(nonnull NSURLComponents *)components
                                                       resultsKey:(nonnull NSString *)resultsKey
                                                   paginationInfo:(nullable NBPaginationInfo *)paginationInfo
@@ -37,19 +33,16 @@
                                                       resultsKey:(nullable NSString *)resultsKey
                                                completionHandler:(nullable NBClientResourceItemCompletionHandler)completionHandler;
 
-- (nonnull NSMutableURLRequest *)baseSaveRequestWithURL:(nonnull NSURL *)url
+// This is the common save method.
+- (nonnull NSURLSessionDataTask *)baseCreateTaskWithURL:(nonnull NSURL *)url
                                              parameters:(nonnull NSDictionary *)parameters
-                                                  error:(NSError * __nullable * __nullable)error;
+                                             resultsKey:(nullable NSString *)resultsKey
+                                      completionHandler:(nullable NBClientResourceItemCompletionHandler)completionHandler;
 // This is the more common save method.
 - (nonnull NSURLSessionDataTask *)baseSaveTaskWithURL:(nonnull NSURL *)url
                                            parameters:(nonnull NSDictionary *)parameters
                                            resultsKey:(nonnull NSString *)resultsKey
                                     completionHandler:(nullable NBClientResourceItemCompletionHandler)completionHandler;
-// And its alternate is the common create method.
-- (nonnull NSURLSessionDataTask *)baseCreateTaskWithURL:(nonnull NSURL *)url
-                                             parameters:(nonnull NSDictionary *)parameters
-                                             resultsKey:(nullable NSString *)resultsKey
-                                      completionHandler:(nullable NBClientResourceItemCompletionHandler)completionHandler;
 // This is the less common one, for custom requests.
 // NOTE: We use a dynamically typed block (to allow both resource item and list
 //       completion handlers) because there's no other different in method selector
@@ -58,7 +51,6 @@
                                                   resultsKey:(nonnull NSString *)resultsKey
                                            completionHandler:(nullable id)completionHandler;
 
-- (nonnull NSMutableURLRequest *)baseDeleteRequestWithURL:(nonnull NSURL *)url;
 // This is the more common delete method.
 - (nonnull NSURLSessionDataTask *)baseDeleteTaskWithURL:(nonnull NSURL *)url
                                       completionHandler:(nullable NBClientResourceItemCompletionHandler)completionHandler;
@@ -71,6 +63,10 @@
 - (nonnull NSURLSessionDataTask *)baseDeleteTaskWithURLRequest:(nonnull NSURLRequest *)request
                                                     resultsKey:(nullable NSString *)resultsKey
                                              completionHandler:(nullable NBClientResourceItemCompletionHandler)completionHandler;
+
+- (nonnull NSMutableURLRequest *)baseRequestWithURL:(nonnull NSURL *)url
+                                         parameters:(nullable NSDictionary *)parameters
+                                              error:(NSError * __nullable * __nullable)error;
 
 - (nonnull NSURLSessionDataTask *)startTask:(nonnull NSURLSessionDataTask *)task;
 

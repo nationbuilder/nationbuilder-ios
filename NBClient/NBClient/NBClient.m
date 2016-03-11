@@ -219,18 +219,6 @@ static NSArray *LegacyPaginationEndpoints;
     self.baseURLComponents.percentEncodedQuery = [@{ @"access_token": self.apiKey ?: @"" } nb_queryString];
 }
 
-- (NSMutableURLRequest *)baseFetchRequestWithURL:(NSURL *)url
-{
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
-                                                           cachePolicy:NSURLRequestReloadRevalidatingCacheData
-                                                       timeoutInterval:10.0f];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    if (self.delegate && [self.delegate respondsToSelector:@selector(client:willCreateDataTaskForRequest:)]) {
-        [self.delegate client:self willCreateDataTaskForRequest:request];
-    }
-    return request;
-}
-
 - (NSURLSessionDataTask *)baseFetchTaskWithURLComponents:(NSURLComponents *)components
                                               resultsKey:(NSString *)resultsKey
                                           paginationInfo:(NBPaginationInfo *)paginationInfo
@@ -250,7 +238,8 @@ static NSArray *LegacyPaginationEndpoints;
         components.percentEncodedQuery = mutableParameters.nb_queryString;
     } // Otherwise endpoint uses the resource's default pagination.
 
-    NSMutableURLRequest *request = [self baseFetchRequestWithURL:components.URL];
+    NSMutableURLRequest *request = [self baseRequestWithURL:components.URL parameters:nil error:nil];
+    request.cachePolicy = NSURLRequestReloadRevalidatingCacheData;
     NBLogInfo(@"REQUEST: %@", request.nb_debugDescription);
     void (^taskCompletionHandler)(NSData *, NSURLResponse *, NSError *) =
     [self dataTaskCompletionHandlerForFetchResultsKey:resultsKey originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
@@ -275,7 +264,8 @@ static NSArray *LegacyPaginationEndpoints;
                                               resultsKey:(NSString *)resultsKey
                                        completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
-    NSMutableURLRequest *request = [self baseFetchRequestWithURL:components.URL];
+    NSMutableURLRequest *request = [self baseRequestWithURL:components.URL parameters:nil error:nil];
+    request.cachePolicy = NSURLRequestReloadRevalidatingCacheData;
     NBLogInfo(@"REQUEST: %@", request.nb_debugDescription);
     void (^taskCompletionHandler)(NSData *, NSURLResponse *, NSError *) =
     [self dataTaskCompletionHandlerForFetchResultsKey:resultsKey originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
@@ -287,49 +277,33 @@ static NSArray *LegacyPaginationEndpoints;
     return [self startTask:task];
 }
 
-- (NSMutableURLRequest *)baseSaveRequestWithURL:(NSURL *)url
-                                     parameters:(NSDictionary *)parameters
-                                          error:(NSError *__autoreleasing *)error
-{
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
-                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                       timeoutInterval:10.0f];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    request.HTTPMethod = @"PUT"; // Overwrite as needed.
-    [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:parameters options:0 error:error]];
-    if (self.delegate && [self.delegate respondsToSelector:@selector(client:willCreateDataTaskForRequest:)]) {
-        [self.delegate client:self willCreateDataTaskForRequest:request];
-    }
-    return request;
-}
-
--(NSURLSessionDataTask *)baseSaveTaskWithURL:(NSURL *)url
-                                  parameters:(NSDictionary *)parameters
-                                  resultsKey:(NSString *)resultsKey
-                           completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
-{
-    NSError *error;
-    NSMutableURLRequest *request = [self baseSaveRequestWithURL:url parameters:parameters error:&error];
-    if (error) {
-        dispatch_async(dispatch_get_main_queue(), ^{ completionHandler(nil, error); });
-        return nil;
-    }
-    return [self baseSaveTaskWithURLRequest:request resultsKey:resultsKey completionHandler:completionHandler];
-}
-
--(NSURLSessionDataTask *)baseCreateTaskWithURL:(NSURL *)url
+- (NSURLSessionDataTask *)baseCreateTaskWithURL:(NSURL *)url
                                     parameters:(NSDictionary *)parameters
                                     resultsKey:(NSString *)resultsKey
                              completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
     NSError *error;
-    NSMutableURLRequest *request = [self baseSaveRequestWithURL:url parameters:parameters error:&error];
+    NSMutableURLRequest *request = [self baseRequestWithURL:url parameters:parameters error:&error];
     if (error) {
         dispatch_async(dispatch_get_main_queue(), ^{ completionHandler(nil, error); });
         return nil;
     }
     request.HTTPMethod = @"POST";
+    return [self baseSaveTaskWithURLRequest:request resultsKey:resultsKey completionHandler:completionHandler];
+}
+
+- (NSURLSessionDataTask *)baseSaveTaskWithURL:(NSURL *)url
+                                   parameters:(NSDictionary *)parameters
+                                   resultsKey:(NSString *)resultsKey
+                            completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
+{
+    NSError *error;
+    NSMutableURLRequest *request = [self baseRequestWithURL:url parameters:parameters error:&error];
+    if (error) {
+        dispatch_async(dispatch_get_main_queue(), ^{ completionHandler(nil, error); });
+        return nil;
+    }
+    request.HTTPMethod = @"PUT";
     return [self baseSaveTaskWithURLRequest:request resultsKey:resultsKey completionHandler:completionHandler];
 }
 
@@ -352,23 +326,12 @@ static NSArray *LegacyPaginationEndpoints;
     return [self startTask:task];
 }
 
-- (NSMutableURLRequest *)baseDeleteRequestWithURL:(NSURL *)url
-{
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
-                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                       timeoutInterval:10.0f];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    request.HTTPMethod = @"DELETE";
-    if (self.delegate && [self.delegate respondsToSelector:@selector(client:willCreateDataTaskForRequest:)]) {
-        [self.delegate client:self willCreateDataTaskForRequest:request];
-    }
-    return request;
-}
-
 - (NSURLSessionDataTask *)baseDeleteTaskWithURL:(NSURL *)url
                               completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
-    return [self baseDeleteTaskWithURLRequest:[self baseDeleteRequestWithURL:url] resultsKey:nil completionHandler:completionHandler];
+    NSMutableURLRequest *request = [self baseRequestWithURL:url parameters:nil error:nil];
+    request.HTTPMethod = @"DELETE";
+    return [self baseDeleteTaskWithURLRequest:request resultsKey:nil completionHandler:completionHandler];
 }
 
 - (nonnull NSURLSessionDataTask *)baseDeleteTaskWithURL:(NSURL *)url
@@ -377,7 +340,7 @@ static NSArray *LegacyPaginationEndpoints;
                                       completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
     NSError *error;
-    NSMutableURLRequest *request = [self baseSaveRequestWithURL:url parameters:parameters error:&error];
+    NSMutableURLRequest *request = [self baseRequestWithURL:url parameters:parameters error:&error];
     if (error) {
         dispatch_async(dispatch_get_main_queue(), ^{ completionHandler(nil, error); });
         return nil;
@@ -399,6 +362,24 @@ static NSArray *LegacyPaginationEndpoints;
     }];
     NSURLSessionDataTask *task = [self.urlSession dataTaskWithRequest:request completionHandler:taskCompletionHandler];
     return [self startTask:task];
+}
+
+- (NSMutableURLRequest *)baseRequestWithURL:(NSURL *)url
+                                 parameters:(NSDictionary *)parameters
+                                      error:(NSError *__autoreleasing *)error
+{
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                       timeoutInterval:10.0f];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    if (parameters) {
+        [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:parameters options:0 error:error]];
+    }
+    if (self.delegate && [self.delegate respondsToSelector:@selector(client:willCreateDataTaskForRequest:)]) {
+        [self.delegate client:self willCreateDataTaskForRequest:request];
+    }
+    return request;
 }
 
 - (NSURLSessionDataTask *)startTask:(NSURLSessionDataTask *)task
