@@ -335,9 +335,9 @@ static NSArray *LegacyPaginationEndpoints;
 }
 
 - (NSURLSessionDataTask *)baseDeleteTaskWithURL:(NSURL *)url
-                                             parameters:(NSDictionary *)parameters
-                                             resultsKey:(NSString *)resultsKey
-                                      completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
+                                     parameters:(NSDictionary *)parameters
+                                     resultsKey:(NSString *)resultsKey
+                              completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
     NSError *error;
     NSMutableURLRequest *request = [self baseRequestWithURL:url parameters:parameters error:&error];
