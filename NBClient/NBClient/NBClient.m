@@ -12,6 +12,8 @@
 #import "FoundationAdditions.h"
 #import "NBPaginationInfo.h"
 
+# pragma mark - External Constants
+
 NSUInteger const NBClientErrorCodeService = 10;
 NSString * const NBClientErrorCodeKey = @"code";
 NSString * const NBClientErrorHTTPStatusCodeKey = @"NBClientErrorHTTPStatusCode";
@@ -21,6 +23,8 @@ NSString * const NBClientErrorInnerErrorKey = @"inner_error";
 
 NSString * const NBClientDefaultAPIVersion = @"v1";
 NSString * const NBClientDefaultBaseURLFormat = @"https://%@.nationbuilder.com";
+
+NSString * const NBClientPaginationTokenOptInKey = @"token_paginator";
 
 NSString * const NBClientLocationLatitudeKey = @"latitude";
 NSString * const NBClientLocationLongitudeKey = @"longitude";
@@ -49,13 +53,15 @@ NSString * const NBClientSurveyResponsesKey = @"question_responses";
 NSString * const NBClientSurveyQuestionIdentifierKey = @"question_id";
 NSString * const NBClientSurveyQuestionResponseIdentifierKey = @"response";
 
+#pragma mark - Internal Constants
+
 #if DEBUG
 static NBLogLevel LogLevel = NBLogLevelDebug;
 #else
 static NBLogLevel LogLevel = NBLogLevelWarning;
 #endif
 
-NSString * const NBClientPaginationTokenOptInKey = @"token_paginator";
+#pragma mark -
 
 @implementation NBClient
 
@@ -101,6 +107,7 @@ NSString * const NBClientPaginationTokenOptInKey = @"token_paginator";
     
     self.baseURL = [NSURL URLWithString:[NSString stringWithFormat:NBClientDefaultBaseURLFormat, self.nationSlug]];
     self.shouldUseLegacyPagination = NO;
+    self.shouldUseTokenPagination = YES;
 }
 
 #pragma mark - NBLogging
@@ -294,7 +301,7 @@ NSString * const NBClientPaginationTokenOptInKey = @"token_paginator";
         // Add pagination query parameters.
         paginationInfo.legacy = self.shouldUseLegacyPagination;
         mutableParameters = paginationInfo.queryParameters.mutableCopy;
-        if (!paginationInfo.legacy) {
+        if (!paginationInfo.legacy && self.shouldUseTokenPagination) {
             // Only add the flag if opting in, necessary for older apps.
             mutableParameters[NBClientPaginationTokenOptInKey] = @1;
         }
@@ -341,7 +348,7 @@ NSString * const NBClientPaginationTokenOptInKey = @"token_paginator";
     void (^taskCompletionHandler)(NSData *, NSURLResponse *, NSError *) =
     [self dataTaskCompletionHandlerForResultsKey:resultsKey originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
         if (completionHandler) {
-            if ([results isKindOfClass:[NSArray class]]) {
+            if ([results isKindOfClass:[NSArray class]] || paginationInfo) {
                 NBPaginationInfo *responsePaginationInfo;
                 if ([NBPaginationInfo dictionaryContainsPaginationInfo:jsonObject]) {
                     responsePaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:jsonObject legacy:paginationInfo.legacy];

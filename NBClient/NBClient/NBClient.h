@@ -85,7 +85,10 @@ extern NSString * __nonnull const NBClientSurveyQuestionResponseIdentifierKey;
 @property (nonatomic, copy, nullable) NSString *apiKey; // Set this upon successful authentication.
 @property (nonatomic, copy, nonnull) NSString *apiVersion; // Optional. For future use.
 
-@property (nonatomic) BOOL shouldUseLegacyPagination; // Set this to true if absolutely necessary.
+// Set this to true if absolutely necessary. Discouraged for performance reasons.
+@property (nonatomic) BOOL shouldUseLegacyPagination;
+// For a shorter query string, set this to `NO` if you're not a 'legacy' app.
+@property (nonatomic) BOOL shouldUseTokenPagination;
 
 #pragma mark - Initializers
 
