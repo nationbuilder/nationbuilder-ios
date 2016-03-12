@@ -16,6 +16,7 @@
 
 typedef void (^NBClientResourceListCompletionHandler)(NSArray * __nullable items, NBPaginationInfo * __nullable paginationInfo, NSError * __nullable error);
 typedef void (^NBClientResourceItemCompletionHandler)(NSDictionary * __nullable item, NSError * __nullable error);
+typedef void (^NBClientEmptyCompletionHandler)(NSError * __nullable error);
 // Sometimes the API will return non-RESTful resources, ie. people/count.
 typedef void (^NBClientResourceCompletionHandler)(id __nullable result, NSError * __nullable error);
 
@@ -86,6 +87,8 @@ extern NSString * __nonnull const NBClientSurveyQuestionResponseIdentifierKey;
 
 @property (nonatomic) BOOL shouldUseLegacyPagination; // Set this to true if absolutely necessary.
 
+#pragma mark - Initializers
+
 // The main initializer.
 - (nonnull instancetype)initWithNationSlug:(nonnull NSString *)nationSlug
                              authenticator:(nonnull NBAuthenticator *)authenticator
@@ -102,6 +105,37 @@ extern NSString * __nonnull const NBClientSurveyQuestionResponseIdentifierKey;
                              customBaseURL:(nullable NSURL *)baseURL
                           customURLSession:(nullable NSURLSession *)urlSession
              customURLSessionConfiguration:(nullable NSURLSessionConfiguration *)sessionConfiguration;
+
+#pragma mark - Generic Endpoints
+
+// These are generic endpoint methods since NBClient doesn't attempt to provide
+// a method for every API endpoint. You can pass any NBClient*CompletionHandler
+// block as `completionHandler`, but the type should depend on other arguments.
+// And as always, that handler is optional because responses can also be handled
+// by the client delegate.
+//
+// GET. `resultsKey` defaults to 'results'. Omit `paginationInfo` if fetching a
+// single resource or to use the endpoint's default pagination, if any.
+- (nonnull NSURLSessionDataTask *)fetchByResourceSubPath:(nonnull NSString *)path
+                                          withParameters:(nullable NSDictionary *)parameters
+                                        customResultsKey:(nullable NSString *)resultsKey
+                                          paginationInfo:(nullable NBPaginationInfo *)paginationInfo
+                                       completionHandler:(nullable id)completionHandler;
+// POST. Omit `resultsKey` for empty responses if needed.
+- (nullable NSURLSessionDataTask *)createByResourceSubPath:(nonnull NSString *)path
+                                            withParameters:(nonnull NSDictionary *)parameters
+                                                resultsKey:(nullable NSString *)resultsKey
+                                         completionHandler:(nullable id)completionHandler;
+// PUT. Omit `resultsKey` for empty responses if needed.
+- (nullable NSURLSessionDataTask *)saveByResourceSubPath:(nonnull NSString *)path
+                                          withParameters:(nonnull NSDictionary *)parameters
+                                              resultsKey:(nullable NSString *)resultsKey
+                                       completionHandler:(nullable id)completionHandler;
+// DELETE. Include `parameters` and `resultsKey` if needed.
+- (nullable NSURLSessionDataTask *)deleteByResourceSubPath:(nonnull NSString *)path
+                                            withParameters:(nullable NSDictionary *)parameters
+                                                resultsKey:(nullable NSString *)resultsKey
+                                         completionHandler:(nullable id)completionHandler;
 
 @end
 

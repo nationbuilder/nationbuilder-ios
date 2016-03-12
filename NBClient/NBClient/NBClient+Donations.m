@@ -16,36 +16,28 @@
 - (NSURLSessionDataTask *)fetchDonationsWithPaginationInfo:(NBPaginationInfo *)paginationInfo
                                          completionHandler:(NBClientResourceListCompletionHandler)completionHandler
 {
-    NSURLComponents *components = [self.baseURLComponents copy];
-    components.path = [components.path stringByAppendingString:@"/donations"];
-    return [self baseFetchTaskWithURLComponents:components resultsKey:@"results" paginationInfo:paginationInfo completionHandler:completionHandler];
+    return [self fetchByResourceSubPath:@"/donations" withParameters:nil customResultsKey:nil paginationInfo:paginationInfo completionHandler:completionHandler];
 }
 
 - (NSURLSessionDataTask *)createDonationWithParameters:(NSDictionary *)parameters
                                      completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
-    NSURLComponents *components = [self.baseURLComponents copy];
-    components.path = [components.path stringByAppendingString:@"/donations"];
-    return [self baseCreateTaskWithURL:components.URL parameters:@{ @"donation": parameters } resultsKey:@"donation" completionHandler:completionHandler];
+    return [self createByResourceSubPath:@"/donations" withParameters:@{ @"donation": parameters } resultsKey:@"donation" completionHandler:completionHandler];
 }
 
 - (NSURLSessionDataTask *)saveDonationByIdentifier:(NSUInteger)identifier
                                     withParameters:(NSDictionary *)parameters
                                  completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
-    NSURLComponents *components = [self.baseURLComponents copy];
-    components.path = [components.path stringByAppendingString:
-                       [NSString stringWithFormat:@"/donations/%lu", (unsigned long)identifier]];
-    return [self baseSaveTaskWithURL:components.URL parameters:@{ @"donation": parameters } resultsKey:@"donation" completionHandler:completionHandler];
+    return [self saveByResourceSubPath:[NSString stringWithFormat:@"/donations/%lu", (unsigned long)identifier]
+                        withParameters:@{ @"donation": parameters } resultsKey:@"donation" completionHandler:completionHandler];
 }
 
 - (NSURLSessionDataTask *)deleteDonationByIdentifier:(NSUInteger)identifier
                                    completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
-    NSURLComponents *components = [self.baseURLComponents copy];
-    components.path = [components.path stringByAppendingString:
-                       [NSString stringWithFormat:@"/donations/%lu", (unsigned long)identifier]];
-    return [self baseDeleteTaskWithURL:components.URL completionHandler:completionHandler];
+    return [self deleteByResourceSubPath:[NSString stringWithFormat:@"/donations/%lu", (unsigned long)identifier]
+                          withParameters:nil resultsKey:nil completionHandler:completionHandler];
 }
 
 @end

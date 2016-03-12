@@ -19,20 +19,16 @@
                               withPaginationInfo:(NBPaginationInfo *)paginationInfo
                                completionHandler:(NBClientResourceListCompletionHandler)completionHandler
 {
-    NSURLComponents *components = [self.baseURLComponents copy];
-    components.path = [components.path stringByAppendingString:
-                       [NSString stringWithFormat:@"/sites/%@/pages/surveys", siteSlug]];
-    return [self baseFetchTaskWithURLComponents:components resultsKey:@"results" paginationInfo:paginationInfo completionHandler:completionHandler];
+    return [self fetchByResourceSubPath:[NSString stringWithFormat:@"/sites/%@/pages/surveys", siteSlug]
+                         withParameters:nil customResultsKey:nil paginationInfo:paginationInfo completionHandler:completionHandler];
 }
 
 - (NSURLSessionDataTask *)createSurveyBySiteSlug:(NSString *)siteSlug
                                   withParameters:(NSDictionary *)parameters
                                completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
-    NSURLComponents *components = [self.baseURLComponents copy];
-    components.path = [components.path stringByAppendingString:
-                       [NSString stringWithFormat:@"/sites/%@/pages/surveys", siteSlug]];
-    return [self baseCreateTaskWithURL:components.URL parameters:@{ @"survey": parameters } resultsKey:@"survey" completionHandler:completionHandler];
+    return [self createByResourceSubPath:[NSString stringWithFormat:@"/sites/%@/pages/surveys", siteSlug]
+                          withParameters:@{ @"survey": parameters } resultsKey:@"survey" completionHandler:completionHandler];
 }
 
 - (NSURLSessionDataTask *)saveSurveyBySiteSlug:(NSString *)siteSlug
@@ -40,20 +36,17 @@
                                 withParameters:(NSDictionary *)parameters
                              completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
-    NSURLComponents *components = [self.baseURLComponents copy];
-    components.path = [components.path stringByAppendingString:
-                       [NSString stringWithFormat:@"/sites/%@/pages/surveys/%lu", siteSlug, (unsigned long)identifier]];
-    return [self baseSaveTaskWithURL:components.URL parameters:@{ @"survey": parameters } resultsKey:@"survey" completionHandler:completionHandler];
+    return [self saveByResourceSubPath:[NSString stringWithFormat:@"/sites/%@/pages/surveys/%lu", siteSlug, (unsigned long)identifier]
+                        withParameters:@{ @"survey": parameters } resultsKey:@"survey" completionHandler:completionHandler];
 }
 
+// TODO: Deprecate to use NBClientEmptyCompletionHandler.
 - (NSURLSessionDataTask *)deleteSurveyBySiteSlug:(NSString *)siteSlug
                                       identifier:(NSUInteger)identifier
                                completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
-    NSURLComponents *components = [self.baseURLComponents copy];
-    components.path = [components.path stringByAppendingString:
-                       [NSString stringWithFormat:@"/sites/%@/pages/surveys/%lu", siteSlug, (unsigned long)identifier]];
-    return [self baseDeleteTaskWithURL:components.URL completionHandler:completionHandler];
+    return [self deleteByResourceSubPath:[NSString stringWithFormat:@"/sites/%@/pages/surveys/%lu", siteSlug, (unsigned long)identifier]
+                          withParameters:nil resultsKey:nil completionHandler:completionHandler];
 }
 
 #pragma mark - Survey Responses
@@ -63,27 +56,20 @@
                                        withPaginationInfo:(NBPaginationInfo *)paginationInfo
                                         completionHandler:(NBClientResourceListCompletionHandler)completionHandler
 {
-    NSURLComponents *components = [self.baseURLComponents copy];
-    components.path = [components.path stringByAppendingString:@"/survey_responses"];
-    NSMutableDictionary *mutableParameters = [components.percentEncodedQuery nb_queryStringParameters].mutableCopy;
+    parameters = parameters ?: @{};
+    NSMutableDictionary *mutableParameters = parameters.mutableCopy;
     mutableParameters[@"survey_id"] = @(surveyIdentifier);
-    if (parameters) {
-        [mutableParameters addEntriesFromDictionary:parameters];
-    }
-    components.percentEncodedQuery = [mutableParameters nb_queryString];
-    return [self baseFetchTaskWithURLComponents:components resultsKey:@"results" paginationInfo:paginationInfo completionHandler:completionHandler];
+    return [self fetchByResourceSubPath:@"/survey_responses" withParameters:mutableParameters customResultsKey:nil paginationInfo:paginationInfo completionHandler:completionHandler];
 }
 
 - (NSURLSessionDataTask *)createSurveyResponseByIdentifier:(NSUInteger)surveyIdentifier
                                             withParameters:(NSDictionary *)parameters
                                          completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
-    NSURLComponents *components = [self.baseURLComponents copy];
     NSMutableDictionary *mutableParameters = parameters.mutableCopy;
     mutableParameters[@"survey_id"] = @(surveyIdentifier);
-    components.path = [components.path stringByAppendingString:@"/survey_responses"];
-    return [self baseCreateTaskWithURL:components.URL parameters:@{ @"survey_response": mutableParameters } resultsKey:@"survey_response" completionHandler:completionHandler];
-
+    return [self createByResourceSubPath:@"/survey_responses" withParameters:@{ @"survey_response": mutableParameters }
+                              resultsKey:@"survey_response" completionHandler:completionHandler];
 }
 
 @end

@@ -56,17 +56,10 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 #endif
 
 NSString * const NBClientPaginationTokenOptInKey = @"token_paginator";
-static NSArray *LegacyPaginationEndpoints;
 
 @implementation NBClient
 
 #pragma mark - Initializers
-
-+ (void)initialize {
-    if (self == [NBClient self]) {
-        LegacyPaginationEndpoints = @[];
-    }
-}
 
 - (instancetype)initWithNationSlug:(NSString *)nationSlug
                      authenticator:(NBAuthenticator *)authenticator
@@ -197,7 +190,51 @@ static NSArray *LegacyPaginationEndpoints;
     [self updateBaseURLComponents];
 }
 
-#pragma mark - Private
+#pragma mark - Generic Endpoints
+
+- (NSURLSessionDataTask *)fetchByResourceSubPath:(NSString *)path
+                                  withParameters:(NSDictionary *)parameters
+                                customResultsKey:(NSString *)resultsKey
+                                  paginationInfo:(NBPaginationInfo *)paginationInfo
+                               completionHandler:(id)completionHandler
+{
+    resultsKey = resultsKey ?: @"results";
+    return [self baseDataTaskWithURLComponents:[self urlComponentsForSubPath:path]
+                                    httpMethod:@"GET" parameters:parameters resultsKey:resultsKey
+                                paginationInfo:paginationInfo completionHandler:completionHandler];
+}
+
+- (NSURLSessionDataTask *)createByResourceSubPath:(NSString *)path
+                                   withParameters:(NSDictionary *)parameters
+                                       resultsKey:(NSString *)resultsKey
+                                completionHandler:(id)completionHandler
+{
+    return [self baseDataTaskWithURLComponents:[self urlComponentsForSubPath:path]
+                                    httpMethod:@"POST" parameters:parameters resultsKey:resultsKey
+                                paginationInfo:nil completionHandler:completionHandler];
+}
+
+- (NSURLSessionDataTask *)saveByResourceSubPath:(NSString *)path
+                                 withParameters:(NSDictionary *)parameters
+                                     resultsKey:(NSString *)resultsKey
+                              completionHandler:(id)completionHandler
+{
+    return [self baseDataTaskWithURLComponents:[self urlComponentsForSubPath:path]
+                                    httpMethod:@"PUT" parameters:parameters resultsKey:resultsKey
+                                paginationInfo:nil completionHandler:completionHandler];
+}
+
+- (NSURLSessionDataTask *)deleteByResourceSubPath:(NSString *)path
+                                   withParameters:(NSDictionary *)parameters
+                                       resultsKey:(NSString *)resultsKey
+                                completionHandler:(id)completionHandler
+{
+    return [self baseDataTaskWithURLComponents:[self urlComponentsForSubPath:path]
+                                    httpMethod:@"DELETE" parameters:parameters resultsKey:resultsKey
+                                paginationInfo:nil completionHandler:completionHandler];
+}
+
+#pragma mark - Internal
 
 #pragma mark Requests & Tasks
 
@@ -219,149 +256,11 @@ static NSArray *LegacyPaginationEndpoints;
     self.baseURLComponents.percentEncodedQuery = [@{ @"access_token": self.apiKey ?: @"" } nb_queryString];
 }
 
-- (NSURLSessionDataTask *)baseFetchTaskWithURLComponents:(NSURLComponents *)components
-                                              resultsKey:(NSString *)resultsKey
-                                          paginationInfo:(NBPaginationInfo *)paginationInfo
-                                       completionHandler:(NBClientResourceListCompletionHandler)completionHandler
+- (NSURLComponents *)urlComponentsForSubPath:(NSString *)path
 {
-    BOOL shouldUseLegacyPagination = self.shouldUseLegacyPagination;
-
-    if (paginationInfo) {
-        shouldUseLegacyPagination = [LegacyPaginationEndpoints containsObject:components.path];
-        paginationInfo.legacy = shouldUseLegacyPagination;
-        NSMutableDictionary *mutableParameters = [[paginationInfo queryParameters] mutableCopy];
-        if (!shouldUseLegacyPagination) {
-            // Only add the flag if opting in, necessary for older apps.
-            mutableParameters[NBClientPaginationTokenOptInKey] = @1;
-        }
-        [mutableParameters addEntriesFromDictionary:[components.percentEncodedQuery nb_queryStringParameters]];
-        components.percentEncodedQuery = mutableParameters.nb_queryString;
-    } // Otherwise endpoint uses the resource's default pagination.
-
-    NSMutableURLRequest *request = [self baseRequestWithURL:components.URL parameters:nil error:nil];
-    request.cachePolicy = NSURLRequestReloadRevalidatingCacheData;
-    NBLogInfo(@"REQUEST: %@", request.nb_debugDescription);
-    void (^taskCompletionHandler)(NSData *, NSURLResponse *, NSError *) =
-    [self dataTaskCompletionHandlerForResultsKey:resultsKey originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
-
-        NBPaginationInfo *responsePaginationInfo;
-        if ([NBPaginationInfo dictionaryContainsPaginationInfo:jsonObject]) {
-            responsePaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:jsonObject legacy:shouldUseLegacyPagination];
-            responsePaginationInfo.numberOfItemsPerPage = paginationInfo.numberOfItemsPerPage;
-            responsePaginationInfo.currentDirection = paginationInfo.currentDirection;
-            [responsePaginationInfo updateCurrentPageNumber];
-        }
-
-        if (completionHandler) {
-            completionHandler(results, responsePaginationInfo, error);
-        }
-    }];
-    NSURLSessionDataTask *task = [self.urlSession dataTaskWithRequest:request completionHandler: taskCompletionHandler];
-    return [self startTask:task];
-}
-
-- (NSURLSessionDataTask *)baseFetchTaskWithURLComponents:(NSURLComponents *)components
-                                              resultsKey:(NSString *)resultsKey
-                                       completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
-{
-    NSMutableURLRequest *request = [self baseRequestWithURL:components.URL parameters:nil error:nil];
-    request.cachePolicy = NSURLRequestReloadRevalidatingCacheData;
-    NBLogInfo(@"REQUEST: %@", request.nb_debugDescription);
-    void (^taskCompletionHandler)(NSData *, NSURLResponse *, NSError *) =
-    [self dataTaskCompletionHandlerForResultsKey:resultsKey originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
-        if (completionHandler) {
-            completionHandler(results, error);
-        }
-    }];
-    NSURLSessionDataTask *task = [self.urlSession dataTaskWithRequest:request completionHandler:taskCompletionHandler];
-    return [self startTask:task];
-}
-
-- (NSURLSessionDataTask *)baseCreateTaskWithURL:(NSURL *)url
-                                    parameters:(NSDictionary *)parameters
-                                    resultsKey:(NSString *)resultsKey
-                             completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
-{
-    NSError *error;
-    NSMutableURLRequest *request = [self baseRequestWithURL:url parameters:parameters error:&error];
-    if (error) {
-        dispatch_async(dispatch_get_main_queue(), ^{ completionHandler(nil, error); });
-        return nil;
-    }
-    request.HTTPMethod = @"POST";
-    return [self baseSaveTaskWithURLRequest:request resultsKey:resultsKey completionHandler:completionHandler];
-}
-
-- (NSURLSessionDataTask *)baseSaveTaskWithURL:(NSURL *)url
-                                   parameters:(NSDictionary *)parameters
-                                   resultsKey:(NSString *)resultsKey
-                            completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
-{
-    NSError *error;
-    NSMutableURLRequest *request = [self baseRequestWithURL:url parameters:parameters error:&error];
-    if (error) {
-        dispatch_async(dispatch_get_main_queue(), ^{ completionHandler(nil, error); });
-        return nil;
-    }
-    request.HTTPMethod = @"PUT";
-    return [self baseSaveTaskWithURLRequest:request resultsKey:resultsKey completionHandler:completionHandler];
-}
-
-- (NSURLSessionDataTask *)baseSaveTaskWithURLRequest:(NSURLRequest *)request
-                                          resultsKey:(NSString *)resultsKey
-                                   completionHandler:(id)completionHandler
-{
-    NBLogInfo(@"REQUEST: %@", request.nb_debugDescription);
-    void (^taskCompletionHandler)(NSData *, NSURLResponse *, NSError *) =
-    [self dataTaskCompletionHandlerForResultsKey:resultsKey originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
-        if (completionHandler) {
-            if ([results isKindOfClass:[NSArray class]]) {
-                ((NBClientResourceListCompletionHandler)completionHandler)(results, nil, error);
-            } else if (!results || [results isKindOfClass:[NSDictionary class]]) {
-                ((NBClientResourceItemCompletionHandler)completionHandler)(results, error);
-            }
-        }
-    }];
-    NSURLSessionDataTask *task = [self.urlSession dataTaskWithRequest:request completionHandler:taskCompletionHandler];
-    return [self startTask:task];
-}
-
-- (NSURLSessionDataTask *)baseDeleteTaskWithURL:(NSURL *)url
-                              completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
-{
-    NSMutableURLRequest *request = [self baseRequestWithURL:url parameters:nil error:nil];
-    request.HTTPMethod = @"DELETE";
-    return [self baseDeleteTaskWithURLRequest:request resultsKey:nil completionHandler:completionHandler];
-}
-
-- (NSURLSessionDataTask *)baseDeleteTaskWithURL:(NSURL *)url
-                                     parameters:(NSDictionary *)parameters
-                                     resultsKey:(NSString *)resultsKey
-                              completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
-{
-    NSError *error;
-    NSMutableURLRequest *request = [self baseRequestWithURL:url parameters:parameters error:&error];
-    if (error) {
-        dispatch_async(dispatch_get_main_queue(), ^{ completionHandler(nil, error); });
-        return nil;
-    }
-    request.HTTPMethod = @"DELETE";
-    return [self baseDeleteTaskWithURLRequest:request resultsKey:resultsKey completionHandler:completionHandler];
-}
-
-- (NSURLSessionDataTask *)baseDeleteTaskWithURLRequest:(NSURLRequest *)request
-                                            resultsKey:(NSString *)resultsKey
-                                     completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
-{
-    NBLogInfo(@"REQUEST: %@", request.nb_debugDescription);
-    void (^taskCompletionHandler)(NSData *, NSURLResponse *, NSError *) =
-    [self dataTaskCompletionHandlerForResultsKey:resultsKey originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
-        if (completionHandler) {
-            completionHandler(results, error);
-        }
-    }];
-    NSURLSessionDataTask *task = [self.urlSession dataTaskWithRequest:request completionHandler:taskCompletionHandler];
-    return [self startTask:task];
+    NSURLComponents *components = [self.baseURLComponents copy];
+    components.path = [components.path stringByAppendingString:path];
+    return components;
 }
 
 - (NSMutableURLRequest *)baseRequestWithURL:(NSURL *)url
@@ -382,8 +281,91 @@ static NSArray *LegacyPaginationEndpoints;
     return request;
 }
 
-- (NSURLSessionDataTask *)startTask:(NSURLSessionDataTask *)task
+- (NSURLSessionDataTask *)baseDataTaskWithURLComponents:(NSURLComponents *)components
+                                             httpMethod:(NSString *)method
+                                             parameters:(NSDictionary *)parameters
+                                             resultsKey:(NSString *)resultsKey
+                                         paginationInfo:(NBPaginationInfo *)paginationInfo
+                                      completionHandler:(id)completionHandler
 {
+    // Step 1: Finalize URL components.
+    NSMutableDictionary *mutableParameters;
+    if (paginationInfo) {
+        // Add pagination query parameters.
+        paginationInfo.legacy = self.shouldUseLegacyPagination;
+        mutableParameters = paginationInfo.queryParameters.mutableCopy;
+        if (!paginationInfo.legacy) {
+            // Only add the flag if opting in, necessary for older apps.
+            mutableParameters[NBClientPaginationTokenOptInKey] = @1;
+        }
+        [mutableParameters addEntriesFromDictionary:components.percentEncodedQuery.nb_queryStringParameters];
+    }
+    if (parameters && [method isEqualToString:@"GET"]) {
+        // Add custom query parameters.
+        if (!mutableParameters) {
+            mutableParameters = components.percentEncodedQuery.nb_queryStringParameters.mutableCopy;
+        }
+        [mutableParameters addEntriesFromDictionary:parameters];
+        parameters = nil;
+    }
+    if (mutableParameters) {
+        components.percentEncodedQuery = mutableParameters.nb_queryString;
+    }
+
+    // Step 2: Create request.
+    NSError *jsonError;
+    NSMutableURLRequest *request = [self baseRequestWithURL:components.URL parameters:parameters error:&jsonError];
+    if (jsonError) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // Requires interface deprecation to enable.
+            // if (!resultsKey) {
+            //    ((NBClientEmptyCompletionHandler)completionHandler)(jsonError);
+            // }
+            if (paginationInfo || [resultsKey isEqualToString:@"results"]
+                || [resultsKey hasSuffix:@"s"]) // This additional check is due to API naming inconsistency.
+            {
+                ((NBClientResourceListCompletionHandler)completionHandler)(nil, nil, jsonError);
+            } else {
+                ((NBClientResourceCompletionHandler)completionHandler)(nil, jsonError);
+            }
+        });
+        return nil;
+    }
+    request.HTTPMethod = method;
+    if ([request.HTTPMethod isEqualToString:@"GET"]) {
+        request.cachePolicy = NSURLRequestReloadRevalidatingCacheData;
+    }
+    NBLogInfo(@"REQUEST: %@", request.nb_debugDescription);
+
+    // Step 3: Create task with handler.
+    void (^taskCompletionHandler)(NSData *, NSURLResponse *, NSError *) =
+    [self dataTaskCompletionHandlerForResultsKey:resultsKey originalRequest:request completionHandler:^(id results, NSDictionary *jsonObject, NSError *error) {
+        if (completionHandler) {
+            if ([results isKindOfClass:[NSArray class]]) {
+                NBPaginationInfo *responsePaginationInfo;
+                if ([NBPaginationInfo dictionaryContainsPaginationInfo:jsonObject]) {
+                    responsePaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:jsonObject legacy:paginationInfo.legacy];
+                    responsePaginationInfo.numberOfItemsPerPage = paginationInfo.numberOfItemsPerPage;
+                    responsePaginationInfo.currentDirection = paginationInfo.currentDirection;
+                    [responsePaginationInfo updateCurrentPageNumber];
+                }
+                ((NBClientResourceListCompletionHandler)completionHandler)(results, responsePaginationInfo, error);
+            } else if ([results isKindOfClass:[NSDictionary class]]) {
+                ((NBClientResourceItemCompletionHandler)completionHandler)(results, error);
+            } else if (results) {
+                ((NBClientResourceCompletionHandler)completionHandler)(results, error);
+            } else if (!results) {
+                ((NBClientResourceItemCompletionHandler)completionHandler)(results, error);
+                // Requires interface deprecation to replace above.
+                // ((NBClientEmptyCompletionHandler)completionHandler)(results);
+            } else {
+                NBLogError(@"Client cannot infer block type, completion not called! %@", completionHandler);
+            }
+        }
+    }];
+    NSURLSessionDataTask *task = [self.urlSession dataTaskWithRequest:request completionHandler:taskCompletionHandler];
+
+    // Step 4: Optionally start task.
     BOOL shouldStart = YES;
     if (self.delegate && [self.delegate respondsToSelector:@selector(client:shouldAutomaticallyStartDataTask:)]) {
         shouldStart = [self.delegate client:self shouldAutomaticallyStartDataTask:task];

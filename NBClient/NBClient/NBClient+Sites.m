@@ -16,9 +16,7 @@
 - (NSURLSessionDataTask *)fetchSitesWithPaginationInfo:(NBPaginationInfo *)paginationInfo
                                      completionHandler:(NBClientResourceListCompletionHandler)completionHandler
 {
-    NSURLComponents *components = [self.baseURLComponents copy];
-    components.path = [components.path stringByAppendingString:@"/sites"];
-    return [self baseFetchTaskWithURLComponents:components resultsKey:@"results" paginationInfo:paginationInfo completionHandler:completionHandler];
+    return [self fetchByResourceSubPath:@"/sites" withParameters:nil customResultsKey:nil paginationInfo:paginationInfo completionHandler:completionHandler];
 }
 
 @end
