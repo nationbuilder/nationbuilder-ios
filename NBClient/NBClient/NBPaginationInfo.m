@@ -71,7 +71,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 + (BOOL)dictionaryContainsPaginationInfo:(NSDictionary *)dictionary
 {
-    return dictionary[NBClientPaginationNextLinkKey] || dictionary[NBClientPaginationNextLinkKey];
+    return dictionary[NBClientPaginationNextLinkKey] || dictionary[NBClientNumberOfTotalPagesKey];
 }
 
 #pragma mark Accessors

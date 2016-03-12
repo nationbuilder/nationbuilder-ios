@@ -16,39 +16,33 @@
 - (NSURLSessionDataTask *)fetchListsWithPaginationInfo:(NBPaginationInfo *)paginationInfo
                                      completionHandler:(NBClientResourceListCompletionHandler)completionHandler
 {
-    NSURLComponents *components = [self.baseURLComponents copy];
-    components.path = [components.path stringByAppendingString:@"/lists"];
-    return [self baseFetchTaskWithURLComponents:components resultsKey:@"results" paginationInfo:paginationInfo completionHandler:completionHandler];
+    return [self fetchByResourceSubPath:@"/lists" withParameters:nil customResultsKey:nil paginationInfo:paginationInfo completionHandler:completionHandler];
 }
 
 - (NSURLSessionDataTask *)fetchListPeopleByIdentifier:(NSUInteger)identifier
                                    withPaginationInfo:(NBPaginationInfo *)paginationInfo
                                     completionHandler:(NBClientResourceListCompletionHandler)completionHandler
 {
-    NSURLComponents *components = [self.baseURLComponents copy];
-    components.path = [components.path stringByAppendingString:
-                       [NSString stringWithFormat:@"/lists/%lu/people", (unsigned long)identifier]];
-    return [self baseFetchTaskWithURLComponents:components resultsKey:@"results" paginationInfo:paginationInfo completionHandler:completionHandler];
+    return [self fetchByResourceSubPath:[NSString stringWithFormat:@"/lists/%lu/people", (unsigned long)identifier]
+                         withParameters:nil customResultsKey:nil paginationInfo:paginationInfo completionHandler:completionHandler];
 }
 
+// TODO: Deprecate to use NBClientEmptyCompletionHandler.
 - (NSURLSessionDataTask *)createPeopleListingsByIdentifier:(NSUInteger)listIdentifier
                                      withPeopleIdentifiers:(NSArray *)peopleIdentifiers
                                          completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
-    NSURLComponents *components = [self.baseURLComponents copy];
-    components.path = [components.path stringByAppendingString:
-                       [NSString stringWithFormat:@"/lists/%lu/people", (unsigned long)listIdentifier]];
-    return [self baseCreateTaskWithURL:components.URL parameters:@{ @"people_ids": peopleIdentifiers } resultsKey:nil completionHandler:completionHandler];
+    return [self createByResourceSubPath:[NSString stringWithFormat:@"/lists/%lu/people", (unsigned long)listIdentifier]
+                          withParameters:@{ @"people_ids": peopleIdentifiers } resultsKey:nil completionHandler:completionHandler];
 }
 
+// TODO: Deprecate to use NBClientEmptyCompletionHandler.
 - (NSURLSessionDataTask *)deletePeopleListingsByIdentifier:(NSUInteger)listIdentifier
                                      withPeopleIdentifiers:(NSArray *)peopleIdentifiers
                                          completionHandler:(NBClientResourceItemCompletionHandler)completionHandler
 {
-    NSURLComponents *components = [self.baseURLComponents copy];
-    components.path = [components.path stringByAppendingString:
-                       [NSString stringWithFormat:@"/lists/%lu/people", (unsigned long)listIdentifier]];
-    return [self baseDeleteTaskWithURL:components.URL parameters:@{ @"people_ids": peopleIdentifiers } resultsKey:nil completionHandler:completionHandler];
+    return [self deleteByResourceSubPath:[NSString stringWithFormat:@"/lists/%lu/people", (unsigned long)listIdentifier]
+                          withParameters:@{ @"people_ids": peopleIdentifiers } resultsKey:nil completionHandler:completionHandler];
 }
 
 @end

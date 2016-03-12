@@ -250,7 +250,7 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
 - (void)setUpAsyncWithHTTPStubbing:(BOOL)shouldUseHTTPStubbing
 {
     // NOTE: Override after this function call for the test if desired.
-    self.asyncTimeoutInterval = 10.0f;
+    self.asyncTimeoutInterval = 20.0f;
     self.shouldUseHTTPStubbingOnce = shouldUseHTTPStubbing;
     if (self.shouldUseHTTPStubbingOnce) {
         [[LSNocilla sharedInstance] start];

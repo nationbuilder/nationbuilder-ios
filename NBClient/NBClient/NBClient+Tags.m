@@ -16,18 +16,15 @@
 - (NSURLSessionDataTask *)fetchTagsWithPaginationInfo:(NBPaginationInfo *)paginationInfo
                                     completionHandler:(NBClientResourceListCompletionHandler)completionHandler
 {
-    NSURLComponents *components = [self.baseURLComponents copy];
-    components.path = [components.path stringByAppendingString:@"/tags"];
-    return [self baseFetchTaskWithURLComponents:components resultsKey:@"results" paginationInfo:paginationInfo completionHandler:completionHandler];
+    return [self fetchByResourceSubPath:@"/tags" withParameters:nil customResultsKey:nil paginationInfo:paginationInfo completionHandler:completionHandler];
 }
 
 - (NSURLSessionDataTask *)fetchTagPeopleByName:(NSString *)tagName
                             withPaginationInfo:(NBPaginationInfo *)paginationInfo
                              completionHandler:(NBClientResourceListCompletionHandler)completionHandler
 {
-    NSURLComponents *components = [self.baseURLComponents copy];
-    components.path = [components.path stringByAppendingString:[NSString stringWithFormat:@"/tags/%@/people", tagName]];
-    return [self baseFetchTaskWithURLComponents:components resultsKey:@"results" paginationInfo:paginationInfo completionHandler:completionHandler];
+    return [self fetchByResourceSubPath:[NSString stringWithFormat:@"/tags/%@/people", tagName]
+                         withParameters:nil customResultsKey:nil paginationInfo:paginationInfo completionHandler:completionHandler];
 }
 
 @end
