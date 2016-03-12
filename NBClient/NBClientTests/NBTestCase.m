@@ -155,7 +155,7 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
     // And our headers.
     NSMutableDictionary *headers = [NSMutableDictionary dictionary];
     headers[@"Accept"] = @"application/json";
-    if ([method isEqual:@"POST"] || [method isEqual:@"PUT"]) {
+    if ([method isEqualToString:@"POST"] || [method isEqualToString:@"PUT"]) {
         headers[@"Content-Type"] = @"application/json";
     }
     // Finally, send it to Nocilla.

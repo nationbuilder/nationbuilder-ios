@@ -265,13 +265,13 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         return;
     }
     if (object == self.dataSource) {
-        if ([keyPath isEqual:IsSignedInKeyPath]) {
+        if ([keyPath isEqualToString:IsSignedInKeyPath]) {
             [self updateAccountViewAnimated:YES withCompletionHandler:^{
                 [self updateActionButtonsAnimated:YES withCompletionHandler:^{
                     [self updateAccountsPickerAnimated:YES withCompletionHandler:nil];
                 }];
             }];
-        } else if ([keyPath isEqual:SelectedAccountKeyPath]) {
+        } else if ([keyPath isEqualToString:SelectedAccountKeyPath]) {
             [self updateAccountViewAnimated:YES withCompletionHandler:^{
                 [self updateAccountsPickerAnimated:YES withCompletionHandler:nil];
             }];

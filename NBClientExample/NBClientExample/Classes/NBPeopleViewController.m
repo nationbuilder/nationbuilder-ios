@@ -172,7 +172,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 - (void)performSegueWithIdentifier:(NSString *)identifier sender:(id)sender
 {
-    if ([identifier isEqual:ShowPersonSegueIdentifier]) {
+    if ([identifier isEqualToString:ShowPersonSegueIdentifier]) {
         [self presentPersonView:sender];
     } else {
         [super performSegueWithIdentifier:identifier sender:sender];
@@ -243,7 +243,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
         return;
     }
-    if ([keyPath isEqual:PeopleKeyPath]) {
+    if ([keyPath isEqualToString:PeopleKeyPath]) {
         // NOTE: Incremental updates support not included.
         NBPeopleViewDataSource *dataSource = (id)self.dataSource;
         if (!dataSource.people.count) {
@@ -260,12 +260,12 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
             }
         }
         [self.collectionView reloadData];
-    } else if ([keyPath isEqual:NBViewDataSourceErrorKeyPath] && self.dataSource.error) {
+    } else if ([keyPath isEqualToString:NBViewDataSourceErrorKeyPath] && self.dataSource.error) {
         if (self.isBusy) { // If we were busy refreshing data, now we're not.
             self.busy = NO;
         }
         [self presentErrorView:self];
-    } else if ([keyPath isEqual:ContentOffsetKeyPath]) {
+    } else if ([keyPath isEqualToString:ContentOffsetKeyPath]) {
         // Update on appending.
         [self scrollViewDidScroll:self.collectionView];
     }

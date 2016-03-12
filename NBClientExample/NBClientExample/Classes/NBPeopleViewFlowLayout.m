@@ -116,13 +116,13 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     UICollectionViewLayoutAttributes *attributes =
     [self.decorationViewAttributes filteredArrayUsingPredicate:
      [NSPredicate predicateWithBlock:^BOOL(UICollectionViewLayoutAttributes *attributes, NSDictionary *bindings) {
-        return [attributes.representedElementKind isEqual:decorationViewKind];
+        return [attributes.representedElementKind isEqualToString:decorationViewKind];
     }]].firstObject;
     // Customize position.
-    if ([decorationViewKind isEqual:NSStringFromClass([NBPeopleLoadMoreDecorationLabel class])]) {
+    if ([decorationViewKind isEqualToString:NSStringFromClass([NBPeopleLoadMoreDecorationLabel class])]) {
         center.y = MAX(scrollView.contentSize.height, self.visibleCollectionViewHeight) + baseCenterY;
         offsetOverflow = self.bottomOffsetOverflow;
-    } else if ([decorationViewKind isEqual:NSStringFromClass([NBPeopleRefreshDecorationLabel class])]) {
+    } else if ([decorationViewKind isEqualToString:NSStringFromClass([NBPeopleRefreshDecorationLabel class])]) {
         center.y = -baseCenterY;
         offsetOverflow = self.topOffsetOverflow;
     }

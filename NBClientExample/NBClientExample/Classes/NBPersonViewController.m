@@ -259,7 +259,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     }
     NBPersonViewDataSource *dataSource = self.dataSource;
     // Update when our data source changes.
-    if ([keyPath isEqual:PersonKeyPath]) {
+    if ([keyPath isEqualToString:PersonKeyPath]) {
         if (self.isBusy) { // If we were busy refreshing data, now we're not.
             self.busy = NO;
         }
@@ -275,7 +275,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                 [self reloadData];
             }
         }
-    } else if ([keyPath isEqual:NBViewDataSourceErrorKeyPath] && self.dataSource.error) {
+    } else if ([keyPath isEqualToString:NBViewDataSourceErrorKeyPath] && self.dataSource.error) {
         if (self.isBusy) { // If we were busy refreshing data, now we're not.
             self.busy = NO;
         }
