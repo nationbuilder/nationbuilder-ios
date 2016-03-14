@@ -110,6 +110,11 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     self.shouldUseTokenPagination = YES;
 }
 
+- (void)dealloc
+{
+    [self.urlSession invalidateAndCancel];
+}
+
 #pragma mark - NBLogging
 
 + (void)updateLoggingToLevel:(NBLogLevel)logLevel
