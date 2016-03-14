@@ -9,6 +9,8 @@
 
 #pragma mark - Constants
 
+extern NSString * __nonnull const NBClientVersion;
+
 extern NSString * __nonnull const NBErrorDomain;
 extern NSInteger const NBErrorCodeInvalidArgument;
 

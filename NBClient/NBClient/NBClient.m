@@ -285,6 +285,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                                                        timeoutInterval:10.0f];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:[NSString stringWithFormat:@"iOS/%@", NBClientVersion] forHTTPHeaderField:@"X-NB-Client"];
     if (parameters) {
         [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:parameters options:0 error:error]];
     }
