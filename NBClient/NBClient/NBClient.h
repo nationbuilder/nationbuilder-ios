@@ -70,7 +70,7 @@ extern NSString * __nonnull const NBClientSurveyQuestionResponseIdentifierKey;
 // which handles both success and error case. The type is conventionally defined to
 // be either `NBClientResourceListCompletionHandler` or
 // `NBClientResourceItemCompletionHandler`.
-@interface NBClient : NSObject <NSURLSessionDataDelegate, NBLogging>
+@interface NBClient : NSObject <NBLogging>
 
 @property (nonatomic, weak, nullable) id<NBClientDelegate> delegate;
 
@@ -145,8 +145,10 @@ extern NSString * __nonnull const NBClientSurveyQuestionResponseIdentifierKey;
 // Implement this protocol to customize the general response and request
 // handling for a client, ie. do something before each request gets sent or
 // after each response gets received. Refer to the individual methods for more
-// details.
-@protocol NBClientDelegate <NSObject>
+// details. If you don't pass a custom `urlSession`, this delegate will also be
+// the delegate for the default session and can conform to additional sub-
+// protocols: `NSURLSessionTaskDelegate`, `NSURLSessionDataDelegate`, etc.
+@protocol NBClientDelegate <NSURLSessionDelegate>
 
 @optional
 
@@ -159,13 +161,13 @@ extern NSString * __nonnull const NBClientSurveyQuestionResponseIdentifierKey;
 
 // Useful for when you just want to create the data tasks but perhaps start them
 // at a later time, and perhaps with more coordination, ie. with rate limits. By
-// default, this method, if implemented, should return YES.
+// default, this method, if implemented, should return `YES`.
 - (BOOL)client:(nonnull NBClient *)client shouldAutomaticallyStartDataTask:(nonnull NSURLSessionDataTask *)task;
 
 // These 'shouldHandleResponse' methods allow you to halt default response
 // handling at any error. For example, the accounts layer uses the 'HTTPError'
 // variant to automatically sign out of the account that has the client.
-// By default, these methods, if implemented, should return YES.
+// By default, these methods, if implemented, should return `YES`.
 - (BOOL)client:(nonnull NBClient *)client shouldHandleResponse:(nonnull NSHTTPURLResponse *)response
                                                     forRequest:(nonnull NSURLRequest *)request;
 - (BOOL)client:(nonnull NBClient *)client shouldHandleResponse:(nonnull NSHTTPURLResponse *)response

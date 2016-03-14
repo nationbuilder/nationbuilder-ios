@@ -11,6 +11,7 @@
 
 #import "NBAuthenticator.h"
 #import "NBClient.h"
+#import "NBClient_Internal.h"
 #import "NBClient+People.h"
 
 @interface NBClientTests : NBTestCase
@@ -75,6 +76,25 @@
                     @"Client should have default session configuration.");
     XCTAssertNotNil(client.sessionConfiguration.URLCache,
                     @"Client should have default session cache.");
+}
+
+- (void)testDelegatingDefaultURLSessionToClientDelegate
+{
+    // Given: no custom URL session.
+    __block NBClient *client; dispatch_block_t initClient = ^{
+        client = [[NBClient alloc] initWithNationSlug:self.nationSlug apiKey:self.testToken customBaseURL:self.baseURL
+                                     customURLSession:nil customURLSessionConfiguration:nil];
+    };
+    // When: no client delegate.
+    initClient();
+    XCTAssertEqual(client.urlSession.delegate, client,
+                   @"Client should be default session's delegate.");
+
+    // When: assigning delegate immediately after initialization.
+    initClient();
+    client.delegate = OCMProtocolMock(@protocol(NBClientDelegate));
+    XCTAssertEqual(client.urlSession.delegate, client.delegate,
+                   @"Client should delegate default session to delegate.");
 }
 
 - (void)testAsyncAuthenticatedInitialization

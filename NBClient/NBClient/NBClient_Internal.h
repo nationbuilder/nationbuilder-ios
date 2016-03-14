@@ -7,7 +7,7 @@
 
 #import "NBClient.h"
 
-@interface NBClient ()
+@interface NBClient () <NSURLSessionDelegate>
 
 @property (nonatomic, copy, readwrite, nonnull) NSString *nationSlug;
 @property (nonatomic, readwrite, nonnull) NSURLSession *urlSession;

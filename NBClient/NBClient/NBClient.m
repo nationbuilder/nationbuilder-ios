@@ -136,8 +136,9 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     if (_urlSession) {
         return _urlSession;
     }
+    id <NSURLSessionDelegate> delegate = self.delegate ? (id)self.delegate : self;
     self.urlSession = [NSURLSession sessionWithConfiguration:self.sessionConfiguration
-                                                    delegate:self
+                                                    delegate:delegate
                                                delegateQueue:[NSOperationQueue mainQueue]];
     return _urlSession;
 }
