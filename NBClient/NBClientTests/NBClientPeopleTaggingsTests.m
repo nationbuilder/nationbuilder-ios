@@ -42,21 +42,15 @@
 - (void)assertTaggingsArray:(NSArray *)array
 {
     XCTAssertNotNil(array, @"Client should have received list of taggings.");
-    for (NSDictionary *dictionary in array) {
-        [self assertTaggingDictionary:dictionary];
-    }
+    for (NSDictionary *dictionary in array) { [self assertTaggingDictionary:dictionary]; }
 }
 
 - (void)assertTaggingDictionary:(NSDictionary *)dictionary
 {
-    static NSArray *keys;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    static NSArray *keys; static dispatch_once_t onceToken; dispatch_once(&onceToken, ^{
         keys = @[ @"person_id", @"tag", @"created_at" ];
     });
-    for (NSString *key in keys) {
-        XCTAssertNotNil(dictionary[key], @"Tagging dictionary should have value for %@", key);
-    }
+    return XCTAssertTrue([dictionary nb_hasKeys:keys], "Tagging has correct attributes.");
 }
 
 #pragma mark - Tests
@@ -64,18 +58,15 @@
 - (void)testFetchPersonTaggings
 {
     [self setUpAsync];
-    NSUInteger personIdentifier = self.userIdentifier;
     if (self.shouldUseHTTPStubbing) {
-        [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"people/:id/taggings" pathVariables:@{ @"id": @(personIdentifier) } queryParameters:nil];
+        [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"people/:id/taggings" pathVariables:@{ @"id": @(self.userIdentifier) } queryParameters:nil];
     }
     NSURLSessionDataTask *task =
-    [self.client
-     fetchPersonTaggingsByIdentifier:personIdentifier
-     withCompletionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
-         [self assertServiceError:error];
-         [self assertTaggingsArray:items];
-         [self completeAsync];
-     }];
+    [self.client fetchPersonTaggingsByIdentifier:self.userIdentifier withCompletionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
+        [self assertServiceError:error];
+        [self assertTaggingsArray:items];
+        [self completeAsync];
+    }];
     [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
@@ -83,24 +74,20 @@
 - (void)testCreatePersonTagging
 {
     [self setUpAsync];
-    NSDictionary *taggingInfo = @{ NBClientTaggingTagNameOrListKey: self.tagName };
-    NSUInteger personIdentifier = self.userIdentifier;
     if (self.shouldUseHTTPStubbing) {
-        [self stubRequestUsingFileDataWithMethod:@"PUT" pathFormat:@"people/:id/taggings" pathVariables:@{ @"id": @(personIdentifier) } queryParameters:nil];
+        [self stubRequestUsingFileDataWithMethod:@"PUT" pathFormat:@"people/:id/taggings" pathVariables:@{ @"id": @(self.userIdentifier) } queryParameters:nil];
     }
-    void (^undoTestChanges)(void) = ^{
-        [self.client deletePersonTaggingsByIdentifier:personIdentifier tagNames:@[ self.tagName ]
+    dispatch_block_t undoTestChanges = ^{
+        [self.client deletePersonTaggingsByIdentifier:self.userIdentifier tagNames:@[ self.tagName ]
                                 withCompletionHandler:^(NSDictionary *item, NSError *error) { [self completeAsync]; }];
     };
     NSURLSessionDataTask *task =
     [self.client
-     createPersonTaggingByIdentifier:personIdentifier
-     withTaggingInfo:taggingInfo
+     createPersonTaggingByIdentifier:self.userIdentifier
+     withTaggingInfo:@{ NBClientTaggingTagNameOrListKey: self.tagName }
      completionHandler:^(NSDictionary *item, NSError *error) {
          [self assertServiceError:error];
          [self assertTaggingDictionary:item];
-         XCTAssertTrue([item nb_containsDictionary:taggingInfo],
-                       @"Tagging dictionary should be populated by parameters.");
          if (self.shouldUseHTTPStubbing) {
              [self completeAsync];
          } else {
@@ -114,20 +101,18 @@
 - (void)testCreatePersonTaggings
 {
     [self setUpAsync];
-    NSUInteger personIdentifier = self.userIdentifier;
-    NSDictionary *taggingInfo = @{ NBClientTaggingTagNameOrListKey: self.tagList };
     if (self.shouldUseHTTPStubbing) {
-        [self stubRequestUsingFileDataWithMethod:@"PUT" pathFormat:@"people/:id/taggings" pathVariables:@{ @"id": @(personIdentifier) } queryParameters:nil
+        [self stubRequestUsingFileDataWithMethod:@"PUT" pathFormat:@"people/:id/taggings" pathVariables:@{ @"id": @(self.userIdentifier) } queryParameters:nil
                                          variant:@"bulk" client:nil];
     }
-    void (^undoTestChanges)(void) = ^{
-        [self.client deletePersonTaggingsByIdentifier:personIdentifier tagNames:self.tagList
+    dispatch_block_t undoTestChanges = ^{
+        [self.client deletePersonTaggingsByIdentifier:self.userIdentifier tagNames:self.tagList
                                 withCompletionHandler:^(NSDictionary *item, NSError *error) { [self completeAsync]; }];
     };
     NSURLSessionDataTask *task =
     [self.client
-     createPersonTaggingsByIdentifier:personIdentifier
-     withTaggingInfo:taggingInfo
+     createPersonTaggingsByIdentifier:self.userIdentifier
+     withTaggingInfo:@{ NBClientTaggingTagNameOrListKey: self.tagList }
      completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
          [self assertServiceError:error];
          [self assertTaggingsArray:items];
@@ -144,13 +129,11 @@
 - (void)testDeletePersonTagging
 {
     [self setUpAsync];
-    NSUInteger personIdentifier = self.userIdentifier;
-    NSString *tagName = self.tagName;
     NBClientResourceItemCompletionHandler testDelete = ^(NSDictionary *item, NSError *error) {
         NSURLSessionDataTask *task =
         [self.client
-         deletePersonTaggingsByIdentifier:personIdentifier
-         tagNames:@[ tagName ]
+         deletePersonTaggingsByIdentifier:self.userIdentifier
+         tagNames:@[ self.tagName ]
          withCompletionHandler:^(NSDictionary *deletedItem, NSError *deleteError) {
              [self assertServiceError:deleteError];
              XCTAssertNil(deletedItem, @"Tagging should not exist.");
@@ -160,11 +143,11 @@
     };
     if (self.shouldUseHTTPStubbing) {
         [self stubRequestUsingFileDataWithMethod:@"DELETE" pathFormat:@"people/:id/taggings/:tag"
-                                   pathVariables:@{ @"id": @(personIdentifier), @"tag": tagName } queryParameters:nil];
+                                   pathVariables:@{ @"id": @(self.userIdentifier), @"tag": self.tagName } queryParameters:nil];
         testDelete(nil, nil);
     } else {
         [self completeAsync]; // FIXME
-        [self.client createPersonTaggingByIdentifier:personIdentifier withTaggingInfo:@{ NBClientTaggingTagNameOrListKey: tagName }
+        [self.client createPersonTaggingByIdentifier:self.userIdentifier withTaggingInfo:@{ NBClientTaggingTagNameOrListKey: self.tagName }
                                    completionHandler:testDelete];
     }
     [self tearDownAsync];
@@ -173,13 +156,11 @@
 - (void)testDeletePersonTaggings
 {
     [self setUpAsync];
-    NSUInteger personIdentifier = self.userIdentifier;
-    NSArray *tagList = self.tagList;
     NBClientResourceListCompletionHandler testDelete = ^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
         NSURLSessionDataTask *task =
         [self.client
-         deletePersonTaggingsByIdentifier:personIdentifier
-         tagNames:tagList
+         deletePersonTaggingsByIdentifier:self.userIdentifier
+         tagNames:self.tagList
          withCompletionHandler:^(NSDictionary *deletedItem, NSError *deleteError) {
              [self assertServiceError:deleteError];
              XCTAssertNil(deletedItem, @"Tagging should not exist.");
@@ -188,11 +169,11 @@
         [self assertSessionDataTask:task];
     };
     if (self.shouldUseHTTPStubbing) {
-        [self stubRequestUsingFileDataWithMethod:@"DELETE" pathFormat:@"people/:id/taggings" pathVariables:@{ @"id": @(personIdentifier) } queryParameters:nil];
+        [self stubRequestUsingFileDataWithMethod:@"DELETE" pathFormat:@"people/:id/taggings" pathVariables:@{ @"id": @(self.userIdentifier) } queryParameters:nil];
         testDelete(nil, nil, nil);
     } else {
         [self completeAsync]; // FIXME
-        [self.client createPersonTaggingsByIdentifier:personIdentifier withTaggingInfo:@{ NBClientTaggingTagNameOrListKey: tagList }
+        [self.client createPersonTaggingsByIdentifier:self.userIdentifier withTaggingInfo:@{ NBClientTaggingTagNameOrListKey: self.tagList }
                                     completionHandler:testDelete];
     }
     [self tearDownAsync];

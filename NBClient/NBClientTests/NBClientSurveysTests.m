@@ -63,14 +63,16 @@
     if (!self.shouldUseHTTPStubbing) { return; }
     [self setUpAsync];
     [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"sites/:slug/pages/surveys" pathVariables:@{ @"slug": self.nationSlug } queryParameters:self.paginationParameters];
-    NBPaginationInfo *requestPaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:self.paginationParameters legacy:NO];
     NSURLSessionDataTask *task =
-    [self.client fetchSurveysBySiteSlug:self.nationSlug withPaginationInfo:requestPaginationInfo completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
-        [self assertServiceError:error];
-        [self assertSurveysArray:items];
-        [self assertPaginationInfo:paginationInfo withPaginationParameters:self.paginationParameters];
-        [self completeAsync];
-    }];
+    [self.client
+     fetchSurveysBySiteSlug:self.nationSlug
+     withPaginationInfo:[[NBPaginationInfo alloc] initWithDictionary:self.paginationParameters legacy:NO]
+     completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
+         [self assertServiceError:error];
+         [self assertSurveysArray:items];
+         [self assertPaginationInfo:paginationInfo withPaginationParameters:self.paginationParameters];
+         [self completeAsync];
+     }];
     [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
@@ -151,14 +153,16 @@
     NSMutableDictionary *mutableParameters = self.paginationParameters.mutableCopy;
     mutableParameters[@"survey_id"] = @(self.surveyWithResponsesIdentifier);
     [self stubRequestUsingFileDataWithMethod:@"GET" path:@"survey_responses" queryParameters:mutableParameters];
-    NBPaginationInfo *requestPaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:self.paginationParameters legacy:NO];
     NSURLSessionDataTask *task =
-    [self.client fetchSurveyResponseByIdentifier:self.surveyWithResponsesIdentifier parameters:nil withPaginationInfo:requestPaginationInfo completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
-        [self assertServiceError:error];
-        [self assertSurveyResponsesArray:items];
-        [self assertPaginationInfo:paginationInfo withPaginationParameters:self.paginationParameters];
-        [self completeAsync];
-    }];
+    [self.client
+     fetchSurveyResponseByIdentifier:self.surveyWithResponsesIdentifier parameters:nil
+     withPaginationInfo:[[NBPaginationInfo alloc] initWithDictionary:self.paginationParameters legacy:NO]
+     completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
+         [self assertServiceError:error];
+         [self assertSurveyResponsesArray:items];
+         [self assertPaginationInfo:paginationInfo withPaginationParameters:self.paginationParameters];
+         [self completeAsync];
+     }];
     [self assertSessionDataTask:task];
     [self tearDownAsync];
 }

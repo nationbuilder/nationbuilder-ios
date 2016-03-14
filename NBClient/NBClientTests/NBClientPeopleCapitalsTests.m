@@ -43,17 +43,15 @@
 - (void)assertCapitalsArray:(NSArray *)array
 {
     XCTAssertNotNil(array, @"Client should have received list of capitals.");
-    for (NSDictionary *dictionary in array) {
-        [self assertCapitalDictionary:dictionary];
-    }
+    for (NSDictionary *dictionary in array) { [self assertCapitalDictionary:dictionary]; }
 }
 
 - (void)assertCapitalDictionary:(NSDictionary *)dictionary
 {
-    NSArray *keys = [@[ @"id", @"person_id", @"author_id", @"type", @"amount_in_cents", @"created_at", @"content" ]
-                     sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
-    XCTAssertEqualObjects([dictionary.allKeys sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)], keys,
-                          "Capital has correct attributes.");
+    static NSArray *keys; static dispatch_once_t onceToken; dispatch_once(&onceToken, ^{
+        keys = @[ @"id", @"person_id", @"author_id", @"type", @"amount_in_cents", @"created_at", @"content" ];
+    });
+    return XCTAssertTrue([dictionary nb_hasKeys:keys], "Capital has correct attributes.");
 }
 
 #pragma mark - Tests
@@ -62,15 +60,13 @@
 {
     [self setUpAsync];
     NSDictionary *paginationParameters = @{ NBClientPaginationLimitKey: @5, NBClientPaginationTokenOptInKey: @1 };
-    NSUInteger personIdentifier = self.userIdentifier;
     if (self.shouldUseHTTPStubbing) {
-        [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"people/:id/capitals" pathVariables:@{ @"id": @(personIdentifier) } queryParameters:paginationParameters];
+        [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"people/:id/capitals" pathVariables:@{ @"id": @(self.userIdentifier) } queryParameters:paginationParameters];
     }
-    NBPaginationInfo *requestPaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:paginationParameters legacy:NO];
     NSURLSessionDataTask *task =
     [self.client
-     fetchPersonCapitalsByIdentifier:personIdentifier
-     withPaginationInfo:requestPaginationInfo
+     fetchPersonCapitalsByIdentifier:self.userIdentifier
+     withPaginationInfo:[[NBPaginationInfo alloc] initWithDictionary:paginationParameters legacy:NO]
      completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
          [self assertServiceError:error];
          [self assertCapitalsArray:items];
@@ -82,27 +78,20 @@
 - (void)testCreatePersonCapital
 {
     [self setUpAsync];
-    NSDictionary *capitalInfo = @{ NBClientCapitalAmountInCentsKey: @(self.amountInCents),
-                                   NBClientCapitalUserContentKey: self.userContent };
-    NSUInteger personIdentifier = self.userIdentifier;
     if (self.shouldUseHTTPStubbing) {
-        [self stubRequestUsingFileDataWithMethod:@"POST" pathFormat:@"people/:id/capitals" pathVariables:@{ @"id": @(personIdentifier) } queryParameters:nil];
+        [self stubRequestUsingFileDataWithMethod:@"POST" pathFormat:@"people/:id/capitals" pathVariables:@{ @"id": @(self.userIdentifier) } queryParameters:nil];
     }
     void (^undoTestChanges)(NSUInteger) = ^(NSUInteger capitalIdentifier) {
-        [self.client deletePersonCapitalByPersonIdentifier:personIdentifier capitalIdentifier:capitalIdentifier
+        [self.client deletePersonCapitalByPersonIdentifier:self.userIdentifier capitalIdentifier:capitalIdentifier
                                      withCompletionHandler:^(NSDictionary *item, NSError *error) { [self completeAsync]; }];
     };
     NSURLSessionDataTask *task =
     [self.client
-     createPersonCapitalByIdentifier:personIdentifier
-     withCapitalInfo:capitalInfo
+     createPersonCapitalByIdentifier:self.userIdentifier
+     withCapitalInfo:@{ NBClientCapitalAmountInCentsKey: @(self.amountInCents), NBClientCapitalUserContentKey: self.userContent }
      completionHandler:^(NSDictionary *item, NSError *error) {
          [self assertServiceError:error];
          [self assertCapitalDictionary:item];
-         NSMutableDictionary *mutatedCapitalInfo = capitalInfo.mutableCopy;
-         mutatedCapitalInfo[NBClientCapitalUserContentKey] = @{ @"note": self.userContent };
-         XCTAssertTrue([item nb_containsDictionary:mutatedCapitalInfo],
-                       @"Capital dictionary should be populated by parameters.");
          if (self.shouldUseHTTPStubbing) {
              [self completeAsync];
          } else {
@@ -116,11 +105,10 @@
 - (void)testDeletePersonCapital
 {
     [self setUpAsync];
-    NSUInteger personIdentifier = self.userIdentifier;
     NBClientResourceItemCompletionHandler testDelete = ^(NSDictionary *item, NSError *error) {
         NSURLSessionDataTask *task =
         [self.client
-         deletePersonCapitalByPersonIdentifier:personIdentifier
+         deletePersonCapitalByPersonIdentifier:self.userIdentifier
          capitalIdentifier:[item[@"id"] unsignedIntegerValue]
          withCompletionHandler:^(NSDictionary *deletedItem, NSError *deleteError) {
              [self assertServiceError:deleteError];
@@ -132,11 +120,11 @@
     if (self.shouldUseHTTPStubbing) {
         NSUInteger capitalIdentifier = 514;
         [self stubRequestUsingFileDataWithMethod:@"DELETE" pathFormat:@"people/:person_id/capitals/:capital_id"
-                                   pathVariables:@{ @"person_id": @(personIdentifier), @"capital_id": @(capitalIdentifier) } queryParameters:nil];
+                                   pathVariables:@{ @"person_id": @(self.userIdentifier), @"capital_id": @(capitalIdentifier) } queryParameters:nil];
         testDelete(@{ @"id": @(capitalIdentifier) }, nil);
     } else {
         [self completeAsync]; // FIXME
-        [self.client createPersonCapitalByIdentifier:personIdentifier
+        [self.client createPersonCapitalByIdentifier:self.userIdentifier
                                      withCapitalInfo:@{ NBClientCapitalAmountInCentsKey: @(self.amountInCents),
                                                         NBClientCapitalUserContentKey: self.userContent }
                                    completionHandler:testDelete];

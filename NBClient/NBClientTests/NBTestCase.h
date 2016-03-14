@@ -60,6 +60,10 @@
 
 - (void)assertPaginationInfo:(NBPaginationInfo *)paginationInfo
     withPaginationParameters:(NSDictionary *)paginationParameters;
+
+- (void)assertPeopleArray:(NSArray *)array;
+- (void)assertPersonDictionary:(NSDictionary *)dictionary;
+
 - (void)assertServiceError:(NSError *)error;
 - (void)assertSessionDataTask:(NSURLSessionDataTask *)task;
 

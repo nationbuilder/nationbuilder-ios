@@ -44,20 +44,6 @@
     return XCTAssertTrue([dictionary nb_hasKeys:keys], "List has correct attributes.");
 }
 
-- (void)assertPeopleArray:(NSArray *)array
-{
-    XCTAssertNotNil(array, @"Client should have received list of people.");
-    for (NSDictionary *dictionary in array) { [self assertPersonDictionary:dictionary]; }
-}
-
-- (void)assertPersonDictionary:(NSDictionary *)dictionary
-{
-    static NSArray *keys; static dispatch_once_t onceToken; dispatch_once(&onceToken, ^{
-        keys = @[ @"email", @"id", @"first_name", @"last_name", @"support_level" ];
-    });
-    return XCTAssertTrue([dictionary nb_hasKeys:keys], "Person has correct attributes.");
-}
-
 #pragma mark - Tests
 
 - (void)testFetchTags
@@ -66,9 +52,10 @@
     if (self.shouldUseHTTPStubbing) {
         [self stubRequestUsingFileDataWithMethod:@"GET" path:@"tags" queryParameters:self.paginationParameters];
     }
-    NBPaginationInfo *requestPaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:self.paginationParameters legacy:NO];
     NSURLSessionDataTask *task =
-    [self.client fetchTagsWithPaginationInfo:requestPaginationInfo completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
+    [self.client
+     fetchTagsWithPaginationInfo:[[NBPaginationInfo alloc] initWithDictionary:self.paginationParameters legacy:NO]
+     completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
         [self assertServiceError:error];
         [self assertTagsArray:items];
         [self assertPaginationInfo:paginationInfo withPaginationParameters:self.paginationParameters];
@@ -83,9 +70,11 @@
     if (!self.shouldUseHTTPStubbing) { return; }
     [self setUpAsync];
     [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"tags/:tag/people" pathVariables:@{ @"tag": self.tagName } queryParameters:self.paginationParameters];
-    NBPaginationInfo *requestPaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:self.paginationParameters legacy:NO];
     NSURLSessionDataTask *task =
-    [self.client fetchTagPeopleByName:self.tagName withPaginationInfo:requestPaginationInfo completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
+    [self.client
+     fetchTagPeopleByName:self.tagName
+     withPaginationInfo:[[NBPaginationInfo alloc] initWithDictionary:self.paginationParameters legacy:NO]
+     completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
         [self assertServiceError:error];
         [self assertPeopleArray:items];
         [self assertPaginationInfo:paginationInfo withPaginationParameters:self.paginationParameters];

@@ -55,9 +55,10 @@
     if (self.shouldUseHTTPStubbing) {
         [self stubRequestUsingFileDataWithMethod:@"GET" path:@"sites" queryParameters:self.paginationParameters];
     }
-    NBPaginationInfo *requestPaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:self.paginationParameters legacy:NO];
     NSURLSessionDataTask *task =
-    [self.client fetchSitesWithPaginationInfo:requestPaginationInfo completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
+    [self.client
+     fetchSitesWithPaginationInfo:[[NBPaginationInfo alloc] initWithDictionary:self.paginationParameters legacy:NO]
+     completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
         [self assertServiceError:error];
         [self assertSitesArray:items];
         [self assertPaginationInfo:paginationInfo withPaginationParameters:self.paginationParameters];

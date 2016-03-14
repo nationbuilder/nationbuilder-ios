@@ -226,6 +226,20 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
     }
 }
 
+- (void)assertPeopleArray:(NSArray *)array
+{
+    XCTAssertNotNil(array, @"Client should have received list of people.");
+    for (NSDictionary *dictionary in array) { [self assertPersonDictionary:dictionary]; }
+}
+
+- (void)assertPersonDictionary:(NSDictionary *)dictionary
+{
+    static NSArray *keys; static dispatch_once_t onceToken; dispatch_once(&onceToken, ^{
+        keys = @[ @"email", @"id", @"first_name", @"last_name", @"support_level" ];
+    });
+    return XCTAssertTrue([dictionary nb_hasKeys:keys], "Person has correct attributes.");
+}
+
 - (void)assertServiceError:(NSError *)error
 {
     if (!error || error.domain != NBErrorDomain) {
