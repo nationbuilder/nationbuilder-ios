@@ -2,7 +2,7 @@
 //  NBPaginationInfoTests.m
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import <XCTest/XCTest.h>
