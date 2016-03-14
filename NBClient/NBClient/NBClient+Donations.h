@@ -23,13 +23,13 @@
                                                  completionHandler:(nonnull NBClientResourceListCompletionHandler)completionHandler;
 
 // POST /donations
-- (nonnull NSURLSessionDataTask *)createDonationWithParameters:(nonnull NSDictionary *)parameters
-                                             completionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
+- (nullable NSURLSessionDataTask *)createDonationWithParameters:(nonnull NSDictionary *)parameters
+                                              completionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
 
 // PUT /donation/:id
-- (nonnull NSURLSessionDataTask *)saveDonationByIdentifier:(NSUInteger)identifier
-                                            withParameters:(nonnull NSDictionary *)parameters
-                                         completionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
+- (nullable NSURLSessionDataTask *)saveDonationByIdentifier:(NSUInteger)identifier
+                                             withParameters:(nonnull NSDictionary *)parameters
+                                          completionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
 
 // DELETE /donation/:id
 - (nonnull NSURLSessionDataTask *)deleteDonationByIdentifier:(NSUInteger)identifier

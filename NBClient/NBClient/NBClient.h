@@ -124,17 +124,17 @@ extern NSString * __nonnull const NBClientSurveyQuestionResponseIdentifierKey;
                                         customResultsKey:(nullable NSString *)resultsKey
                                           paginationInfo:(nullable NBPaginationInfo *)paginationInfo
                                        completionHandler:(nullable id)completionHandler;
-// POST. Omit `resultsKey` for empty responses if needed.
+// POST. Omit `resultsKey` for empty responses if needed. May return nil if `parameters` are invalid.
 - (nullable NSURLSessionDataTask *)createByResourceSubPath:(nonnull NSString *)path
                                             withParameters:(nonnull NSDictionary *)parameters
                                                 resultsKey:(nullable NSString *)resultsKey
                                          completionHandler:(nullable id)completionHandler;
-// PUT. Omit `resultsKey` for empty responses if needed.
+// PUT. Omit `resultsKey` for empty responses if needed. May return nil if `parameters` are invalid.
 - (nullable NSURLSessionDataTask *)saveByResourceSubPath:(nonnull NSString *)path
                                           withParameters:(nonnull NSDictionary *)parameters
                                               resultsKey:(nullable NSString *)resultsKey
                                        completionHandler:(nullable id)completionHandler;
-// DELETE. Include `parameters` and `resultsKey` if needed.
+// DELETE. Include `parameters` and `resultsKey` if needed. May return nil if `parameters` are invalid.
 - (nullable NSURLSessionDataTask *)deleteByResourceSubPath:(nonnull NSString *)path
                                             withParameters:(nullable NSDictionary *)parameters
                                                 resultsKey:(nullable NSString *)resultsKey
