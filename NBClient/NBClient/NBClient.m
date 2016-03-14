@@ -261,12 +261,12 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 {
     self.baseURLComponents = [NSURLComponents componentsWithURL:self.baseURL resolvingAgainstBaseURL:YES];
     self.baseURLComponents.path = [NSString stringWithFormat:@"/api/%@", self.apiVersion];
-    self.baseURLComponents.percentEncodedQuery = [@{ @"access_token": self.apiKey ?: @"" } nb_queryString];
+    self.baseURLComponents.percentEncodedQuery = @{ @"access_token": self.apiKey ?: @"" }.nb_queryString;
 }
 
 - (NSURLComponents *)urlComponentsForSubPath:(NSString *)path
 {
-    NSURLComponents *components = [self.baseURLComponents copy];
+    NSURLComponents *components = self.baseURLComponents.copy;
     components.path = [components.path stringByAppendingString:path];
     return components;
 }

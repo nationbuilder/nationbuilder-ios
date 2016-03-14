@@ -149,7 +149,7 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
     // And we need to build our query.
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionaryWithDictionary:queryParameters];
     mutableParameters[@"access_token"] = mutableParameters[@"access_token"] ?: client.apiKey;
-    components.percentEncodedQuery = [mutableParameters nb_queryString];
+    components.percentEncodedQuery = mutableParameters.nb_queryString;
     // Check our URL.
     NBLog(@"STUB: %@", components.URL.absoluteString);
     // And our headers.

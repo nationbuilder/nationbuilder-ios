@@ -125,7 +125,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     } else {
         NBAccount *account = [self createAccountWithNationSlug:nationSlug];
         if (!self.clientInfo) {
-            NSMutableDictionary *mutableClientInfo = [account.clientInfo mutableCopy];
+            NSMutableDictionary *mutableClientInfo = account.clientInfo.mutableCopy;
             [mutableClientInfo removeObjectForKey:NBInfoNationSlugKey];
             self.clientInfo = [NSDictionary dictionaryWithDictionary:mutableClientInfo];
         }
@@ -212,7 +212,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 - (NSDictionary *)clientInfoForAccountWithNationSlug:(NSString *)nationSlug
 {
-    NSMutableDictionary *mutableClientInfo = self.clientInfo ? [self.clientInfo mutableCopy] : [NSMutableDictionary dictionary];
+    NSMutableDictionary *mutableClientInfo = self.clientInfo ? self.clientInfo.mutableCopy : [NSMutableDictionary dictionary];
     mutableClientInfo[NBInfoNationSlugKey] = nationSlug;
     return [NSDictionary dictionaryWithDictionary:mutableClientInfo];
 }

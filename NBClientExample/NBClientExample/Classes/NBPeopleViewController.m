@@ -90,7 +90,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                           bundle:(NSBundle *)nibBundleOrNil
 {
     // Boilerplate.
-    NSMutableDictionary *nibNames = [DefaultNibNames mutableCopy];
+    NSMutableDictionary *nibNames = DefaultNibNames.mutableCopy;
     [nibNames addEntriesFromDictionary:nibNamesOrNil];
     self.nibNames = nibNames;
     // END: Boilerplate.

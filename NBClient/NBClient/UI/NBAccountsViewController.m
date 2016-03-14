@@ -597,7 +597,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         // Update selected row.
         if (!self.isSelectingAccount && self.dataSource.selectedAccount) {
             // Only update the picker if it did not trigger the account selection.
-            NSUInteger selectedIndex = [self selectedIndex];
+            NSUInteger selectedIndex = self.selectedIndex;
             if (selectedIndex == NSNotFound) {
                 NBLogError(@"Invalid selected account index. Aborting row selection.");
             } else {

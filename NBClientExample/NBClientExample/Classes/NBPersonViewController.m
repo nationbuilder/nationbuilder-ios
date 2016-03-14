@@ -117,7 +117,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     self = [self initWithNibName:self.nibNames[NBNibNameViewKey] bundle:nibBundleOrNil];
     self.mode = NBPersonViewControllerModeViewAndEdit;
     // Boilerplate.
-    NSMutableDictionary *nibNames = [DefaultNibNames mutableCopy];
+    NSMutableDictionary *nibNames = DefaultNibNames.mutableCopy;
     [nibNames addEntriesFromDictionary:nibNamesOrNil];
     self.nibNames = nibNames;
     // END: Boilerplate.

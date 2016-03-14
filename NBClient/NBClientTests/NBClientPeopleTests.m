@@ -106,7 +106,7 @@
     NSDictionary *paginationParameters = self.paginationParameters;
     NSDictionary *parameters = @{ @"state": @"CA" };
     if (self.shouldUseHTTPStubbing) {
-        NSMutableDictionary *mutableParameters = [paginationParameters mutableCopy];
+        NSMutableDictionary *mutableParameters = paginationParameters.mutableCopy;
         [mutableParameters addEntriesFromDictionary:parameters];
         [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people/search" queryParameters:mutableParameters];
     }
@@ -132,7 +132,7 @@
     NSDictionary *locationInfo = @{ NBClientLocationLatitudeKey: @34.049031f,
                                     NBClientLocationLongitudeKey: @(-118.25139f) };
     if (self.shouldUseHTTPStubbing) {
-        NSMutableDictionary *mutableParameters = [paginationParameters mutableCopy];
+        NSMutableDictionary *mutableParameters = paginationParameters.mutableCopy;
         mutableParameters[@"location"] = [NSString stringWithFormat:@"%@,%@",
                                           locationInfo[NBClientLocationLatitudeKey], locationInfo[NBClientLocationLongitudeKey]];
         mutableParameters[@"distance"] = @1;
