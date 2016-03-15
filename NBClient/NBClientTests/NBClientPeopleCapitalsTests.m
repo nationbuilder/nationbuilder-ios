@@ -115,7 +115,6 @@
                                    pathVariables:@{ @"person_id": @(self.supporterIdentifier), @"capital_id": @(capitalIdentifier) } queryParameters:nil];
         testDelete(@{ @"id": @(capitalIdentifier) }, nil);
     } else {
-        [self completeAsync]; // FIXME
         [self.client createPersonCapitalByIdentifier:self.supporterIdentifier
                                      withCapitalInfo:@{ NBClientCapitalAmountInCentsKey: @(self.amountInCents),
                                                         NBClientCapitalUserContentKey: self.userContent }

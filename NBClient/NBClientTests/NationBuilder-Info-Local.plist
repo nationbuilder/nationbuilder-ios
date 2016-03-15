@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>Base URL Format</key>
-	<string>http://%@.nbuild.dev</string>
+	<string>http://%@.nbuild.dev:3000</string>
 	<key>Client ID</key>
 	<string>f50b9bdc3c976e715c43cb0e91fa527df7e4cbd45c78174db558ba3d90c1876d</string>
 	<key>Client Secret</key>

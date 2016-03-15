@@ -277,7 +277,6 @@
         [self stubRequestUsingFileDataWithMethod:@"DELETE" pathFormat:@"people/:id" pathVariables:@{ @"id": @(identifier) } queryParameters:nil];
         testDelete(nil, nil);
     } else {
-        [self completeAsync]; // FIXME
         NSDictionary *parameters = @{ @"first_name": @"Foo", @"last_name": @"Bar" };
         [self.client createPersonWithParameters:parameters completionHandler:testDelete];
     }

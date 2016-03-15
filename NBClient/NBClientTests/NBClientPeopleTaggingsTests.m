@@ -146,7 +146,6 @@
                                    pathVariables:@{ @"id": @(self.userIdentifier), @"tag": self.tagName } queryParameters:nil];
         testDelete(nil, nil);
     } else {
-        [self completeAsync]; // FIXME
         [self.client createPersonTaggingByIdentifier:self.userIdentifier withTaggingInfo:@{ NBClientTaggingTagNameOrListKey: self.tagName }
                                    completionHandler:testDelete];
     }
@@ -172,7 +171,6 @@
         [self stubRequestUsingFileDataWithMethod:@"DELETE" pathFormat:@"people/:id/taggings" pathVariables:@{ @"id": @(self.userIdentifier) } queryParameters:nil];
         testDelete(nil, nil, nil);
     } else {
-        [self completeAsync]; // FIXME
         [self.client createPersonTaggingsByIdentifier:self.userIdentifier withTaggingInfo:@{ NBClientTaggingTagNameOrListKey: self.tagList }
                                     completionHandler:testDelete];
     }
