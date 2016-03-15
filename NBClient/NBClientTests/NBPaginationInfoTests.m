@@ -150,6 +150,12 @@
     [self.paginationInfo updateCurrentPageNumber];
     XCTAssertEqual(self.paginationInfo.currentPageNumber, oldNumber + 1,
                    @"Then current page number should have increased by 1.");
+    
+    self.paginationInfo.currentDirection = NBPaginationDirectionPrevious;
+    oldNumber = self.paginationInfo.currentPageNumber;
+    [self.paginationInfo updateCurrentPageNumber];
+    XCTAssertEqual(self.paginationInfo.currentPageNumber, oldNumber - 1,
+                   @"Then current page number should have decreased by 1.");
 }
 
 - (void)testGeneratingQueryParameters

@@ -13,6 +13,7 @@
 #import "NBClient.h"
 #import "NBClient_Internal.h"
 #import "NBClient+People.h"
+#import "NBPaginationInfo.h"
 
 @interface NBClientTests : NBTestCase
 
@@ -186,6 +187,44 @@
     NSString *query = [self getSomeRequestURLForClient:client].query;
     XCTAssertTrue([query rangeOfString:client.apiKey].location != NSNotFound,
                   @"Key in all future request URLs should have been updated.");
+}
+
+- (void)testTaskHandlingOfPaginationInfo
+{
+    if (self.shouldUseHTTPStubbing) { return NBLog(@"SKIPPING"); }
+    [self setUpAsync];
+    [self setUpSharedClient];
+    __block NSUInteger expectationCount = 2; dispatch_block_t complete = ^{
+        expectationCount -= 1;
+        if (expectationCount == 0) { [self completeAsync]; }
+    };
+
+    [self.client
+     fetchByResourceSubPath:@"/people" withParameters:nil customResultsKey:nil paginationInfo:nil
+     completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
+         [self assertServiceError:error];
+         [self assertPeopleArray:items];
+         XCTAssertTrue(paginationInfo.numberOfItemsPerPage > 0,
+                       @"Pagination info should exist.");
+         complete();
+     }];
+    
+    NSDictionary *paginationParameters = @{ NBClientPaginationLimitKey: @5, NBClientPaginationTokenOptInKey: @1 };
+    NBPaginationInfo *requestPaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:paginationParameters legacy:NO];
+    NSUInteger oldCurrentPageNumber = requestPaginationInfo.currentPageNumber;
+    [self.client
+     fetchByResourceSubPath:@"/people" withParameters:nil customResultsKey:nil paginationInfo:requestPaginationInfo
+     completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
+         [self assertServiceError:error];
+         [self assertPeopleArray:items];
+         XCTAssertEqual(paginationInfo.numberOfItemsPerPage, [paginationParameters[NBClientPaginationLimitKey] unsignedIntegerValue],
+                        @"Pagination info should be persisted.");
+         XCTAssertEqual(paginationInfo.currentPageNumber, oldCurrentPageNumber + 1,
+                        @"Pagination info should be updated.");
+         complete();
+     }];
+
+    [self tearDownAsync];
 }
 
 #pragma mark - Delegation
