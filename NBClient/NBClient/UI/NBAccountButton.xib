@@ -12,16 +12,16 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3g9-f8-Yoe">
-                    <rect key="frame" x="36" y="14" width="66" height="17"/>
+                    <rect key="frame" x="35" y="14" width="67" height="17"/>
                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6GK-gb-yyh">
-                    <rect key="frame" x="0.0" y="8" width="28" height="28"/>
+                    <rect key="frame" x="0.0" y="9" width="27" height="27"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="28" id="H6V-9k-1jF"/>
-                        <constraint firstAttribute="width" constant="28" id="ej8-TR-Xpr"/>
+                        <constraint firstAttribute="height" constant="27" id="H6V-9k-1jF"/>
+                        <constraint firstAttribute="width" constant="27" id="ej8-TR-Xpr"/>
                     </constraints>
                 </imageView>
             </subviews>
