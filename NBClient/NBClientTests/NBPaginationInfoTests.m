@@ -106,6 +106,21 @@
 
 #pragma mark Helpers
 
+- (void)testCheckingIsLastPage
+{
+    XCTAssertFalse(self.paginationInfo.isLastPage);
+    NSMutableDictionary *dictionary = self.dictionary.mutableCopy;
+    dictionary[NBClientPaginationNextLinkKey] = [NSNull null];
+    NBPaginationInfo *paginationInfo = [[NBPaginationInfo alloc] initWithDictionary:dictionary legacy:NO];
+    XCTAssertTrue(paginationInfo.isLastPage, @"Should be true if no next link.");
+    // Legacy.
+    XCTAssertFalse(self.legacyPaginationInfo.isLastPage);
+    dictionary = self.legacyDictionary.mutableCopy;
+    dictionary[NBClientCurrentPageNumberKey] = dictionary[NBClientNumberOfTotalPagesKey];
+    paginationInfo = [[NBPaginationInfo alloc] initWithDictionary:dictionary legacy:YES];
+    XCTAssertTrue(paginationInfo.isLastPage, @"Should be true if current page is total pages.");
+}
+
 - (void)testCurrentPageNumberConstraints
 {
     self.legacyPaginationInfo.currentPageNumber = 0;

@@ -221,8 +221,6 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
     } else {
         XCTAssertEqual(paginationInfo.numberOfItemsPerPage, [paginationParameters[NBClientPaginationLimitKey] unsignedIntegerValue],
                        @"Pagination info should be properly populated.");
-        XCTAssertNotNil(paginationInfo.nextPageURLString,
-                        @"Pagination info should be properly populated.");
     }
 }
 

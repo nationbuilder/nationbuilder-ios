@@ -85,7 +85,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 - (BOOL)isLastPage
 {
     return (self.isLegacy ?
-            self.currentPageNumber < self.numberOfTotalPages :
+            self.currentPageNumber == self.numberOfTotalPages :
             !self.nextPageURLString);
 }
 
@@ -215,8 +215,8 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                 self.numberOfItemsPerPage = (NSUInteger)[queryParameters[@"limit"] integerValue];
             }
         }
-        self.nextPageURLString = dictionary[NBClientPaginationNextLinkKey];
-        self.previousPageURLString = dictionary[NBClientPaginationPreviousLinkKey];
+        self.nextPageURLString = [dictionary[NBClientPaginationNextLinkKey] nb_nilIfNull];
+        self.previousPageURLString = [dictionary[NBClientPaginationPreviousLinkKey] nb_nilIfNull];
     }
 }
 
