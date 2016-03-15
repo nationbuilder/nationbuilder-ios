@@ -57,14 +57,15 @@
     if (self.shouldUseHTTPStubbing) {
         [self stubRequestUsingFileDataWithMethod:@"GET" path:@"donations" queryParameters:self.paginationParameters];
     }
-    NBPaginationInfo *requestPaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:self.paginationParameters legacy:NO];
     NSURLSessionDataTask *task =
-    [self.client fetchDonationsWithPaginationInfo:requestPaginationInfo completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
-        [self assertServiceError:error];
-        [self assertDonationsArray:items];
-        [self assertPaginationInfo:paginationInfo withPaginationParameters:self.paginationParameters];
-        [self completeAsync];
-    }];
+    [self.client
+     fetchDonationsWithPaginationInfo:[[NBPaginationInfo alloc] initWithDictionary:self.paginationParameters legacy:NO]
+     completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
+         [self assertServiceError:error];
+         [self assertDonationsArray:items];
+         [self assertPaginationInfo:paginationInfo withPaginationParameters:self.paginationParameters];
+         [self completeAsync];
+     }];
     [self assertSessionDataTask:task];
     [self tearDownAsync];
 }

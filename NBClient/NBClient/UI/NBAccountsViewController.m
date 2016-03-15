@@ -2,7 +2,7 @@
 //  NBAccountsViewController.m
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import "NBAccountsViewController.h"
@@ -265,13 +265,13 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         return;
     }
     if (object == self.dataSource) {
-        if ([keyPath isEqual:IsSignedInKeyPath]) {
+        if ([keyPath isEqualToString:IsSignedInKeyPath]) {
             [self updateAccountViewAnimated:YES withCompletionHandler:^{
                 [self updateActionButtonsAnimated:YES withCompletionHandler:^{
                     [self updateAccountsPickerAnimated:YES withCompletionHandler:nil];
                 }];
             }];
-        } else if ([keyPath isEqual:SelectedAccountKeyPath]) {
+        } else if ([keyPath isEqualToString:SelectedAccountKeyPath]) {
             [self updateAccountViewAnimated:YES withCompletionHandler:^{
                 [self updateAccountsPickerAnimated:YES withCompletionHandler:nil];
             }];
@@ -597,7 +597,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         // Update selected row.
         if (!self.isSelectingAccount && self.dataSource.selectedAccount) {
             // Only update the picker if it did not trigger the account selection.
-            NSUInteger selectedIndex = [self selectedIndex];
+            NSUInteger selectedIndex = self.selectedIndex;
             if (selectedIndex == NSNotFound) {
                 NBLogError(@"Invalid selected account index. Aborting row selection.");
             } else {

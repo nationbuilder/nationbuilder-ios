@@ -2,10 +2,12 @@
 //  NBDefines.m
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import "NBDefines.h"
+
+NSString * const NBClientVersion = @"1.3.0";
 
 NSString * const NBErrorDomain = @"com.nationbuilder";
 NSInteger const NBErrorCodeInvalidArgument = 1;

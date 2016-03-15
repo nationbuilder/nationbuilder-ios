@@ -2,7 +2,7 @@
 //  FoundationAdditions.m
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import "FoundationAdditions.h"
@@ -208,7 +208,7 @@ static NSString *QueryPairJoiner = @"=";
 
 - (NSString *)nb_debugDescription
 {
-    NSMutableURLRequest *request = [self mutableCopy];
+    NSMutableURLRequest *request = self.mutableCopy;
     return [NSString stringWithFormat:
             @"%@\n"
             @"METHOD: %@\n"

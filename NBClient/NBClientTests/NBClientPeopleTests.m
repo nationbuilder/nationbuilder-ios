@@ -2,7 +2,7 @@
 //  NBClientPeopleTests.m
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import "NBTestCase.h"
@@ -16,9 +16,6 @@
 @interface NBClientPeopleTests : NBTestCase
 
 @property (nonatomic) NSDictionary *paginationParameters;
-
-- (void)assertPeopleArray:(NSArray *)array;
-- (void)assertPersonDictionary:(NSDictionary *)dictionary;
 
 @end
 
@@ -36,28 +33,6 @@
     [super tearDown];
 }
 
-#pragma mark - Helpers
-
-- (void)assertPeopleArray:(NSArray *)array
-{
-    XCTAssertNotNil(array, @"Client should have received list of people.");
-    for (NSDictionary *dictionary in array) {
-        [self assertPersonDictionary:dictionary];
-    }
-}
-
-- (void)assertPersonDictionary:(NSDictionary *)dictionary
-{
-    static NSArray *keys;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        keys = @[ @"email", @"id", @"first_name", @"last_name", @"support_level" ];
-    });
-    for (NSString *key in keys) {
-        XCTAssertNotNil(dictionary[key], @"Person dictionary should have value for %@", key);
-    }
-}
-
 #pragma mark - Tests
 
 // NOTE: Using the pagination opt-in flag is needed for apps or tokens that
@@ -66,18 +41,16 @@
 - (void)testFetchPeople
 {
     [self setUpAsync];
-    NSDictionary *paginationParameters = self.paginationParameters;
     if (self.shouldUseHTTPStubbing) {
-        [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people" queryParameters:paginationParameters];
+        [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people" queryParameters:self.paginationParameters];
     }
-    NBPaginationInfo *requestPaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:paginationParameters legacy:NO];
     NSURLSessionDataTask *task =
     [self.client
-     fetchPeopleWithPaginationInfo:requestPaginationInfo
+     fetchPeopleWithPaginationInfo:[[NBPaginationInfo alloc] initWithDictionary:self.paginationParameters legacy:NO]
      completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
          [self assertServiceError:error];
          [self assertPeopleArray:items];
-         [self assertPaginationInfo:paginationInfo withPaginationParameters:paginationParameters];
+         [self assertPaginationInfo:paginationInfo withPaginationParameters:self.paginationParameters];
          [self completeAsync];
      }];
     [self assertSessionDataTask:task];
@@ -103,22 +76,20 @@
 - (void)testFetchPeopleByParameters
 {
     [self setUpAsync];
-    NSDictionary *paginationParameters = self.paginationParameters;
     NSDictionary *parameters = @{ @"state": @"CA" };
     if (self.shouldUseHTTPStubbing) {
-        NSMutableDictionary *mutableParameters = [paginationParameters mutableCopy];
+        NSMutableDictionary *mutableParameters = self.paginationParameters.mutableCopy;
         [mutableParameters addEntriesFromDictionary:parameters];
         [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people/search" queryParameters:mutableParameters];
     }
-    NBPaginationInfo *requestPaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:paginationParameters legacy:NO];
     NSURLSessionDataTask *task =
     [self.client
      fetchPeopleByParameters: parameters
-     withPaginationInfo:requestPaginationInfo
+     withPaginationInfo:[[NBPaginationInfo alloc] initWithDictionary:self.paginationParameters legacy:NO]
      completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
          [self assertServiceError:error];
          [self assertPeopleArray:items];
-         [self assertPaginationInfo:paginationInfo withPaginationParameters:paginationParameters];
+         [self assertPaginationInfo:paginationInfo withPaginationParameters:self.paginationParameters];
          [self completeAsync];
      }];
     [self assertSessionDataTask:task];
@@ -128,25 +99,21 @@
 - (void)testFetchPeopleNearbyByLocationInfo
 {
     [self setUpAsync];
-    NSDictionary *paginationParameters = self.paginationParameters;
-    NSDictionary *locationInfo = @{ NBClientLocationLatitudeKey: @34.049031f,
-                                    NBClientLocationLongitudeKey: @(-118.25139f) };
+    NSNumber *latitude = @(34.049031f); NSNumber *longtitude = @(-118.25139f);
     if (self.shouldUseHTTPStubbing) {
-        NSMutableDictionary *mutableParameters = [paginationParameters mutableCopy];
-        mutableParameters[@"location"] = [NSString stringWithFormat:@"%@,%@",
-                                          locationInfo[NBClientLocationLatitudeKey], locationInfo[NBClientLocationLongitudeKey]];
+        NSMutableDictionary *mutableParameters = self.paginationParameters.mutableCopy;
+        mutableParameters[@"location"] = [NSString stringWithFormat:@"%@,%@", latitude, longtitude];
         mutableParameters[@"distance"] = @1;
         [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people/nearby" queryParameters:mutableParameters];
     }
-    NBPaginationInfo *requestPaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:paginationParameters legacy:NO];
     NSURLSessionDataTask *task =
     [self.client
-     fetchPeopleNearbyByLocationInfo: locationInfo
-     withPaginationInfo: requestPaginationInfo
+     fetchPeopleNearbyByLocationInfo: @{ NBClientLocationLatitudeKey: latitude, NBClientLocationLongitudeKey: longtitude }
+     withPaginationInfo: [[NBPaginationInfo alloc] initWithDictionary:self.paginationParameters legacy:NO]
      completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
          [self assertServiceError:error];
          [self assertPeopleArray:items];
-         [self assertPaginationInfo:paginationInfo withPaginationParameters:paginationParameters];
+         [self assertPaginationInfo:paginationInfo withPaginationParameters:self.paginationParameters];
          [self completeAsync];
      }];
     [self assertSessionDataTask:task];
@@ -156,18 +123,15 @@
 - (void)testFetchPerson
 {
     [self setUpAsync];
-    NSUInteger identifier = self.userIdentifier;
     if (self.shouldUseHTTPStubbing) {
-        [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"people/:id" pathVariables:@{ @"id": @(identifier) } queryParameters:nil];
+        [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"people/:id" pathVariables:@{ @"id": @(self.userIdentifier) } queryParameters:nil];
     }
     NSURLSessionDataTask *task =
-    [self.client
-     fetchPersonByIdentifier:identifier
-     withCompletionHandler:^(NSDictionary *item, NSError *error) {
-         [self assertServiceError:error];
-         [self assertPersonDictionary:item];
-         [self completeAsync];
-     }];
+    [self.client fetchPersonByIdentifier:self.userIdentifier withCompletionHandler:^(NSDictionary *item, NSError *error) {
+        [self assertServiceError:error];
+        [self assertPersonDictionary:item];
+        [self completeAsync];
+    }];
     [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
@@ -175,18 +139,15 @@
 - (void)testRegisterPerson
 {
     [self setUpAsync];
-    NSUInteger identifier = self.supporterIdentifier;
     if (self.shouldUseHTTPStubbing) {
-        [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"people/:id/register" pathVariables:@{ @"id": @(identifier) } queryParameters:nil];
+        [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"people/:id/register" pathVariables:@{ @"id": @(self.supporterIdentifier) } queryParameters:nil];
     }
     NSURLSessionDataTask *task =
-    [self.client
-     registerPersonByIdentifier:identifier
-     withCompletionHandler:^(NSDictionary *item, NSError *error) {
-         [self assertServiceError:error];
-         XCTAssertNil(item, @"Nothing should be returned.");
-         [self completeAsync];
-     }];
+    [self.client registerPersonByIdentifier:self.supporterIdentifier withCompletionHandler:^(NSDictionary *item, NSError *error) {
+        [self assertServiceError:error];
+        XCTAssertNil(item, @"Nothing should be returned.");
+        [self completeAsync];
+    }];
     [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
@@ -199,13 +160,11 @@
         [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people/match" queryParameters:parameters];
     }
     NSURLSessionDataTask *task =
-    [self.client
-     fetchPersonByParameters: parameters
-     withCompletionHandler:^(NSDictionary *item, NSError *error) {
-         [self assertServiceError:error];
-         [self assertPersonDictionary:item];
-         [self completeAsync];
-     }];
+    [self.client fetchPersonByParameters: parameters withCompletionHandler:^(NSDictionary *item, NSError *error) {
+        [self assertServiceError:error];
+        [self assertPersonDictionary:item];
+        [self completeAsync];
+    }];
     [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
@@ -216,13 +175,11 @@
     if (self.shouldUseHTTPStubbing) {
         [self stubRequestUsingFileDataWithMethod:@"GET" path:@"people/me" queryParameters:nil];
     }
-    NSURLSessionDataTask *task =
-    [self.client
-     fetchPersonForClientUserWithCompletionHandler:^(NSDictionary *item, NSError *error) {
-         [self assertServiceError:error];
-         [self assertPersonDictionary:item];
-         [self completeAsync];
-     }];
+    NSURLSessionDataTask *task = [self.client fetchPersonForClientUserWithCompletionHandler:^(NSDictionary *item, NSError *error) {
+        [self assertServiceError:error];
+        [self assertPersonDictionary:item];
+        [self completeAsync];
+    }];
     [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
@@ -258,9 +215,7 @@
                         withCompletionHandler:^(NSDictionary *item, NSError *error) { [self completeAsync]; }];
     };
     NSURLSessionDataTask *task =
-    [self.client
-     createPersonWithParameters:parameters
-     completionHandler:^(NSDictionary *item, NSError *error) {
+    [self.client createPersonWithParameters:parameters completionHandler:^(NSDictionary *item, NSError *error) {
          [self assertServiceError:error];
          [self assertPersonDictionary:item];
          XCTAssertTrue([item nb_containsDictionary:parameters],
@@ -278,30 +233,26 @@
 - (void)testSavePerson
 {
     [self setUpAsync];
-    NSUInteger identifier = self.userIdentifier;
     NSDictionary *parameters = @{ @"demo": @"B" };
-    void (^undoTestChanges)(void) = ^{
-        [self.client savePersonByIdentifier:identifier withParameters:@{ @"demo": @"W" }
+    dispatch_block_t undoTestChanges = ^{
+        [self.client savePersonByIdentifier:self.userIdentifier withParameters:@{ @"demo": @"W" }
                           completionHandler:^(NSDictionary *item, NSError *error) { [self completeAsync]; }];
     };
     if (self.shouldUseHTTPStubbing) {
-        [self stubRequestUsingFileDataWithMethod:@"PUT" pathFormat:@"people/:id" pathVariables:@{ @"id": @(identifier) } queryParameters:nil];
+        [self stubRequestUsingFileDataWithMethod:@"PUT" pathFormat:@"people/:id" pathVariables:@{ @"id": @(self.userIdentifier) } queryParameters:nil];
     }
     NSURLSessionDataTask *task =
-    [self.client
-     savePersonByIdentifier:identifier
-     withParameters:parameters
-     completionHandler:^(NSDictionary *item, NSError *error) {
-         [self assertServiceError:error];
-         [self assertPersonDictionary:item];
-         XCTAssertTrue([item nb_containsDictionary:parameters],
-                       @"Person dictionary should be populated by parameters.");
-         if (self.shouldUseHTTPStubbing) {
-             [self completeAsync];
-         } else {
-             undoTestChanges();
-         }
-     }];
+    [self.client savePersonByIdentifier:self.userIdentifier withParameters:parameters completionHandler:^(NSDictionary *item, NSError *error) {
+        [self assertServiceError:error];
+        [self assertPersonDictionary:item];
+        XCTAssertTrue([item nb_containsDictionary:parameters],
+                      @"Person dictionary should be populated by parameters.");
+        if (self.shouldUseHTTPStubbing) {
+            [self completeAsync];
+        } else {
+            undoTestChanges();
+        }
+    }];
     [self assertSessionDataTask:task];
     [self tearDownAsync];
 }

@@ -2,7 +2,7 @@
 //  NBAccountButton.m
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import "NBAccountButton.h"
@@ -133,14 +133,14 @@ static void *observationContext = &observationContext;
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
         return;
     }
-    if ([keyPath isEqual:HiddenKeyPath]) {
+    if ([keyPath isEqualToString:HiddenKeyPath]) {
         if (object == self.avatarImageView) {
             [self toggleAvatarImageViewHidden];
         } else if (object == self.nameLabel) {
             [self toggleNameLabelHidden];
         }
     }
-    if (object == self.dataSources && [keyPath isEqual:SelectedAccountKeyPath]) {
+    if (object == self.dataSources && [keyPath isEqualToString:SelectedAccountKeyPath]) {
         self.dataSource = self.dataSources.selectedAccount;
     }
 }

@@ -2,7 +2,7 @@
 //  NBAccount.m
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import "NBAccount.h"
@@ -35,7 +35,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         if (!clientInfoOrNil) {
             clientInfoOrNil = self.defaultClientInfo;
         }
-        NSMutableDictionary *mutableClientInfo = [clientInfoOrNil mutableCopy];
+        NSMutableDictionary *mutableClientInfo = clientInfoOrNil.mutableCopy;
         // Fill in OAuth client ID if needed.
         mutableClientInfo[NBInfoClientIdentifierKey] = mutableClientInfo[NBInfoClientIdentifierKey] ?: self.defaultClientInfo[NBInfoClientIdentifierKey];
         // Check for developer.
@@ -101,7 +101,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     if (self.shouldUseTestToken) {
         self.client = [[NBClient alloc] initWithNationSlug:self.clientInfo[NBInfoNationSlugKey]
                                                     apiKey:self.clientInfo[NBInfoTestTokenKey]
-                                             customBaseURL:[self baseURL]
+                                             customBaseURL:self.baseURL
                                           customURLSession:nil customURLSessionConfiguration:nil];
     } else {
         self.client = [[NBClient alloc] initWithNationSlug:self.clientInfo[NBInfoNationSlugKey]
@@ -117,7 +117,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     if (_authenticator) {
         return _authenticator;
     }
-    self.authenticator = [[NBAuthenticator alloc] initWithBaseURL:[self baseURL]
+    self.authenticator = [[NBAuthenticator alloc] initWithBaseURL:self.baseURL
                                                  clientIdentifier:self.clientInfo[NBInfoClientIdentifierKey]];
     self.authenticator.shouldPersistCredential = NO;
     return _authenticator;

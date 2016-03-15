@@ -2,7 +2,7 @@
 //  NBAuthenticatorTests.m
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import "NBTestCase.h"
@@ -135,7 +135,7 @@
                       @"Authorization url path should be correct.");
         XCTAssertTrue([components.host isEqualToString:self.baseURL.host],
                       @"Authorization url host should be correct.");
-        XCTAssertTrue([[components.percentEncodedQuery nb_queryStringParameters] nb_containsDictionary:expectedParameters],
+        XCTAssertTrue([components.percentEncodedQuery.nb_queryStringParameters nb_containsDictionary:expectedParameters],
                       @"Authorization url parameters should be correct.");
         // App delegate method would call this.
         [NBAuthenticator finishAuthenticatingInWebBrowserWithURL:

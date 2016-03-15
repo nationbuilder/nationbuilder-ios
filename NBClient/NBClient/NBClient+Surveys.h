@@ -26,15 +26,15 @@
                                        completionHandler:(nonnull NBClientResourceListCompletionHandler)completionHandler;
 
 // POST /sites/:slug/pages/surveys
-- (nonnull NSURLSessionDataTask *)createSurveyBySiteSlug:(nonnull NSString *)siteSlug
-                                          withParameters:(nonnull NSDictionary *)parameters
-                                       completionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
+- (nullable NSURLSessionDataTask *)createSurveyBySiteSlug:(nonnull NSString *)siteSlug
+                                           withParameters:(nonnull NSDictionary *)parameters
+                                        completionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
 
 // PUT /sites/:slug/pages/surveys/:id
-- (nonnull NSURLSessionDataTask *)saveSurveyBySiteSlug:(nonnull NSString *)siteSlug
-                                            identifier:(NSUInteger)identifier
-                                        withParameters:(nonnull NSDictionary *)parameters
-                                     completionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
+- (nullable NSURLSessionDataTask *)saveSurveyBySiteSlug:(nonnull NSString *)siteSlug
+                                             identifier:(NSUInteger)identifier
+                                         withParameters:(nonnull NSDictionary *)parameters
+                                      completionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
 
 // DELETE /sites/:slug/pages/surveys/:id
 - (nonnull NSURLSessionDataTask *)deleteSurveyBySiteSlug:(nonnull NSString *)siteSlug
@@ -50,8 +50,8 @@
                                                 completionHandler:(nonnull NBClientResourceListCompletionHandler)completionHandler;
 
 // POST /survey_responses
-- (nonnull NSURLSessionDataTask *)createSurveyResponseByIdentifier:(NSUInteger)surveyIdentifier
-                                                    withParameters:(nonnull NSDictionary *)parameters
-                                                 completionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
+- (nullable NSURLSessionDataTask *)createSurveyResponseByIdentifier:(NSUInteger)surveyIdentifier
+                                                     withParameters:(nonnull NSDictionary *)parameters
+                                                  completionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
 
 @end

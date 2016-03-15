@@ -2,7 +2,7 @@
 //  NBAuthenticator.m
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import "NBAuthenticator.h"
@@ -207,7 +207,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     BOOL didOpen = NO;
     NSURLComponents *components = [[NSURLComponents alloc] initWithURL:url resolvingAgainstBaseURL:YES];
     if ([components.scheme isEqualToString:self.authorizationRedirectApplicationURLScheme]) {
-        NSDictionary *parameters = [components.fragment nb_queryStringParameters];
+        NSDictionary *parameters = components.fragment.nb_queryStringParameters;
         NSString *accessToken = parameters[NBAuthenticationRedirectTokenKey];
         [[NSNotificationCenter defaultCenter] postNotificationName:NBAuthenticationRedirectNotification object:nil
                                                           userInfo:@{ NBAuthenticationRedirectTokenKey: accessToken }];
@@ -230,7 +230,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 - (NSURL *)authenticationURLWithSubPath:(NSString *)subPath
                              parameters:(NSDictionary *)parameters
 {
-    NSMutableDictionary *mutableParameters = [parameters mutableCopy];
+    NSMutableDictionary *mutableParameters = parameters.mutableCopy;
     mutableParameters[@"client_id"] = self.clientIdentifier;
     parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
     
@@ -239,7 +239,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                                               relativeToURL:self.baseURL]
                resolvingAgainstBaseURL:YES];
     
-    components.percentEncodedQuery = [parameters nb_queryString];
+    components.percentEncodedQuery = parameters.nb_queryString;
     
     NSURL *url = components.URL;
     if (self.currentlyNeedsPriorSignout) {

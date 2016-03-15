@@ -2,12 +2,12 @@
 //  NBClient_Internal.h
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import "NBClient.h"
 
-@interface NBClient ()
+@interface NBClient () <NSURLSessionDelegate>
 
 @property (nonatomic, copy, readwrite, nonnull) NSString *nationSlug;
 @property (nonatomic, readwrite, nonnull) NSURLSession *urlSession;

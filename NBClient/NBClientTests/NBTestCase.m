@@ -2,7 +2,7 @@
 //  NBTestCase.m
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import "NBTestCase.h"
@@ -149,13 +149,13 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
     // And we need to build our query.
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionaryWithDictionary:queryParameters];
     mutableParameters[@"access_token"] = mutableParameters[@"access_token"] ?: client.apiKey;
-    components.percentEncodedQuery = [mutableParameters nb_queryString];
+    components.percentEncodedQuery = mutableParameters.nb_queryString;
     // Check our URL.
     NBLog(@"STUB: %@", components.URL.absoluteString);
     // And our headers.
     NSMutableDictionary *headers = [NSMutableDictionary dictionary];
     headers[@"Accept"] = @"application/json";
-    if ([method isEqual:@"POST"] || [method isEqual:@"PUT"]) {
+    if ([method isEqualToString:@"POST"] || [method isEqualToString:@"PUT"]) {
         headers[@"Content-Type"] = @"application/json";
     }
     // Finally, send it to Nocilla.
@@ -224,6 +224,20 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
         XCTAssertNotNil(paginationInfo.nextPageURLString,
                         @"Pagination info should be properly populated.");
     }
+}
+
+- (void)assertPeopleArray:(NSArray *)array
+{
+    XCTAssertNotNil(array, @"Client should have received list of people.");
+    for (NSDictionary *dictionary in array) { [self assertPersonDictionary:dictionary]; }
+}
+
+- (void)assertPersonDictionary:(NSDictionary *)dictionary
+{
+    static NSArray *keys; static dispatch_once_t onceToken; dispatch_once(&onceToken, ^{
+        keys = @[ @"email", @"id", @"first_name", @"last_name", @"support_level" ];
+    });
+    return XCTAssertTrue([dictionary nb_hasKeys:keys], "Person has correct attributes.");
 }
 
 - (void)assertServiceError:(NSError *)error

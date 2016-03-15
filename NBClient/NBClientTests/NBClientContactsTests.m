@@ -59,9 +59,11 @@
     if (self.shouldUseHTTPStubbing) {
         [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"people/:id/contacts" pathVariables:@{ @"id": @(self.supporterIdentifier) } queryParameters:paginationParameters];
     }
-    NBPaginationInfo *requestPaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:paginationParameters legacy:NO];
     NSURLSessionDataTask *task =
-    [self.client fetchPersonContactsByIdentifier:self.supporterIdentifier withPaginationInfo:requestPaginationInfo completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
+    [self.client
+     fetchPersonContactsByIdentifier:self.supporterIdentifier
+     withPaginationInfo:[[NBPaginationInfo alloc] initWithDictionary:paginationParameters legacy:NO]
+     completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
         [self assertServiceError:error];
         [self assertContactsArray:items];
         [self completeAsync];

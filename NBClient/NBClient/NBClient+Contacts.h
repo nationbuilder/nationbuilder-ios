@@ -26,9 +26,9 @@
                                                 completionHandler:(nonnull NBClientResourceListCompletionHandler)completionHandler;
 
 // POST people/:person_id/contacts
-- (nonnull NSURLSessionDataTask *)createPersonContactByIdentifier:(NSUInteger)personIdentifier
-                                                  withContactInfo:(nonnull NSDictionary *)contactInfo
-                                                completionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
+- (nullable NSURLSessionDataTask *)createPersonContactByIdentifier:(NSUInteger)personIdentifier
+                                                   withContactInfo:(nonnull NSDictionary *)contactInfo
+                                                 completionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
 
 #pragma mark - Contact Types (Fetch Only)
 

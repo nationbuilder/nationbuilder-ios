@@ -2,7 +2,7 @@
 //  NBPersonViewDataSource.m
 //  NBClientExample
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import "NBPersonViewDataSource.h"
@@ -207,7 +207,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 + (NSError *)parseClientError:(NSError *)error
 {
-    NSMutableDictionary *userInfo = [error.userInfo mutableCopy];
+    NSMutableDictionary *userInfo = error.userInfo.mutableCopy;
     NSString *title = userInfo[NBClientErrorMessageKey];
     if (!title.length) {
         title = NSLocalizedString(@"title.error", nil);

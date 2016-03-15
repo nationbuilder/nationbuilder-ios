@@ -2,7 +2,7 @@
 //  FoundationAdditionsTests.m
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import <XCTest/XCTest.h>
@@ -81,7 +81,7 @@
 
     source = @{ @"foo": @"foo" };
     dictionary = @{ @"foo": @"foo" };
-    NSDictionary *queryParameters = [[dictionary nb_queryString] nb_queryStringParameters];
+    NSDictionary *queryParameters = dictionary.nb_queryString.nb_queryStringParameters;
     XCTAssertTrue([source nb_isEquivalentToDictionary:queryParameters],
                   @"Dictionaries should be equivalent even if strings aren't equal in terms of encoding.");
 }
@@ -121,7 +121,7 @@
 - (void)testBuildingDictionaryFromQueryString
 {
     NSString *string = @"age=1&email=foo@bar.com&name=Foo%20Bar";
-    NSDictionary *parameters = [string nb_queryStringParameters];
+    NSDictionary *parameters = string.nb_queryStringParameters;
     NSDictionary *expectedParameters = @{ @"name": @"Foo Bar", @"age": @1, @"email": @"foo@bar.com" };
     XCTAssertEqualObjects(parameters, expectedParameters,
                           @"Query parameters should be properly formed");

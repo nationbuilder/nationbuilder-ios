@@ -22,9 +22,6 @@
 - (void)assertListsArray:(NSArray *)array;
 - (void)assertListDictionary:(NSDictionary *)dictionary;
 
-- (void)assertPeopleArray:(NSArray *)array;
-- (void)assertPersonDictionary:(NSDictionary *)dictionary;
-
 @end
 
 @implementation NBClientListsTests
@@ -54,20 +51,6 @@
     return XCTAssertTrue([dictionary nb_hasKeys:keys], "List has correct attributes.");
 }
 
-- (void)assertPeopleArray:(NSArray *)array
-{
-    XCTAssertNotNil(array, @"Client should have received list of people.");
-    for (NSDictionary *dictionary in array) { [self assertPersonDictionary:dictionary]; }
-}
-
-- (void)assertPersonDictionary:(NSDictionary *)dictionary
-{
-    static NSArray *keys; static dispatch_once_t onceToken; dispatch_once(&onceToken, ^{
-        keys = @[ @"email", @"id", @"first_name", @"last_name", @"support_level" ];
-    });
-    return XCTAssertTrue([dictionary nb_hasKeys:keys], "Person has correct attributes.");
-}
-
 #pragma mark - Tests
 
 - (void)testFetchLists
@@ -76,9 +59,10 @@
     if (self.shouldUseHTTPStubbing) {
         [self stubRequestUsingFileDataWithMethod:@"GET" path:@"lists" queryParameters:self.paginationParameters];
     }
-    NBPaginationInfo *requestPaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:self.paginationParameters legacy:NO];
     NSURLSessionDataTask *task =
-    [self.client fetchListsWithPaginationInfo:requestPaginationInfo completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
+    [self.client
+     fetchListsWithPaginationInfo:[[NBPaginationInfo alloc] initWithDictionary:self.paginationParameters legacy:NO]
+     completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
         [self assertServiceError:error];
         [self assertListsArray:items];
         [self assertPaginationInfo:paginationInfo withPaginationParameters:self.paginationParameters];
@@ -93,9 +77,11 @@
     if (!self.shouldUseHTTPStubbing) { return; }
     [self setUpAsync];
     [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"lists/:id/people" pathVariables:@{ @"id": @(self.listIdentifier) } queryParameters:self.paginationParameters];
-    NBPaginationInfo *requestPaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:self.paginationParameters legacy:NO];
     NSURLSessionDataTask *task =
-    [self.client fetchListPeopleByIdentifier:self.listIdentifier withPaginationInfo:requestPaginationInfo completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
+    [self.client
+     fetchListPeopleByIdentifier:self.listIdentifier
+     withPaginationInfo:[[NBPaginationInfo alloc] initWithDictionary:self.paginationParameters legacy:NO]
+     completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
         [self assertServiceError:error];
         [self assertPeopleArray:items];
         [self assertPaginationInfo:paginationInfo withPaginationParameters:self.paginationParameters];

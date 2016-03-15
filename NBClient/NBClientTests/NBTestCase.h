@@ -2,7 +2,7 @@
 //  NBTestCase.h
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import <XCTest/XCTest.h>
@@ -60,6 +60,10 @@
 
 - (void)assertPaginationInfo:(NBPaginationInfo *)paginationInfo
     withPaginationParameters:(NSDictionary *)paginationParameters;
+
+- (void)assertPeopleArray:(NSArray *)array;
+- (void)assertPersonDictionary:(NSDictionary *)dictionary;
+
 - (void)assertServiceError:(NSError *)error;
 - (void)assertSessionDataTask:(NSURLSessionDataTask *)task;
 

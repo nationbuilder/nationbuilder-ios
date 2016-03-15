@@ -2,7 +2,7 @@
 //  NBPaginationInfo.m
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import "NBPaginationInfo.h"
@@ -109,12 +109,12 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 - (NSDictionary *)queryParameters
 {
     NSDictionary *parameters;
-    NSMutableDictionary *mutableParameters = [[self dictionary] mutableCopy];
+    NSMutableDictionary *mutableParameters = self.dictionary.mutableCopy;
     if (self.isLegacy) {
         [mutableParameters removeObjectsForKeys:@[ NBClientNumberOfTotalPagesKey, NBClientNumberOfTotalItemsKey ]];
         parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
     } else {
-        NSDictionary *dictionary = [self dictionary];
+        NSDictionary *dictionary = self.dictionary;
         NSURLComponents *components;
         if (self.currentDirection == NBPaginationDirectionNext
             && (dictionary[NBClientPaginationNextLinkKey] && dictionary[NBClientPaginationNextLinkKey] != [NSNull null]))
@@ -128,7 +128,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         }
         // Get parameters from generated URL strings, or get first page with initial parameters.
         if (components) {
-            parameters = [components.percentEncodedQuery nb_queryStringParameters];
+            parameters = components.percentEncodedQuery.nb_queryStringParameters;
         } else {
             [mutableParameters removeObjectsForKeys:@[ NBClientPaginationNextLinkKey, NBClientPaginationPreviousLinkKey ]];
             parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
@@ -210,7 +210,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
             self.numberOfItemsPerPage = [dictionary[NBClientPaginationLimitKey] unsignedIntegerValue];
         } else if (dictionary[NBClientPaginationNextLinkKey] && ![dictionary[NBClientPaginationNextLinkKey] isEqual:[NSNull null]]) {
             NSURLComponents *components = [NSURLComponents componentsWithString:dictionary[NBClientPaginationNextLinkKey]];
-            NSDictionary *queryParameters = [components.percentEncodedQuery nb_queryStringParameters];
+            NSDictionary *queryParameters = components.percentEncodedQuery.nb_queryStringParameters;
             if (queryParameters[@"limit"]) {
                 self.numberOfItemsPerPage = (NSUInteger)[queryParameters[@"limit"] integerValue];
             }

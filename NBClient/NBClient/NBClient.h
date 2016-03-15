@@ -2,7 +2,7 @@
 //  NBClient.h
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import <Foundation/Foundation.h>
@@ -70,7 +70,7 @@ extern NSString * __nonnull const NBClientSurveyQuestionResponseIdentifierKey;
 // which handles both success and error case. The type is conventionally defined to
 // be either `NBClientResourceListCompletionHandler` or
 // `NBClientResourceItemCompletionHandler`.
-@interface NBClient : NSObject <NSURLSessionDataDelegate, NBLogging>
+@interface NBClient : NSObject <NBLogging>
 
 @property (nonatomic, weak, nullable) id<NBClientDelegate> delegate;
 
@@ -85,6 +85,8 @@ extern NSString * __nonnull const NBClientSurveyQuestionResponseIdentifierKey;
 @property (nonatomic, copy, nullable) NSString *apiKey; // Set this upon successful authentication.
 @property (nonatomic, copy, nonnull) NSString *apiVersion; // Optional. For future use.
 
+// For a shorter query string, set this to `YES`. Defaults to `NO`.
+@property (nonatomic) BOOL shouldIncludeKeyAsHeader;
 // Set this to true if absolutely necessary. Discouraged for performance reasons.
 @property (nonatomic) BOOL shouldUseLegacyPagination;
 // For a shorter query string, set this to `NO` if you're not a 'legacy' app.
@@ -124,17 +126,17 @@ extern NSString * __nonnull const NBClientSurveyQuestionResponseIdentifierKey;
                                         customResultsKey:(nullable NSString *)resultsKey
                                           paginationInfo:(nullable NBPaginationInfo *)paginationInfo
                                        completionHandler:(nullable id)completionHandler;
-// POST. Omit `resultsKey` for empty responses if needed.
+// POST. Omit `resultsKey` for empty responses if needed. May return nil if `parameters` are invalid.
 - (nullable NSURLSessionDataTask *)createByResourceSubPath:(nonnull NSString *)path
                                             withParameters:(nonnull NSDictionary *)parameters
                                                 resultsKey:(nullable NSString *)resultsKey
                                          completionHandler:(nullable id)completionHandler;
-// PUT. Omit `resultsKey` for empty responses if needed.
+// PUT. Omit `resultsKey` for empty responses if needed. May return nil if `parameters` are invalid.
 - (nullable NSURLSessionDataTask *)saveByResourceSubPath:(nonnull NSString *)path
                                           withParameters:(nonnull NSDictionary *)parameters
                                               resultsKey:(nullable NSString *)resultsKey
                                        completionHandler:(nullable id)completionHandler;
-// DELETE. Include `parameters` and `resultsKey` if needed.
+// DELETE. Include `parameters` and `resultsKey` if needed. May return nil if `parameters` are invalid.
 - (nullable NSURLSessionDataTask *)deleteByResourceSubPath:(nonnull NSString *)path
                                             withParameters:(nullable NSDictionary *)parameters
                                                 resultsKey:(nullable NSString *)resultsKey
@@ -145,8 +147,10 @@ extern NSString * __nonnull const NBClientSurveyQuestionResponseIdentifierKey;
 // Implement this protocol to customize the general response and request
 // handling for a client, ie. do something before each request gets sent or
 // after each response gets received. Refer to the individual methods for more
-// details.
-@protocol NBClientDelegate <NSObject>
+// details. If you don't pass a custom `urlSession`, this delegate will also be
+// the delegate for the default session and can conform to additional sub-
+// protocols: `NSURLSessionTaskDelegate`, `NSURLSessionDataDelegate`, etc.
+@protocol NBClientDelegate <NSURLSessionDelegate>
 
 @optional
 
@@ -159,13 +163,13 @@ extern NSString * __nonnull const NBClientSurveyQuestionResponseIdentifierKey;
 
 // Useful for when you just want to create the data tasks but perhaps start them
 // at a later time, and perhaps with more coordination, ie. with rate limits. By
-// default, this method, if implemented, should return YES.
+// default, this method, if implemented, should return `YES`.
 - (BOOL)client:(nonnull NBClient *)client shouldAutomaticallyStartDataTask:(nonnull NSURLSessionDataTask *)task;
 
 // These 'shouldHandleResponse' methods allow you to halt default response
 // handling at any error. For example, the accounts layer uses the 'HTTPError'
 // variant to automatically sign out of the account that has the client.
-// By default, these methods, if implemented, should return YES.
+// By default, these methods, if implemented, should return `YES`.
 - (BOOL)client:(nonnull NBClient *)client shouldHandleResponse:(nonnull NSHTTPURLResponse *)response
                                                     forRequest:(nonnull NSURLRequest *)request;
 - (BOOL)client:(nonnull NBClient *)client shouldHandleResponse:(nonnull NSHTTPURLResponse *)response
