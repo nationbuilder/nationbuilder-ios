@@ -372,8 +372,10 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                 NBPaginationInfo *responsePaginationInfo;
                 if ([NBPaginationInfo dictionaryContainsPaginationInfo:jsonObject]) {
                     responsePaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:jsonObject legacy:paginationInfo.legacy];
-                    responsePaginationInfo.numberOfItemsPerPage = paginationInfo.numberOfItemsPerPage;
-                    responsePaginationInfo.currentDirection = paginationInfo.currentDirection;
+                    if (paginationInfo) {
+                        responsePaginationInfo.numberOfItemsPerPage = paginationInfo.numberOfItemsPerPage;
+                        responsePaginationInfo.currentDirection = paginationInfo.currentDirection;
+                    }
                     [responsePaginationInfo updateCurrentPageNumber];
                 }
                 ((NBClientResourceListCompletionHandler)completionHandler)(results, responsePaginationInfo, error);
