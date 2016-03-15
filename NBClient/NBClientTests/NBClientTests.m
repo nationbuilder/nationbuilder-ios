@@ -97,6 +97,25 @@
                    @"Client should delegate default session to delegate.");
 }
 
+- (void)testTogglingIncludingKeyAsHeader
+{
+    if (self.shouldUseHTTPStubbing) { return; }
+    [self setUpAsync];
+    NBClient *client = [self baseClientWithTestToken];
+    void (^testRequest)(dispatch_block_t) = ^(dispatch_block_t completionHandler) {
+        [client fetchPersonForClientUserWithCompletionHandler:^(NSDictionary *item, NSError *error) {
+            [self assertServiceError:error];
+            completionHandler();
+        }];
+    };
+    client.shouldIncludeKeyAsHeader = YES;
+    testRequest(^{
+        client.shouldIncludeKeyAsHeader = NO;
+        testRequest(^{ [self completeAsync]; });
+    });
+    [self tearDownAsync];
+}
+
 - (void)testAsyncAuthenticatedInitialization
 {
     if (self.shouldOnlyUseTestToken) {

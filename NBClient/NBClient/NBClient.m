@@ -106,6 +106,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     self.defaultErrorRecoverySuggestion = @"message.unknown-error-solution".nb_localizedString;
     
     self.baseURL = [NSURL URLWithString:[NSString stringWithFormat:NBClientDefaultBaseURLFormat, self.nationSlug]];
+    self.shouldIncludeKeyAsHeader = NO;
     self.shouldUseLegacyPagination = NO;
     self.shouldUseTokenPagination = YES;
 }
@@ -129,6 +130,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 @synthesize authenticator = _authenticator;
 @synthesize apiKey = _apiKey;
 @synthesize apiVersion = _apiVersion;
+@synthesize shouldIncludeKeyAsHeader = _shouldIncludeKeyAsHeader;
 
 - (void)setBaseURL:(NSURL *)baseURL
 {
@@ -203,6 +205,12 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     [self updateBaseURLComponents];
 }
 
+- (void)setShouldIncludeKeyAsHeader:(BOOL)shouldIncludeKeyAsHeader
+{
+    _shouldIncludeKeyAsHeader = shouldIncludeKeyAsHeader;
+    [self updateBaseURLComponents];
+}
+
 #pragma mark - Generic Endpoints
 
 - (NSURLSessionDataTask *)fetchByResourceSubPath:(NSString *)path
@@ -266,7 +274,9 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 {
     self.baseURLComponents = [NSURLComponents componentsWithURL:self.baseURL resolvingAgainstBaseURL:YES];
     self.baseURLComponents.path = [NSString stringWithFormat:@"/api/%@", self.apiVersion];
-    self.baseURLComponents.percentEncodedQuery = @{ @"access_token": self.apiKey ?: @"" }.nb_queryString;
+    if (!self.shouldIncludeKeyAsHeader) {
+        self.baseURLComponents.percentEncodedQuery = @{ @"access_token": self.apiKey ?: @"" }.nb_queryString;
+    }
 }
 
 - (NSURLComponents *)urlComponentsForSubPath:(NSString *)path
@@ -286,6 +296,9 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request setValue:[NSString stringWithFormat:@"iOS/%@", NBClientVersion] forHTTPHeaderField:@"X-NB-Client"];
+    if (self.shouldIncludeKeyAsHeader) {
+        [request setValue:[NSString stringWithFormat:@"Bearer %@", self.apiKey] forHTTPHeaderField:@"Authorization"];
+    }
     if (parameters) {
         [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:parameters options:0 error:error]];
     }

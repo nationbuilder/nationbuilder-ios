@@ -85,6 +85,8 @@ extern NSString * __nonnull const NBClientSurveyQuestionResponseIdentifierKey;
 @property (nonatomic, copy, nullable) NSString *apiKey; // Set this upon successful authentication.
 @property (nonatomic, copy, nonnull) NSString *apiVersion; // Optional. For future use.
 
+// For a shorter query string, set this to `YES`. Defaults to `NO`.
+@property (nonatomic) BOOL shouldIncludeKeyAsHeader;
 // Set this to true if absolutely necessary. Discouraged for performance reasons.
 @property (nonatomic) BOOL shouldUseLegacyPagination;
 // For a shorter query string, set this to `NO` if you're not a 'legacy' app.
