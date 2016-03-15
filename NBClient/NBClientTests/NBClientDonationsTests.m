@@ -72,7 +72,7 @@
 
 - (void)testCreateDonation
 {
-    if (!self.shouldUseHTTPStubbing) { return; }
+    if (!self.shouldUseHTTPStubbing) { return NBLog(@"SKIPPING"); }
     [self setUpAsync];
     [self stubRequestUsingFileDataWithMethod:@"POST" path:@"donations" queryParameters:nil];
     NSDictionary *parameters = @{ NBClientDonationAmountInCentsKey: @"100",
@@ -90,7 +90,7 @@
 
 - (void)testSaveDonation
 {
-    if (!self.shouldUseHTTPStubbing) { return; }
+    if (!self.shouldUseHTTPStubbing) { return NBLog(@"SKIPPING"); }
     [self setUpAsync];
     [self stubRequestUsingFileDataWithMethod:@"PUT" pathFormat:@"donations/:id" pathVariables:@{ @"id": @(self.donationIdentifier) } queryParameters:nil];
     NSDictionary *parameters = @{ NBClientDonationAmountInCentsKey: @"200" };
@@ -106,7 +106,7 @@
 
 - (void)testDeleteDonation
 {
-    if (!self.shouldUseHTTPStubbing) { return; }
+    if (!self.shouldUseHTTPStubbing) { return NBLog(@"SKIPPING"); }
     [self setUpAsync];
     [self stubRequestUsingFileDataWithMethod:@"DELETE" pathFormat:@"donations/:id" pathVariables:@{ @"id": @(self.donationIdentifier) } queryParameters:nil];
     NSURLSessionDataTask *task = [self.client deleteDonationByIdentifier:self.donationIdentifier completionHandler:^(NSDictionary *item, NSError *error) {

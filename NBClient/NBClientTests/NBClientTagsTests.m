@@ -67,7 +67,7 @@
 
 - (void)testFetchTagPeople
 {
-    if (!self.shouldUseHTTPStubbing) { return; }
+    if (!self.shouldUseHTTPStubbing) { return NBLog(@"SKIPPING"); }
     [self setUpAsync];
     [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"tags/:tag/people" pathVariables:@{ @"tag": self.tagName } queryParameters:self.paginationParameters];
     NSURLSessionDataTask *task =

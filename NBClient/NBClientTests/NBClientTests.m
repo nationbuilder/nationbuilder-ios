@@ -99,7 +99,7 @@
 
 - (void)testTogglingIncludingKeyAsHeader
 {
-    if (self.shouldUseHTTPStubbing) { return; }
+    if (self.shouldUseHTTPStubbing) { return NBLog(@"SKIPPING"); }
     [self setUpAsync];
     NBClient *client = [self baseClientWithTestToken];
     void (^testRequest)(dispatch_block_t) = ^(dispatch_block_t completionHandler) {
@@ -116,13 +116,10 @@
     [self tearDownAsync];
 }
 
-- (void)testAsyncAuthenticatedInitialization
+// FIXME: Password grant type no longer supported.
+- (void)x_testAsyncAuthenticatedInitialization
 {
-    if (self.shouldOnlyUseTestToken) {
-        NBLog(@"SKIPPING");
-        return;
-    }
-    return; // FIXME
+    if (self.shouldOnlyUseTestToken) { return NBLog(@"SKIPPING"); }
     [self setUpAsync];
     // Test credential persistence across initializations.
     void (^testCredentialPersistence)(void) = ^{

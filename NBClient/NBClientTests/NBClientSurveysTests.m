@@ -60,7 +60,7 @@
 
 - (void)testFetchSurveysBySiteSlug
 {
-    if (!self.shouldUseHTTPStubbing) { return; }
+    if (!self.shouldUseHTTPStubbing) { return NBLog(@"SKIPPING"); }
     [self setUpAsync];
     [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"sites/:slug/pages/surveys" pathVariables:@{ @"slug": self.nationSlug } queryParameters:self.paginationParameters];
     NSURLSessionDataTask *task =
@@ -79,7 +79,7 @@
 
 - (void)testCreateSurveyBySiteSlug
 {
-    if (!self.shouldUseHTTPStubbing) { return; }
+    if (!self.shouldUseHTTPStubbing) { return NBLog(@"SKIPPING"); }
     [self setUpAsync];
     [self stubRequestUsingFileDataWithMethod:@"POST" pathFormat:@"sites/:slug/pages/surveys" pathVariables:@{ @"slug": self.nationSlug } queryParameters:nil];
     // NOTE: This is more for documentation. The stored response won't check parameters.
@@ -96,7 +96,7 @@
 
 - (void)testSaveSurveyBySiteSlug
 {
-    if (!self.shouldUseHTTPStubbing) { return; }
+    if (!self.shouldUseHTTPStubbing) { return NBLog(@"SKIPPING"); }
     [self setUpAsync];
     [self stubRequestUsingFileDataWithMethod:@"PUT" pathFormat:@"sites/:slug/pages/surveys/:id" pathVariables:@{ @"slug": self.nationSlug, @"id": @(self.surveyIdentifier) } queryParameters:nil];
     // NOTE: This is more for documentation. The stored response won't check parameters.
@@ -113,7 +113,7 @@
 
 - (void)testDeleteSurveyBySiteSlug
 {
-    if (!self.shouldUseHTTPStubbing) { return; }
+    if (!self.shouldUseHTTPStubbing) { return NBLog(@"SKIPPING"); }
     [self setUpAsync];
     [self stubRequestUsingFileDataWithMethod:@"DELETE" pathFormat:@"sites/:slug/pages/surveys/:id" pathVariables:@{ @"slug": self.nationSlug, @"id": @(self.surveyIdentifier) } queryParameters:nil];
     NSURLSessionDataTask *task =
@@ -148,7 +148,7 @@
 
 - (void)testFetchSurveyResponses
 {
-    if (!self.shouldUseHTTPStubbing) { return; }
+    if (!self.shouldUseHTTPStubbing) { return NBLog(@"SKIPPING"); }
     [self setUpAsync];
     NSMutableDictionary *mutableParameters = self.paginationParameters.mutableCopy;
     mutableParameters[@"survey_id"] = @(self.surveyWithResponsesIdentifier);
@@ -169,7 +169,7 @@
 
 - (void)testCreateSurveyResponse
 {
-    if (!self.shouldUseHTTPStubbing) { return; }
+    if (!self.shouldUseHTTPStubbing) { return NBLog(@"SKIPPING"); }
     [self setUpAsync];
     [self stubRequestUsingFileDataWithMethod:@"POST" path:@"survey_responses" queryParameters:nil];
     // NOTE: This is more for documentation. The stored response won't check parameters.

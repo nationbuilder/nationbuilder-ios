@@ -74,7 +74,7 @@
 
 - (void)testFetchListPeople
 {
-    if (!self.shouldUseHTTPStubbing) { return; }
+    if (!self.shouldUseHTTPStubbing) { return NBLog(@"SKIPPING"); }
     [self setUpAsync];
     [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"lists/:id/people" pathVariables:@{ @"id": @(self.listIdentifier) } queryParameters:self.paginationParameters];
     NSURLSessionDataTask *task =
@@ -93,7 +93,7 @@
 
 - (void)testCreatePeopleListings
 {
-    if (!self.shouldUseHTTPStubbing) { return; }
+    if (!self.shouldUseHTTPStubbing) { return NBLog(@"SKIPPING"); }
     [self setUpAsync];
     [self stubRequestUsingFileDataWithMethod:@"POST" pathFormat:@"lists/:id/people" pathVariables:@{ @"id": @(self.listIdentifier) } queryParameters:nil];
     NSURLSessionDataTask *task =
@@ -108,7 +108,7 @@
 
 - (void)testDeletePeopleListings
 {
-    if (!self.shouldUseHTTPStubbing) { return; }
+    if (!self.shouldUseHTTPStubbing) { return NBLog(@"SKIPPING"); }
     [self setUpAsync];
     [self stubRequestUsingFileDataWithMethod:@"DELETE" pathFormat:@"lists/:id/people" pathVariables:@{ @"id": @(self.listIdentifier) } queryParameters:nil];
     NSURLSessionDataTask *task =
