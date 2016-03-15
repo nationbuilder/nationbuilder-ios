@@ -59,7 +59,6 @@
     if (self.shouldUseHTTPStubbing) {
         [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"people/:id/contacts" pathVariables:@{ @"id": @(self.supporterIdentifier) } queryParameters:paginationParameters];
     }
-    NSURLSessionDataTask *task =
     [self.client
      fetchPersonContactsByIdentifier:self.supporterIdentifier
      withPaginationInfo:[[NBPaginationInfo alloc] initWithDictionary:paginationParameters legacy:NO]
@@ -68,7 +67,6 @@
         [self assertContactsArray:items];
         [self completeAsync];
     }];
-    [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
 
@@ -84,13 +82,11 @@
     if (self.shouldUseHTTPStubbing) {
         [self stubRequestUsingFileDataWithMethod:@"POST" pathFormat:@"people/:id/contacts" pathVariables:@{ @"id": @(self.supporterIdentifier) } queryParameters:nil];
     }
-    NSURLSessionDataTask *task =
     [self.client createPersonContactByIdentifier:self.supporterIdentifier withContactInfo:contactInfo completionHandler:^(NSDictionary *item, NSError *error) {
         [self assertServiceError:error];
         [self assertContactDictionary:item];
         [self completeAsync];
     }];
-    [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
 
@@ -133,13 +129,11 @@
     if (self.shouldUseHTTPStubbing) {
         [self stubRequestUsingFileDataWithMethod:@"GET" path:@"settings/contact_types" queryParameters:nil];
     }
-    NSURLSessionDataTask *task =
     [self.client fetchContactTypesWithPaginationInfo:nil completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
         [self assertServiceError:error];
         [self assertContactTypesArray:items];
         [self completeAsync];
     }];
-    [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
 
@@ -149,13 +143,11 @@
     if (self.shouldUseHTTPStubbing) {
         [self stubRequestUsingFileDataWithMethod:@"GET" path:@"settings/contact_methods" queryParameters:nil];
     }
-    NSURLSessionDataTask *task =
     [self.client fetchContactMethodsWithCompletionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
         [self assertServiceError:error];
         [self assertContactMethodsArray:items];
         [self completeAsync];
     }];
-    [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
 
@@ -165,13 +157,11 @@
     if (self.shouldUseHTTPStubbing) {
         [self stubRequestUsingFileDataWithMethod:@"GET" path:@"settings/contact_statuses" queryParameters:nil];
     }
-    NSURLSessionDataTask *task =
     [self.client fetchContactStatusesWithCompletionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
         [self assertServiceError:error];
         [self assertContactStatusesArray:items];
         [self completeAsync];
     }];
-    [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
 

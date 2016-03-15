@@ -65,7 +65,6 @@
 - (void)assertPersonDictionary:(NSDictionary *)dictionary;
 
 - (void)assertServiceError:(NSError *)error;
-- (void)assertSessionDataTask:(NSURLSessionDataTask *)task;
 
 - (void)stubInfoFileBundleResourcePathForOperations:(void (^)(void))operationsBlock;
 

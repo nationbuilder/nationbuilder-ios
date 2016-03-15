@@ -59,7 +59,6 @@
     if (self.shouldUseHTTPStubbing) {
         [self stubRequestUsingFileDataWithMethod:@"GET" path:@"lists" queryParameters:self.paginationParameters];
     }
-    NSURLSessionDataTask *task =
     [self.client
      fetchListsWithPaginationInfo:[[NBPaginationInfo alloc] initWithDictionary:self.paginationParameters legacy:NO]
      completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
@@ -68,7 +67,6 @@
         [self assertPaginationInfo:paginationInfo withPaginationParameters:self.paginationParameters];
         [self completeAsync];
     }];
-    [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
 
@@ -77,7 +75,6 @@
     if (!self.shouldUseHTTPStubbing) { return NBLog(@"SKIPPING"); }
     [self setUpAsync];
     [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"lists/:id/people" pathVariables:@{ @"id": @(self.listIdentifier) } queryParameters:self.paginationParameters];
-    NSURLSessionDataTask *task =
     [self.client
      fetchListPeopleByIdentifier:self.listIdentifier
      withPaginationInfo:[[NBPaginationInfo alloc] initWithDictionary:self.paginationParameters legacy:NO]
@@ -87,7 +84,6 @@
         [self assertPaginationInfo:paginationInfo withPaginationParameters:self.paginationParameters];
         [self completeAsync];
     }];
-    [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
 
@@ -96,13 +92,11 @@
     if (!self.shouldUseHTTPStubbing) { return NBLog(@"SKIPPING"); }
     [self setUpAsync];
     [self stubRequestUsingFileDataWithMethod:@"POST" pathFormat:@"lists/:id/people" pathVariables:@{ @"id": @(self.listIdentifier) } queryParameters:nil];
-    NSURLSessionDataTask *task =
     [self.client createPeopleListingsByIdentifier:self.listIdentifier withPeopleIdentifiers:self.peopleIdentifiers completionHandler:^(NSDictionary *item, NSError *error) {
         [self assertServiceError:error];
         XCTAssertNil(item, @"There should be no response.");
         [self completeAsync];
     }];
-    [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
 
@@ -111,13 +105,11 @@
     if (!self.shouldUseHTTPStubbing) { return NBLog(@"SKIPPING"); }
     [self setUpAsync];
     [self stubRequestUsingFileDataWithMethod:@"DELETE" pathFormat:@"lists/:id/people" pathVariables:@{ @"id": @(self.listIdentifier) } queryParameters:nil];
-    NSURLSessionDataTask *task =
     [self.client deletePeopleListingsByIdentifier:self.listIdentifier withPeopleIdentifiers:self.peopleIdentifiers completionHandler:^(NSDictionary *item, NSError *error) {
         [self assertServiceError:error];
         XCTAssertNil(item, @"There should be no response.");
         [self completeAsync];
     }];
-    [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
 

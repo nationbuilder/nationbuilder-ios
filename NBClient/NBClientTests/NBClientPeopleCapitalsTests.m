@@ -63,7 +63,6 @@
     if (self.shouldUseHTTPStubbing) {
         [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"people/:id/capitals" pathVariables:@{ @"id": @(self.userIdentifier) } queryParameters:paginationParameters];
     }
-    NSURLSessionDataTask *task =
     [self.client
      fetchPersonCapitalsByIdentifier:self.userIdentifier
      withPaginationInfo:[[NBPaginationInfo alloc] initWithDictionary:paginationParameters legacy:NO]
@@ -72,7 +71,6 @@
          [self assertCapitalsArray:items];
          [self completeAsync];
      }];
-    [self assertSessionDataTask:task];
     [self tearDownAsync];}
 
 - (void)testCreatePersonCapital
@@ -81,7 +79,6 @@
     if (self.shouldUseHTTPStubbing) {
         [self stubRequestUsingFileDataWithMethod:@"POST" pathFormat:@"people/:id/capitals" pathVariables:@{ @"id": @(self.supporterIdentifier) } queryParameters:nil];
     }
-    NSURLSessionDataTask *task =
     [self.client
      createPersonCapitalByIdentifier:self.supporterIdentifier
      withCapitalInfo:@{ NBClientCapitalAmountInCentsKey: @(self.amountInCents), NBClientCapitalUserContentKey: self.userContent }
@@ -90,7 +87,6 @@
          [self assertCapitalDictionary:item];
          [self completeAsync];
      }];
-    [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
 
@@ -98,7 +94,6 @@
 {
     [self setUpAsync];
     NBClientResourceItemCompletionHandler testDelete = ^(NSDictionary *item, NSError *error) {
-        NSURLSessionDataTask *task =
         [self.client
          deletePersonCapitalByPersonIdentifier:self.supporterIdentifier
          capitalIdentifier:[item[@"id"] unsignedIntegerValue]
@@ -107,7 +102,6 @@
              XCTAssertNil(deletedItem, @"Capital should not exist.");
              [self completeAsync];
          }];
-        [self assertSessionDataTask:task];
     };
     if (self.shouldUseHTTPStubbing) {
         NSUInteger capitalIdentifier = 514;

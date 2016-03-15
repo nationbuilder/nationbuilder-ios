@@ -248,12 +248,6 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
     XCTFail(@"NationBuilder service returned error %@", error);
 }
 
-- (void)assertSessionDataTask:(NSURLSessionDataTask *)task
-{
-    XCTAssertTrue(task && task.state == NSURLSessionTaskStateRunning,
-                  @"Client should have created and ran task.");
-}
-
 #pragma mark - Async Test Helpers
 
 - (void)setUpAsync

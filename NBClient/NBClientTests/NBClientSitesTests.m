@@ -55,7 +55,6 @@
     if (self.shouldUseHTTPStubbing) {
         [self stubRequestUsingFileDataWithMethod:@"GET" path:@"sites" queryParameters:self.paginationParameters];
     }
-    NSURLSessionDataTask *task =
     [self.client
      fetchSitesWithPaginationInfo:[[NBPaginationInfo alloc] initWithDictionary:self.paginationParameters legacy:NO]
      completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
@@ -64,7 +63,6 @@
         [self assertPaginationInfo:paginationInfo withPaginationParameters:self.paginationParameters];
         [self completeAsync];
     }];
-    [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
 

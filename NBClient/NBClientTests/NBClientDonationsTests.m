@@ -57,7 +57,6 @@
     if (self.shouldUseHTTPStubbing) {
         [self stubRequestUsingFileDataWithMethod:@"GET" path:@"donations" queryParameters:self.paginationParameters];
     }
-    NSURLSessionDataTask *task =
     [self.client
      fetchDonationsWithPaginationInfo:[[NBPaginationInfo alloc] initWithDictionary:self.paginationParameters legacy:NO]
      completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
@@ -66,7 +65,6 @@
          [self assertPaginationInfo:paginationInfo withPaginationParameters:self.paginationParameters];
          [self completeAsync];
      }];
-    [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
 
@@ -78,13 +76,11 @@
     NSDictionary *parameters = @{ NBClientDonationAmountInCentsKey: @"100",
                                   NBClientDonationDonorIdentifierKey: @(self.supporterIdentifier),
                                   NBClientDonationPaymentTypeNameKey: @"Cash" };
-    NSURLSessionDataTask *task =
     [self.client createDonationWithParameters:parameters completionHandler:^(NSDictionary *item, NSError *error) {
         [self assertServiceError:error];
         [self assertDonationDictionary:item];
         [self completeAsync];
     }];
-    [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
 
@@ -94,13 +90,11 @@
     [self setUpAsync];
     [self stubRequestUsingFileDataWithMethod:@"PUT" pathFormat:@"donations/:id" pathVariables:@{ @"id": @(self.donationIdentifier) } queryParameters:nil];
     NSDictionary *parameters = @{ NBClientDonationAmountInCentsKey: @"200" };
-    NSURLSessionDataTask *task =
     [self.client saveDonationByIdentifier:self.donationIdentifier withParameters:parameters completionHandler:^(NSDictionary *item, NSError *error) {
         [self assertServiceError:error];
         [self assertDonationDictionary:item];
         [self completeAsync];
     }];
-    [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
 
@@ -109,12 +103,11 @@
     if (!self.shouldUseHTTPStubbing) { return NBLog(@"SKIPPING"); }
     [self setUpAsync];
     [self stubRequestUsingFileDataWithMethod:@"DELETE" pathFormat:@"donations/:id" pathVariables:@{ @"id": @(self.donationIdentifier) } queryParameters:nil];
-    NSURLSessionDataTask *task = [self.client deleteDonationByIdentifier:self.donationIdentifier completionHandler:^(NSDictionary *item, NSError *error) {
+    [self.client deleteDonationByIdentifier:self.donationIdentifier completionHandler:^(NSDictionary *item, NSError *error) {
         [self assertServiceError:error];
         XCTAssertNil(item, @"Donation dictionary should not exist.");
         [self completeAsync];
     }];
-    [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
 

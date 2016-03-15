@@ -63,7 +63,6 @@
     if (!self.shouldUseHTTPStubbing) { return NBLog(@"SKIPPING"); }
     [self setUpAsync];
     [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"sites/:slug/pages/surveys" pathVariables:@{ @"slug": self.nationSlug } queryParameters:self.paginationParameters];
-    NSURLSessionDataTask *task =
     [self.client
      fetchSurveysBySiteSlug:self.nationSlug
      withPaginationInfo:[[NBPaginationInfo alloc] initWithDictionary:self.paginationParameters legacy:NO]
@@ -73,7 +72,6 @@
          [self assertPaginationInfo:paginationInfo withPaginationParameters:self.paginationParameters];
          [self completeAsync];
      }];
-    [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
 
@@ -84,13 +82,11 @@
     [self stubRequestUsingFileDataWithMethod:@"POST" pathFormat:@"sites/:slug/pages/surveys" pathVariables:@{ @"slug": self.nationSlug } queryParameters:nil];
     // NOTE: This is more for documentation. The stored response won't check parameters.
     NSDictionary *parameters = @{ @"slug": @"survey_temp", @"name": @"Survey (temp)", @"status": @"unlisted", @"questions": @[ @{ @"prompt": @"Important issue?", @"slug": @"important_issue_temp", @"type": @"multiple", @"status": @"unlisted", @"choices": @[ @{ @"name": @"foo" }, @{ @"name": @"bar" } ] } ] };
-    NSURLSessionDataTask *task =
     [self.client createSurveyBySiteSlug:self.nationSlug withParameters:parameters completionHandler:^(NSDictionary *item, NSError *error) {
         [self assertServiceError:error];
         [self assertSurveyDictionary:item];
         [self completeAsync];
     }];
-    [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
 
@@ -101,13 +97,11 @@
     [self stubRequestUsingFileDataWithMethod:@"PUT" pathFormat:@"sites/:slug/pages/surveys/:id" pathVariables:@{ @"slug": self.nationSlug, @"id": @(self.surveyIdentifier) } queryParameters:nil];
     // NOTE: This is more for documentation. The stored response won't check parameters.
     NSDictionary *parameters = @{ @"slug": @"survey_temp", @"name": @"Survey (temp)", @"status": @"unlisted", @"questions": @[] };
-    NSURLSessionDataTask *task =
     [self.client saveSurveyBySiteSlug:self.nationSlug identifier:self.surveyIdentifier withParameters:parameters completionHandler:^(NSDictionary *item, NSError *error) {
         [self assertServiceError:error];
         [self assertSurveyDictionary:item];
         [self completeAsync];
     }];
-    [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
 
@@ -116,13 +110,11 @@
     if (!self.shouldUseHTTPStubbing) { return NBLog(@"SKIPPING"); }
     [self setUpAsync];
     [self stubRequestUsingFileDataWithMethod:@"DELETE" pathFormat:@"sites/:slug/pages/surveys/:id" pathVariables:@{ @"slug": self.nationSlug, @"id": @(self.surveyIdentifier) } queryParameters:nil];
-    NSURLSessionDataTask *task =
     [self.client deleteSurveyBySiteSlug:self.nationSlug identifier:self.surveyIdentifier completionHandler:^(NSDictionary *item, NSError *error) {
         [self assertServiceError:error];
         XCTAssertNil(item, @"Survey dictionary should not exist.");
         [self completeAsync];
     }];
-    [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
 
@@ -153,7 +145,6 @@
     NSMutableDictionary *mutableParameters = self.paginationParameters.mutableCopy;
     mutableParameters[@"survey_id"] = @(self.surveyWithResponsesIdentifier);
     [self stubRequestUsingFileDataWithMethod:@"GET" path:@"survey_responses" queryParameters:mutableParameters];
-    NSURLSessionDataTask *task =
     [self.client
      fetchSurveyResponseByIdentifier:self.surveyWithResponsesIdentifier parameters:nil
      withPaginationInfo:[[NBPaginationInfo alloc] initWithDictionary:self.paginationParameters legacy:NO]
@@ -163,7 +154,6 @@
          [self assertPaginationInfo:paginationInfo withPaginationParameters:self.paginationParameters];
          [self completeAsync];
      }];
-    [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
 
@@ -177,13 +167,11 @@
                                   NBClientSurveyResponsesKey: @[ @{
                                     NBClientSurveyQuestionIdentifierKey: @1,
                                     NBClientSurveyQuestionResponseIdentifierKey: @1 } ] };
-    NSURLSessionDataTask *task =
     [self.client createSurveyResponseByIdentifier:self.surveyWithResponsesIdentifier withParameters:parameters completionHandler:^(NSDictionary *item, NSError *error) {
         [self assertServiceError:error];
         [self assertSurveyResponseDictionary:item];
         [self completeAsync];
     }];
-    [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
 

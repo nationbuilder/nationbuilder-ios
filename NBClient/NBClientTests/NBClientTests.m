@@ -126,9 +126,7 @@
         NBClient *otherClient = [self baseClientWithAuthenticator];
         NSURLSessionDataTask *task =
         [otherClient.authenticator
-         authenticateWithUserName:self.userEmailAddress
-         password:self.userPassword
-         clientSecret:self.clientSecret
+         authenticateWithUserName:self.userEmailAddress password:self.userPassword clientSecret:self.clientSecret
          completionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
              [self assertServiceError:error];
              [self assertCredential:credential];
@@ -142,11 +140,8 @@
                     @"Client should have authenticator.");
     NSString *credentialIdentifier = client.authenticator.credentialIdentifier;
     [NBAuthenticationCredential deleteCredentialWithIdentifier:credentialIdentifier];
-    NSURLSessionDataTask *task =
     [client.authenticator
-     authenticateWithUserName:self.userEmailAddress
-     password:self.userPassword
-     clientSecret:self.clientSecret
+     authenticateWithUserName:self.userEmailAddress password:self.userPassword clientSecret:self.clientSecret
      completionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
          [self assertServiceError:error];
          [self assertCredential:credential];
@@ -154,7 +149,6 @@
          testCredentialPersistence();
          [self completeAsync];
      }];
-    [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
 

@@ -52,7 +52,6 @@
     if (self.shouldUseHTTPStubbing) {
         [self stubRequestUsingFileDataWithMethod:@"GET" path:@"tags" queryParameters:self.paginationParameters];
     }
-    NSURLSessionDataTask *task =
     [self.client
      fetchTagsWithPaginationInfo:[[NBPaginationInfo alloc] initWithDictionary:self.paginationParameters legacy:NO]
      completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
@@ -61,7 +60,6 @@
         [self assertPaginationInfo:paginationInfo withPaginationParameters:self.paginationParameters];
         [self completeAsync];
     }];
-    [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
 
@@ -70,7 +68,6 @@
     if (!self.shouldUseHTTPStubbing) { return NBLog(@"SKIPPING"); }
     [self setUpAsync];
     [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"tags/:tag/people" pathVariables:@{ @"tag": self.tagName } queryParameters:self.paginationParameters];
-    NSURLSessionDataTask *task =
     [self.client
      fetchTagPeopleByName:self.tagName
      withPaginationInfo:[[NBPaginationInfo alloc] initWithDictionary:self.paginationParameters legacy:NO]
@@ -80,7 +77,6 @@
         [self assertPaginationInfo:paginationInfo withPaginationParameters:self.paginationParameters];
         [self completeAsync];
     }];
-    [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
 
