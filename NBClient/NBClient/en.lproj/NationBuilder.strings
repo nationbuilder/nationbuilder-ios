@@ -10,6 +10,7 @@
 "label.cancel" = "Cancel";
 "label.close" = "Close";
 "label.ok" = "OK";
+"label.retry" = "Retry";
 "label.submit" = "Submit";
 
 "message.unknown-error" = "Something went wrong. Please notify the app developer.";

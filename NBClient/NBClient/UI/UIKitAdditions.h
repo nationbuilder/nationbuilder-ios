@@ -7,9 +7,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UIAlertView (NBAdditions)
+@interface UIAlertController (NBAdditions)
 
-+ (nonnull UIAlertView *)nb_genericAlertViewWithError:(nonnull NSError *)error;
++ (nonnull UIAlertController *)nb_genericAlertWithError:(nonnull NSError *)error
+                                       defaultDismissal:(BOOL)defaultDismissal;
 
 @end
 
