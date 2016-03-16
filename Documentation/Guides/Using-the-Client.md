@@ -48,6 +48,8 @@ handlers that will get passed: 1. the data as one or many items (if any), 2. the
 pagination info (if relevant), and 3. the error (if any).
 
 ```objectivec
+#import <NBClient/NBClient+People.h>
+// ...
 // Continuing.
 [client 
  fetchPeopleWithPaginationInfo:nil
@@ -65,6 +67,21 @@ your app's users sharing one token. This means your app would be either private
 or the token would be 'securely' stored. Even then, we suggest using the
 authenticator and requiring your users to: 1. authenticate with NationBuilder
 and 2. authorize access for your app.
+
+__Note:__ NBClient's categories cover the common API endpoints with [convenience methods][API Coverage].
+If you need other API endpoints, you can use the related generic endpoint method.
+Make sure you pass in the correct type of `completionHandler`. (If you dig
+through the source you'll see the convenience methods simply wrap over their
+more generic counterparts.)
+
+```objectivec
+// Continuing.
+[client
+ fetchByResourceSubPath:@"/people" withParameters:nil customResultsKey:nil paginationInfo:nil
+ completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
+    //...
+}];
+```
 
 ## NBAuthenticator
 
@@ -105,16 +122,18 @@ protocol of your redirect URI and identifies URLs only your app should be able
 to open. For example, the redirect URI `sample-app.nationbuilder://oauth/callback`
 has the protocol `sample-app.nationbuilder`.
 
-Now to authenticate, provide the authenticator with the redirect path and a
-completion handler. The completion handler will get passed: 1. the credential
-object (if any), and 2. the error (if any):
+Now to authenticate via an in-app Safari window (`SFSafariViewController`),
+provide the authenticator with the redirect path and a completion handler. This
+is the preferred approach over a custom `WKWebView`, since it assures the user
+your app has its hands off of their NB site session. The completion handler will
+get passed: 1. the credential object (if any), and 2. the error (if any):
 
 ```objectivec
 // Continuing.
 NSString *redirectPath = @"oauth/callback"; // See example redirect URI.
 [authenticator
  authenticateWithRedirectPath:redirectPath
- priorSignout:NO // Sign out of current session in Safari. Only needed for account-switching.
+ priorSignout:NO // Sign out of current session in browser. Only needed for account-switching.
  completionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
      if (error) {
          // Handle the error inside the completion block as you see fit.
@@ -132,12 +151,12 @@ for the app to open the redirect URI.
 // Continuing.
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
-    // At this point the user has signed in on Safari and authorized the app.
+    // At this point the user has signed in on the browser and authorized the app.
     // They may have only confirmed to open the redirect URI if they're already 
     // signed in and app has already been authorized.
     BOOL didOpen = [NBAuthenticator finishAuthenticatingInWebBrowserWithURL:url];
-    // At this point, the result is YES, then the authenticator has called
-    // the completion handler.
+    // At this point, if `didOpen` is YES, then the authenticator has called the
+    // completion handler.
     return NO;
 }
 ```
@@ -237,7 +256,7 @@ You'll need to create them when working with certain endpoints:
     self = [super init];
     if (self) {
         self.client = client;
-        self.paginationInfo = [[NBPaginationInfo alloc] initWithDictionary:nil legacy:YES];
+        self.paginationInfo = [[NBPaginationInfo alloc] initWithDictionary:nil legacy:NO];
     }
     return self;
 }
@@ -293,4 +312,5 @@ __[Next: Using Accounts ➔](Using-Accounts.md)__
 
 [installing selectively]: Installing.md#selectively
 [accounts layer]: Using-Accounts.md
+[API Coverage]: Using-Everything.md#nationbuilder-api-coverage
 [API Documentation]: http://nationbuilder.com/api_documentation
