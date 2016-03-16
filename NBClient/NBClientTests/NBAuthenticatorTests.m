@@ -68,8 +68,9 @@
                     @"Authenticator should have credential ID.");
 }
 
-- (void)x_testManagingCredentialInKeychain
+- (void)testManagingCredentialInKeychain
 {
+    if (self.shouldUseHTTPStubbing) { return NBLog(@"SKIPPING"); }
     NBAuthenticationCredential *credential = [[NBAuthenticationCredential alloc]
                                               initWithAccessToken:self.accessToken tokenType:@"bearer"];
     XCTAssertTrue([NBAuthenticationCredential saveCredential:credential withIdentifier:self.credentialIdentifier],

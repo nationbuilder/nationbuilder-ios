@@ -85,7 +85,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 - (BOOL)isLastPage
 {
     return (self.isLegacy ?
-            self.currentPageNumber < self.numberOfTotalPages :
+            self.currentPageNumber == self.numberOfTotalPages :
             !self.nextPageURLString);
 }
 
@@ -117,12 +117,12 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         NSDictionary *dictionary = self.dictionary;
         NSURLComponents *components;
         if (self.currentDirection == NBPaginationDirectionNext
-            && (dictionary[NBClientPaginationNextLinkKey] && dictionary[NBClientPaginationNextLinkKey] != [NSNull null]))
+            && [dictionary[NBClientPaginationNextLinkKey] nb_nilIfNull])
         {
             components = [NSURLComponents componentsWithString:dictionary[NBClientPaginationNextLinkKey]];
 
         } else if (self.currentDirection == NBPaginationDirectionPrevious
-                   && (dictionary[NBClientPaginationPreviousLinkKey] && dictionary[NBClientPaginationPreviousLinkKey] != [NSNull null]))
+                   && [dictionary[NBClientPaginationPreviousLinkKey] nb_nilIfNull])
         {
             components = [NSURLComponents componentsWithString:dictionary[NBClientPaginationPreviousLinkKey]];
         }
@@ -208,15 +208,15 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     } else {
         if (dictionary[NBClientPaginationLimitKey]) {
             self.numberOfItemsPerPage = [dictionary[NBClientPaginationLimitKey] unsignedIntegerValue];
-        } else if (dictionary[NBClientPaginationNextLinkKey] && ![dictionary[NBClientPaginationNextLinkKey] isEqual:[NSNull null]]) {
+        } else if ([dictionary[NBClientPaginationNextLinkKey] nb_nilIfNull]) {
             NSURLComponents *components = [NSURLComponents componentsWithString:dictionary[NBClientPaginationNextLinkKey]];
             NSDictionary *queryParameters = components.percentEncodedQuery.nb_queryStringParameters;
             if (queryParameters[@"limit"]) {
                 self.numberOfItemsPerPage = (NSUInteger)[queryParameters[@"limit"] integerValue];
             }
         }
-        self.nextPageURLString = dictionary[NBClientPaginationNextLinkKey];
-        self.previousPageURLString = dictionary[NBClientPaginationPreviousLinkKey];
+        self.nextPageURLString = [dictionary[NBClientPaginationNextLinkKey] nb_nilIfNull];
+        self.previousPageURLString = [dictionary[NBClientPaginationPreviousLinkKey] nb_nilIfNull];
     }
 }
 

@@ -163,7 +163,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         return _name ?: nil;
     }
     NSString *name = self.person[@"username"];
-    name = !!name && ![name isEqual:[NSNull null]] ? name : self.person[@"full_name"];
+    name = [name nb_nilIfNull] ? name : self.person[@"full_name"];
     return name;
 }
 

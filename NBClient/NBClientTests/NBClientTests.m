@@ -13,6 +13,7 @@
 #import "NBClient.h"
 #import "NBClient_Internal.h"
 #import "NBClient+People.h"
+#import "NBPaginationInfo.h"
 
 @interface NBClientTests : NBTestCase
 
@@ -99,7 +100,7 @@
 
 - (void)testTogglingIncludingKeyAsHeader
 {
-    if (self.shouldUseHTTPStubbing) { return; }
+    if (self.shouldUseHTTPStubbing) { return NBLog(@"SKIPPING"); }
     [self setUpAsync];
     NBClient *client = [self baseClientWithTestToken];
     void (^testRequest)(dispatch_block_t) = ^(dispatch_block_t completionHandler) {
@@ -116,22 +117,17 @@
     [self tearDownAsync];
 }
 
-- (void)testAsyncAuthenticatedInitialization
+// FIXME: Password grant type no longer supported.
+- (void)x_testAsyncAuthenticatedInitialization
 {
-    if (self.shouldOnlyUseTestToken) {
-        NBLog(@"SKIPPING");
-        return;
-    }
-    return; // FIXME
+    if (self.shouldOnlyUseTestToken) { return NBLog(@"SKIPPING"); }
     [self setUpAsync];
     // Test credential persistence across initializations.
     void (^testCredentialPersistence)(void) = ^{
         NBClient *otherClient = [self baseClientWithAuthenticator];
         NSURLSessionDataTask *task =
         [otherClient.authenticator
-         authenticateWithUserName:self.userEmailAddress
-         password:self.userPassword
-         clientSecret:self.clientSecret
+         authenticateWithUserName:self.userEmailAddress password:self.userPassword clientSecret:self.clientSecret
          completionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
              [self assertServiceError:error];
              [self assertCredential:credential];
@@ -145,11 +141,8 @@
                     @"Client should have authenticator.");
     NSString *credentialIdentifier = client.authenticator.credentialIdentifier;
     [NBAuthenticationCredential deleteCredentialWithIdentifier:credentialIdentifier];
-    NSURLSessionDataTask *task =
     [client.authenticator
-     authenticateWithUserName:self.userEmailAddress
-     password:self.userPassword
-     clientSecret:self.clientSecret
+     authenticateWithUserName:self.userEmailAddress password:self.userPassword clientSecret:self.clientSecret
      completionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
          [self assertServiceError:error];
          [self assertCredential:credential];
@@ -157,7 +150,6 @@
          testCredentialPersistence();
          [self completeAsync];
      }];
-    [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
 
@@ -195,6 +187,44 @@
     NSString *query = [self getSomeRequestURLForClient:client].query;
     XCTAssertTrue([query rangeOfString:client.apiKey].location != NSNotFound,
                   @"Key in all future request URLs should have been updated.");
+}
+
+- (void)testTaskHandlingOfPaginationInfo
+{
+    if (self.shouldUseHTTPStubbing) { return NBLog(@"SKIPPING"); }
+    [self setUpAsync];
+    [self setUpSharedClient];
+    __block NSUInteger expectationCount = 2; dispatch_block_t complete = ^{
+        expectationCount -= 1;
+        if (expectationCount == 0) { [self completeAsync]; }
+    };
+
+    [self.client
+     fetchByResourceSubPath:@"/people" withParameters:nil customResultsKey:nil paginationInfo:nil
+     completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
+         [self assertServiceError:error];
+         [self assertPeopleArray:items];
+         XCTAssertTrue(paginationInfo.numberOfItemsPerPage > 0,
+                       @"Pagination info should exist.");
+         complete();
+     }];
+    
+    NSDictionary *paginationParameters = @{ NBClientPaginationLimitKey: @5, NBClientPaginationTokenOptInKey: @1 };
+    NBPaginationInfo *requestPaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:paginationParameters legacy:NO];
+    NSUInteger oldCurrentPageNumber = requestPaginationInfo.currentPageNumber;
+    [self.client
+     fetchByResourceSubPath:@"/people" withParameters:nil customResultsKey:nil paginationInfo:requestPaginationInfo
+     completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
+         [self assertServiceError:error];
+         [self assertPeopleArray:items];
+         XCTAssertEqual(paginationInfo.numberOfItemsPerPage, [paginationParameters[NBClientPaginationLimitKey] unsignedIntegerValue],
+                        @"Pagination info should be persisted.");
+         XCTAssertEqual(paginationInfo.currentPageNumber, oldCurrentPageNumber + 1,
+                        @"Pagination info should be updated.");
+         complete();
+     }];
+
+    [self tearDownAsync];
 }
 
 #pragma mark - Delegation

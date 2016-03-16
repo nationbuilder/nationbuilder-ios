@@ -30,6 +30,12 @@
 
 @end
 
+@interface NSObject (NBAdditions)
+
+- (nullable id)nb_nilIfNull;
+
+@end
+
 @interface NSString (NBAdditions)
 
 - (nonnull NSDictionary *)nb_queryStringParameters;

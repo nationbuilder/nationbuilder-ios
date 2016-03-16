@@ -598,7 +598,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
             break;
         case NBScrollViewPullActionStateInProgress:
             // Guard.
-            if (paginationInfo.currentPageNumber == paginationInfo.numberOfTotalPages) {
+            if (paginationInfo.isLastPage) {
                 self.loadMoreState = NBScrollViewPullActionStateStopped;
                 break;
             }

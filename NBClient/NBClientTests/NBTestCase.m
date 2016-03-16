@@ -221,8 +221,6 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
     } else {
         XCTAssertEqual(paginationInfo.numberOfItemsPerPage, [paginationParameters[NBClientPaginationLimitKey] unsignedIntegerValue],
                        @"Pagination info should be properly populated.");
-        XCTAssertNotNil(paginationInfo.nextPageURLString,
-                        @"Pagination info should be properly populated.");
     }
 }
 
@@ -246,12 +244,6 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
         return;
     }
     XCTFail(@"NationBuilder service returned error %@", error);
-}
-
-- (void)assertSessionDataTask:(NSURLSessionDataTask *)task
-{
-    XCTAssertTrue(task && task.state == NSURLSessionTaskStateRunning,
-                  @"Client should have created and ran task.");
 }
 
 #pragma mark - Async Test Helpers

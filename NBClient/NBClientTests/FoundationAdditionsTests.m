@@ -96,6 +96,12 @@
                    @"Query string should be properly formed.");
 }
 
+- (void)testConvertingObjectToNilIfNull
+{
+    XCTAssertNil([[NSNull null] nb_nilIfNull], @"New object from NSNull should be nil.");
+    XCTAssertNotNil([[NSObject alloc] init], @"New object from anything else non-nil should not be nil.");
+}
+
 - (void)testPercentEscapingQueryStringPairValue
 {
     NSString *valueString = @"[ !\"#$%&'()*+,/]";

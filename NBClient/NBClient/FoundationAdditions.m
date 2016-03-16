@@ -125,6 +125,18 @@ static NSString *QueryPairJoiner = @"=";
 
 @end
 
+@implementation NSObject (NBAdditions)
+
+- (id)nb_nilIfNull
+{
+    if ([self isEqual:[NSNull null]]) {
+        return nil;
+    }
+    return self;
+}
+
+@end
+
 @implementation NSString (NBAdditions)
 
 - (NSString *)nb_percentEscapedQueryStringWithEncoding:(NSStringEncoding)stringEncoding

@@ -93,9 +93,7 @@
     [self setUpAsyncWithHTTPStubbing:YES];
     id accountMock = OCMPartialMock(self.account);
     [accountMock setShouldAutoFetchAvatar:NO];
-    if (self.shouldUseHTTPStubbing) {
-        [self stubPersonDataForClient:[(NBAccount *)accountMock client]];
-    }
+    [self stubPersonDataForClient:[(NBAccount *)accountMock client]];
     // Given: an authenticator that authenticates properly using the token flow.
     id authenticatorMock = OCMPartialMock(self.account.authenticator);
     [OCMStub([accountMock authenticator]) andReturn:authenticatorMock];
@@ -135,9 +133,7 @@
     [self setUpAsyncWithHTTPStubbing:YES];
     id accountMock = OCMPartialMock(self.account);
     [accountMock setShouldAutoFetchAvatar:NO];
-    if (self.shouldUseHTTPStubbing) {
-        [self stubPersonDataForClient:[(NBAccount *)accountMock client]];
-    }
+    [self stubPersonDataForClient:[(NBAccount *)accountMock client]];
     // Given: an authenticator with a stored credential.
     id authenticatorMock = OCMPartialMock(self.account.authenticator);
     [OCMStub([accountMock authenticator]) andReturn:authenticatorMock];

@@ -492,6 +492,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     } else {
         didSave = YES;
     }
+    NBLogInfo(@"Saved keychain credential with identifier \"%@\"", identifier);
     return didSave;
 }
 

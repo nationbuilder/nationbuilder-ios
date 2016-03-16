@@ -63,7 +63,6 @@
     if (self.shouldUseHTTPStubbing) {
         [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"people/:id/capitals" pathVariables:@{ @"id": @(self.userIdentifier) } queryParameters:paginationParameters];
     }
-    NSURLSessionDataTask *task =
     [self.client
      fetchPersonCapitalsByIdentifier:self.userIdentifier
      withPaginationInfo:[[NBPaginationInfo alloc] initWithDictionary:paginationParameters legacy:NO]
@@ -72,33 +71,22 @@
          [self assertCapitalsArray:items];
          [self completeAsync];
      }];
-    [self assertSessionDataTask:task];
     [self tearDownAsync];}
 
 - (void)testCreatePersonCapital
 {
     [self setUpAsync];
     if (self.shouldUseHTTPStubbing) {
-        [self stubRequestUsingFileDataWithMethod:@"POST" pathFormat:@"people/:id/capitals" pathVariables:@{ @"id": @(self.userIdentifier) } queryParameters:nil];
+        [self stubRequestUsingFileDataWithMethod:@"POST" pathFormat:@"people/:id/capitals" pathVariables:@{ @"id": @(self.supporterIdentifier) } queryParameters:nil];
     }
-    void (^undoTestChanges)(NSUInteger) = ^(NSUInteger capitalIdentifier) {
-        [self.client deletePersonCapitalByPersonIdentifier:self.userIdentifier capitalIdentifier:capitalIdentifier
-                                     withCompletionHandler:^(NSDictionary *item, NSError *error) { [self completeAsync]; }];
-    };
-    NSURLSessionDataTask *task =
     [self.client
-     createPersonCapitalByIdentifier:self.userIdentifier
+     createPersonCapitalByIdentifier:self.supporterIdentifier
      withCapitalInfo:@{ NBClientCapitalAmountInCentsKey: @(self.amountInCents), NBClientCapitalUserContentKey: self.userContent }
      completionHandler:^(NSDictionary *item, NSError *error) {
          [self assertServiceError:error];
          [self assertCapitalDictionary:item];
-         if (self.shouldUseHTTPStubbing) {
-             [self completeAsync];
-         } else {
-             undoTestChanges([item[@"id"] unsignedIntegerValue]);
-         }
+         [self completeAsync];
      }];
-    [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
 
@@ -106,25 +94,22 @@
 {
     [self setUpAsync];
     NBClientResourceItemCompletionHandler testDelete = ^(NSDictionary *item, NSError *error) {
-        NSURLSessionDataTask *task =
         [self.client
-         deletePersonCapitalByPersonIdentifier:self.userIdentifier
+         deletePersonCapitalByPersonIdentifier:self.supporterIdentifier
          capitalIdentifier:[item[@"id"] unsignedIntegerValue]
          withCompletionHandler:^(NSDictionary *deletedItem, NSError *deleteError) {
              [self assertServiceError:deleteError];
              XCTAssertNil(deletedItem, @"Capital should not exist.");
              [self completeAsync];
          }];
-        [self assertSessionDataTask:task];
     };
     if (self.shouldUseHTTPStubbing) {
         NSUInteger capitalIdentifier = 514;
         [self stubRequestUsingFileDataWithMethod:@"DELETE" pathFormat:@"people/:person_id/capitals/:capital_id"
-                                   pathVariables:@{ @"person_id": @(self.userIdentifier), @"capital_id": @(capitalIdentifier) } queryParameters:nil];
+                                   pathVariables:@{ @"person_id": @(self.supporterIdentifier), @"capital_id": @(capitalIdentifier) } queryParameters:nil];
         testDelete(@{ @"id": @(capitalIdentifier) }, nil);
     } else {
-        [self completeAsync]; // FIXME
-        [self.client createPersonCapitalByIdentifier:self.userIdentifier
+        [self.client createPersonCapitalByIdentifier:self.supporterIdentifier
                                      withCapitalInfo:@{ NBClientCapitalAmountInCentsKey: @(self.amountInCents),
                                                         NBClientCapitalUserContentKey: self.userContent }
                                    completionHandler:testDelete];
