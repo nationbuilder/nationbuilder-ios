@@ -10,7 +10,6 @@
 #import <UIKit/UIKit.h>
 
 #import "NBAccount_Internal.h"
-#import "NBAccountsManager.h"
 #import "NBAccountsManager_Internal.h"
 
 @interface NBAccountsManagerTests : NBTestCase
@@ -250,8 +249,8 @@
     // Given: two accounts are active and the last one is selected.
     id accountMock = [self createAccountMock];
     id otherAccountMock = [self createAccountMock];
-    [OCMStub([(NBAccount *)accountMock identifier]) andReturnValue:@123];
-    [OCMStub([(NBAccount *)otherAccountMock identifier]) andReturnValue:@321];
+    [OCMStub([(NBAccount *)accountMock credentialIdentifier]) andReturn:@"authenticator-tests.nationbuilder.com-someusername-123"];
+    [OCMStub([(NBAccount *)otherAccountMock credentialIdentifier]) andReturn:@"authenticator-tests.nationbuilder.com-someusername-321"];
     [self stubInfoFileBundleResourcePathForOperations:^{
         [OCMStub([accountsManager createAccountWithNationSlug:self.nationSlug]) andReturn:accountMock];
         [accountsManager addAccountWithNationSlug:self.nationSlug error:nil];

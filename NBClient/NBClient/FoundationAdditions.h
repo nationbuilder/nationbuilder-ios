@@ -24,9 +24,12 @@
 
 - (nonnull NSString *)nb_queryString;
 
+// Deprecated, will be removed in the next major release.
 - (nonnull NSString *)nb_queryStringWithEncoding:(NSStringEncoding)stringEncoding
                      skipPercentEncodingPairKeys:(nullable NSSet *)skipPairKeys
                       charactersToLeaveUnescaped:(nullable NSString *)charactersToLeaveUnescaped;
+
+- (nonnull NSString *)nb_queryStringWithSkippedPairKeys:(nullable NSSet *)skippedPairKeys;
 
 @end
 
@@ -40,11 +43,14 @@
 
 - (nonnull NSDictionary *)nb_queryStringParameters;
 
+// Deprecated, will be removed in the next major release.
 - (nonnull NSDictionary *)nb_queryStringParametersWithEncoding:(NSStringEncoding)stringEncoding;
 
+// Deprecated, will be removed in the next major release.
 - (nonnull NSString *)nb_percentEscapedQueryStringWithEncoding:(NSStringEncoding)stringEncoding
                                     charactersToLeaveUnescaped:(nullable NSString *)charactersToLeaveUnescaped;
 
+// Deprecated, will be removed in the next major release.
 - (nonnull NSString *)nb_percentUnescapedQueryStringWithEncoding:(NSStringEncoding)stringEncoding
                                         charactersToLeaveEscaped:(nullable NSString *)charactersToLeaveEscaped;
 

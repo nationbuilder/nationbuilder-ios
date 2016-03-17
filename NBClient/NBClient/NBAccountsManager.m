@@ -5,13 +5,12 @@
 //  Copyright (MIT) 2014-present NationBuilder
 //
 
-#import "NBAccountsManager.h"
 #import "NBAccountsManager_Internal.h"
 
 #import <UIKit/UIKit.h>
 
 #import "FoundationAdditions.h"
-#import "NBAccount.h"
+#import "NBAccount_Internal.h"
 
 NSString * const NBAccountInfosDefaultsKey = @"NBAccountInfos";
 NSString * const NBAccountInfoIdentifierKey = @"User ID";
@@ -175,7 +174,8 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
             shouldBail = YES;
         } else {
             for (NBAccount *existingAccount in self.accounts) {
-                if (existingAccount != account && existingAccount.identifier == account.identifier) {
+                if (existingAccount != account &&
+                    existingAccount.credentialIdentifier == account.credentialIdentifier) {
                     shouldBail = YES;
                     break;
                 }

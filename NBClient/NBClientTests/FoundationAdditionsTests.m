@@ -107,11 +107,12 @@
     NSString *valueString = @"[ !\"#$%&'()*+,/]";
     NSString *escapedString = [valueString nb_percentEscapedQueryStringWithEncoding:NSUTF8StringEncoding
                                                          charactersToLeaveUnescaped:@"[]"];
-    XCTAssertTrue([escapedString isEqualToString:@"[%20%21%22%23%24%25%26%27%28%29%2A%2B%2C%2F]"],
+    XCTAssertTrue([escapedString isEqualToString:@"%5B%20%21%22%23%24%25%26%27%28%29%2A%2B%2C%2F%5D"],
                   @"Query string value should be properly formed.");
+
     NSString *escapedEscapedString = [escapedString nb_percentEscapedQueryStringWithEncoding:NSUTF8StringEncoding
                                                                   charactersToLeaveUnescaped:@"[]"];
-    XCTAssertTrue([escapedEscapedString isEqualToString:@"[%2520%2521%2522%2523%2524%2525%2526%2527%2528%2529%252A%252B%252C%252F]"],
+    XCTAssertTrue([escapedEscapedString isEqualToString:@"%255B%2520%2521%2522%2523%2524%2525%2526%2527%2528%2529%252A%252B%252C%252F%255D"],
                   @"Query string value should be properly formed.");
 }
 

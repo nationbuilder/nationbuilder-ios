@@ -9,9 +9,7 @@
 
 #import "FoundationAdditions.h"
 
-#import "NBAccount.h"
 #import "NBAccount_Internal.h"
-#import "NBAuthenticator.h"
 #import "NBAuthenticator_Internal.h"
 #import "NBClient+People.h"
 

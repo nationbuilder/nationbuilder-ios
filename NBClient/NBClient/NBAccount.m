@@ -156,16 +156,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 @synthesize identifier = _identifier;
 @synthesize name = _name;
-
-- (NSString *)name
-{
-    if (!self.person) {
-        return _name ?: nil;
-    }
-    NSString *name = self.person[@"username"];
-    name = [name nb_nilIfNull] ? name : self.person[@"full_name"];
-    return name;
-}
+@synthesize person = _person;
 
 - (void)setName:(NSString *)name
 {
@@ -174,22 +165,27 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     [self updateCredentialIdentifier];
 }
 
-- (NSUInteger)identifier
-{
-    if (_identifier != NSNotFound) {
-        return _identifier;
-    }
-    if (self.person) {
-        self.identifier = [self.person[@"id"] unsignedIntegerValue];
-    }
-    return _identifier;
-}
-
 - (void)setIdentifier:(NSUInteger)identifier
 {
     _identifier = identifier;
     // Did.
     [self updateCredentialIdentifier];
+}
+
+- (void)setPerson:(NSDictionary *)person
+{
+    _person = person;
+    // Did.
+    if (person) {
+        NSString *name = self.person[@"username"];
+        name = ([name nb_nilIfNull] && name.length) ? name : self.person[@"full_name"];
+        name = ([name nb_nilIfNull] && name.length) ? name : self.person[@"email"];
+        self.name = name;
+        self.identifier = [self.person[@"id"] unsignedIntegerValue];
+    } else {
+        self.identifier = NSNotFound;
+        self.name = nil;
+    }
 }
 
 #pragma mark Active API
@@ -261,8 +257,6 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         } else if (item) {
             // Success.
             self.person = item;
-            // Save credentials with custom ID.
-            [self updateCredentialIdentifier];
             [NBAuthenticationCredential saveCredential:self.authenticator.credential
                                         withIdentifier:self.authenticator.credentialIdentifier];
             if (self.shouldAutoFetchAvatar) {
@@ -297,6 +291,10 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
          }
      }];
     [avatarTask resume];
+}
+
+- (NSString *)credentialIdentifier {
+    return self.authenticator.credentialIdentifier;
 }
 
 - (BOOL)updateCredentialIdentifier

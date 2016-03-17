@@ -97,7 +97,8 @@
 {
     // Show an alert for generic errors
     if (error.code != NBAuthenticationErrorCodeUser) {
-        [[UIAlertView nb_genericAlertViewWithError:error] show];
+        [self.window.rootViewController presentViewController:[UIAlertController nb_genericAlertWithError:error defaultDismissal:YES]
+                                                     animated:YES completion:nil];
     }
 }
 
