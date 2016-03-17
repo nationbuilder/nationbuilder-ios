@@ -144,6 +144,18 @@ NSString *redirectPath = @"oauth/callback"; // See example redirect URI.
 }];
 ```
 
+And update your app delegate to conform to `NBAuthenticatorPresentationDelegate` so
+the Safari window can be presented.
+
+```objectivec
+// Continuing.
+- (void)presentWebBrowserForAuthenticationWithRedirectPath:(SFSafariViewController *)webBrowser
+{
+    // Pick a view controller to present the SFSafariViewController.
+    [self.window.rootViewController presentViewController:(UIViewController *)webBrowser animated:YES completion:nil];
+}
+```
+
 And update your app delegate allow the authenticator to handle Safari's request
 for the app to open the redirect URI.
 
