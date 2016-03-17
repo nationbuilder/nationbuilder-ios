@@ -658,11 +658,14 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 - (IBAction)presentErrorView:(id)sender
 {
     NSDictionary *error = self.dataSource.error.userInfo;
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:error[NBUIErrorTitleKey]
-                                                        message:error[NBUIErrorMessageKey]
-                                                       delegate:self cancelButtonTitle:nil
-                                              otherButtonTitles:NSLocalizedString(@"label.ok", nil), nil];
-    [alertView show];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:error[NBUIErrorTitleKey]
+                                                                   message:error[NBUIErrorMessageKey]
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:
+     [UIAlertAction actionWithTitle:NSLocalizedString(@"label.ok", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [alert dismissViewControllerAnimated:YES completion:nil];
+    }]];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 @end
