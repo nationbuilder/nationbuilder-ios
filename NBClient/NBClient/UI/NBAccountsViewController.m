@@ -62,7 +62,6 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 @property (nonatomic) UIAlertController *nationSlugPromptAlert;
 @property (nonatomic) UIAlertController *nationSlugErrorAlert;
 
-@property (nonatomic) UIPopoverController *containingPopoverController;
 @property (nonatomic, weak) UIViewController *customPresentingViewController;
 
 @property (nonatomic, readonly) NSUInteger selectedIndex;
@@ -124,11 +123,6 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     return self;
 }
 
-- (void)dealloc
-{
-    self.containingPopoverController = nil;
-}
-
 #pragma mark - NBLogging
 
 + (void)updateLoggingToLevel:(NBLogLevel)logLevel
@@ -184,12 +178,12 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 - (void)dismissViewControllerAnimated:(BOOL)flag completion:(void (^)(void))completion
 {
-    if (self.isPresentedInPopover) {
-        [self.containingPopoverController dismissPopoverAnimated:YES];
-    } else if (self.presentingViewController &&
-               [self.presentingViewController isKindOfClass:[UINavigationController class]] &&
-               [(id)self.presentingViewController visibleViewController] == self) {
+    if (self.presentingViewController &&
+        [self.presentingViewController isKindOfClass:[UINavigationController class]] &&
+        [(id)self.presentingViewController visibleViewController] == self)
+    {
         [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+
     } else {
         [super dismissViewControllerAnimated:flag completion:completion];
     }
@@ -334,22 +328,20 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 - (void)showWithAccountButton:(NBAccountButton *)accountButton
      presentingViewController:(UIViewController *)presentingViewController
 {
-    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
-        self.presentedInPopover = YES;
-        // NOTE: Popover controllers need to be retained.
-        if (accountButton.barButtonItem) {
-            [self.containingPopoverController presentPopoverFromBarButtonItem:accountButton.barButtonItem
-                                                     permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        } else {
-            [self.containingPopoverController presentPopoverFromRect:accountButton.frame inView:accountButton
-                                            permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        }
+    self.presentedInPopover = self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular;
+
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:self];
+    // Avoid black background beneath translucent navigation bar.
+    navigationController.view.backgroundColor = presentingViewController.view.backgroundColor;
+
+    navigationController.modalPresentationStyle = UIModalPresentationPopover;
+    if (accountButton.barButtonItem) {
+        navigationController.popoverPresentationController.barButtonItem = accountButton.barButtonItem;
     } else {
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:self];
-        [presentingViewController presentViewController:navigationController animated:YES completion:nil];
-        // Avoid black background beneath translucent navigation bar.
-        navigationController.view.backgroundColor = presentingViewController.view.backgroundColor;
+        navigationController.popoverPresentationController.sourceRect = accountButton.frame;
     }
+
+    [presentingViewController presentViewController:navigationController animated:YES completion:nil];
     // Save for dismissal.
     self.customPresentingViewController = presentingViewController;
 }
@@ -463,16 +455,6 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     
     [self.nationSlugPromptAlert addTextFieldWithConfigurationHandler:nil];
     return _nationSlugPromptAlert;
-}
-
-- (UIPopoverController *)containingPopoverController
-{
-    if (_containingPopoverController) {
-        return _containingPopoverController;
-    }
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:self];
-    self.containingPopoverController = [[UIPopoverController alloc] initWithContentViewController:navigationController];
-    return _containingPopoverController;
 }
 
 - (NSUInteger)selectedIndex
