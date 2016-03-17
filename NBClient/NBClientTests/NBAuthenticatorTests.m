@@ -11,7 +11,6 @@
 
 #import "FoundationAdditions.h"
 
-#import "NBAuthenticator.h"
 #import "NBAuthenticator_Internal.h"
 
 @interface NBAuthenticatorTests : NBTestCase

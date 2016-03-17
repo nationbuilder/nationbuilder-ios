@@ -10,7 +10,6 @@
 #import <UIKit/UIKit.h>
 
 #import "NBAccount_Internal.h"
-#import "NBAccountsManager.h"
 #import "NBAccountsManager_Internal.h"
 
 @interface NBAccountsManagerTests : NBTestCase

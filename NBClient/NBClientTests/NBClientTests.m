@@ -10,7 +10,6 @@
 #import "FoundationAdditions.h"
 
 #import "NBAuthenticator.h"
-#import "NBClient.h"
 #import "NBClient_Internal.h"
 #import "NBClient+People.h"
 #import "NBPaginationInfo.h"

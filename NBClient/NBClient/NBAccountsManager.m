@@ -5,7 +5,6 @@
 //  Copyright (MIT) 2014-present NationBuilder
 //
 
-#import "NBAccountsManager.h"
 #import "NBAccountsManager_Internal.h"
 
 #import <UIKit/UIKit.h>

@@ -5,7 +5,6 @@
 //  Copyright (MIT) 2014-present NationBuilder
 //
 
-#import "NBAuthenticator.h"
 #import "NBAuthenticator_Internal.h"
 
 #import <SafariServices/SafariServices.h>

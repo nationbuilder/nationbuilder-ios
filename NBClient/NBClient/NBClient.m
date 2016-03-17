@@ -5,7 +5,6 @@
 //  Copyright (MIT) 2014-present NationBuilder
 //
 
-#import "NBClient.h"
 #import "NBClient_Internal.h"
 
 #import "NBAuthenticator.h"
