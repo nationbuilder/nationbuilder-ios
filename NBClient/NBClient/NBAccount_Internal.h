@@ -19,6 +19,8 @@
 
 @property (nonatomic, copy, nullable) NSDictionary *person;
 
+@property (nonatomic, copy, readonly, nullable) NSString *credentialIdentifier;
+
 - (nonnull NSURL *)baseURL;
 
 - (void)fetchPersonWithCompletionHandler:(nullable NBGenericCompletionHandler)completionHandler;

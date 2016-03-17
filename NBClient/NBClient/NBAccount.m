@@ -179,6 +179,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     if (person) {
         NSString *name = self.person[@"username"];
         name = ([name nb_nilIfNull] && name.length) ? name : self.person[@"full_name"];
+        name = ([name nb_nilIfNull] && name.length) ? name : self.person[@"email"];
         self.name = name;
         self.identifier = [self.person[@"id"] unsignedIntegerValue];
     } else {
@@ -290,6 +291,10 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
          }
      }];
     [avatarTask resume];
+}
+
+- (NSString *)credentialIdentifier {
+    return self.authenticator.credentialIdentifier;
 }
 
 - (BOOL)updateCredentialIdentifier
