@@ -2,12 +2,12 @@
 //  NBAuthenticator.m
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
-#import "NBAuthenticator.h"
 #import "NBAuthenticator_Internal.h"
 
+#import <SafariServices/SafariServices.h>
 #import <UIKit/UIApplication.h>
 
 #import "FoundationAdditions.h"
@@ -49,23 +49,19 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     if (self) {
         self.baseURL = baseURL;
         self.clientIdentifier = clientIdentifier;
+        self.isObservingApplicationState = NO;
         self.shouldPersistCredential = YES;
-        NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-        [center addObserver:self
-                   selector:@selector(finishAuthenticatingInWebBrowserWithNotification:)
-                       name:NBAuthenticationRedirectNotification object:nil];
-        [center addObserver:self
-                   selector:@selector(finishAuthenticatingInWebBrowserWithNotification:)
-                       name:UIApplicationDidBecomeActiveNotification object:nil];
     }
     return self;
 }
 
 - (void)dealloc
 {
-    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center removeObserver:self name:NBAuthenticationRedirectNotification object:nil];
-    [center removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+    if (self.isObservingApplicationState) {
+        NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+        [center removeObserver:self name:NBAuthenticationRedirectNotification object:nil];
+        [center removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+    }
 }
 
 #pragma mark - NBLogging
@@ -143,17 +139,31 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         completionHandler(nil, error);
         return;
     }
+    if (needsPriorSignout) {
+        NBLogWarning("Recent SSO changes make redirecting to a custom url upon signing out no longer possible. "
+                     "This means for the moment, NBAuthenticator no longer supports prior-signout.");
+        needsPriorSignout = NO;
+    }
     self.currentlyNeedsPriorSignout = needsPriorSignout;
-    NSDictionary *parameters = @{ @"response_type": NBAuthenticationResponseTypeToken,
-                                  @"redirect_uri":  [NSString stringWithFormat:@"%@://%@",
-                                                     self.class.authorizationRedirectApplicationURLScheme,
-                                                     redirectPath] };
     [self
-     authenticateWithSubPath:@"/authorize" parameters:parameters
+     authenticateWithSubPath:@"/authorize"
+     parameters:[self authenticationParametersWithRedirectPath:redirectPath]
      completionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
          self.currentlyNeedsPriorSignout = NO;
          completionHandler(credential, error);
      }];
+}
+
+- (void)setCredentialWithAccessToken:(NSString *)accessToken
+                           tokenType:(NSString *)tokenTypeOrNil
+{
+    self.credential = [[NBAuthenticationCredential alloc] initWithAccessToken:accessToken tokenType:tokenTypeOrNil];
+}
+
+- (NSURL *)authenticationURLWithRedirectPath:(NSString *)redirectPath
+{
+    return [self authenticationURLWithSubPath:@"/authorize"
+                                   parameters:[self authenticationParametersWithRedirectPath:redirectPath]];
 }
 
 - (NSURLSessionDataTask *)authenticateWithUserName:(NSString *)userName
@@ -196,7 +206,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     BOOL didOpen = NO;
     NSURLComponents *components = [[NSURLComponents alloc] initWithURL:url resolvingAgainstBaseURL:YES];
     if ([components.scheme isEqualToString:self.authorizationRedirectApplicationURLScheme]) {
-        NSDictionary *parameters = [components.fragment nb_queryStringParameters];
+        NSDictionary *parameters = components.fragment.nb_queryStringParameters;
         NSString *accessToken = parameters[NBAuthenticationRedirectTokenKey];
         [[NSNotificationCenter defaultCenter] postNotificationName:NBAuthenticationRedirectNotification object:nil
                                                           userInfo:@{ NBAuthenticationRedirectTokenKey: accessToken }];
@@ -209,6 +219,41 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 #pragma mark - Private
 
+- (NSDictionary *)authenticationParametersWithRedirectPath:(NSString *)redirectPath
+{
+    return @{ @"response_type": NBAuthenticationResponseTypeToken,
+              @"redirect_uri": [NSString stringWithFormat:@"%@://%@",
+                                self.class.authorizationRedirectApplicationURLScheme, redirectPath] };
+}
+
+- (NSURL *)authenticationURLWithSubPath:(NSString *)subPath
+                             parameters:(NSDictionary *)parameters
+{
+    NSMutableDictionary *mutableParameters = parameters.mutableCopy;
+    mutableParameters[@"client_id"] = self.clientIdentifier;
+    parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
+    
+    NSURLComponents *components =
+    [NSURLComponents componentsWithURL:[NSURL URLWithString:[@"/oauth" stringByAppendingPathComponent:subPath]
+                                              relativeToURL:self.baseURL]
+               resolvingAgainstBaseURL:YES];
+    
+    components.percentEncodedQuery = parameters.nb_queryString;
+    
+    NSURL *url = components.URL;
+    if (self.currentlyNeedsPriorSignout) {
+        // NOTE: NSURLComponents was forming URLs that Safari would misinterpret by chopping off the path.
+        NSString *escapedURLString = [url.absoluteString nb_percentEscapedQueryStringWithEncoding:NSUTF8StringEncoding
+                                                                       charactersToLeaveUnescaped:nil];
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"/logout?url=%@", escapedURLString]
+                     relativeToURL:self.baseURL];
+        // NOTE: Safari seems to reject our relative URLs.
+        url = url.absoluteURL;
+    }
+    
+    return url;
+}
+
 - (NSURLSessionDataTask *)authenticateWithSubPath:(NSString *)subPath
                                        parameters:(NSDictionary *)parameters
                                 completionHandler:(NBAuthenticationCompletionHandler)completionHandler
@@ -220,28 +265,8 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         return nil;
     }
     // Perform authentication against service.
-    NSMutableDictionary *mutableParameters = [parameters mutableCopy];
-    mutableParameters[@"client_id"] = self.clientIdentifier;
-    parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
-    
-    NSURLComponents *components =
-    [NSURLComponents componentsWithURL:[NSURL URLWithString:[@"/oauth" stringByAppendingPathComponent:subPath]
-                                              relativeToURL:self.baseURL]
-               resolvingAgainstBaseURL:YES];
-    
-    components.percentEncodedQuery = [parameters nb_queryString];
-    
+    NSURL *url = [self authenticationURLWithSubPath:subPath parameters:parameters];
     NSURLSessionDataTask *task;
-    NSURL *url = components.URL;
-    if (self.currentlyNeedsPriorSignout) {
-        // NOTE: NSURLComponents was forming URLs that Safari would misinterpret by chopping off the path.
-        NSString *escapedURLString = [url.absoluteString nb_percentEscapedQueryStringWithEncoding:NSUTF8StringEncoding
-                                                                       charactersToLeaveUnescaped:nil];
-        url = [NSURL URLWithString:[NSString stringWithFormat:@"/logout?url=%@", escapedURLString]
-                     relativeToURL:self.baseURL];
-        // NOTE: Safari seems to reject our relative URLs.
-        url = url.absoluteURL;
-    }
     if (parameters[@"response_type"] == NBAuthenticationResponseTypeToken) {
         [self authenticateInWebBrowserWithURL:url completionHandler:completionHandler];
     } else if (parameters[@"grant_type"] == NBAuthenticationGrantTypePasswordCredential) {
@@ -253,24 +278,45 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 - (void)authenticateInWebBrowserWithURL:(NSURL *)url completionHandler:(NBAuthenticationCompletionHandler)completionHandler
 {
-    UIApplication *application = [UIApplication sharedApplication];
+    if (!self.isObservingApplicationState) {
+        NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+        [center addObserver:self
+                   selector:@selector(finishAuthenticatingInWebBrowserWithNotification:)
+                       name:NBAuthenticationRedirectNotification object:nil];
+        [center addObserver:self
+                   selector:@selector(finishAuthenticatingInWebBrowserWithNotification:)
+                       name:UIApplicationDidBecomeActiveNotification object:nil];
+        self.isObservingApplicationState = YES;
+    }
+    self.currentInBrowserAuthenticationCompletionHandler = completionHandler;
+    [self openURLWithWebBrowser:url];
+}
+
+- (void)openURLWithWebBrowser:(NSURL *)url
+{
+    NBLogInfo(@"Opening authentication URL in Safari: %@", url);
+    id<NBAuthenticatorPresentationDelegate> presentationDelegate = self.delegate;
+    if (!presentationDelegate) {
+        id<UIApplicationDelegate> appDelegate = [UIApplication sharedApplication].delegate;
+        if ([appDelegate conformsToProtocol:@protocol(NBAuthenticatorPresentationDelegate)]) {
+            presentationDelegate = (id)appDelegate;
+        }
+    }
     NSError *error;
-    if ([application canOpenURL:url]) {
-        self.currentInBrowserAuthenticationCompletionHandler = completionHandler;
+    if (presentationDelegate) {
         NBLogInfo(@"Opening authentication URL in Safari: %@", url);
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [application openURL:url];
-        });
+        self.webBrowser = [[SFSafariViewController alloc] initWithURL:url];
+        [presentationDelegate presentWebBrowserForAuthenticationWithRedirectPath:self.webBrowser];
     } else {
         error = [NSError
                  errorWithDomain:NBErrorDomain
                  code:NBAuthenticationErrorCodeWebBrowser
-                 userInfo:@{ NSLocalizedDescriptionKey: @"message.invalid-browser".nb_localizedString,
-                             NSLocalizedFailureReasonErrorKey: @"message.invalid-browser.auth-requires-browser".nb_localizedString,
-                             NSLocalizedRecoverySuggestionErrorKey: @"message.invalid-browser.check-safari-installed".nb_localizedString }];
+                 userInfo:@{ NSLocalizedDescriptionKey: @"message.invalid-browser-presenter".nb_localizedString,
+                             NSLocalizedFailureReasonErrorKey: @"message.invalid-browser-presenter.auth-requires-presenter".nb_localizedString,
+                             NSLocalizedRecoverySuggestionErrorKey: @"message.invalid-browser-presenter.conform-to-protocol".nb_localizedString }];
     }
     if (error) {
-        completionHandler(nil, error);
+        self.currentInBrowserAuthenticationCompletionHandler(nil, error);
     }
 }
 
@@ -278,7 +324,6 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 {
     // Check our state.
     if (!self.isAuthenticatingInWebBrowser) { return; }
-    NBAuthenticationCredential *credential;
     NSError *error;
     if (notification.name == UIApplicationDidBecomeActiveNotification) {
         // Handle user manually stopping authorization flow, ie. manually
@@ -300,14 +345,13 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                                  NSLocalizedRecoverySuggestionErrorKey: @"message.unknown-error-solution".nb_localizedString }];
         } else {
             // Handle normal completion of authorization flow.
-            credential = [[NBAuthenticationCredential alloc] initWithAccessToken:notification.userInfo[NBAuthenticationRedirectTokenKey]
-                                                                       tokenType:nil];
-            self.credential = credential;
+            [self setCredentialWithAccessToken:notification.userInfo[NBAuthenticationRedirectTokenKey] tokenType:nil];
         }
     }
     // Complete.
-    self.currentInBrowserAuthenticationCompletionHandler(credential, error);
+    self.currentInBrowserAuthenticationCompletionHandler(self.credential, error);
     self.currentInBrowserAuthenticationCompletionHandler = nil;
+    self.webBrowser = nil;
 }
 
 
@@ -370,8 +414,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                           NSLocalizedRecoverySuggestionErrorKey: @"message.unknown-error-solution".nb_localizedString }];
              NBLogError(@"%@", error);
          } else {
-             self.credential = [[NBAuthenticationCredential alloc] initWithAccessToken:jsonObject[@"access_token"]
-                                                                             tokenType:jsonObject[@"token_type"]];
+             [self setCredentialWithAccessToken:jsonObject[@"access_token"] tokenType:jsonObject[@"token_type"]];
          }
          // Completed. Successful if error is nil.
          if (completionHandler) {
@@ -448,6 +491,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     } else {
         didSave = YES;
     }
+    NBLogInfo(@"Saved keychain credential with identifier \"%@\"", identifier);
     return didSave;
 }
 

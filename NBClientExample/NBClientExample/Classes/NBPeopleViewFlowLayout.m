@@ -2,7 +2,7 @@
 //  NBPeopleViewFlowLayout.m
 //  NBClientExample
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import "NBPeopleViewFlowLayout.h"
@@ -84,7 +84,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
 {
-    NSMutableArray *allAttributes = [[super layoutAttributesForElementsInRect:rect] mutableCopy];
+    NSMutableArray *allAttributes = [super layoutAttributesForElementsInRect:rect].mutableCopy;
     for (Class aClass in self.decorationViewClasses) {
         if ((!self.shouldShowLoadMore && aClass == [NBPeopleLoadMoreDecorationLabel class]) ||
             (!self.shouldShowRefresh && aClass == [NBPeopleRefreshDecorationLabel class])) {
@@ -116,13 +116,13 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     UICollectionViewLayoutAttributes *attributes =
     [self.decorationViewAttributes filteredArrayUsingPredicate:
      [NSPredicate predicateWithBlock:^BOOL(UICollectionViewLayoutAttributes *attributes, NSDictionary *bindings) {
-        return [attributes.representedElementKind isEqual:decorationViewKind];
+        return [attributes.representedElementKind isEqualToString:decorationViewKind];
     }]].firstObject;
     // Customize position.
-    if ([decorationViewKind isEqual:NSStringFromClass([NBPeopleLoadMoreDecorationLabel class])]) {
+    if ([decorationViewKind isEqualToString:NSStringFromClass([NBPeopleLoadMoreDecorationLabel class])]) {
         center.y = MAX(scrollView.contentSize.height, self.visibleCollectionViewHeight) + baseCenterY;
         offsetOverflow = self.bottomOffsetOverflow;
-    } else if ([decorationViewKind isEqual:NSStringFromClass([NBPeopleRefreshDecorationLabel class])]) {
+    } else if ([decorationViewKind isEqualToString:NSStringFromClass([NBPeopleRefreshDecorationLabel class])]) {
         center.y = -baseCenterY;
         offsetOverflow = self.topOffsetOverflow;
     }

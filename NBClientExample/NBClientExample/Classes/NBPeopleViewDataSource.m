@@ -2,7 +2,7 @@
 //  NBPeopleViewDataSource.m
 //  NBClientExample
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import "NBPeopleViewDataSource.h"
@@ -111,7 +111,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 {
     if ([dataSource isKindOfClass:[NBPersonViewDataSource class]] && [keyPath isEqualToString:NSStringFromSelector(@selector(person))]) {
         NBPersonViewDataSource *personDataSource = dataSource;
-        NSMutableArray *people = [self.people mutableCopy];
+        NSMutableArray *people = self.people.mutableCopy;
         NSDictionary *person = personDataSource.person;
         if (person) {
             // Keep `people` synced with `mutablePersonDataSources`.

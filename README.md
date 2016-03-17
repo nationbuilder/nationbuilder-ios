@@ -27,8 +27,9 @@ new app install`. Install the `NBClientExample` app for your nation.
 
 4. Open the previously built `NB Sample` app in the iOS Simulator.
 
-5. In the app, click the signin button on the top left. Provide your nation's slug. In
-Safari, sign into your account on your nation and authorize the app.
+5. In the app, click the signin button on the top left. Provide your nation's
+slug. In an in-app Safari window (`SFSafariViewController`), sign into your
+account on your nation and authorize the app.
 
 Refer to the [documentation section][] and the [implementation checklist][] on
 how to use the SDK to build your app. Note that the sample app intends to be a
@@ -51,14 +52,16 @@ are listed in the [code sample][swift code sample].
 
 ### Authentication & Authorization:
 
-Via Safari, sign into your nation and authorize the application.
+Via an in-app Safari window (`SFSafariViewController`), sign into your nation
+and authorize the application.
 
 ![authentication gif][]
 
 ### Account Management & Persistence:
 
 Sign into multiple nations or different accounts on the same nation. Accounts
-get stored and persist across app uses.
+get stored and persist across app uses. Note the authentication happens via an
+in-app Safari window (`SFSafariViewController`).
 
 ![accounts gif][]
 
@@ -75,12 +78,12 @@ NBClient is available through [CocoaPods][]. To install it, simply add the
 following line to your Podfile:
 
 ```ruby
-pod 'NBClient', '~> 1.0.0'
+pod 'NBClient', '~> 1.3.0'
 ```
 
 ## Requirements
 
-The SDK requires iOS 7 and above. All included UI components (the accounts
+The SDK requires iOS 9 and above. All included UI components (the accounts
 component, the sample app) are universal, supporting both iPhone and iPad.
 
 ## Documentation
@@ -91,13 +94,9 @@ edits, the [guides][Github guides] are also available on Github.
 
 ## Testing
 
-```bash
-# Install dependencies:
-~> gem install -N xcpretty
-
-# Run unit tests against recorded production data:
-nationbuilder-ios> rake test
-```
+You can pass the arguments in `.travis.yml` to `xctool` (`brew install xctool`)
+to run manually. The simpler alternative is to run tests in Xcode for the
+`NBClient` scheme.
 
 ## License
 

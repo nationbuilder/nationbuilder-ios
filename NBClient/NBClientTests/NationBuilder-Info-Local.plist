@@ -3,22 +3,22 @@
 <plist version="1.0">
 <dict>
 	<key>Base URL Format</key>
-	<string>http://%@.nbuild.dev</string>
+	<string>http://%@.nbuild.dev:3000</string>
 	<key>Client ID</key>
-	<string>65b707456300f8d29123cdad3b43eddb53f0ba2f8f31f082dbd9971c2a0c4eec</string>
+	<string>f50b9bdc3c976e715c43cb0e91fa527df7e4cbd45c78174db558ba3d90c1876d</string>
 	<key>Client Secret</key>
-	<string>78624b2ff862c76047a298cd14d3834b696339f629a8e480fd217b808de2a6b8</string>
+	<string>71b58c3d3e958ac51eb8540bdd9118c80cc5b1c0fe7e17582d1fc5d72b7de9da</string>
 	<key>Nation Slug</key>
 	<string>abeforprez</string>
 	<key>Test Token</key>
-	<string>7e510bb4129451252102a9f3d160a35e68bba66b1193f11ef691aaff962c3060</string>
+	<string>271b568d52026348e73f413a73925fda590bb28e378dc1254c7827f7a28ceb91</string>
 	<key>Supporter ID</key>
-	<integer>578332</integer>
+	<integer>35</integer>
 	<key>User ID</key>
-	<integer>578327</integer>
+	<integer>3</integer>
 	<key>User Email Address</key>
-	<string>peng+test@nationbuilder.com</string>
+	<string>tester@nationbuilder.com</string>
 	<key>User Password</key>
-	<string>password</string>
+	<string>tester</string>
 </dict>
 </plist>

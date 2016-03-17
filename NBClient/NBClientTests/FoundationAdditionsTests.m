@@ -2,7 +2,7 @@
 //  FoundationAdditionsTests.m
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import <XCTest/XCTest.h>
@@ -55,6 +55,21 @@
                    @"Dictionary should not be subset of source dictionary.");
 }
 
+- (void)testCheckingIfDictionaryHasKeys
+{
+    NSDictionary *dictionary = @{ @"foo": @0, @"bar": @1 };
+    NSArray *keys = @[ @"foo", @"bar" ];
+    NSArray *subsetKeys = @[ @"foo" ];
+    NSArray *unorderedKeys = @[ @"bar", @"foo" ];
+    XCTAssertTrue([dictionary nb_hasKeys:keys], @"Dictionary should have keys.");
+    XCTAssertTrue([dictionary nb_hasKeys:subsetKeys], @"Dictionary should have keys.");
+    XCTAssertTrue([dictionary nb_hasKeys:unorderedKeys], @"Should test regardless of key order.");
+    NSArray *otherKeys = @[ @"baz" ];
+    NSArray *supersetKeys = @[ @"foo", @"bar", @"baz" ];
+    XCTAssertFalse([dictionary nb_hasKeys:otherKeys], @"Dictionary should not have keys.");
+    XCTAssertFalse([dictionary nb_hasKeys:supersetKeys], @"Should test for having all given keys.");
+}
+
 - (void)testCheckingIfDictionariesAreEquivalent
 {
     NSDictionary *source = @{ @"foo": @"foo", @"bar": @{ @"baz": @1 } };
@@ -66,7 +81,7 @@
 
     source = @{ @"foo": @"foo" };
     dictionary = @{ @"foo": @"foo" };
-    NSDictionary *queryParameters = [[dictionary nb_queryString] nb_queryStringParameters];
+    NSDictionary *queryParameters = dictionary.nb_queryString.nb_queryStringParameters;
     XCTAssertTrue([source nb_isEquivalentToDictionary:queryParameters],
                   @"Dictionaries should be equivalent even if strings aren't equal in terms of encoding.");
 }
@@ -81,16 +96,23 @@
                    @"Query string should be properly formed.");
 }
 
+- (void)testConvertingObjectToNilIfNull
+{
+    XCTAssertNil([[NSNull null] nb_nilIfNull], @"New object from NSNull should be nil.");
+    XCTAssertNotNil([[NSObject alloc] init], @"New object from anything else non-nil should not be nil.");
+}
+
 - (void)testPercentEscapingQueryStringPairValue
 {
     NSString *valueString = @"[ !\"#$%&'()*+,/]";
     NSString *escapedString = [valueString nb_percentEscapedQueryStringWithEncoding:NSUTF8StringEncoding
                                                          charactersToLeaveUnescaped:@"[]"];
-    XCTAssertTrue([escapedString isEqualToString:@"[%20%21%22%23%24%25%26%27%28%29%2A%2B%2C%2F]"],
+    XCTAssertTrue([escapedString isEqualToString:@"%5B%20%21%22%23%24%25%26%27%28%29%2A%2B%2C%2F%5D"],
                   @"Query string value should be properly formed.");
+
     NSString *escapedEscapedString = [escapedString nb_percentEscapedQueryStringWithEncoding:NSUTF8StringEncoding
                                                                   charactersToLeaveUnescaped:@"[]"];
-    XCTAssertTrue([escapedEscapedString isEqualToString:@"[%2520%2521%2522%2523%2524%2525%2526%2527%2528%2529%252A%252B%252C%252F]"],
+    XCTAssertTrue([escapedEscapedString isEqualToString:@"%255B%2520%2521%2522%2523%2524%2525%2526%2527%2528%2529%252A%252B%252C%252F%255D"],
                   @"Query string value should be properly formed.");
 }
 
@@ -106,7 +128,7 @@
 - (void)testBuildingDictionaryFromQueryString
 {
     NSString *string = @"age=1&email=foo@bar.com&name=Foo%20Bar";
-    NSDictionary *parameters = [string nb_queryStringParameters];
+    NSDictionary *parameters = string.nb_queryStringParameters;
     NSDictionary *expectedParameters = @{ @"name": @"Foo Bar", @"age": @1, @"email": @"foo@bar.com" };
     XCTAssertEqualObjects(parameters, expectedParameters,
                           @"Query parameters should be properly formed");

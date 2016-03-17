@@ -2,7 +2,7 @@
 //  UIKitAdditions.m
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import "UIKitAdditions.h"
@@ -13,17 +13,25 @@
 #import "NBAccountButton.h"
 #import "NBDefines.h"
 
-@implementation UIAlertView (NBAdditions)
+@implementation UIAlertController (NBAdditions)
 
-+ (UIAlertView *)nb_genericAlertViewWithError:(NSError *)error
++ (UIAlertController *)nb_genericAlertWithError:(NSError *)error
+                               defaultDismissal:(BOOL)defaultDismissal
 {
     error = error ?: [NSError nb_genericError];
     NSDictionary *userInfo = error.userInfo;
-    return [[UIAlertView alloc] initWithTitle:userInfo[NSLocalizedDescriptionKey]
-                                      message:[userInfo[NSLocalizedFailureReasonErrorKey]
-                                               stringByAppendingFormat:@" %@", (userInfo[NSLocalizedRecoverySuggestionErrorKey] ?: @"")]
-                                     delegate:self cancelButtonTitle:nil
-                            otherButtonTitles:@"label.ok".nb_localizedString, nil];
+    UIAlertController *alert =
+    [UIAlertController alertControllerWithTitle:userInfo[NSLocalizedDescriptionKey]
+                                        message:[userInfo[NSLocalizedFailureReasonErrorKey]
+                                                 stringByAppendingFormat:@" %@", (userInfo[NSLocalizedRecoverySuggestionErrorKey] ?: @"")]
+                                 preferredStyle:UIAlertControllerStyleAlert];
+    if (defaultDismissal) {
+        [alert addAction:
+         [UIAlertAction actionWithTitle:@"label.ok".nb_localizedString style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [alert dismissViewControllerAnimated:YES completion:nil];
+        }]];
+    }
+    return alert;
 }
 
 @end

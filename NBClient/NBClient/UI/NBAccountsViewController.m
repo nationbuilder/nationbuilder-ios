@@ -2,7 +2,7 @@
 //  NBAccountsViewController.m
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import "NBAccountsViewController.h"
@@ -23,7 +23,7 @@ static NBLogLevel LogLevel = NBLogLevelDebug;
 static NBLogLevel LogLevel = NBLogLevelWarning;
 #endif
 
-@interface NBAccountsViewController () <UIScrollViewDelegate, UIAlertViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
+@interface NBAccountsViewController () <UIScrollViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
 
 @property (nonatomic, weak, readwrite) IBOutlet UIImageView *avatarImageView;
 @property (nonatomic, weak, readwrite) IBOutlet UILabel *nameLabel;
@@ -59,10 +59,9 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 @property (nonatomic) UIBarButtonItem *closeButtonItem;
 @property (nonatomic) UIButton *closeIconButton;
 
-@property (nonatomic) UIAlertView *nationSlugPromptView;
-@property (nonatomic) UIAlertView *nationSlugErrorView;
+@property (nonatomic) UIAlertController *nationSlugPromptAlert;
+@property (nonatomic) UIAlertController *nationSlugErrorAlert;
 
-@property (nonatomic) UIPopoverController *containingPopoverController;
 @property (nonatomic, weak) UIViewController *customPresentingViewController;
 
 @property (nonatomic, readonly) NSUInteger selectedIndex;
@@ -124,11 +123,6 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     return self;
 }
 
-- (void)dealloc
-{
-    self.containingPopoverController = nil;
-}
-
 #pragma mark - NBLogging
 
 + (void)updateLoggingToLevel:(NBLogLevel)logLevel
@@ -177,55 +171,21 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    if (self.nationSlugPromptView.isVisible) {
-        [self.nationSlugPromptView dismissWithClickedButtonIndex:self.nationSlugPromptView.cancelButtonIndex
-                                                        animated:animated];
+    if (self.presentedViewController == self.nationSlugPromptAlert) {
+        [self.nationSlugPromptAlert dismissViewControllerAnimated:YES completion:nil];
     }
-}
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    // Re-showing an alert after it adjusts for auto-rotation causes it to have layout problems. So reset it instead.
-    [self.nationSlugPromptView dismissWithClickedButtonIndex:self.nationSlugPromptView.cancelButtonIndex animated:NO];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        self.nationSlugPromptView = nil;
-    });
 }
 
 - (void)dismissViewControllerAnimated:(BOOL)flag completion:(void (^)(void))completion
 {
-    if (self.isPresentedInPopover) {
-        [self.containingPopoverController dismissPopoverAnimated:YES];
-    } else if (self.presentingViewController &&
-               [self.presentingViewController isKindOfClass:[UINavigationController class]] &&
-               [(id)self.presentingViewController visibleViewController] == self) {
+    if (self.presentingViewController &&
+        [self.presentingViewController isKindOfClass:[UINavigationController class]] &&
+        [(id)self.presentingViewController visibleViewController] == self)
+    {
         [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+
     } else {
         [super dismissViewControllerAnimated:flag completion:completion];
-    }
-}
-
-#pragma mark - UIAlertViewDelegate
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (alertView == self.nationSlugPromptView && buttonIndex != alertView.cancelButtonIndex) {
-        __block NSError *error;
-        NSString *nationSlug = [alertView textFieldAtIndex:0].text;
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            BOOL didAdd = [self.dataSource addAccountWithNationSlug:nationSlug error:&error];
-            if (!didAdd) {
-                // Work around the fact automatic alert dismissal can't be prevented.
-                self.nationSlugErrorView = [UIAlertView nb_genericAlertViewWithError:error];
-                self.nationSlugErrorView.delegate = self;
-                [self.nationSlugErrorView show];
-            }
-        });
-    } else if (alertView == self.nationSlugErrorView) {
-        [self promptForNationSlug];
-    } else if (buttonIndex != alertView.cancelButtonIndex){
-        NBLogWarning(@"Unhandled case.");
     }
 }
 
@@ -241,7 +201,24 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 }
 
 - (IBAction)signIn:(id)sender {
-    [self promptForNationSlug];
+    if (sender == self.addAccountButton) {
+        [self promptForNationSlug];
+
+    } else if (sender == self.nationSlugPromptAlert) {
+        __block NSError *error;
+        NSString *nationSlug = self.nationSlugPromptAlert.textFields[0].text;
+        BOOL didAdd = [self.dataSource addAccountWithNationSlug:nationSlug error:&error];
+        if (didAdd) { return; }
+
+        self.nationSlugErrorAlert = [UIAlertController nb_genericAlertWithError:error defaultDismissal:NO];
+        __weak __typeof(self)weakSelf = self;
+        [self.nationSlugErrorAlert addAction:
+         [UIAlertAction actionWithTitle:@"label.retry".nb_localizedString style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [weakSelf.nationSlugErrorAlert dismissViewControllerAnimated:YES completion:nil];
+            [self promptForNationSlug];
+        }]];
+        [self presentViewController:self.nationSlugErrorAlert animated:YES completion:nil];
+    }
 }
 
 - (IBAction)signOut:(id)sender {
@@ -251,7 +228,8 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
             [self didSignOutOfLastAccount];
         }
     } else {
-        [[UIAlertView nb_genericAlertViewWithError:error] show];
+        [self presentViewController:[UIAlertController nb_genericAlertWithError:error defaultDismissal:YES]
+                           animated:YES completion:nil];
     }
 }
 
@@ -264,13 +242,13 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         return;
     }
     if (object == self.dataSource) {
-        if ([keyPath isEqual:IsSignedInKeyPath]) {
+        if ([keyPath isEqualToString:IsSignedInKeyPath]) {
             [self updateAccountViewAnimated:YES withCompletionHandler:^{
                 [self updateActionButtonsAnimated:YES withCompletionHandler:^{
                     [self updateAccountsPickerAnimated:YES withCompletionHandler:nil];
                 }];
             }];
-        } else if ([keyPath isEqual:SelectedAccountKeyPath]) {
+        } else if ([keyPath isEqualToString:SelectedAccountKeyPath]) {
             [self updateAccountViewAnimated:YES withCompletionHandler:^{
                 [self updateAccountsPickerAnimated:YES withCompletionHandler:nil];
             }];
@@ -336,7 +314,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 - (void)promptForNationSlug
 {
-    UITextField *textField = [self.nationSlugPromptView textFieldAtIndex:0];
+    UITextField *textField = self.nationSlugPromptAlert.textFields[0];
     // NOTE: The alignment bug in iOS 7 is framework-level and fixed in 8.
     textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     if (self.dataSource.selectedAccount) {
@@ -344,28 +322,26 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     } else {
         textField.text = self.dataSource.previousAccountNationSlug;
     }
-    [self.nationSlugPromptView show];
+    [self presentViewController:self.nationSlugPromptAlert animated:YES completion:nil];
 }
 
 - (void)showWithAccountButton:(NBAccountButton *)accountButton
      presentingViewController:(UIViewController *)presentingViewController
 {
-    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
-        self.presentedInPopover = YES;
-        // NOTE: Popover controllers need to be retained.
-        if (accountButton.barButtonItem) {
-            [self.containingPopoverController presentPopoverFromBarButtonItem:accountButton.barButtonItem
-                                                     permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        } else {
-            [self.containingPopoverController presentPopoverFromRect:accountButton.frame inView:accountButton
-                                            permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        }
+    self.presentedInPopover = self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular;
+
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:self];
+    // Avoid black background beneath translucent navigation bar.
+    navigationController.view.backgroundColor = presentingViewController.view.backgroundColor;
+
+    navigationController.modalPresentationStyle = UIModalPresentationPopover;
+    if (accountButton.barButtonItem) {
+        navigationController.popoverPresentationController.barButtonItem = accountButton.barButtonItem;
     } else {
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:self];
-        [presentingViewController presentViewController:navigationController animated:YES completion:nil];
-        // Avoid black background beneath translucent navigation bar.
-        navigationController.view.backgroundColor = presentingViewController.view.backgroundColor;
+        navigationController.popoverPresentationController.sourceRect = accountButton.frame;
     }
+
+    [presentingViewController presentViewController:navigationController animated:YES completion:nil];
     // Save for dismissal.
     self.customPresentingViewController = presentingViewController;
 }
@@ -456,29 +432,29 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     return _closeIconButton;
 }
 
-- (UIAlertView *)nationSlugPromptView
+- (UIAlertController *)nationSlugPromptAlert
 {
-    if (_nationSlugPromptView) {
-        return _nationSlugPromptView;
+    if (_nationSlugPromptAlert) {
+        return _nationSlugPromptAlert;
     }
-    self.nationSlugPromptView =
-    [[UIAlertView alloc] initWithTitle:@"title.provide-nation-slug".nb_localizedString
-                               message:@"message.nation-slug-hint".nb_localizedString
-                              delegate:self
-                     cancelButtonTitle:@"label.cancel".nb_localizedString
-                     otherButtonTitles:@"label.submit".nb_localizedString, nil];
-    self.nationSlugPromptView.alertViewStyle = UIAlertViewStylePlainTextInput;
-    return _nationSlugPromptView;
-}
+    self.nationSlugPromptAlert =
+    [UIAlertController alertControllerWithTitle:@"title.provide-nation-slug".nb_localizedString
+                                        message:@"message.nation-slug-hint".nb_localizedString
+                                 preferredStyle:UIAlertControllerStyleAlert];
 
-- (UIPopoverController *)containingPopoverController
-{
-    if (_containingPopoverController) {
-        return _containingPopoverController;
-    }
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:self];
-    self.containingPopoverController = [[UIPopoverController alloc] initWithContentViewController:navigationController];
-    return _containingPopoverController;
+    __weak __typeof(self)weakSelf = self;
+    [self.nationSlugPromptAlert addAction:
+     [UIAlertAction actionWithTitle:@"label.cancel".nb_localizedString style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        [[weakSelf nationSlugPromptAlert] dismissViewControllerAnimated:YES completion:nil];
+    }]];
+    [self.nationSlugPromptAlert addAction:
+     [UIAlertAction actionWithTitle:@"label.submit".nb_localizedString style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [weakSelf signIn:[weakSelf nationSlugPromptAlert]];
+    }]];
+    self.nationSlugPromptAlert.preferredAction = self.nationSlugPromptAlert.actions.lastObject;
+    
+    [self.nationSlugPromptAlert addTextFieldWithConfigurationHandler:nil];
+    return _nationSlugPromptAlert;
 }
 
 - (NSUInteger)selectedIndex
@@ -596,7 +572,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         // Update selected row.
         if (!self.isSelectingAccount && self.dataSource.selectedAccount) {
             // Only update the picker if it did not trigger the account selection.
-            NSUInteger selectedIndex = [self selectedIndex];
+            NSUInteger selectedIndex = self.selectedIndex;
             if (selectedIndex == NSNotFound) {
                 NBLogError(@"Invalid selected account index. Aborting row selection.");
             } else {

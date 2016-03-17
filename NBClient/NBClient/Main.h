@@ -2,7 +2,7 @@
 //  Main.h
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #ifndef _NBCLIENT_
@@ -14,7 +14,11 @@
 
     #import "NBAuthenticator.h"
     #import "NBClient.h"
+    #import "NBClient+Contacts.h"
+    #import "NBClient+Donations.h"
+    #import "NBClient+Lists.h"
     #import "NBClient+People.h"
+    #import "NBClient+Tags.h"
     #import "NBDefines.h"
     #import "FoundationAdditions.h"
     #import "NBPaginationInfo.h"

@@ -2,7 +2,7 @@
 //  NBPaginationInfo.m
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import "NBPaginationInfo.h"
@@ -64,9 +64,14 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
             self.currentPageNumber -= 1;
             break;
         default:
-            NBLogWarning(@"Unsupported pagination direction, %lu", self.currentDirection);
+            NBLogWarning(@"Unsupported pagination direction, %lu", (unsigned long)self.currentDirection);
             break;
     }
+}
+
++ (BOOL)dictionaryContainsPaginationInfo:(NSDictionary *)dictionary
+{
+    return dictionary[NBClientPaginationNextLinkKey] || dictionary[NBClientNumberOfTotalPagesKey];
 }
 
 #pragma mark Accessors
@@ -80,7 +85,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 - (BOOL)isLastPage
 {
     return (self.isLegacy ?
-            self.currentPageNumber < self.numberOfTotalPages :
+            self.currentPageNumber == self.numberOfTotalPages :
             !self.nextPageURLString);
 }
 
@@ -104,21 +109,26 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 - (NSDictionary *)queryParameters
 {
     NSDictionary *parameters;
-    NSMutableDictionary *mutableParameters = [[self dictionary] mutableCopy];
+    NSMutableDictionary *mutableParameters = self.dictionary.mutableCopy;
     if (self.isLegacy) {
         [mutableParameters removeObjectsForKeys:@[ NBClientNumberOfTotalPagesKey, NBClientNumberOfTotalItemsKey ]];
         parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
     } else {
-        NSDictionary *dictionary = [self dictionary];
+        NSDictionary *dictionary = self.dictionary;
         NSURLComponents *components;
-        if (self.currentDirection == NBPaginationDirectionNext && dictionary[NBClientPaginationNextLinkKey]) {
+        if (self.currentDirection == NBPaginationDirectionNext
+            && [dictionary[NBClientPaginationNextLinkKey] nb_nilIfNull])
+        {
             components = [NSURLComponents componentsWithString:dictionary[NBClientPaginationNextLinkKey]];
-        } else if (self.currentDirection == NBPaginationDirectionPrevious && dictionary[NBClientPaginationPreviousLinkKey]) {
+
+        } else if (self.currentDirection == NBPaginationDirectionPrevious
+                   && [dictionary[NBClientPaginationPreviousLinkKey] nb_nilIfNull])
+        {
             components = [NSURLComponents componentsWithString:dictionary[NBClientPaginationPreviousLinkKey]];
         }
         // Get parameters from generated URL strings, or get first page with initial parameters.
         if (components) {
-            parameters = [components.percentEncodedQuery nb_queryStringParameters];
+            parameters = components.percentEncodedQuery.nb_queryStringParameters;
         } else {
             [mutableParameters removeObjectsForKeys:@[ NBClientPaginationNextLinkKey, NBClientPaginationPreviousLinkKey ]];
             parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
@@ -198,15 +208,15 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     } else {
         if (dictionary[NBClientPaginationLimitKey]) {
             self.numberOfItemsPerPage = [dictionary[NBClientPaginationLimitKey] unsignedIntegerValue];
-        } else if (dictionary[NBClientPaginationNextLinkKey] && ![dictionary[NBClientPaginationNextLinkKey] isEqual:[NSNull null]]) {
+        } else if ([dictionary[NBClientPaginationNextLinkKey] nb_nilIfNull]) {
             NSURLComponents *components = [NSURLComponents componentsWithString:dictionary[NBClientPaginationNextLinkKey]];
-            NSDictionary *queryParameters = [components.percentEncodedQuery nb_queryStringParameters];
+            NSDictionary *queryParameters = components.percentEncodedQuery.nb_queryStringParameters;
             if (queryParameters[@"limit"]) {
                 self.numberOfItemsPerPage = (NSUInteger)[queryParameters[@"limit"] integerValue];
             }
         }
-        self.nextPageURLString = dictionary[NBClientPaginationNextLinkKey];
-        self.previousPageURLString = dictionary[NBClientPaginationPreviousLinkKey];
+        self.nextPageURLString = [dictionary[NBClientPaginationNextLinkKey] nb_nilIfNull];
+        self.previousPageURLString = [dictionary[NBClientPaginationPreviousLinkKey] nb_nilIfNull];
     }
 }
 

@@ -2,7 +2,7 @@
 //  NBPersonViewController.m
 //  NBClientExample
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import "NBPersonViewController.h"
@@ -31,7 +31,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 @interface NBPersonViewController ()
 
-<UITextFieldDelegate, UITextViewDelegate, UIAlertViewDelegate>
+<UITextFieldDelegate, UITextViewDelegate>
 
 @property (nonatomic, copy, readwrite) NSDictionary *nibNames;
 
@@ -66,7 +66,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 @property (nonatomic) UIBarButtonItem *closeButtonItem;
 
 @property (nonatomic) UIBarButtonItem *deleteButtonItem;
-@property (nonatomic) UIAlertView *deleteConfirmationView;
+@property (nonatomic) UIAlertController *deleteConfirmationAlert;
 
 - (void)reloadData;
 - (void)saveData;
@@ -117,7 +117,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     self = [self initWithNibName:self.nibNames[NBNibNameViewKey] bundle:nibBundleOrNil];
     self.mode = NBPersonViewControllerModeViewAndEdit;
     // Boilerplate.
-    NSMutableDictionary *nibNames = [DefaultNibNames mutableCopy];
+    NSMutableDictionary *nibNames = DefaultNibNames.mutableCopy;
     [nibNames addEntriesFromDictionary:nibNamesOrNil];
     self.nibNames = nibNames;
     // END: Boilerplate.
@@ -259,7 +259,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     }
     NBPersonViewDataSource *dataSource = self.dataSource;
     // Update when our data source changes.
-    if ([keyPath isEqual:PersonKeyPath]) {
+    if ([keyPath isEqualToString:PersonKeyPath]) {
         if (self.isBusy) { // If we were busy refreshing data, now we're not.
             self.busy = NO;
         }
@@ -275,7 +275,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
                 [self reloadData];
             }
         }
-    } else if ([keyPath isEqual:NBViewDataSourceErrorKeyPath] && self.dataSource.error) {
+    } else if ([keyPath isEqualToString:NBViewDataSourceErrorKeyPath] && self.dataSource.error) {
         if (self.isBusy) { // If we were busy refreshing data, now we're not.
             self.busy = NO;
         }
@@ -324,15 +324,6 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         shouldChange = NO;
     }
     return shouldChange;
-}
-
-#pragma mark - UIAlertViewDelegate
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (alertView == self.deleteConfirmationView && buttonIndex != alertView.cancelButtonIndex) {
-        [self confirmDeleting:alertView];
-    }
 }
 
 #pragma mark - Private
@@ -395,7 +386,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         [self setValue:[data valueForKeyPath:dataKeyPath] forKeyPath:fieldKeyPath];
     }];
     // Invalidate any views.
-    self.deleteConfirmationView = nil;
+    self.deleteConfirmationAlert = nil;
 }
 
 - (void)saveData
@@ -553,7 +544,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 }
 - (void)tearDownDeleting
 {
-    [self.deleteConfirmationView dismissWithClickedButtonIndex:NSNotFound animated:NO];
+    [self.deleteConfirmationAlert dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (UIBarButtonItem *)deleteButtonItem
@@ -566,29 +557,39 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     return _deleteButtonItem;
 }
 
-- (UIAlertView *)deleteConfirmationView
+- (UIAlertController *)deleteConfirmationAlert
 {
-    if (_deleteConfirmationView) {
-        return _deleteConfirmationView;
+    if (_deleteConfirmationAlert) {
+        return _deleteConfirmationAlert;
     }
     NBPersonViewDataSource *dataSource = self.dataSource;
-    self.deleteConfirmationView = [[UIAlertView alloc]
-                                   initWithTitle:NSLocalizedString(@"person.confirm-delete.title", nil)
-                                   message:[NSString localizedStringWithFormat:
-                                            NSLocalizedString(@"person.confirm-delete.message.format", nil),
-                                            dataSource.person[@"full_name"]]
-                                   delegate:self
-                                   cancelButtonTitle:NSLocalizedString(@"label.cancel", nil)
-                                   otherButtonTitles:NSLocalizedString(@"label.confirm", nil), nil];
-    return _deleteConfirmationView;
+    self.deleteConfirmationAlert =
+    [UIAlertController alertControllerWithTitle:NSLocalizedString(@"person.confirm-delete.title", nil)
+                                        message:[NSString localizedStringWithFormat:NSLocalizedString(@"person.confirm-delete.message.format", nil),
+                                                 dataSource.person[@"full_name"]]
+                                 preferredStyle:UIAlertControllerStyleAlert];
+
+    __weak __typeof(self)weakSelf = self;
+    [self.deleteConfirmationAlert addAction:
+     [UIAlertAction actionWithTitle:NSLocalizedString(@"label.cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        [weakSelf.deleteConfirmationAlert dismissViewControllerAnimated:YES completion:nil];
+    }]];
+    [self.deleteConfirmationAlert addAction:
+     [UIAlertAction actionWithTitle:NSLocalizedString(@"label.confirm", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+        [weakSelf confirmDeleting:weakSelf.deleteConfirmationAlert];
+    }]];
+    self.deleteConfirmationAlert.preferredAction = self.deleteConfirmationAlert.actions.lastObject;
+
+    return _deleteConfirmationAlert;
 }
 
 - (IBAction)confirmDeleting:(id)sender
 {
     if (sender == self.deleteButtonItem) {
         // Start.
-        [self.deleteConfirmationView show];
-    } else if (sender == self.deleteConfirmationView) {
+        [self presentViewController:self.deleteConfirmationAlert animated:YES completion:nil];
+
+    } else if (sender == self.deleteConfirmationAlert) {
         // Continue.
         [self deleteData];
     }
@@ -599,11 +600,14 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 - (IBAction)presentErrorView:(id)sender
 {
     NSDictionary *error = self.dataSource.error.userInfo;
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:error[NBUIErrorTitleKey]
-                                                        message:error[NBUIErrorMessageKey]
-                                                       delegate:self cancelButtonTitle:nil
-                                              otherButtonTitles:NSLocalizedString(@"label.ok", nil), nil];
-    [alertView show];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:error[NBUIErrorTitleKey]
+                                                                   message:error[NBUIErrorMessageKey]
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:
+     [UIAlertAction actionWithTitle:NSLocalizedString(@"label.ok", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [alert dismissViewControllerAnimated:YES completion:nil];
+    }]];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (IBAction)dismiss:(id)sender

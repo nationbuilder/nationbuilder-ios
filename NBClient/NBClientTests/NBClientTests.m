@@ -2,7 +2,7 @@
 //  NBClientTests.m
 //  NBClientTests
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import "NBTestCase.h"
@@ -10,8 +10,9 @@
 #import "FoundationAdditions.h"
 
 #import "NBAuthenticator.h"
-#import "NBClient.h"
+#import "NBClient_Internal.h"
 #import "NBClient+People.h"
+#import "NBPaginationInfo.h"
 
 @interface NBClientTests : NBTestCase
 
@@ -77,22 +78,55 @@
                     @"Client should have default session cache.");
 }
 
-- (void)testAsyncAuthenticatedInitialization
+- (void)testDelegatingDefaultURLSessionToClientDelegate
 {
-    if (self.shouldOnlyUseTestToken) {
-        NBLog(@"SKIPPING");
-        return;
-    }
-    return; // FIXME
+    // Given: no custom URL session.
+    __block NBClient *client; dispatch_block_t initClient = ^{
+        client = [[NBClient alloc] initWithNationSlug:self.nationSlug apiKey:self.testToken customBaseURL:self.baseURL
+                                     customURLSession:nil customURLSessionConfiguration:nil];
+    };
+    // When: no client delegate.
+    initClient();
+    XCTAssertEqual(client.urlSession.delegate, client,
+                   @"Client should be default session's delegate.");
+
+    // When: assigning delegate immediately after initialization.
+    initClient();
+    client.delegate = OCMProtocolMock(@protocol(NBClientDelegate));
+    XCTAssertEqual(client.urlSession.delegate, client.delegate,
+                   @"Client should delegate default session to delegate.");
+}
+
+- (void)testTogglingIncludingKeyAsHeader
+{
+    if (self.shouldUseHTTPStubbing) { return NBLog(@"SKIPPING"); }
+    [self setUpAsync];
+    NBClient *client = [self baseClientWithTestToken];
+    void (^testRequest)(dispatch_block_t) = ^(dispatch_block_t completionHandler) {
+        [client fetchPersonForClientUserWithCompletionHandler:^(NSDictionary *item, NSError *error) {
+            [self assertServiceError:error];
+            completionHandler();
+        }];
+    };
+    client.shouldIncludeKeyAsHeader = YES;
+    testRequest(^{
+        client.shouldIncludeKeyAsHeader = NO;
+        testRequest(^{ [self completeAsync]; });
+    });
+    [self tearDownAsync];
+}
+
+// FIXME: Password grant type no longer supported.
+- (void)x_testAsyncAuthenticatedInitialization
+{
+    if (self.shouldOnlyUseTestToken) { return NBLog(@"SKIPPING"); }
     [self setUpAsync];
     // Test credential persistence across initializations.
     void (^testCredentialPersistence)(void) = ^{
         NBClient *otherClient = [self baseClientWithAuthenticator];
         NSURLSessionDataTask *task =
         [otherClient.authenticator
-         authenticateWithUserName:self.userEmailAddress
-         password:self.userPassword
-         clientSecret:self.clientSecret
+         authenticateWithUserName:self.userEmailAddress password:self.userPassword clientSecret:self.clientSecret
          completionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
              [self assertServiceError:error];
              [self assertCredential:credential];
@@ -106,11 +140,8 @@
                     @"Client should have authenticator.");
     NSString *credentialIdentifier = client.authenticator.credentialIdentifier;
     [NBAuthenticationCredential deleteCredentialWithIdentifier:credentialIdentifier];
-    NSURLSessionDataTask *task =
     [client.authenticator
-     authenticateWithUserName:self.userEmailAddress
-     password:self.userPassword
-     clientSecret:self.clientSecret
+     authenticateWithUserName:self.userEmailAddress password:self.userPassword clientSecret:self.clientSecret
      completionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
          [self assertServiceError:error];
          [self assertCredential:credential];
@@ -118,23 +149,81 @@
          testCredentialPersistence();
          [self completeAsync];
      }];
-    [self assertSessionDataTask:task];
     [self tearDownAsync];
 }
 
+#pragma mark - Mutation
+
+#pragma mark Helpers
+
+- (NSURL *)getSomeRequestURLForClient:(NBClient *)client {
+    if (self.shouldUseHTTPStubbing) {
+        // NOTE: There won't be a file, but request will be cancelled.
+        [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"people/me" pathVariables:nil queryParameters:nil variant:nil
+                                          client:client];
+    }
+    NBClientResourceItemCompletionHandler completion = ^(NSDictionary *item, NSError *error) {};
+    NSURLSessionDataTask *task = [client fetchPersonForClientUserWithCompletionHandler:completion];
+    [task cancel];
+    return task.currentRequest.URL;
+}
+
+#pragma mark Tests
+
 - (void)testConfiguringAPIVersion
 {
-    if (self.shouldUseHTTPStubbing) {
-        NBLog(@"SKIPPING");
-        return;
-    }
     NBClient *client = self.baseClientWithTestToken;
-    client.apiVersion = [NBClientDefaultAPIVersion stringByAppendingString:@"0"];
-    NSURLSessionDataTask *task = [client fetchPeopleWithPaginationInfo:nil completionHandler:nil];
-    [task cancel];
-    NSString *path = [[NSURLComponents componentsWithURL:task.currentRequest.URL resolvingAgainstBaseURL:YES] path];
+    client.apiVersion = [client.apiVersion stringByAppendingString:@"0"];
+    NSString *path = [self getSomeRequestURLForClient:client].path;
     XCTAssertTrue([path rangeOfString:client.apiVersion].location != NSNotFound,
                   @"Version string in all future request URLs should have been updated.");
+}
+
+- (void)testConfigurationAPIKey
+{
+    NBClient *client = self.baseClientWithTestToken;
+    client.apiKey = [client.apiKey stringByAppendingString:@"0"];
+    NSString *query = [self getSomeRequestURLForClient:client].query;
+    XCTAssertTrue([query rangeOfString:client.apiKey].location != NSNotFound,
+                  @"Key in all future request URLs should have been updated.");
+}
+
+- (void)testTaskHandlingOfPaginationInfo
+{
+    if (self.shouldUseHTTPStubbing) { return NBLog(@"SKIPPING"); }
+    [self setUpAsync];
+    [self setUpSharedClient];
+    __block NSUInteger expectationCount = 2; dispatch_block_t complete = ^{
+        expectationCount -= 1;
+        if (expectationCount == 0) { [self completeAsync]; }
+    };
+
+    [self.client
+     fetchByResourceSubPath:@"/people" withParameters:nil customResultsKey:nil paginationInfo:nil
+     completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
+         [self assertServiceError:error];
+         [self assertPeopleArray:items];
+         XCTAssertTrue(paginationInfo.numberOfItemsPerPage > 0,
+                       @"Pagination info should exist.");
+         complete();
+     }];
+    
+    NSDictionary *paginationParameters = @{ NBClientPaginationLimitKey: @5, NBClientPaginationTokenOptInKey: @1 };
+    NBPaginationInfo *requestPaginationInfo = [[NBPaginationInfo alloc] initWithDictionary:paginationParameters legacy:NO];
+    NSUInteger oldCurrentPageNumber = requestPaginationInfo.currentPageNumber;
+    [self.client
+     fetchByResourceSubPath:@"/people" withParameters:nil customResultsKey:nil paginationInfo:requestPaginationInfo
+     completionHandler:^(NSArray *items, NBPaginationInfo *paginationInfo, NSError *error) {
+         [self assertServiceError:error];
+         [self assertPeopleArray:items];
+         XCTAssertEqual(paginationInfo.numberOfItemsPerPage, [paginationParameters[NBClientPaginationLimitKey] unsignedIntegerValue],
+                        @"Pagination info should be persisted.");
+         XCTAssertEqual(paginationInfo.currentPageNumber, oldCurrentPageNumber + 1,
+                        @"Pagination info should be updated.");
+         complete();
+     }];
+
+    [self tearDownAsync];
 }
 
 #pragma mark - Delegation
@@ -269,7 +358,7 @@
     NBClient *client = [self baseClientWithTestToken];
     client.delegate = OCMProtocolMock(@protocol(NBClientDelegate));
     [OCMStub([client.delegate client:client shouldAutomaticallyStartDataTask:OCMOCK_ANY]) andReturnValue:@NO];
-    NSURLSessionDataTask *task = [client fetchPersonForClientUserWithCompletionHandler:nil];
+    NSURLSessionDataTask *task = [client fetchPersonForClientUserWithCompletionHandler:^(NSDictionary *item, NSError *error) {}];
     XCTAssertNotNil(task, @"The task should be returned.");
     XCTAssertTrue(task.state == NSURLSessionTaskStateSuspended, @"The task should not have been automatically started.");
 }

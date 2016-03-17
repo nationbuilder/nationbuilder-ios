@@ -2,7 +2,7 @@
 //  FoundationAdditions.h
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import <Foundation/Foundation.h>
@@ -18,13 +18,24 @@
 
 - (BOOL)nb_containsDictionary:(nonnull NSDictionary *)dictionary;
 
+- (BOOL)nb_hasKeys:(nonnull NSArray *)keys;
+
 - (BOOL)nb_isEquivalentToDictionary:(nonnull NSDictionary *)dictionary;
 
 - (nonnull NSString *)nb_queryString;
 
+// Deprecated, will be removed in the next major release.
 - (nonnull NSString *)nb_queryStringWithEncoding:(NSStringEncoding)stringEncoding
                      skipPercentEncodingPairKeys:(nullable NSSet *)skipPairKeys
                       charactersToLeaveUnescaped:(nullable NSString *)charactersToLeaveUnescaped;
+
+- (nonnull NSString *)nb_queryStringWithSkippedPairKeys:(nullable NSSet *)skippedPairKeys;
+
+@end
+
+@interface NSObject (NBAdditions)
+
+- (nullable id)nb_nilIfNull;
 
 @end
 
@@ -32,11 +43,14 @@
 
 - (nonnull NSDictionary *)nb_queryStringParameters;
 
+// Deprecated, will be removed in the next major release.
 - (nonnull NSDictionary *)nb_queryStringParametersWithEncoding:(NSStringEncoding)stringEncoding;
 
+// Deprecated, will be removed in the next major release.
 - (nonnull NSString *)nb_percentEscapedQueryStringWithEncoding:(NSStringEncoding)stringEncoding
                                     charactersToLeaveUnescaped:(nullable NSString *)charactersToLeaveUnescaped;
 
+// Deprecated, will be removed in the next major release.
 - (nonnull NSString *)nb_percentUnescapedQueryStringWithEncoding:(NSStringEncoding)stringEncoding
                                         charactersToLeaveEscaped:(nullable NSString *)charactersToLeaveEscaped;
 

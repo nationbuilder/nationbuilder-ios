@@ -2,7 +2,7 @@
 //  NBAuthenticator.h
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import <Foundation/Foundation.h>
@@ -10,6 +10,9 @@
 #import "NBDefines.h"
 
 @class NBAuthenticationCredential;
+@class SFSafariViewController;
+@protocol NBAuthenticatorDelegate;
+@protocol UIApplicationDelegate;
 
 typedef void (^NBAuthenticationCompletionHandler)(NBAuthenticationCredential * __nullable credential, NSError * __nullable error);
 
@@ -27,6 +30,8 @@ extern NSString * __nonnull const NBAuthenticationDefaultRedirectPath;
 // `#token-flow` tag comment. The password-grant-type flow is discouraged and
 // only intended if your app is to be used by only your own nation.
 @interface NBAuthenticator : NSObject <NBLogging>
+
+@property (nonatomic, weak, nullable) id<NBAuthenticatorDelegate> delegate;
 
 @property (nonatomic, readonly, nonnull) NSURL *baseURL;
 @property (nonatomic, copy, readonly, nonnull) NSString *clientIdentifier;
@@ -48,6 +53,11 @@ extern NSString * __nonnull const NBAuthenticationDefaultRedirectPath;
 - (void)authenticateWithRedirectPath:(nonnull NSString *)redirectPath
                         priorSignout:(BOOL)needsPriorSignout
                    completionHandler:(nonnull NBAuthenticationCompletionHandler)completionHandler;
+// Use these methods if you are performing the authorization in your own
+// WKWebView and need to manually store and access token flow data.
+- (void)setCredentialWithAccessToken:(nonnull NSString *)accessToken
+                           tokenType:(nullable NSString *)tokenTypeOrNil;
+- (nullable NSURL *)authenticationURLWithRedirectPath:(nonnull NSString *)redirectPath;
 
 - (nullable NSURLSessionDataTask *)authenticateWithUserName:(nonnull NSString *)userName
                                                    password:(nonnull NSString *)password
@@ -77,5 +87,20 @@ extern NSString * __nonnull const NBAuthenticationDefaultRedirectPath;
         withIdentifier:(nonnull NSString *)identifier;
 + (BOOL)deleteCredentialWithIdentifier:(nonnull NSString *)identifier;
 + (nullable NBAuthenticationCredential *)fetchCredentialWithIdentifier:(nonnull NSString *)identifier;
+
+@end
+
+// If your authenticator is hard to reach, you can let your app delegate
+// conform to this protocol, and the authenticator will automatically call
+// to it instead.
+@protocol NBAuthenticatorPresentationDelegate <NSObject>
+
+- (void)presentWebBrowserForAuthenticationWithRedirectPath:(nonnull SFSafariViewController *)webBrowser;
+
+@end
+
+@protocol NBAuthenticatorDelegate <NBAuthenticatorPresentationDelegate>
+
+// Reserved for future usage.
 
 @end

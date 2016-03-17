@@ -2,7 +2,7 @@
 //  NBAccount.m
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import "NBAccount.h"
@@ -29,12 +29,13 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         NSAssert(delegate, @"A delegate is required.");
         self.delegate = delegate;
         // Set defaults.
+        self.shouldAutoFetchAvatar = YES;
         self.shouldUseTestToken = NO;
         _identifier = NSNotFound;
         if (!clientInfoOrNil) {
             clientInfoOrNil = self.defaultClientInfo;
         }
-        NSMutableDictionary *mutableClientInfo = [clientInfoOrNil mutableCopy];
+        NSMutableDictionary *mutableClientInfo = clientInfoOrNil.mutableCopy;
         // Fill in OAuth client ID if needed.
         mutableClientInfo[NBInfoClientIdentifierKey] = mutableClientInfo[NBInfoClientIdentifierKey] ?: self.defaultClientInfo[NBInfoClientIdentifierKey];
         // Check for developer.
@@ -61,6 +62,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 #pragma mark - NBAccountViewDataSource
 
 @synthesize avatarImageData = _avatarImageData;
+@synthesize shouldAutoFetchAvatar = _shouldAutoFetchAvatar;
 
 - (NSString *)nationSlug
 {
@@ -99,7 +101,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     if (self.shouldUseTestToken) {
         self.client = [[NBClient alloc] initWithNationSlug:self.clientInfo[NBInfoNationSlugKey]
                                                     apiKey:self.clientInfo[NBInfoTestTokenKey]
-                                             customBaseURL:[self baseURL]
+                                             customBaseURL:self.baseURL
                                           customURLSession:nil customURLSessionConfiguration:nil];
     } else {
         self.client = [[NBClient alloc] initWithNationSlug:self.clientInfo[NBInfoNationSlugKey]
@@ -115,7 +117,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     if (_authenticator) {
         return _authenticator;
     }
-    self.authenticator = [[NBAuthenticator alloc] initWithBaseURL:[self baseURL]
+    self.authenticator = [[NBAuthenticator alloc] initWithBaseURL:self.baseURL
                                                  clientIdentifier:self.clientInfo[NBInfoClientIdentifierKey]];
     self.authenticator.shouldPersistCredential = NO;
     return _authenticator;
@@ -154,16 +156,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 @synthesize identifier = _identifier;
 @synthesize name = _name;
-
-- (NSString *)name
-{
-    if (!self.person) {
-        return _name ?: nil;
-    }
-    NSString *name = self.person[@"username"];
-    name = !!name && ![name isEqual:[NSNull null]] ? name : self.person[@"full_name"];
-    return name;
-}
+@synthesize person = _person;
 
 - (void)setName:(NSString *)name
 {
@@ -172,22 +165,27 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     [self updateCredentialIdentifier];
 }
 
-- (NSUInteger)identifier
-{
-    if (_identifier != NSNotFound) {
-        return _identifier;
-    }
-    if (self.person) {
-        self.identifier = [self.person[@"id"] unsignedIntegerValue];
-    }
-    return _identifier;
-}
-
 - (void)setIdentifier:(NSUInteger)identifier
 {
     _identifier = identifier;
     // Did.
     [self updateCredentialIdentifier];
+}
+
+- (void)setPerson:(NSDictionary *)person
+{
+    _person = person;
+    // Did.
+    if (person) {
+        NSString *name = self.person[@"username"];
+        name = ([name nb_nilIfNull] && name.length) ? name : self.person[@"full_name"];
+        name = ([name nb_nilIfNull] && name.length) ? name : self.person[@"email"];
+        self.name = name;
+        self.identifier = [self.person[@"id"] unsignedIntegerValue];
+    } else {
+        self.identifier = NSNotFound;
+        self.name = nil;
+    }
 }
 
 #pragma mark Active API
@@ -259,11 +257,13 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
         } else if (item) {
             // Success.
             self.person = item;
-            // Save credentials with custom ID.
-            [self updateCredentialIdentifier];
             [NBAuthenticationCredential saveCredential:self.authenticator.credential
                                         withIdentifier:self.authenticator.credentialIdentifier];
-            [self fetchAvatarWithCompletionHandler:completionHandler];
+            if (self.shouldAutoFetchAvatar) {
+                [self fetchAvatarWithCompletionHandler:completionHandler];
+            } else {
+                completionHandler(nil);
+            }
             return;
         } else {
             NBLogWarning(@"Unhandled case.");
@@ -291,6 +291,10 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
          }
      }];
     [avatarTask resume];
+}
+
+- (NSString *)credentialIdentifier {
+    return self.authenticator.credentialIdentifier;
 }
 
 - (BOOL)updateCredentialIdentifier

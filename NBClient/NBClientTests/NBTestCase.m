@@ -2,7 +2,7 @@
 //  NBTestCase.m
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import "NBTestCase.h"
@@ -114,11 +114,6 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
     return [self.class shouldUseHTTPStubbing];
 }
 
-- (BOOL)shouldOnlyUseTestToken
-{
-    return !self.userPassword;
-}
-
 - (void)stubInfoFileBundleResourcePathForOperations:(void (^)(void))operationsBlock
 {
     id bundleMock = OCMClassMock([NSBundle class]);
@@ -154,13 +149,13 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
     // And we need to build our query.
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionaryWithDictionary:queryParameters];
     mutableParameters[@"access_token"] = mutableParameters[@"access_token"] ?: client.apiKey;
-    components.percentEncodedQuery = [mutableParameters nb_queryString];
+    components.percentEncodedQuery = mutableParameters.nb_queryString;
     // Check our URL.
     NBLog(@"STUB: %@", components.URL.absoluteString);
     // And our headers.
     NSMutableDictionary *headers = [NSMutableDictionary dictionary];
     headers[@"Accept"] = @"application/json";
-    if ([method isEqual:@"POST"] || [method isEqual:@"PUT"]) {
+    if ([method isEqualToString:@"POST"] || [method isEqualToString:@"PUT"]) {
         headers[@"Content-Type"] = @"application/json";
     }
     // Finally, send it to Nocilla.
@@ -204,34 +199,10 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
 
 - (void)setUpSharedClient
 {
-    // We need to use the shared session because we need to be in an application
-    // for an app-specific cache.
-    __block NSString *apiKey;
-    BOOL shouldUseTestToken = self.shouldOnlyUseTestToken;
-    if (!shouldUseTestToken) {
-        NBAuthenticator *authenticator = [[NBAuthenticator alloc] initWithBaseURL:self.baseURL
-                                                                 clientIdentifier:self.clientIdentifier];
-        NSURLSessionDataTask *task = [authenticator
-                                      authenticateWithUserName:self.userEmailAddress
-                                      password:self.userPassword
-                                      clientSecret:self.clientSecret
-                                      completionHandler:^(NBAuthenticationCredential *credential, NSError *error) {
-                                          apiKey = credential.accessToken;
-                                      }];
-        if (task) {
-            NBLog(@"WARNING: Test case requires saved authentication credential. Re-authenticating should not happen.");
-            // Fallback to using test token.
-            [task cancel];
-            shouldUseTestToken = YES;
-        }
-    }
-    if (shouldUseTestToken) {
-        // NOTE: When using HTTP-stubbing, the authenticity of test token is not
-        // tested and does not matter.
-        apiKey = self.testToken;
-    }
+    // NOTE: When using HTTP-stubbing, the authenticity of test token is not
+    // tested and does not matter.
     self.client = [[NBClient alloc] initWithNationSlug:self.nationSlug
-                                                apiKey:apiKey
+                                                apiKey:self.testToken
                                          customBaseURL:self.baseURL
                                       customURLSession:[NSURLSession sharedSession]
                          customURLSessionConfiguration:nil];
@@ -250,9 +221,21 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
     } else {
         XCTAssertEqual(paginationInfo.numberOfItemsPerPage, [paginationParameters[NBClientPaginationLimitKey] unsignedIntegerValue],
                        @"Pagination info should be properly populated.");
-        XCTAssertNotNil(paginationInfo.nextPageURLString,
-                        @"Pagination info should be properly populated.");
     }
+}
+
+- (void)assertPeopleArray:(NSArray *)array
+{
+    XCTAssertNotNil(array, @"Client should have received list of people.");
+    for (NSDictionary *dictionary in array) { [self assertPersonDictionary:dictionary]; }
+}
+
+- (void)assertPersonDictionary:(NSDictionary *)dictionary
+{
+    static NSArray *keys; static dispatch_once_t onceToken; dispatch_once(&onceToken, ^{
+        keys = @[ @"email", @"id", @"first_name", @"last_name", @"support_level" ];
+    });
+    return XCTAssertTrue([dictionary nb_hasKeys:keys], "Person has correct attributes.");
 }
 
 - (void)assertServiceError:(NSError *)error
@@ -261,12 +244,6 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
         return;
     }
     XCTFail(@"NationBuilder service returned error %@", error);
-}
-
-- (void)assertSessionDataTask:(NSURLSessionDataTask *)task
-{
-    XCTAssertTrue(task && task.state == NSURLSessionTaskStateRunning,
-                  @"Client should have created and ran task.");
 }
 
 #pragma mark - Async Test Helpers
@@ -279,7 +256,7 @@ NSString * const NBInfoUserPasswordKey = @"User Password";
 - (void)setUpAsyncWithHTTPStubbing:(BOOL)shouldUseHTTPStubbing
 {
     // NOTE: Override after this function call for the test if desired.
-    self.asyncTimeoutInterval = 10.0f;
+    self.asyncTimeoutInterval = 20.0f;
     self.shouldUseHTTPStubbingOnce = shouldUseHTTPStubbing;
     if (self.shouldUseHTTPStubbingOnce) {
         [[LSNocilla sharedInstance] start];

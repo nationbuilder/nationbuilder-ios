@@ -2,7 +2,7 @@
 //  NBAccount_Internal.h
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import "NBAccount.h"
@@ -18,6 +18,8 @@
 @property (nonatomic, copy, readwrite, nonnull) NSDictionary *defaultClientInfo;
 
 @property (nonatomic, copy, nullable) NSDictionary *person;
+
+@property (nonatomic, copy, readonly, nullable) NSString *credentialIdentifier;
 
 - (nonnull NSURL *)baseURL;
 

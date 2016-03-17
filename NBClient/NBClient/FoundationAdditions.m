@@ -2,7 +2,7 @@
 //  FoundationAdditions.m
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import "FoundationAdditions.h"
@@ -37,6 +37,25 @@
 static NSString *QueryJoiner = @"&";
 static NSString *QueryPairJoiner = @"=";
 
+@interface NSCharacterSet (NBAdditions_Internal)
+
++ (NSCharacterSet *)nb_queryStringComponentAllowedCharacters;
+
+@end
+
+@implementation NSCharacterSet (NBAdditions_Internal)
+
++ (NSCharacterSet *)nb_queryStringComponentAllowedCharacters
+{
+    static NSMutableCharacterSet *allowedCharacters; static dispatch_once_t onceToken; dispatch_once(&onceToken, ^{
+        allowedCharacters = [NSCharacterSet characterSetWithCharactersInString:@":/?&=;+!@#$()',*"].invertedSet.mutableCopy;
+        [allowedCharacters formIntersectionWithCharacterSet:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    });
+    return allowedCharacters;
+}
+
+@end
+
 @implementation NSDictionary (NBAdditions)
 
 - (BOOL)nb_containsDictionary:(NSDictionary *)dictionary
@@ -57,6 +76,21 @@ static NSString *QueryPairJoiner = @"=";
     return YES;
 }
 
+- (BOOL)nb_hasKeys:(NSArray *)keys
+{
+    SEL comparator = @selector(localizedCaseInsensitiveCompare:);
+    NSArray *ownKeys = self.allKeys;
+    if ([[ownKeys sortedArrayUsingSelector:comparator] isEqualToArray:[keys sortedArrayUsingSelector:comparator]]) {
+        return true;
+    }
+    for (NSString *key in keys) {
+        if (![ownKeys containsObject:key]) {
+            return false;
+        }
+    }
+    return true;
+}
+
 - (BOOL)nb_isEquivalentToDictionary:(NSDictionary *)dictionary
 {
     if (dictionary.allKeys.count != self.allKeys.count) { return NO; }
@@ -74,13 +108,20 @@ static NSString *QueryPairJoiner = @"=";
 
 - (NSString *)nb_queryString
 {
-    return [self nb_queryStringWithEncoding:NSUTF8StringEncoding skipPercentEncodingPairKeys:nil charactersToLeaveUnescaped:nil];
+    return [self nb_queryStringWithSkippedPairKeys:nil];
 }
 
+// TODO: Deprecated, remove in 2.0.0.
 - (NSString *)nb_queryStringWithEncoding:(NSStringEncoding)stringEncoding
              skipPercentEncodingPairKeys:(NSSet *)skipPairKeys
               charactersToLeaveUnescaped:(NSString *)charactersToLeaveUnescaped
 {
+    NBLog(@"WARNING: 'NSDictionary nb_queryStringWithEncoding:skipPercentEncodingPairKeys:charactersToLeaveUnescaped:' is deprecated. "
+          @"'stringEncoding' and 'charactersToLeaveUnescaped' no longer work.");
+    return [self nb_queryStringWithSkippedPairKeys:skipPairKeys];
+}
+
+- (NSString *)nb_queryStringWithSkippedPairKeys:(NSSet *)skippedPairKeys {
     NSMutableArray *mutablePairs = [NSMutableArray array];
     NSArray *keys = [self.allKeys sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
     for (NSString *key in keys) {
@@ -89,20 +130,18 @@ static NSString *QueryPairJoiner = @"=";
         if ([value isKindOfClass:[NSArray class]] ||
             [value isKindOfClass:[NSDictionary class]] ||
             [value isKindOfClass:[NSSet class]]
-        ) {
+            ) {
             NBLog(@"WARNING: Unable to serialize key %@ with value %@", key, value);
             continue;
         }
         NSString *valueString = [NSString stringWithFormat:@"%@", value];
-        BOOL shouldPercentEncode = !skipPairKeys || ![skipPairKeys containsObject:key];
+        BOOL shouldPercentEncode = !skippedPairKeys || ![skippedPairKeys containsObject:key];
         NSString *pair = [NSString stringWithFormat:@"%@%@%@",
                           !shouldPercentEncode ? key :
-                          [key nb_percentEscapedQueryStringWithEncoding:stringEncoding
-                                             charactersToLeaveUnescaped:charactersToLeaveUnescaped],
+                          [key stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet nb_queryStringComponentAllowedCharacters]],
                           QueryPairJoiner,
                           !shouldPercentEncode ? valueString :
-                          [valueString nb_percentEscapedQueryStringWithEncoding:stringEncoding
-                                                     charactersToLeaveUnescaped:charactersToLeaveUnescaped]];
+                          [valueString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet nb_queryStringComponentAllowedCharacters]]];
         [mutablePairs addObject:pair];
     }
     return [mutablePairs componentsJoinedByString:QueryJoiner];
@@ -110,26 +149,30 @@ static NSString *QueryPairJoiner = @"=";
 
 @end
 
+@implementation NSObject (NBAdditions)
+
+- (id)nb_nilIfNull
+{
+    if ([self isEqual:[NSNull null]]) {
+        return nil;
+    }
+    return self;
+}
+
+@end
+
 @implementation NSString (NBAdditions)
 
+// TODO: Deprecated, remove in 2.0.0.
 - (NSString *)nb_percentEscapedQueryStringWithEncoding:(NSStringEncoding)stringEncoding
                             charactersToLeaveUnescaped:(NSString *)charactersToLeaveUnescaped
 {
-    static NSString *charactersToBeEscapedInQueryString = @":/?&=;+!@#$()',*";
-    return (__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(
-    /* allocator: */ kCFAllocatorDefault,
-    /* originalString: */ (__bridge CFStringRef)self,
-    /* charactersToLeaveUnescaped: */ charactersToLeaveUnescaped ? (__bridge CFStringRef)charactersToLeaveUnescaped : NULL,
-    /* legalURLCharactersToBeEscaped: */ (__bridge CFStringRef)charactersToBeEscapedInQueryString,
-    /* encoding */ CFStringConvertNSStringEncodingToEncoding(stringEncoding));
+    NBLog(@"WARNING: 'NSString nb_percentEscapedQueryStringWithEncoding:charactersToLeaveUnescaped:' is deprecated. "
+          @"'stringEncoding' and 'charactersToLeaveUnescaped' no longer work.");
+    return [self stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet nb_queryStringComponentAllowedCharacters]];
 }
 
 - (NSDictionary *)nb_queryStringParameters
-{
-    return [self nb_queryStringParametersWithEncoding:NSUTF8StringEncoding];
-}
-
-- (NSDictionary *)nb_queryStringParametersWithEncoding:(NSStringEncoding)stringEncoding
 {
     static NSNumberFormatter *numberFormatter;
     static dispatch_once_t onceToken;
@@ -141,12 +184,10 @@ static NSString *QueryPairJoiner = @"=";
     NSArray *pairs = [self componentsSeparatedByString:QueryJoiner];
     for (NSString *pairString in pairs) {
         NSArray *pair = [pairString componentsSeparatedByString:QueryPairJoiner];
-        NSString *key = [pair[0] nb_percentUnescapedQueryStringWithEncoding:NSUTF8StringEncoding
-                                                   charactersToLeaveEscaped:nil];
+        NSString *key = [pair[0] stringByRemovingPercentEncoding];
         if (pair.count > 1) {
             id value;
-            NSString *stringValue = [pair[1] nb_percentUnescapedQueryStringWithEncoding:NSUTF8StringEncoding
-                                                  charactersToLeaveEscaped:nil];
+            NSString *stringValue = [pair[1] stringByRemovingPercentEncoding];
             if ([stringValue nb_isNumeric]) {
                 value = [numberFormatter numberFromString:stringValue];
             } else {
@@ -156,18 +197,22 @@ static NSString *QueryPairJoiner = @"=";
             parameters[key] = value;
         }
     }
-    return [NSDictionary dictionaryWithDictionary:parameters];
+    return [NSDictionary dictionaryWithDictionary:parameters];}
+
+// TODO: Deprecated, remove in 2.0.0.
+- (NSDictionary *)nb_queryStringParametersWithEncoding:(NSStringEncoding)stringEncoding
+{
+    NBLog(@"WARNING: 'NSString nb_queryStringParametersWithEncoding:' is deprecated and will always use UTF-8.");
+    return self.nb_queryStringParameters;
 }
 
+// TODO: Deprecated, remove in 2.0.0.
 - (NSString *)nb_percentUnescapedQueryStringWithEncoding:(NSStringEncoding)stringEncoding
                                 charactersToLeaveEscaped:(NSString *)charactersToLeaveEscaped
 {
-    NSString *result = [self stringByReplacingOccurrencesOfString:@"+" withString:@" "];
-    return (__bridge_transfer NSString *)CFURLCreateStringByReplacingPercentEscapesUsingEncoding(
-    /* allocator */ kCFAllocatorDefault,
-    /* originalString: */ (__bridge CFStringRef)result,
-    /* charactersToLeaveEscaped */ charactersToLeaveEscaped ? (__bridge CFStringRef)charactersToLeaveEscaped : CFSTR(""),
-    /* encoding */ CFStringConvertNSStringEncodingToEncoding(stringEncoding));
+    NBLog(@"WARNING: 'NSString nb_percentUnescapedQueryStringWithEncoding:charactersToLeaveEscaped:' is deprecated. "
+          @"'stringEncoding' and 'charactersToLeaveEscaped' no longer work.");
+    return self.stringByRemovingPercentEncoding;
 }
 
 - (NSString *)nb_localizedString
@@ -193,7 +238,7 @@ static NSString *QueryPairJoiner = @"=";
 
 - (NSString *)nb_debugDescription
 {
-    NSMutableURLRequest *request = [self mutableCopy];
+    NSMutableURLRequest *request = self.mutableCopy;
     return [NSString stringWithFormat:
             @"%@\n"
             @"METHOD: %@\n"

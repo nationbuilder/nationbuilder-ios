@@ -2,7 +2,7 @@
 //  NBAppDelegate.m
 //  NBClientExample
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import "NBAppDelegate.h"
@@ -15,7 +15,7 @@
 
 #import "NBPeopleViewFlowLayout.h"
 
-@interface NBAppDelegate () <NBAccountsManagerDelegate>
+@interface NBAppDelegate () <NBAccountsManagerDelegate, NBAuthenticatorPresentationDelegate>
 
 @property (nonatomic, readonly) NBAccount *account;
 
@@ -73,6 +73,7 @@
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
+    NBLog(@"INFO: Finishing authenticating with URL: %@", url);
     // In addition to setting CFBundleURLTypes, this is the basics of what is
     // required for the preferred way of authenticating against NationBuilder.
     [NBAuthenticator finishAuthenticatingInWebBrowserWithURL:url];
@@ -82,13 +83,22 @@
     return NO;
 }
 
+#pragma mark - NBAuthenticatorPresentationDelegate
+
+- (void)presentWebBrowserForAuthenticationWithRedirectPath:(SFSafariViewController *)webBrowser
+{
+    UIViewController *modalViewController = (UIViewController *)webBrowser;
+    [self.accountsViewController presentViewController:modalViewController animated:YES completion:nil];
+}
+
 #pragma mark - NBAccountsManagerDelegate
 
 - (void)accountsManager:(NBAccountsManager *)accountsManager didFailToSwitchToAccount:(NBAccount *)account withError:(NSError *)error
 {
     // Show an alert for generic errors
     if (error.code != NBAuthenticationErrorCodeUser) {
-        [[UIAlertView nb_genericAlertViewWithError:error] show];
+        [self.window.rootViewController presentViewController:[UIAlertController nb_genericAlertWithError:error defaultDismissal:YES]
+                                                     animated:YES completion:nil];
     }
 }
 

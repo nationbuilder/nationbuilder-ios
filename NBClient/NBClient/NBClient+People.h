@@ -2,7 +2,7 @@
 //  NBClient+People.h
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import "NBClient.h"
@@ -21,6 +21,8 @@
 // GET /people
 - (nonnull NSURLSessionDataTask *)fetchPeopleWithPaginationInfo:(nullable NBPaginationInfo *)paginationInfo
                                               completionHandler:(nonnull NBClientResourceListCompletionHandler)completionHandler;
+// GET /people/count
+- (nonnull NSURLSessionDataTask *)fetchPeopleCountWithCompletionHandler:(nonnull NBClientResourceCompletionHandler)completionHandler;
 // GET /people/:id
 - (nonnull NSURLSessionDataTask *)fetchPersonByIdentifier:(NSUInteger)identifier
                                     withCompletionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
@@ -44,35 +46,39 @@
 - (nonnull NSURLSessionDataTask *)fetchPersonTaggingsByIdentifier:(NSUInteger)personIdentifier
                                             withCompletionHandler:(nonnull NBClientResourceListCompletionHandler)completionHandler;
 // PUT /people/:id/taggings
-- (nonnull NSURLSessionDataTask *)createPersonTaggingByIdentifier:(NSUInteger)personIdentifier
-                                                  withTaggingInfo:(nonnull NSDictionary *)taggingInfo
-                                                completionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
-- (nonnull NSURLSessionDataTask *)createPersonTaggingsByIdentifier:(NSUInteger)personIdentifier
+- (nullable NSURLSessionDataTask *)createPersonTaggingByIdentifier:(NSUInteger)personIdentifier
                                                    withTaggingInfo:(nonnull NSDictionary *)taggingInfo
-                                                 completionHandler:(nonnull NBClientResourceListCompletionHandler)completionHandler;
+                                                 completionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
+- (nullable NSURLSessionDataTask *)createPersonTaggingsByIdentifier:(NSUInteger)personIdentifier
+                                                    withTaggingInfo:(nonnull NSDictionary *)taggingInfo
+                                                  completionHandler:(nonnull NBClientResourceListCompletionHandler)completionHandler;
 // DELETE /people/:id/taggings/:tag
-- (nonnull NSURLSessionDataTask *)deletePersonTaggingsByIdentifier:(NSUInteger)personIdentifier
-                                                          tagNames:(nonnull NSArray *)tagNames
-                                             withCompletionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
+- (nullable NSURLSessionDataTask *)deletePersonTaggingsByIdentifier:(NSUInteger)personIdentifier
+                                                           tagNames:(nonnull NSArray *)tagNames
+                                              withCompletionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
 // GET /people/:id/capitals
 - (nonnull NSURLSessionDataTask *)fetchPersonCapitalsByIdentifier:(NSUInteger)personIdentifier
                                                withPaginationInfo:(nullable NBPaginationInfo *)paginationInfo
                                                 completionHandler:(nonnull NBClientResourceListCompletionHandler)completionHandler;
 // POST /people/:id/capitals
-- (nonnull NSURLSessionDataTask *)createPersonCapitalByIdentifier:(NSUInteger)personIdentifier
-                                                  withCapitalInfo:(nonnull NSDictionary *)capitalInfo
-                                                completionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
+- (nullable NSURLSessionDataTask *)createPersonCapitalByIdentifier:(NSUInteger)personIdentifier
+                                                   withCapitalInfo:(nonnull NSDictionary *)capitalInfo
+                                                 completionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
 // DELETE /people/:person_id/capitals/:capital_id
 - (nonnull NSURLSessionDataTask *)deletePersonCapitalByPersonIdentifier:(NSUInteger)personIdentifier
                                                       capitalIdentifier:(NSUInteger)capitalIdentifier
                                                   withCompletionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
+// POST /people/:person_id/notes
+- (nullable NSURLSessionDataTask *)createPersonPrivateNoteByIdentifier:(NSUInteger)personIdentifier
+                                                          withNoteInfo:(nonnull NSDictionary *)noteInfo
+                                                     completionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
 // POST /people
-- (nonnull NSURLSessionDataTask *)createPersonWithParameters:(nonnull NSDictionary *)parameters
-                                           completionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
+- (nullable NSURLSessionDataTask *)createPersonWithParameters:(nonnull NSDictionary *)parameters
+                                            completionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
 // PUT /people/:id
-- (nonnull NSURLSessionDataTask *)savePersonByIdentifier:(NSUInteger)identifier
-                                          withParameters:(nonnull NSDictionary *)parameters
-                                       completionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
+- (nullable NSURLSessionDataTask *)savePersonByIdentifier:(NSUInteger)identifier
+                                           withParameters:(nonnull NSDictionary *)parameters
+                                        completionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;
 // DELETE /people/:id
 - (nonnull NSURLSessionDataTask *)deletePersonByIdentifier:(NSUInteger)identifier
                                      withCompletionHandler:(nonnull NBClientResourceItemCompletionHandler)completionHandler;

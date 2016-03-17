@@ -2,14 +2,15 @@
 //  UIKitAdditions.h
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import <UIKit/UIKit.h>
 
-@interface UIAlertView (NBAdditions)
+@interface UIAlertController (NBAdditions)
 
-+ (nonnull UIAlertView *)nb_genericAlertViewWithError:(nonnull NSError *)error;
++ (nonnull UIAlertController *)nb_genericAlertWithError:(nonnull NSError *)error
+                                       defaultDismissal:(BOOL)defaultDismissal;
 
 @end
 

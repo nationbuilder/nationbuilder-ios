@@ -2,16 +2,15 @@
 //  NBAccountsManager.m
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
-#import "NBAccountsManager.h"
 #import "NBAccountsManager_Internal.h"
 
 #import <UIKit/UIKit.h>
 
 #import "FoundationAdditions.h"
-#import "NBAccount.h"
+#import "NBAccount_Internal.h"
 
 NSString * const NBAccountInfosDefaultsKey = @"NBAccountInfos";
 NSString * const NBAccountInfoIdentifierKey = @"User ID";
@@ -125,7 +124,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
     } else {
         NBAccount *account = [self createAccountWithNationSlug:nationSlug];
         if (!self.clientInfo) {
-            NSMutableDictionary *mutableClientInfo = [account.clientInfo mutableCopy];
+            NSMutableDictionary *mutableClientInfo = account.clientInfo.mutableCopy;
             [mutableClientInfo removeObjectForKey:NBInfoNationSlugKey];
             self.clientInfo = [NSDictionary dictionaryWithDictionary:mutableClientInfo];
         }
@@ -175,7 +174,8 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
             shouldBail = YES;
         } else {
             for (NBAccount *existingAccount in self.accounts) {
-                if (existingAccount != account && existingAccount.identifier == account.identifier) {
+                if (existingAccount != account &&
+                    existingAccount.credentialIdentifier == account.credentialIdentifier) {
                     shouldBail = YES;
                     break;
                 }
@@ -212,7 +212,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
 
 - (NSDictionary *)clientInfoForAccountWithNationSlug:(NSString *)nationSlug
 {
-    NSMutableDictionary *mutableClientInfo = self.clientInfo ? [self.clientInfo mutableCopy] : [NSMutableDictionary dictionary];
+    NSMutableDictionary *mutableClientInfo = self.clientInfo ? self.clientInfo.mutableCopy : [NSMutableDictionary dictionary];
     mutableClientInfo[NBInfoNationSlugKey] = nationSlug;
     return [NSDictionary dictionaryWithDictionary:mutableClientInfo];
 }
@@ -276,7 +276,7 @@ static NBLogLevel LogLevel = NBLogLevelWarning;
             NBLogWarning(@"No selected account in persisted accounts. Restoring first account.");
             selectedAccount = self.accounts.firstObject;
         }
-        NBLogInfo(@"Activating originally selected account %lu", selectedAccount.identifier);
+        NBLogInfo(@"Activating originally selected account %lu", (unsigned long)selectedAccount.identifier);
         [self activateAccount:selectedAccount];
         NBLogInfo(@"Loaded %lu persisted account(s) for identifier \"%@\"",
                   (unsigned long)accountInfos.count, self.persistedAccountsIdentifier);

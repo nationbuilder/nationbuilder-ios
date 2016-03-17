@@ -2,22 +2,21 @@
 //  NBAccountTests.m
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import "NBTestCase.h"
 
 #import "FoundationAdditions.h"
 
-#import "NBAccount.h"
 #import "NBAccount_Internal.h"
-#import "NBAuthenticator.h"
 #import "NBAuthenticator_Internal.h"
 #import "NBClient+People.h"
 
 @interface NBAccountTests : NBTestCase
 
 @property (nonatomic) NBAccount *account;
+@property (nonatomic, copy) NSString *accessToken;
 @property (nonatomic) id delegateMock;
 
 @end
@@ -28,6 +27,7 @@
 {
     [super setUp];
     // Setup main test account.
+    self.accessToken = @"somehash";
     self.delegateMock = OCMProtocolMock(@protocol(NBAccountDelegate));
     [self stubInfoFileBundleResourcePathForOperations:^{
         self.account = [[NBAccount alloc] initWithClientInfo:nil delegate:self.delegateMock];
@@ -38,6 +38,17 @@
 {
     [super tearDown];
 }
+
+#pragma mark - Helpers
+
+- (void)stubPersonDataForClient:(NBClient *)client
+{
+    [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"people/me" pathVariables:nil
+                             queryParameters:@{ @"access_token": self.accessToken } variant:nil
+                                      client:client];
+}
+
+#pragma mark - Tests
 
 - (void)testDefaultInitialization
 {
@@ -78,28 +89,23 @@
 - (void)testActivationAndPersonFetching
 {
     [self setUpAsyncWithHTTPStubbing:YES];
-    // Given: an authenticator that authenticates properly using the token flow.
     id accountMock = OCMPartialMock(self.account);
+    [accountMock setShouldAutoFetchAvatar:NO];
+    [self stubPersonDataForClient:[(NBAccount *)accountMock client]];
+    // Given: an authenticator that authenticates properly using the token flow.
     id authenticatorMock = OCMPartialMock(self.account.authenticator);
     [OCMStub([accountMock authenticator]) andReturn:authenticatorMock];
-    NSString *accessToken = @"somehash";
     [OCMStub([authenticatorMock authenticateWithRedirectPath:OCMOCK_ANY priorSignout:NO completionHandler:OCMOCK_ANY])
      andDo:^(NSInvocation *invocation) {
          NBAuthenticationCompletionHandler completionHandler;
          [invocation getArgument:&completionHandler atIndex:4];
          [invocation retainArguments];
-         NBAuthenticationCredential *credential = [[NBAuthenticationCredential alloc] initWithAccessToken:accessToken tokenType:nil];
+         NBAuthenticationCredential *credential = [[NBAuthenticationCredential alloc] initWithAccessToken:self.accessToken tokenType:nil];
          completionHandler(credential, nil);
      }];
-    // Given: a client that properly fetches person data for its account user.
-    [self stubRequestUsingFileDataWithMethod:@"GET" pathFormat:@"people/me" pathVariables:nil
-                             queryParameters:@{ @"access_token": accessToken } variant:nil
-                                      client:[(NBAccount *)accountMock client]];
     // Given: keychain persistence that works.
     id credentialMock = OCMClassMock([NBAuthenticationCredential class]);
     [OCMStub([credentialMock saveCredential:OCMOCK_ANY withIdentifier:OCMOCK_ANY]) andReturnValue:@YES];
-    // Given: person data with a valid avatar image URL.
-    stubRequest(@"GET", @"https://d3n8a8pro7vhmx.cloudfront.net/assets/icons/buddy.png");
     // Given.
     XCTAssertNil(self.account.person, @"Initial account should have no person data.");
     // When.
@@ -110,8 +116,7 @@
         NBAccount *account = accountMock;
         // Then: data should be present.
         XCTAssertNotNil(account.person, @"Account should have person data.");
-        XCTAssertNotNil(account.avatarImageData, @"Account should have avatar image.");
-        XCTAssertTrue([account.client.apiKey isEqualToString:accessToken],
+        XCTAssertTrue([account.client.apiKey isEqualToString:self.accessToken],
                       @"Account client should be authenticated.");
         XCTAssertTrue(([[authenticatorMock credentialIdentifier] rangeOfString:account.name].location != NSNotFound &&
                        [[authenticatorMock credentialIdentifier] rangeOfString:[NSString stringWithFormat:@"%lu", (unsigned long)account.identifier]].location != NSNotFound),
@@ -123,12 +128,14 @@
 
 - (void)testActivationFromSavedCredential
 {
-    [self setUpAsync];
-    // Given: an authenticator with a stored credential.
+    [self setUpAsyncWithHTTPStubbing:YES];
     id accountMock = OCMPartialMock(self.account);
+    [accountMock setShouldAutoFetchAvatar:NO];
+    [self stubPersonDataForClient:[(NBAccount *)accountMock client]];
+    // Given: an authenticator with a stored credential.
     id authenticatorMock = OCMPartialMock(self.account.authenticator);
     [OCMStub([accountMock authenticator]) andReturn:authenticatorMock];
-    [authenticatorMock setCredential:[[NBAuthenticationCredential alloc] initWithAccessToken:@"somehash" tokenType:nil]];
+    [authenticatorMock setCredential:[[NBAuthenticationCredential alloc] initWithAccessToken:self.accessToken tokenType:nil]];
     // Then: authentication should be skipped.
     [OCMStub([authenticatorMock authenticateWithRedirectPath:OCMOCK_ANY priorSignout:NO completionHandler:OCMOCK_ANY])
      andDo:^(NSInvocation *invocation) {
@@ -144,7 +151,7 @@
 - (void)testDeactivationAndCleanup
 {
     // Given: account has authenticator with credential and working client.
-    self.account.authenticator.credential = [[NBAuthenticationCredential alloc] initWithAccessToken:@"somehash" tokenType:nil];
+    self.account.authenticator.credential = [[NBAuthenticationCredential alloc] initWithAccessToken:self.accessToken tokenType:nil];
     self.account.client.apiKey = self.account.authenticator.credential.accessToken;
     // Given: keychain persistence that works.
     id credentialMock = OCMClassMock([NBAuthenticationCredential class]);

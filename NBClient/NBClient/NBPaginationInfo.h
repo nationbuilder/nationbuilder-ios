@@ -2,7 +2,7 @@
 //  NBPaginationInfo.h
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import <Foundation/Foundation.h>
@@ -54,5 +54,7 @@ typedef NS_ENUM(NSUInteger, NBPaginationDirection) {
 - (nonnull instancetype)initWithDictionary:(nullable NSDictionary *)dictionary legacy:(BOOL)legacy;
 
 - (void)updateCurrentPageNumber;
+
++ (BOOL)dictionaryContainsPaginationInfo:(nonnull NSDictionary *)dictionary;
 
 @end

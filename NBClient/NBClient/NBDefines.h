@@ -2,12 +2,14 @@
 //  NBDefines.h
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import <Foundation/Foundation.h>
 
 #pragma mark - Constants
+
+extern NSString * __nonnull const NBClientVersion;
 
 extern NSString * __nonnull const NBErrorDomain;
 extern NSInteger const NBErrorCodeInvalidArgument;

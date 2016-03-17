@@ -2,7 +2,7 @@
   NationBuilder.strings
   NationBuilder
 
-  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+  Copyright (MIT) 2014-present NationBuilder
 */
 
 // General
@@ -10,6 +10,7 @@
 "label.cancel" = "Cancel";
 "label.close" = "Close";
 "label.ok" = "OK";
+"label.retry" = "Retry";
 "label.submit" = "Submit";
 
 "message.unknown-error" = "Something went wrong. Please notify the app developer.";
@@ -23,9 +24,9 @@
 "message.delete-credential-error" = "Cannot delete keychain credential.";
 "message.http-error.format" = "Service errored fulfilling request, status code: %ld";
 
-"message.invalid-browser" = "Cannot find a valid web browser.";
-"message.invalid-browser.auth-requires-browser" = "A web browser is required to open the authorization URL.";
-"message.invalid-browser.check-safari-installed" = "Ensure Safari or its equivalent is installed.";
+"message.invalid-browser-presenter" = "Cannot find a valid web browser presenter.";
+"message.invalid-browser-presenter.auth-requires-presenter" = "Your app is required to present the web browser.";
+"message.invalid-browser-presenter.conform-to-protocol" = "Your app-delegate at least should conform to NBAuthenticatorPresentationDelegate.";
 
 "message.invalid-nation-slug" = "Invalid nation slug.";
 "message.invalid-nation-slug.empty" = "Nation slug must be non-empty.";

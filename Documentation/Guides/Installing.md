@@ -7,7 +7,7 @@ installation methods, or if you're using Swift, we suggest referring to the
 For CocoaPods, add to your [Podfile][]:
 
 ```ruby
-pod 'NBClient', '~> 1.0.0'
+pod 'NBClient', '~> 1.3.0'
 ```
 
 Note that we [semantically version](http://semver.org) the SDK, so patch
@@ -39,8 +39,8 @@ the `NBClient/Core`, `NBClient/UI`, and `NBClient/Locale/en` components
 include the (soon to be) French Locale component:
 
 ```ruby
-pod 'NBClient/Core', '~> 1.0.0'
-pod 'NBClient/Locale/fr', '~> 1.0.0'
+pod 'NBClient/Core', '~> 1.3.0'
+pod 'NBClient/Locale/fr', '~> 1.3.0'
 ```
 
 You can refer to the subspecs in [NBClient.podspec][] to see the components and
@@ -54,12 +54,6 @@ your application info plist. Under `Fonts provided by application`, add an item
 with the value `pe-icon-7-stroke.ttf`.
 
 ## Notes
-
-### iOS Usage
-
-When installing the pod, be aware the SDK supports iOS 7. Our current policy is
-to not support iOS 8 features (size classes) if it means breaking backwards
-compatibility with iOS 7.
 
 ### Namespacing
 

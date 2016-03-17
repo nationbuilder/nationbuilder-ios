@@ -175,28 +175,16 @@
 		AA15FAA71983317400A2E84B /* NBClientExample */ = {
 			isa = PBXGroup;
 			children = (
-				AA15FAB31983317400A2E84B /* Images.xcassets */,
-				AA90913919833B8D009BE1E9 /* Localizable.strings */,
 				AA15FAB01983317400A2E84B /* NBAppDelegate.h */,
 				AA15FAB11983317400A2E84B /* NBAppDelegate.m */,
-				AA602C2D198C3966001A7DB2 /* NBPeoplePageHeaderView.xib */,
-				AA90914619833D01009BE1E9 /* NBPeopleViewController.h */,
-				AA90914719833D01009BE1E9 /* NBPeopleViewController.m */,
-				AA90912A19833B0E009BE1E9 /* NBPeopleViewController.xib */,
 				AA90913E19833C22009BE1E9 /* NBPeopleViewDataSource.h */,
 				AA90913F19833C22009BE1E9 /* NBPeopleViewDataSource.m */,
-				AA602C30199157B7001A7DB2 /* NBPeopleViewFlowLayout.h */,
-				AA602C31199157B7001A7DB2 /* NBPeopleViewFlowLayout.m */,
-				AA90914819833D01009BE1E9 /* NBPersonCellView.h */,
-				AA90914919833D01009BE1E9 /* NBPersonCellView.m */,
-				AA90912B19833B0E009BE1E9 /* NBPersonCellView.xib */,
-				AA90914A19833D01009BE1E9 /* NBPersonViewController.h */,
-				AA90914B19833D01009BE1E9 /* NBPersonViewController.m */,
-				AA90912C19833B0E009BE1E9 /* NBPersonViewController.xib */,
 				AA90914019833C22009BE1E9 /* NBPersonViewDataSource.h */,
 				AA90914119833C22009BE1E9 /* NBPersonViewDataSource.m */,
 				AA90913A19833BC0009BE1E9 /* NBUIDefines.h */,
 				AA90913B19833BC0009BE1E9 /* NBUIDefines.m */,
+				AA5905591C87D94000B6643A /* Configuration */,
+				AA5905571C87D84700B6643A /* UI */,
 				AA15FAA81983317400A2E84B /* Supporting Files */,
 			);
 			path = NBClientExample;
@@ -207,11 +195,8 @@
 			children = (
 				AA15FAAD1983317400A2E84B /* main.m */,
 				AA15FAAF1983317400A2E84B /* NBClientExample-Prefix.pch */,
-				AA7904A719E8A0D20007FF3E /* NationBuilder-Info-Local.plist */,
-				AA7904A419E8A0BA0007FF3E /* NationBuilder-Info.plist */,
-				AA15FAA91983317400A2E84B /* NBClientExample-Info.plist */,
-				AA7F19B81A117834000A451B /* NBAppLaunchScreen.xib */,
 				AA15FAAA1983317400A2E84B /* InfoPlist.strings */,
+				AA90913919833B8D009BE1E9 /* Localizable.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -231,6 +216,37 @@
 				AA15FAC31983317400A2E84B /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		AA5905571C87D84700B6643A /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				AA15FAB31983317400A2E84B /* Images.xcassets */,
+				AA7F19B81A117834000A451B /* NBAppLaunchScreen.xib */,
+				AA602C2D198C3966001A7DB2 /* NBPeoplePageHeaderView.xib */,
+				AA90914619833D01009BE1E9 /* NBPeopleViewController.h */,
+				AA90914719833D01009BE1E9 /* NBPeopleViewController.m */,
+				AA90912A19833B0E009BE1E9 /* NBPeopleViewController.xib */,
+				AA602C30199157B7001A7DB2 /* NBPeopleViewFlowLayout.h */,
+				AA602C31199157B7001A7DB2 /* NBPeopleViewFlowLayout.m */,
+				AA90914819833D01009BE1E9 /* NBPersonCellView.h */,
+				AA90914919833D01009BE1E9 /* NBPersonCellView.m */,
+				AA90912B19833B0E009BE1E9 /* NBPersonCellView.xib */,
+				AA90914A19833D01009BE1E9 /* NBPersonViewController.h */,
+				AA90914B19833D01009BE1E9 /* NBPersonViewController.m */,
+				AA90912C19833B0E009BE1E9 /* NBPersonViewController.xib */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
+		AA5905591C87D94000B6643A /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				AA7904A719E8A0D20007FF3E /* NationBuilder-Info-Local.plist */,
+				AA7904A419E8A0BA0007FF3E /* NationBuilder-Info.plist */,
+				AA15FAA91983317400A2E84B /* NBClientExample-Info.plist */,
+			);
+			name = Configuration;
 			sourceTree = "<group>";
 		};
 		AAEFEAE719E62D9F00777BC1 /* NBClient */ = {
@@ -291,7 +307,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = NB;
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = NationBuilder;
 				TargetAttributes = {
 					AA15FAB81983317400A2E84B = {
@@ -454,6 +470,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -473,7 +490,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../NBClient",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -512,7 +529,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../NBClient",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
@@ -541,6 +558,7 @@
 					"$(inherited)",
 					"-ObjC",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.nationbuilder.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -563,6 +581,7 @@
 					"$(inherited)",
 					"-ObjC",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.nationbuilder.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -584,6 +603,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "NBClientExampleTests/NBClientExampleTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.nationbuilder.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -602,6 +622,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NBClientExample/NBClientExample-Prefix.pch";
 				INFOPLIST_FILE = "NBClientExampleTests/NBClientExampleTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.nationbuilder.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;

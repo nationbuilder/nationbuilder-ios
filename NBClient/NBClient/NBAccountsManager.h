@@ -2,7 +2,7 @@
 //  NBAccountsManager.h
 //  NBClient
 //
-//  Copyright (c) 2014-2015 NationBuilder. All rights reserved.
+//  Copyright (MIT) 2014-present NationBuilder
 //
 
 #import <Foundation/Foundation.h>
@@ -18,7 +18,7 @@
 // accounts. It can become the data source for the accounts view controller.
 @interface NBAccountsManager : NSObject <NBAccountsViewDataSource, NBAccountDelegate, NBLogging>
 
-@property (nonatomic, weak, readonly, nonnull) id<NBAccountsManagerDelegate> delegate;
+@property (nonatomic, weak, readonly, nullable) id<NBAccountsManagerDelegate> delegate;
 @property (nonatomic, readonly) BOOL shouldPersistAccounts;
 
 - (nonnull instancetype)initWithClientInfo:(nullable NSDictionary *)clientInfoOrNil
