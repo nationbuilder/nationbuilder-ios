@@ -28,7 +28,6 @@ Pod::Spec.new do |s|
     sp.frameworks = ['UIKit', 'CoreText']
     # File patterns
     sp.source_files = 'NBClient/NBClient/UI/*.{h,m}'
-    sp.private_header_files = 'NBClient/NBClient/UI/*_Internal.h'
     sp.resources = [
       'NBClient/NBClient/UI/*.xib',
       'NBClient/NBClient/UI/NBClient_UI.xcassets',
@@ -37,8 +36,6 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'Locale' do |sp|
-    # Subspecs
-    sp.default_subspecs = 'en'
     # File patterns
     sp.subspec 'All' do |l|
       l.resources = l.preserve_paths = 'NBClient/NBClient/*.lproj'
@@ -48,4 +45,5 @@ Pod::Spec.new do |s|
     end
   end
 
+  s.default_subspecs = 'Core', 'UI', 'Locale/en'
 end
